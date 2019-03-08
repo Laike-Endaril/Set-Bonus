@@ -1,0 +1,12 @@
+Implement set creation system...
+...NBT filter
+...armor support
+...offhand support
+...mainhand support
+...bauble support
+
+Implement bonus system...
+...attribute modifiers
+...potion effects
+
+Note on curseforge page: "Allows you to specify bonuses for single equipment pieces as well" (ie. just make a set out of one item)
