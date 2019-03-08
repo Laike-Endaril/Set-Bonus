@@ -1,0 +1,16 @@
+[
+{
+  "modid": "setbonus",
+  "name": "Set Bonus",
+  "description": "Inspired by Diablo 2 and Terraria, lets you define custom equipment sets that give attribute modifiers or potion effects",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Laike_Endaril"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
