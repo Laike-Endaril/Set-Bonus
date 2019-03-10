@@ -1,5 +1,4 @@
 Implement set creation system...
-...NBT filter
 ...armor support
 ...offhand support
 ...mainhand support
