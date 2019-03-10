@@ -31,13 +31,13 @@ public class ServerConfig
                     "",
                     "Each custom id must be defined in the Equipment list first",
                     "The layout of each set is...",
-                    "Set id, set name, slot, custom id, slot = custom id | custom id | custom id..., slot = custom id...",
+                    "Set id, set name, slot | slot | slot... = custom id | custom id | custom id..., slot... = custom id...",
                     "Slots are one of these: mainhand, offhand, head, chest, legs, feet, hotbar, inventory",
                     "You can also refer to slots by their slot number, eg. the chest slot is 102 (see minecraft wiki)",
                     "",
                     "eg...",
                     "",
-                    "SnD, Sword and Dagger, mainhand = WSword | SSword | ISword | GSword | DSword, offhand = WDagger | SDagger | IDagger | GDagger | DDagger",
+                    "SnD, Sword and Dagger, mainhand | offhand = WSword | SSword | ISword | GSword | DSword, mainhand | offhand = WDagger | SDagger | IDagger | GDagger | DDagger",
                     "",
                     "DArmor, Diamond Armor, head = DHelm, chest = DChest, legs = DLegs, feet = DBoots"
             })
@@ -49,12 +49,12 @@ public class ServerConfig
                     "Attribute modifiers you receive as set bonuses",
                     "",
                     "Layout is...",
-                    "Set id, attribute = amount = operation, attribute = amount = operation",
+                    "Set id, number of set items required (or the keyword 'all'), attribute = amount = operation, attribute = amount = operation",
                     "",
                     "eg...",
                     "",
                     "This should make the Sword and Dagger set give a 50% attack damage bonus",
-                    "SnD, generic.attackDamage = 50 = 1",
+                    "SnD, all, generic.attackDamage = 50 = 1",
             })
     public String[] attributeMods = new String[]{};
 
@@ -64,13 +64,15 @@ public class ServerConfig
                     "Constant potion effects received as a set bonus",
                     "",
                     "Layout is...",
-                    "Set id, potion.level, potion.level...",
+                    "Set id, number of set items required (or the keyword 'all'), potion.level, potion.level...",
                     "",
                     "eg...",
                     "",
-                    "SnD, haste.2",
+                    "SnD, all, haste.2",
                     "",
-                    "DArmor, resistance.2"
+                    "DArmor, 2, resistance.1",
+                    "",
+                    "DArmor, all, resistance.2"
             })
     @Config.RequiresMcRestart
     public String[] potions = new String[]{};

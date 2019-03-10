@@ -2,6 +2,7 @@ package com.fantasticsource.setbonus.server;
 
 import com.fantasticsource.mctools.items.ItemFilter;
 
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 
 import static com.fantasticsource.setbonus.config.SetBonusConfig.serverSettings;
@@ -26,7 +27,7 @@ public class Data
             String id = tokens[0].trim();
             if (id.equals(""))
             {
-                System.err.println("No name specified for equipment: " + string + "\r\nPlease see the examples by hovering the mouse over the config option in the mod config menu");
+                System.err.println("No equipment id specified for equipment: " + string + "\r\nPlease see the examples by hovering the mouse over the config option in the mod config menu");
                 continue;
             }
 
@@ -38,7 +39,24 @@ public class Data
         //Initialize sets
         for (String string : serverSettings.sets)
         {
-            
+            String[] tokens = string.split(",");
+            if (tokens.length < 3)
+            {
+                System.err.println("Not enough arguments for set: " + string + "\r\nPlease see the examples by hovering the mouse over the config option in the mod config menu");
+                continue;
+            }
+
+            String id = tokens[0].trim();
+            if (id.equals(""))
+            {
+                System.err.println("No set id specified for set: " + string + "\r\nPlease see the examples by hovering the mouse over the config option in the mod config menu");
+                continue;
+            }
+
+            String name = tokens[1].trim();
+
+            SetData data = SetData.getInstance(name, Arrays.copyOfRange(tokens, 2, tokens.length - 1));
+            if (data != null) sets.put(id, data);
         }
     }
 
