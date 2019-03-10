@@ -4,7 +4,7 @@ import com.fantasticsource.setbonus.server.Data;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
-@Mod(modid = SetBonus.MODID, name = SetBonus.NAME, version = SetBonus.VERSION, dependencies = "required-after:fantasticlib@[1.12.2.002a,)", acceptableRemoteVersions = "*")
+@Mod(modid = SetBonus.MODID, name = SetBonus.NAME, version = SetBonus.VERSION, dependencies = "required-after:fantasticlib@[1.12.2.003,)", acceptableRemoteVersions = "*")
 public class SetBonus
 {
     public static final String MODID = "setbonus";
