@@ -3,11 +3,13 @@ package com.fantasticsource.setbonus.server;
 import net.minecraft.entity.player.EntityPlayer;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 public class SetData
 {
     private String name;
     private ArrayList<SlotData> slotData = new ArrayList<>();
+    private LinkedHashMap<Integer, BonusData> bonuses = new LinkedHashMap<>(); //The int is the number of set items required for the bonus
 
 
     private SetData()
@@ -54,5 +56,10 @@ public class SetData
     public int getMaxNumber()
     {
         return slotData.size();
+    }
+
+    public void updateBonuses(EntityPlayer player)
+    {
+        //TODO
     }
 }

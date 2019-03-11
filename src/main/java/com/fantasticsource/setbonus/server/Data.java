@@ -58,5 +58,19 @@ public class Data
             SetData data = SetData.getInstance(name, Arrays.copyOfRange(tokens, 2, tokens.length));
             if (data != null) sets.put(id, data);
         }
+
+
+        //Initialize attribute modifiers
+        for (String string : serverSettings.attributeMods)
+        {
+            //TODO
+        }
+
+
+        //Initialize potions
+        for (String string : serverSettings.potions)
+        {
+            //TODO
+        }
     }
 }
