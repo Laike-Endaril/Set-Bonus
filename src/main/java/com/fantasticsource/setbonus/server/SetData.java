@@ -12,7 +12,7 @@ public class SetData
     private ArrayList<SlotData> slotData = new ArrayList<>();
 
     private LinkedHashMap<EntityPlayer, Integer> numEquipped = new LinkedHashMap<>();
-    private LinkedHashMap<Integer, BonusData> bonuses = new LinkedHashMap<>(); //The int is the number of set items required for the bonus
+    LinkedHashMap<Integer, BonusData> bonuses = new LinkedHashMap<>(); //The int is the number of set items required for the bonus
 
 
     private SetData()
