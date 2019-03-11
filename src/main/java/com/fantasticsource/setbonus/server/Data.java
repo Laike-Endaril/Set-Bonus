@@ -3,6 +3,7 @@ package com.fantasticsource.setbonus.server;
 import com.fantasticsource.mctools.attributes.AttributeMods;
 import com.fantasticsource.mctools.items.ItemFilter;
 import com.fantasticsource.mctools.potions.Potions;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -96,7 +97,10 @@ public class Data
                 set.bonuses.put(numRequired, data);
             }
 
-            data.modifiers.addAll(AttributeMods.parseMods(Arrays.copyOfRange(tokens, 2, tokens.length)));
+            for (AttributeModifier modifier : AttributeMods.parseMods(Arrays.copyOfRange(tokens, 2, tokens.length)))
+            {
+                data.modifiers.put(modifier.getName(), modifier);
+            }
         }
 
 

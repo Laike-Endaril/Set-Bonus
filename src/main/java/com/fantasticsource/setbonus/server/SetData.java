@@ -8,11 +8,10 @@ import java.util.Map;
 
 public class SetData
 {
+    LinkedHashMap<Integer, BonusData> bonuses = new LinkedHashMap<>(); //The int is the number of set items required for the bonus
     private String name;
     private ArrayList<SlotData> slotData = new ArrayList<>();
-
     private LinkedHashMap<EntityPlayer, Integer> numEquipped = new LinkedHashMap<>();
-    LinkedHashMap<Integer, BonusData> bonuses = new LinkedHashMap<>(); //The int is the number of set items required for the bonus
 
 
     private SetData()
