@@ -4,11 +4,14 @@ import net.minecraft.entity.player.EntityPlayer;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class SetData
 {
     private String name;
     private ArrayList<SlotData> slotData = new ArrayList<>();
+
+    private LinkedHashMap<EntityPlayer, Integer> numEquipped = new LinkedHashMap<>();
     private LinkedHashMap<Integer, BonusData> bonuses = new LinkedHashMap<>(); //The int is the number of set items required for the bonus
 
 
@@ -60,6 +63,25 @@ public class SetData
 
     public void updateBonuses(EntityPlayer player)
     {
-        //TODO
+        int currentNum = getNumberEquipped(player);
+        int oldNum = 0;
+        if (numEquipped.containsKey(player)) oldNum = numEquipped.get(player);
+
+        if (currentNum > oldNum) //Equipped more pieces
+        {
+            for (Map.Entry<Integer, BonusData> entry : bonuses.entrySet())
+            {
+                if (currentNum < entry.getKey()) entry.getValue().deactivate(player);
+            }
+            numEquipped.put(player, currentNum);
+        }
+        else if (currentNum < oldNum) //Removed some pieces
+        {
+            for (Map.Entry<Integer, BonusData> entry : bonuses.entrySet())
+            {
+                if (currentNum >= entry.getKey()) entry.getValue().activate(player);
+            }
+            numEquipped.put(player, currentNum);
+        }
     }
 }
