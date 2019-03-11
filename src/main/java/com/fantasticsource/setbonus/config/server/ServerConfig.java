@@ -22,6 +22,7 @@ public class ServerConfig
                     "",
                     "TetraSickleSingle, tetra:duplex_tool_modular > duplex/sickle_left_material & duplex/butt_right_material"
             })
+    @Config.RequiresMcRestart
     public String[] equipment = new String[]{};
 
     @Config.Name("2. Equipment Sets")
@@ -41,6 +42,7 @@ public class ServerConfig
                     "",
                     "DArmor, Diamond Armor, head = DHelm, chest = DChest, legs = DLegs, feet = DBoots"
             })
+    @Config.RequiresMcRestart
     public String[] sets = new String[]{};
 
     @Config.Name("3. Attribute Modifiers")
@@ -56,6 +58,7 @@ public class ServerConfig
                     "This should make the Sword and Dagger set give a 50% attack damage bonus",
                     "SnD, all, generic.attackDamage = 50 = 1",
             })
+    @Config.RequiresMcRestart
     public String[] attributeMods = new String[]{};
 
     @Config.Name("4. Potion Effects")

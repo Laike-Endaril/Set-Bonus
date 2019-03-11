@@ -12,7 +12,7 @@ public class Data
     public static LinkedHashMap<String, ItemFilter> equipment = new LinkedHashMap<>();
     public static LinkedHashMap<String, SetData> sets = new LinkedHashMap<>();
 
-    static
+    public static void init()
     {
         //Initialize equipment
         for (String string : serverSettings.equipment)
@@ -55,14 +55,8 @@ public class Data
 
             String name = tokens[1].trim();
 
-            SetData data = SetData.getInstance(name, Arrays.copyOfRange(tokens, 2, tokens.length - 1));
+            SetData data = SetData.getInstance(name, Arrays.copyOfRange(tokens, 2, tokens.length));
             if (data != null) sets.put(id, data);
         }
-    }
-
-
-    public static void init()
-    {
-        //Indirectly initializes the class
     }
 }
