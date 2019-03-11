@@ -16,12 +16,12 @@ import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.LinkedHashMap;
 
-@Mod(modid = SetBonus.MODID, name = SetBonus.NAME, version = SetBonus.VERSION, dependencies = "required-after:fantasticlib@[1.12.2.003a,)", acceptableRemoteVersions = "*")
+@Mod(modid = SetBonus.MODID, name = SetBonus.NAME, version = SetBonus.VERSION, dependencies = "required-after:fantasticlib@[1.12.2.004,)", acceptableRemoteVersions = "*")
 public class SetBonus
 {
     public static final String MODID = "setbonus";
     public static final String NAME = "Set Bonus";
-    public static final String VERSION = "1.12.2.000";
+    public static final String VERSION = "1.12.2.001";
 
     private static LinkedHashMap<EntityPlayer, Integer> playerTimers = new LinkedHashMap<>();
 
