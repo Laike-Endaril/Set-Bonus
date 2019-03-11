@@ -46,30 +46,39 @@ public class SetBonus
     @SubscribeEvent
     public static void playerTick(TickEvent.PlayerTickEvent event)
     {
-        if (event.side == Side.SERVER && event.phase == TickEvent.Phase.END)
+        if (event.side == Side.SERVER && event.phase == TickEvent.Phase.START)
         {
             EntityPlayer player = event.player;
 
             int time = 20;
-            if (!playerTimers.containsKey(player)) updateBonuses(player);
+            boolean done = false;
+            if (!playerTimers.containsKey(player))
+            {
+                updateBonuses(player, true);
+                done = true;
+            }
             else
             {
                 time = playerTimers.get(player) - 1;
                 if (time <= 0)
                 {
-                    updateBonuses(player);
+                    updateBonuses(player, true);
+                    done = true;
                     time = 20;
                 }
             }
+            if (!done) updateBonuses(player, false);
+
             playerTimers.put(player, time);
         }
     }
 
-    private static void updateBonuses(EntityPlayer player)
+    private static void updateBonuses(EntityPlayer player, boolean update)
     {
         for (SetData data : Data.sets.values())
         {
-            data.updateBonuses(player);
+            if (update) data.updateBonuses(player);
+            data.tickModifiers(player);
         }
     }
 }

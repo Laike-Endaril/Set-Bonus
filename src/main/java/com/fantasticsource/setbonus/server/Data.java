@@ -99,7 +99,7 @@ public class Data
 
             for (AttributeModifier modifier : AttributeMods.parseMods(Arrays.copyOfRange(tokens, 2, tokens.length)))
             {
-                data.modifiers.put(set.getName() + "_" + numRequired, modifier);
+                data.modifiers.put(modifier.getName(), modifier);
             }
         }
 
