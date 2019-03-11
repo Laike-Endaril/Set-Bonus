@@ -70,7 +70,7 @@ public class SetData
         {
             for (Map.Entry<Integer, BonusData> entry : bonuses.entrySet())
             {
-                if (currentNum < entry.getKey()) entry.getValue().deactivate(player);
+                if (currentNum >= entry.getKey()) entry.getValue().activate(player);
             }
             numEquipped.put(player, currentNum);
         }
@@ -78,7 +78,7 @@ public class SetData
         {
             for (Map.Entry<Integer, BonusData> entry : bonuses.entrySet())
             {
-                if (currentNum >= entry.getKey()) entry.getValue().activate(player);
+                if (currentNum < entry.getKey()) entry.getValue().deactivate(player);
             }
             numEquipped.put(player, currentNum);
         }
