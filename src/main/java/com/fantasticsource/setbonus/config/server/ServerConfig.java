@@ -52,12 +52,12 @@ public class ServerConfig
                     "Attribute modifiers you receive as set bonuses",
                     "",
                     "Layout is...",
-                    "Set id, number of set items required (or the keyword 'all'), attribute = amount = operation, attribute = amount = operation",
+                    "Set id, number of set items required (or the keyword 'all'), attribute = amount @ operation, attribute = amount @ operation",
                     "",
                     "eg...",
                     "",
                     "This should make the Sword and Dagger set give a 50% attack damage bonus",
-                    "SnD, all, generic.attackDamage = 50 = 1",
+                    "SnD, all, generic.attackDamage = 50 @ 1",
             })
     @Config.RequiresMcRestart
     public String[] attributeMods = new String[]{};
