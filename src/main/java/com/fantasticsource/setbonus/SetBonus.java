@@ -16,7 +16,7 @@ import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.LinkedHashMap;
 
-@Mod(modid = SetBonus.MODID, name = SetBonus.NAME, version = SetBonus.VERSION, dependencies = "required-after:fantasticlib@[1.12.2.003,)", acceptableRemoteVersions = "*")
+@Mod(modid = SetBonus.MODID, name = SetBonus.NAME, version = SetBonus.VERSION, dependencies = "required-after:fantasticlib@[1.12.2.003a,)", acceptableRemoteVersions = "*")
 public class SetBonus
 {
     public static final String MODID = "setbonus";

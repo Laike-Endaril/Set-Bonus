@@ -1,6 +1,7 @@
 package com.fantasticsource.setbonus.server;
 
 import com.fantasticsource.mctools.items.ItemFilter;
+import com.fantasticsource.mctools.potions.Potions;
 
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -70,7 +71,37 @@ public class Data
         //Initialize potions
         for (String string : serverSettings.potions)
         {
-            //TODO
+            String[] tokens = string.split(",");
+            if (tokens.length < 3)
+            {
+                System.err.println("Not enough arguments for potion bonus: " + string + "\r\nPlease see the examples by hovering the mouse over the config option in the mod config menu");
+                continue;
+            }
+
+            SetData set = sets.get(tokens[0].trim());
+            if (set == null)
+            {
+                System.err.println("Set ID not found (" + tokens[0].trim() + ") for set bonus: " + string + "\r\nPlease see the examples by hovering the mouse over the config option in the mod config menu");
+                continue;
+            }
+
+            int numRequired;
+            if (tokens[1].trim().toLowerCase().equals("all")) numRequired = set.getMaxNumber();
+            else numRequired = Integer.parseInt(tokens[1].trim());
+
+            if (numRequired < 1)
+            {
+                System.err.println("Invalid number of set items required (" + tokens[1].trim() + ") for set bonus: " + string + "\r\nPlease see the examples by hovering the mouse over the config option in the mod config menu");
+                continue;
+            }
+
+            BonusData data = set.bonuses.get(numRequired);
+            if (data == null)
+            {
+                data = new BonusData();
+                set.bonuses.put(numRequired, data);
+            }
+            data.potions = Potions.parsePotions(Arrays.copyOfRange(tokens, 2, tokens.length), true);
         }
     }
 }
