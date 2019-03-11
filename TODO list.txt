@@ -1,3 +1,5 @@
+Detect current set bonuses during gameplay
+
 Implement bonus system...
 ...attribute modifiers
 ...potion effects

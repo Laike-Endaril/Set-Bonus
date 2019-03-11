@@ -4,7 +4,6 @@ import baubles.api.BaubleType;
 import com.fantasticsource.mctools.items.ItemFilter;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class SlotData
 {
@@ -92,7 +91,19 @@ public class SlotData
         }
 
 
-        //TODO Equipment
+        //Equipment
+        for (String equipString : tokens[1].split("[|]"))
+        {
+            equipString = equipString.trim();
+            ItemFilter filter = Data.equipment.get(equipString);
+            if (filter == null)
+            {
+                System.err.println("Equipment ID not found (" + equipString + ") in slot/equipment definition: " + slotsAndEquipment + "\r\nPlease see the examples by hovering the mouse over the config option in the mod config menu");
+                return null;
+            }
+
+            result.equipment.add(filter);
+        }
 
 
         return result;
