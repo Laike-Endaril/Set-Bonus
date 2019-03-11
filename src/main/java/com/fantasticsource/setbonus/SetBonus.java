@@ -51,34 +51,29 @@ public class SetBonus
             EntityPlayer player = event.player;
 
             int time = 20;
-            boolean done = false;
             if (!playerTimers.containsKey(player))
             {
-                updateBonuses(player, true);
-                done = true;
+                updateBonuses(player);
             }
             else
             {
                 time = playerTimers.get(player) - 1;
                 if (time <= 0)
                 {
-                    updateBonuses(player, true);
-                    done = true;
+                    updateBonuses(player);
                     time = 20;
                 }
             }
-            if (!done) updateBonuses(player, false);
 
             playerTimers.put(player, time);
         }
     }
 
-    private static void updateBonuses(EntityPlayer player, boolean update)
+    private static void updateBonuses(EntityPlayer player)
     {
         for (SetData data : Data.sets.values())
         {
-            if (update) data.updateBonuses(player);
-            data.tickModifiers(player);
+            data.updateBonuses(player);
         }
     }
 }

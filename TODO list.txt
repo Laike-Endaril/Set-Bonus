@@ -1,7 +1,6 @@
-Implement bonus system...
-...attribute modifiers
-...potion effects
+Check for modifier collisions
 
+Add icon
 Note on curseforge page: "Allows you to specify bonuses for single equipment pieces as well" (ie. just make a set out of one item)
 Add baubles as optional dependency on curseforge
 

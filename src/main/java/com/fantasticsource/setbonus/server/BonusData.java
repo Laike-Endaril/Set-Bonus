@@ -16,19 +16,12 @@ public class BonusData
     public void activate(EntityPlayer player)
     {
         for (PotionEffect potion : potions) player.addPotionEffect(potion);
+        player.getAttributeMap().applyAttributeModifiers(modifiers);
     }
 
     public void deactivate(EntityPlayer player)
     {
         for (PotionEffect potion : potions) player.removePotionEffect(potion.getPotion());
-    }
-
-    public void tickModifiers(EntityPlayer player, boolean active)
-    {
-        if (!active) player.getAttributeMap().removeAttributeModifiers(modifiers);
-        if (active)
-        {
-            player.getAttributeMap().applyAttributeModifiers(modifiers);
-        }
+        player.getAttributeMap().removeAttributeModifiers(modifiers);
     }
 }

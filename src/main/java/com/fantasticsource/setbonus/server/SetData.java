@@ -83,12 +83,4 @@ public class SetData
             numEquipped.put(player, currentNum);
         }
     }
-
-    public void tickModifiers(EntityPlayer player)
-    {
-        for (Map.Entry<Integer, BonusData> entry : bonuses.entrySet())
-        {
-            entry.getValue().tickModifiers(player, numEquipped.get(player) >= entry.getKey());
-        }
-    }
 }
