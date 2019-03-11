@@ -37,8 +37,18 @@ public class SetData
 
     public int getNumberEquipped(EntityPlayer player)
     {
-        //TODO
-        return 0;
+        int result = 0;
+        ArrayList<Integer> blocked = new ArrayList<>();
+        for (SlotData data : slotData)
+        {
+            int slot = data.equipped(player, blocked);
+            if (slot != Integer.MIN_VALUE)
+            {
+                blocked.add(slot);
+                result++;
+            }
+        }
+        return result;
     }
 
     public int getMaxNumber()

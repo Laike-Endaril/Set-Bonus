@@ -1,7 +1,11 @@
 package com.fantasticsource.setbonus.server;
 
 import baubles.api.BaubleType;
+import baubles.api.BaublesApi;
+import baubles.api.cap.IBaublesItemHandler;
 import com.fantasticsource.mctools.items.ItemFilter;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 
 import java.util.ArrayList;
 
@@ -107,5 +111,41 @@ public class SlotData
 
 
         return result;
+    }
+
+
+    public int equipped(EntityPlayer player, ArrayList<Integer> blocked)
+    {
+        for (int slot : slots)
+        {
+            if (slot == -1)
+            {
+                //Mainhand
+                slot = player.inventory.currentItem;
+            }
+
+            if (blocked.contains(slot)) continue;
+
+            if (slot > -1)
+            {
+                //Vanilla slot
+                IInventory inv = player.inventory;
+                for (ItemFilter filter : equipment)
+                {
+                    if (filter.matches(inv.getStackInSlot(slot))) return slot;
+                }
+            }
+            else
+            {
+                //Numbered baubles slot
+                IBaublesItemHandler handler = BaublesApi.getBaublesHandler(player);
+                for (ItemFilter filter : equipment)
+                {
+                    if (filter.matches(handler.getStackInSlot(slot - Integer.MIN_VALUE - 1))) return slot;
+                }
+            }
+        }
+
+        return Integer.MIN_VALUE;
     }
 }

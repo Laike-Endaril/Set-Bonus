@@ -6,6 +6,7 @@ import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -19,8 +20,13 @@ public class SetBonus
     @Mod.EventHandler
     public static void preInit(FMLPreInitializationEvent event)
     {
-        Data.init();
         MinecraftForge.EVENT_BUS.register(SetBonus.class);
+    }
+
+    @Mod.EventHandler
+    public static void postInit(FMLPostInitializationEvent event)
+    {
+        Data.init();
     }
 
     @SubscribeEvent
@@ -28,4 +34,14 @@ public class SetBonus
     {
         if (event.getModID().equals(MODID)) ConfigManager.sync(MODID, Config.Type.INSTANCE);
     }
+
+//    @SubscribeEvent
+//    public static void test(PlayerInteractEvent.RightClickBlock event)
+//    {
+//        for (SetData data : Data.sets.values())
+//        {
+//            System.out.println(data.getName() + " ============================================");
+//            System.out.println("Number: " + data.getNumberEquipped(event.getEntityPlayer()) + " / " + data.getMaxNumber());
+//        }
+//    }
 }
