@@ -7,7 +7,3 @@ Have clients display set bonuses using info from server
 
 Note on curseforge page: "Allows you to specify bonuses for single equipment pieces as well" (ie. just make a set out of one item)
 Add baubles as optional dependency on curseforge
-
-
-
-Add bauble support

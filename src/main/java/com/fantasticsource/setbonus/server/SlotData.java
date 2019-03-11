@@ -1,8 +1,10 @@
 package com.fantasticsource.setbonus.server;
 
+import baubles.api.BaubleType;
 import com.fantasticsource.mctools.items.ItemFilter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class SlotData
 {
@@ -25,6 +27,8 @@ public class SlotData
             return null;
         }
 
+
+        //Slots
         for (String slotString : tokens[0].split("[|]"))
         {
             slotString = slotString.trim().toLowerCase();
@@ -44,7 +48,34 @@ public class SlotData
             else if (slotString.equals("head")) result.slots.add(39);
             else if (slotString.equals("offhand")) result.slots.add(40);
 
-                //TODO bauble slots here
+            else if (slotString.equals("bauble_amulet"))
+            {
+                for (int i : BaubleType.AMULET.getValidSlots()) result.slots.add(Integer.MIN_VALUE + 1 + i);
+            }
+            else if (slotString.equals("bauble_ring"))
+            {
+                for (int i : BaubleType.RING.getValidSlots()) result.slots.add(Integer.MIN_VALUE + 1 + i);
+            }
+            else if (slotString.equals("bauble_belt"))
+            {
+                for (int i : BaubleType.BELT.getValidSlots()) result.slots.add(Integer.MIN_VALUE + 1 + i);
+            }
+            else if (slotString.equals("bauble_head"))
+            {
+                for (int i : BaubleType.HEAD.getValidSlots()) result.slots.add(Integer.MIN_VALUE + 1 + i);
+            }
+            else if (slotString.equals("bauble_body"))
+            {
+                for (int i : BaubleType.BODY.getValidSlots()) result.slots.add(Integer.MIN_VALUE + 1 + i);
+            }
+            else if (slotString.equals("bauble_charm"))
+            {
+                for (int i : BaubleType.CHARM.getValidSlots()) result.slots.add(Integer.MIN_VALUE + 1 + i);
+            }
+            else if (slotString.equals("bauble_trinket"))
+            {
+                for (int i : BaubleType.TRINKET.getValidSlots()) result.slots.add(Integer.MIN_VALUE + 1 + i);
+            }
 
             else
             {
@@ -59,6 +90,9 @@ public class SlotData
                 }
             }
         }
+
+
+        //TODO Equipment
 
 
         return result;
