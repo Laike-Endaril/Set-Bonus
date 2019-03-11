@@ -57,7 +57,6 @@ public class Data
 
             SetData data = SetData.getInstance(name, Arrays.copyOfRange(tokens, 2, tokens.length));
             if (data != null) sets.put(id, data);
-            else System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         }
     }
 }
