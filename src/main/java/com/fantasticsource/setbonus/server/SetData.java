@@ -82,6 +82,13 @@ public class SetData
             }
             numEquipped.put(player, currentNum);
         }
+        else //Unchanged; check potions in case they got removed
+        {
+            for (Map.Entry<Integer, BonusData> entry : bonuses.entrySet())
+            {
+                if (currentNum >= entry.getKey()) entry.getValue().checkPotions(player);
+            }
+        }
     }
 
     public void dropAll()

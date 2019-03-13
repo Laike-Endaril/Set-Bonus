@@ -24,4 +24,13 @@ public class BonusData
         for (PotionEffect potion : potions) player.removePotionEffect(potion.getPotion());
         player.getAttributeMap().removeAttributeModifiers(modifiers);
     }
+
+    public void checkPotions(EntityPlayer player)
+    {
+        for (PotionEffect potion : potions)
+        {
+            PotionEffect potionEffect = player.getActivePotionEffect(potion.getPotion());
+            if (potionEffect == null) player.addPotionEffect(potion);
+        }
+    }
 }
