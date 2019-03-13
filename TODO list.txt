@@ -1,2 +1,2 @@
-Send clients info to display bonuses
+Use synced config so the client has ready access to info for tooltips
 Have clients display set bonuses using info from server
