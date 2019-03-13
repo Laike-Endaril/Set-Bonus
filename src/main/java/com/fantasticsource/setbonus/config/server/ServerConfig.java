@@ -71,7 +71,7 @@ public class ServerConfig
                     "",
                     "SnD, all, haste.2",
                     "",
-                    "DArmor, 2, resistance.1",
+                    "DArmor, 2, resistance",
                     "",
                     "DArmor, all, resistance.2"
             })
