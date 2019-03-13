@@ -3,14 +3,13 @@ package com.fantasticsource.setbonus.server;
 import com.fantasticsource.mctools.attributes.AttributeMods;
 import com.fantasticsource.mctools.items.ItemFilter;
 import com.fantasticsource.mctools.potions.Potions;
+import com.fantasticsource.setbonus.config.SyncedConfig;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
-
-import static com.fantasticsource.setbonus.config.SetBonusConfig.serverSettings;
 
 public class Data
 {
@@ -31,7 +30,7 @@ public class Data
         players.clear();
 
         //Initialize equipment
-        for (String string : serverSettings.equipment)
+        for (String string : SyncedConfig.equipment)
         {
             String[] tokens = string.split(",");
             if (tokens.length != 2)
@@ -53,7 +52,7 @@ public class Data
 
 
         //Initialize sets
-        for (String string : serverSettings.sets)
+        for (String string : SyncedConfig.sets)
         {
             String[] tokens = string.split(",");
             if (tokens.length < 3)
@@ -77,7 +76,7 @@ public class Data
 
 
         //Initialize attribute modifiers
-        for (String string : serverSettings.attributeMods)
+        for (String string : SyncedConfig.attributeMods)
         {
             String[] tokens = string.split(",");
             if (tokens.length < 3)
@@ -118,7 +117,7 @@ public class Data
 
 
         //Initialize potions
-        for (String string : serverSettings.potions)
+        for (String string : SyncedConfig.potions)
         {
             String[] tokens = string.split(",");
             if (tokens.length < 3)

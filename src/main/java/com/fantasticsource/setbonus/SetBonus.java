@@ -1,6 +1,7 @@
 package com.fantasticsource.setbonus;
 
 import com.fantasticsource.mctools.ServerTickTimer;
+import com.fantasticsource.setbonus.config.SyncedConfig;
 import com.fantasticsource.setbonus.server.Data;
 import com.fantasticsource.setbonus.server.SetData;
 import com.fantasticsource.tools.Tools;
@@ -30,6 +31,7 @@ public class SetBonus
     public static void preInit(FMLPreInitializationEvent event)
     {
         MinecraftForge.EVENT_BUS.register(SetBonus.class);
+        MinecraftForge.EVENT_BUS.register(SyncedConfig.class);
         MinecraftForge.EVENT_BUS.register(ServerTickTimer.class);
     }
 

@@ -1,2 +1,1 @@
-Use synced config so the client has ready access to info for tooltips
-Have clients display set bonuses using info from server
+Have clients display set bonuses in tooltips (the data in all the Data classes should already have the correct content from the server)
