@@ -1,5 +1,6 @@
 package com.fantasticsource.setbonus;
 
+import com.fantasticsource.mctools.ServerTickTimer;
 import com.fantasticsource.setbonus.server.Data;
 import com.fantasticsource.setbonus.server.SetData;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,8 +15,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
-import java.util.LinkedHashMap;
-
 @Mod(modid = SetBonus.MODID, name = SetBonus.NAME, version = SetBonus.VERSION, dependencies = "required-after:fantasticlib@[1.12.2.004,)", acceptableRemoteVersions = "*")
 public class SetBonus
 {
@@ -23,12 +22,11 @@ public class SetBonus
     public static final String NAME = "Set Bonus";
     public static final String VERSION = "1.12.2.001";
 
-    private static LinkedHashMap<EntityPlayer, Integer> playerTimers = new LinkedHashMap<>();
-
     @Mod.EventHandler
     public static void preInit(FMLPreInitializationEvent event)
     {
         MinecraftForge.EVENT_BUS.register(SetBonus.class);
+        MinecraftForge.EVENT_BUS.register(ServerTickTimer.class);
     }
 
     @Mod.EventHandler
@@ -50,22 +48,10 @@ public class SetBonus
         {
             EntityPlayer player = event.player;
 
-            int time = 20;
-            if (!playerTimers.containsKey(player))
+            if (ServerTickTimer.currentTick() % 20 == player.getUniqueID().getLeastSignificantBits() % 20)
             {
                 updateBonuses(player);
             }
-            else
-            {
-                time = playerTimers.get(player) - 1;
-                if (time <= 0)
-                {
-                    updateBonuses(player);
-                    time = 20;
-                }
-            }
-
-            playerTimers.put(player, time);
         }
     }
 
