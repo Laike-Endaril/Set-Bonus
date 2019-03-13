@@ -4,7 +4,9 @@ import com.fantasticsource.mctools.attributes.AttributeMods;
 import com.fantasticsource.mctools.items.ItemFilter;
 import com.fantasticsource.mctools.potions.Potions;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.player.EntityPlayer;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 
@@ -12,11 +14,22 @@ import static com.fantasticsource.setbonus.config.SetBonusConfig.serverSettings;
 
 public class Data
 {
-    public static LinkedHashMap<String, ItemFilter> equipment = new LinkedHashMap<>();
-    public static LinkedHashMap<String, SetData> sets = new LinkedHashMap<>();
+    public static LinkedHashMap<String, ItemFilter> equipment = null;
+    public static LinkedHashMap<String, SetData> sets;
+    public static ArrayList<EntityPlayer> players = new ArrayList<>();
 
-    public static void init()
+    public static void update()
     {
+        if (equipment != null)
+        {
+            //Not the first time we've loaded; release all before we re-initialize
+            for (SetData data : sets.values()) data.dropAll();
+        }
+
+        equipment = new LinkedHashMap<>();
+        sets = new LinkedHashMap<>();
+        players.clear();
+
         //Initialize equipment
         for (String string : serverSettings.equipment)
         {

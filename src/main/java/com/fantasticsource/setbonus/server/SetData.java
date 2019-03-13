@@ -83,4 +83,19 @@ public class SetData
             numEquipped.put(player, currentNum);
         }
     }
+
+    public void dropAll()
+    {
+        for (Map.Entry<EntityPlayer, Integer> numEntry : numEquipped.entrySet())
+        {
+            if (0 < numEntry.getValue())
+            {
+                for (Map.Entry<Integer, BonusData> entry : bonuses.entrySet())
+                {
+                    if (0 < entry.getKey()) entry.getValue().deactivate(numEntry.getKey());
+                }
+                numEntry.setValue(0);
+            }
+        }
+    }
 }

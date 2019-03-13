@@ -1,6 +1,6 @@
-Add icon
 Note on curseforge page: "Allows you to specify bonuses for single equipment pieces as well" (ie. just make a set out of one item)
-Add baubles as optional dependency on curseforge
+
+Add reload command for server
 
 Send clients info to display bonuses
 Have clients display set bonuses using info from server

@@ -3,6 +3,7 @@ package com.fantasticsource.setbonus;
 import com.fantasticsource.mctools.ServerTickTimer;
 import com.fantasticsource.setbonus.server.Data;
 import com.fantasticsource.setbonus.server.SetData;
+import com.fantasticsource.tools.Tools;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Config;
@@ -32,7 +33,7 @@ public class SetBonus
     @Mod.EventHandler
     public static void postInit(FMLPostInitializationEvent event)
     {
-        Data.init();
+        Data.update();
     }
 
     @SubscribeEvent
@@ -42,13 +43,19 @@ public class SetBonus
     }
 
     @SubscribeEvent
+    public static void calcConfigs(ConfigChangedEvent.PostConfigChangedEvent event)
+    {
+        if (event.getModID().equals(MODID)) Data.update();
+    }
+
+    @SubscribeEvent
     public static void playerTick(TickEvent.PlayerTickEvent event)
     {
         if (event.side == Side.SERVER && event.phase == TickEvent.Phase.START)
         {
             EntityPlayer player = event.player;
 
-            if (ServerTickTimer.currentTick() % 20 == player.getUniqueID().getLeastSignificantBits() % 20)
+            if (Tools.posMod(ServerTickTimer.currentTick(), 20) == Tools.posMod(player.getUniqueID().getLeastSignificantBits(), 20))
             {
                 updateBonuses(player);
             }
