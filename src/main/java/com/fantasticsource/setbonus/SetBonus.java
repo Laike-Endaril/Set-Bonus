@@ -30,6 +30,8 @@ public class SetBonus
     @EventHandler
     public static void preInit(FMLPreInitializationEvent event)
     {
+        Network.init();
+
         MinecraftForge.EVENT_BUS.register(SetBonus.class);
         MinecraftForge.EVENT_BUS.register(SyncedConfig.class);
         MinecraftForge.EVENT_BUS.register(ServerTickTimer.class);
