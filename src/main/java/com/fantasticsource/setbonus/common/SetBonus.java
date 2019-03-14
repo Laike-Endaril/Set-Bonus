@@ -18,6 +18,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -83,7 +84,7 @@ public class SetBonus
         }
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void tooltips(ItemTooltipEvent event)
     {
         EntityPlayer player = event.getEntityPlayer();
@@ -101,8 +102,6 @@ public class SetBonus
             }
             if (equipID == null) return;
 
-            boolean displayed = false;
-            List<String> tooltip = event.getToolTip();
             for (Map.Entry<String, ItemFilter> equipEntry : Data.equipment.entrySet())
             {
                 if (equipEntry.getValue().matches(stack))
@@ -114,15 +113,16 @@ public class SetBonus
                         if (set.involvedEquipIDs.contains(equip))
                         {
                             //Display tooltip for set
-                            displayed = true;
+                            List<String> tooltip = event.getToolTip();
                             tooltip.add("");
                             int count = set.getNumberEquipped(player);
-                            tooltip.add("§2" + set.getName() + " (" + count + "/" + set.getMaxNumber() + ")");
+                            int max = set.getMaxNumber();
+                            String color = count == 0 ? "§4" : count == max ? "§a" : "§e";
+                            tooltip.add(color + "§l=== " + set.getName() + " (" + count + "/" + max + ") ===");
                             for (Map.Entry<Integer, BonusData> bonusEntry : set.bonuses.entrySet())
                             {
                                 int required = bonusEntry.getKey();
-                                String color = count >= required ? "§a" : "§4";
-                                tooltip.add(color + "With " + required + " piece" + (required == 1 ? "" : "s") + " equipped:");
+                                color = count >= required ? "§a" : "§4";
                                 BonusData bonus = bonusEntry.getValue();
                                 for (AttributeModifier modifier : bonus.modifiers.values())
                                 {
@@ -130,16 +130,15 @@ public class SetBonus
                                     double amount = modifier.getAmount();
                                     if (amount != 0)
                                     {
-                                        tooltip.add(color + " " + I18n.translateToLocalFormatted("attribute.modifier." + (amount < 0 ? "take" : "plus") + "." + operation, DECIMALFORMAT.format(operation == 0 ? amount : amount * 100), I18n.translateToLocal("attribute.name." + modifier.getName())));
+                                        tooltip.add(color + count + "/" + required + ": " + I18n.translateToLocalFormatted("attribute.modifier." + (amount < 0 ? "take" : "plus") + "." + operation, DECIMALFORMAT.format(operation == 0 ? amount : amount * 100), I18n.translateToLocal("attribute.name." + modifier.getName())));
                                     }
                                 }
                                 for (PotionEffect potionEffect : bonus.potions)
                                 {
                                     int level = potionEffect.getAmplifier();
                                     if (level >= 0) level++;
-                                    tooltip.add(color + " " + I18n.translateToLocal(potionEffect.getEffectName()) + (level == 1 ? "" : " " + level));
+                                    tooltip.add(color + count + "/" + required + ": " + I18n.translateToLocal(potionEffect.getEffectName()) + (level == 1 ? "" : " " + level));
                                 }
-                                tooltip.add("");
                             }
                         }
                     }
