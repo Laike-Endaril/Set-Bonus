@@ -55,7 +55,7 @@ public class ServerConfig
                     "eg...",
                     "",
                     "This should make the Sword and Dagger set give a 50% attack damage bonus",
-                    "SnD, all, generic.attackDamage = 50 @ 1",
+                    "SnD, all, generic.attackDamage = 0.5 @ 1",
             })
     public String[] attributeMods = new String[]{};
 
