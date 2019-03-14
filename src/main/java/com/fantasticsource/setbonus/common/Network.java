@@ -1,7 +1,6 @@
-package com.fantasticsource.setbonus;
+package com.fantasticsource.setbonus.common;
 
 import com.fantasticsource.setbonus.config.SyncedConfig;
-import com.fantasticsource.setbonus.server.Data;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.common.network.ByteBufUtils;

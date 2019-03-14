@@ -1,4 +1,4 @@
-package com.fantasticsource.setbonus.server;
+package com.fantasticsource.setbonus.common;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;

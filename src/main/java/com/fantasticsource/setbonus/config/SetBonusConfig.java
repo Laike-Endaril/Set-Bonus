@@ -1,6 +1,6 @@
 package com.fantasticsource.setbonus.config;
 
-import com.fantasticsource.setbonus.SetBonus;
+import com.fantasticsource.setbonus.common.SetBonus;
 import com.fantasticsource.setbonus.config.client.ClientConfig;
 import com.fantasticsource.setbonus.config.server.ServerConfig;
 import net.minecraftforge.common.config.Config;

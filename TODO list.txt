@@ -1,1 +1,1 @@
-Have clients display set bonuses in tooltips (the data in all the Data classes should already have the correct content from the server)
+Server-side and client-side filters for whether tooltips are shown

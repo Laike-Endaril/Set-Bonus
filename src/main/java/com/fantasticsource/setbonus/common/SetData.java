@@ -1,4 +1,4 @@
-package com.fantasticsource.setbonus.server;
+package com.fantasticsource.setbonus.common;
 
 import net.minecraft.entity.player.EntityPlayer;
 
@@ -8,7 +8,8 @@ import java.util.Map;
 
 public class SetData
 {
-    LinkedHashMap<Integer, BonusData> bonuses = new LinkedHashMap<>(); //The int is the number of set items required for the bonus
+    public LinkedHashMap<Integer, BonusData> bonuses = new LinkedHashMap<>(); //The int is the number of set items required for the bonus
+    public ArrayList<String> involvedEquipIDs = new ArrayList<>();
     private String name;
     private ArrayList<SlotData> slotData = new ArrayList<>();
     private LinkedHashMap<EntityPlayer, Integer> numEquipped = new LinkedHashMap<>();
@@ -26,7 +27,7 @@ public class SetData
 
         for (String string : equipment)
         {
-            SlotData data = SlotData.getInstance(string);
+            SlotData data = SlotData.getInstance(string, result.involvedEquipIDs);
             if (data != null) result.slotData.add(data);
         }
         if (result.slotData.size() == 0) return null;

@@ -1,4 +1,4 @@
-package com.fantasticsource.setbonus.server;
+package com.fantasticsource.setbonus.common;
 
 import baubles.api.BaubleType;
 import baubles.api.BaublesApi;
@@ -19,7 +19,7 @@ public class SlotData
     {
     }
 
-    public static SlotData getInstance(String slotsAndEquipment)
+    public static SlotData getInstance(String slotsAndEquipment, ArrayList<String> setdataEquipIDTracker)
     {
         SlotData result = new SlotData();
 
@@ -107,6 +107,7 @@ public class SlotData
             }
 
             result.equipment.add(filter);
+            if (!setdataEquipIDTracker.contains(equipString)) setdataEquipIDTracker.add(equipString);
         }
 
 

@@ -1,4 +1,4 @@
-package com.fantasticsource.setbonus.server;
+package com.fantasticsource.setbonus.common;
 
 import com.fantasticsource.mctools.attributes.AttributeMods;
 import com.fantasticsource.mctools.items.ItemFilter;
@@ -15,19 +15,24 @@ public class Data
 {
     public static LinkedHashMap<String, ItemFilter> equipment = null;
     public static LinkedHashMap<String, SetData> sets;
+
     public static ArrayList<EntityPlayer> players = new ArrayList<>();
+
 
     public static void update()
     {
+        //Clear any existing data
         if (equipment != null)
         {
-            //Not the first time we've loaded; release all before we re-initialize
+            //Not the first time we've loaded; release all bonuses before we re-initialize
             for (SetData data : sets.values()) data.dropAll();
         }
 
         equipment = new LinkedHashMap<>();
         sets = new LinkedHashMap<>();
+
         players.clear();
+
 
         //Initialize equipment
         for (String string : SyncedConfig.equipment)

@@ -1,6 +1,6 @@
 package com.fantasticsource.setbonus.config;
 
-import com.fantasticsource.setbonus.Network;
+import com.fantasticsource.setbonus.common.Network;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -13,7 +13,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 
-import static com.fantasticsource.setbonus.SetBonus.MODID;
+import static com.fantasticsource.setbonus.common.SetBonus.MODID;
 import static com.fantasticsource.setbonus.config.SetBonusConfig.serverSettings;
 
 public class SyncedConfig
