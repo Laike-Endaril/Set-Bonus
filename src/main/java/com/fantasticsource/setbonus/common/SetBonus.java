@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 import static net.minecraft.item.ItemStack.DECIMALFORMAT;
+import static net.minecraft.util.text.TextFormatting.*;
 import static net.minecraftforge.fml.common.Mod.EventHandler;
 
 @Mod(modid = SetBonus.MODID, name = SetBonus.NAME, version = SetBonus.VERSION, dependencies = "required-after:fantasticlib@[1.12.2.004,)")
@@ -117,12 +118,12 @@ public class SetBonus
                             tooltip.add("");
                             int count = set.getNumberEquipped(player);
                             int max = set.getMaxNumber();
-                            String color = count == 0 ? "§4" : count == max ? "§a" : "§e";
-                            tooltip.add(color + "§l=== " + set.getName() + " (" + count + "/" + max + ") ===");
+                            String color = "" + (count == 0 ? RED : count == max ? GREEN : YELLOW);
+                            tooltip.add(color + BOLD + "=== " + set.getName() + " (" + count + "/" + max + ") ===");
                             for (Map.Entry<Integer, BonusData> bonusEntry : set.bonuses.entrySet())
                             {
                                 int required = bonusEntry.getKey();
-                                color = count >= required ? "§a" : "§4";
+                                color = "" + (count >= required ? GREEN : RED);
                                 BonusData bonus = bonusEntry.getValue();
                                 for (AttributeModifier modifier : bonus.modifiers.values())
                                 {
