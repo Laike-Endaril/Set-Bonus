@@ -20,7 +20,9 @@ public class ServerConfig
                     "",
                     "DDagger, backstab:diamond_dagger",
                     "",
-                    "TetraSickleSingle, tetra:duplex_tool_modular > duplex/sickle_left_material & duplex/butt_right_material"
+                    "TetraSickleSingle, tetra:duplex_tool_modular > duplex/sickle_left_material & duplex/butt_right_material",
+                    "",
+                    "WirtsLeggings, diamond_leggings > display:Name = \"Wirt's Leggings\" & ench: = minecraft:protection ; lvl:4s",
             })
     public String[] equipment = new String[]{};
 
