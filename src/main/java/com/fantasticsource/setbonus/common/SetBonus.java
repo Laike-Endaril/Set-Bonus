@@ -35,7 +35,7 @@ public class SetBonus
 {
     public static final String MODID = "setbonus";
     public static final String NAME = "Set Bonus";
-    public static final String VERSION = "1.12.2.004a";
+    public static final String VERSION = "1.12.2.005";
 
     @EventHandler
     public static void preInit(FMLPreInitializationEvent event)
