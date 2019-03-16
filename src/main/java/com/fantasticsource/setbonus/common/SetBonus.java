@@ -30,12 +30,12 @@ import static net.minecraft.item.ItemStack.DECIMALFORMAT;
 import static net.minecraft.util.text.TextFormatting.*;
 import static net.minecraftforge.fml.common.Mod.EventHandler;
 
-@Mod(modid = SetBonus.MODID, name = SetBonus.NAME, version = SetBonus.VERSION, dependencies = "required-after:fantasticlib@[1.12.2.004,)")
+@Mod(modid = SetBonus.MODID, name = SetBonus.NAME, version = SetBonus.VERSION, dependencies = "required-after:fantasticlib@[1.12.2.007,)")
 public class SetBonus
 {
     public static final String MODID = "setbonus";
     public static final String NAME = "Set Bonus";
-    public static final String VERSION = "1.12.2.004";
+    public static final String VERSION = "1.12.2.004a";
 
     @EventHandler
     public static void preInit(FMLPreInitializationEvent event)
@@ -84,6 +84,25 @@ public class SetBonus
             }
         }
     }
+
+//    @SubscribeEvent
+//    public static void test(PlayerInteractEvent.RightClickEmpty event)
+//    {
+//        ItemStack itemStack = event.getEntityPlayer().inventory.getStackInSlot(0);
+//        if (itemStack == ItemStack.EMPTY) System.out.println("empty");
+//        else
+//        {
+//            System.out.println(itemStack.getDisplayName());
+//            NBTTagCompound nbt = itemStack.getTagCompound();
+//            if (nbt != null)
+//            {
+//                for (String string : nbt.getKeySet())
+//                {
+//                    System.out.println(string + ", " + nbt.getTag(string));
+//                }
+//            }
+//        }
+//    }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void tooltips(ItemTooltipEvent event)
