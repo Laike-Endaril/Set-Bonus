@@ -1,1 +1,5 @@
+Attack effects (like those in DS) that use set filtering
+
+Make some default sets
+
 Server-side and client-side filters for whether tooltips are shown
