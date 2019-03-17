@@ -1,5 +1,14 @@
 Attack effects (like those in DS) that use set filtering
 
-Make some default sets
+Server-side tooltip filter...
+...doesn't send set data to client at all unless they meet requirements
 
-Server-side and client-side filters for whether tooltips are shown
+Client-side tooltip filter
+
+"Additional set requirements" config which
+
+Improve efficiency via...
+...inventory change detection (from library)
+...caching
+
+Make some default sets
