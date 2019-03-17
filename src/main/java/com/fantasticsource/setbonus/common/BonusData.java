@@ -10,8 +10,8 @@ import java.util.ArrayList;
 
 public class BonusData
 {
-    Multimap<String, AttributeModifier> modifiers = ArrayListMultimap.create();
-    ArrayList<PotionEffect> potions = new ArrayList<>();
+    public Multimap<String, AttributeModifier> modifiers = ArrayListMultimap.create();
+    public ArrayList<PotionEffect> potions = new ArrayList<>();
 
     public void activate(EntityPlayer player)
     {
