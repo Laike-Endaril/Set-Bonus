@@ -1,1 +1,9 @@
 setbonus.cmd.reloaded=Server reloaded config from file (the "reset to default" buttons for SB may be glitched until MC is restarted)
+
+setbonus.config.clientSettings=Client Settings
+setbonus.config.serverSettings=Server Settings
+
+setbonus.config.equipment=Equipment
+setbonus.config.sets=Sets
+setbonus.config.attributeModifiers=Attribute Modifiers
+setbonus.config.potionEffects=Potion Effects

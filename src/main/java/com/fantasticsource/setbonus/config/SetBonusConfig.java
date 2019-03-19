@@ -9,8 +9,10 @@ import net.minecraftforge.common.config.Config;
 public class SetBonusConfig
 {
     @Config.Name("Client Settings")
+    @Config.LangKey(SetBonus.MODID + ".config.clientSettings")
     public static ClientConfig clientSettings = new ClientConfig();
 
     @Config.Name("Server Settings")
+    @Config.LangKey(SetBonus.MODID + ".config.serverSettings")
     public static ServerConfig serverSettings = new ServerConfig();
 }

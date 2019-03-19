@@ -1,10 +1,12 @@
 package com.fantasticsource.setbonus.config.server;
 
+import com.fantasticsource.setbonus.common.SetBonus;
 import net.minecraftforge.common.config.Config;
 
 public class ServerConfig
 {
     @Config.Name("1. Equipment")
+    @Config.LangKey(SetBonus.MODID + ".config.equipment")
     @Config.Comment(
             {
                     "Each item you want to include in a set needs to be defined here first",
@@ -27,6 +29,7 @@ public class ServerConfig
     public String[] equipment = new String[]{};
 
     @Config.Name("2. Equipment Sets")
+    @Config.LangKey(SetBonus.MODID + ".config.sets")
     @Config.Comment(
             {
                     "Each equipment set is defined here",
@@ -47,6 +50,7 @@ public class ServerConfig
     public String[] sets = new String[]{};
 
     @Config.Name("3. Attribute Modifiers")
+    @Config.LangKey(SetBonus.MODID + ".config.attributeModifiers")
     @Config.Comment(
             {
                     "Attribute modifiers you receive as set bonuses",
@@ -62,6 +66,7 @@ public class ServerConfig
     public String[] attributeMods = new String[]{};
 
     @Config.Name("4. Potion Effects")
+    @Config.LangKey(SetBonus.MODID + ".config.potionEffects")
     @Config.Comment(
             {
                     "Constant potion effects received as a set bonus",
