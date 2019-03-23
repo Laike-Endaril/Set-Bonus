@@ -8,9 +8,9 @@ Discovery system for bonus tooltips (can apply to any part of tooltip, if applic
 ...2 = Globally Known - always visible to clients (keep track of discovery even if this is enabled, in case the setting is changed later)
 
 "Reactive" system for equipment sets which gives a visual indicator linking the items of a set...
--1 means non-reactive
-0 means reactive within the same inventory (an opened chest is not "the same inventory")
-1 or higher means reactive within a range of that many blocks
+0 means reactive within the player's inventory (an opened chest is not part of the player's inventory)
+1 means reactive within all opened inventories
+2 means non-reactive
 
 Alternate requirements...
 ...stat requirements
