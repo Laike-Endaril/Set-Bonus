@@ -49,11 +49,30 @@ public class ServerConfig
             })
     public String[] sets = new String[]{};
 
+    @Config.Name("2f. Bonuses")
+    @Config.LangKey(SetBonus.MODID + ".config.bonuses")
+    @Config.Comment(
+            {
+                    "Each 'bonus' has a bonus id, a name, a discovery setting, and a set of requirements that need to be meet to activate it",
+                    "",
+                    "The bonus id is only used in other config settings, and the name is what appears in tooltips or other displays",
+                    "",
+                    "The discovery setting is 0, 1, or 2:",
+                    "0 means 'Discoverable'; the tooltip will not show for a player until they've activated the bonus at least once",
+                    "1 means 'Identifiable'; the tooltip will show, but be obfuscated for a player until they've activated the bonus at least once",
+                    "2 means 'Globally Known; the tooltip will always show",
+                    "",
+                    "Lastly, any number of requirements can be defined which must be met for the bonus to activate, separated by commas.  This can include any combination of...",
+                    "...equipment sets; just put in the set id.  For a partial set, add an equals sign to it with the number of set items required after the equals sign",
+                    "...attribute totals; put in the attribute name followed by a sign and a number, eg. generic.armor < 5, generic.attackDamage > 10"
+            })
+    public String[] bonuses = new String[]{};
+
     @Config.Name("3. Attribute Modifiers")
     @Config.LangKey(SetBonus.MODID + ".config.attributeModifiers")
     @Config.Comment(
             {
-                    "Attribute modifiers you receive as set bonuses",
+                    "Attribute modifiers you receive as bonuses",
                     "",
                     "Layout is...",
                     "Set id, number of set items required (or the keyword 'all'), attribute = amount @ operation, attribute = amount @ operation",
@@ -69,7 +88,7 @@ public class ServerConfig
     @Config.LangKey(SetBonus.MODID + ".config.potionEffects")
     @Config.Comment(
             {
-                    "Constant potion effects received as a set bonus",
+                    "Constant potion effects received as a bonus",
                     "",
                     "Layout is...",
                     "Set id, number of set items required (or the keyword 'all'), potion.level, potion.level...",
