@@ -1,13 +1,10 @@
+Discovery system for bonuses
+
 Alternate requirements...
 ...stat requirements
 ...Morph / Metamorph transformation
 
 Attack effects (like those in DS) that use set filtering
-
-Server-side tooltip filter...
-...doesn't send set data to client at all unless they meet requirements
-
-Client-side tooltip filter
 
 Improve efficiency via...
 ...inventory change detection (from library)
