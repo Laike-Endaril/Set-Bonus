@@ -1,4 +1,10 @@
-Discovery system for bonuses
+Add "bonuses"...
+...attribute modifiers and potion effects are directed toward bonuses instead of sets
+...bonuses are defined with conditions that need to be met to activate them (which can include a certain number of items from an equipment set)
+
+Discovery system for bonuses...
+...0 = Discoverable (invisible to clients until they activate it for the first time)
+...1 = Globally Known (always visible to clients) (keep track of discovery even if this is enabled, in case the setting is changed later)
 
 Alternate requirements...
 ...stat requirements
