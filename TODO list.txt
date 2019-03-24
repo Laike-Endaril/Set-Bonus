@@ -1,13 +1,13 @@
-In config...
-...add example to bonuses
-...change tooltip for attribute modifier bonuses
-...change tooltip for potion effect bonuses
-...add new tooltips to lang file
-
-Discovery system for bonus tooltips (can apply to any part of tooltip, if applicable)...
+Implement discovery system; only send discovered bonuses to clients...
 ...0 = Discoverable - invisible to clients until they activate it for the first time
 ...1 = Identifiable - always visible to clients, but obfuscated until they activate it for the first time
 ...2 = Globally Known - always visible to clients (keep track of discovery even if this is enabled, in case the setting is changed later)
+
+SetBonus GUI...
+...add SetBonus GUI key
+...pressing key while an item tooltip is showing opens the SetBonus GUI in filtered mode
+...otherwise, the key opens the SetBonus GUI in unfiltered mode
+...create SetBonus GUI
 
 "Discover" command
 "Undiscover" command
