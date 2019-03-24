@@ -6,6 +6,22 @@ setbonus.tooltip.pressDetailKey=Press the SetBonus GUI key for details
 
 
 
+setbonus.error.equipArgCount=Wrong number of arguments for equipment: %s
+setbonus.error.noEquipID=No equipment id specified for equipment: %s
+setbonus.error.notEnoughSetArgs=Not enough arguments for set: %s
+setbonus.error.noSetID=No set id specified for set: %s
+setbonus.error.notEnoughBonusArgs=Not enough arguments for bonus: %s
+setbonus.error.noBonusID=No bonus id specified for bonus: %s
+setbonus.error.bonusDiscoveryMode=Third argument must be a number from 0 to 3 (inclusive): %s
+setbonus.error.malformedSetReq=Malformed set requirement for bonus: %s
+setbonus.error.unknownBonusReq=Unrecognized bonus requirement: %s
+setbonus.error.notEnoughAttribBonusArgs=Not enough arguments for attribute bonus: %s
+setbonus.error.attribBonusIDNotFound=Bonus ID not found (%s) for attribute modifier bonus: %s
+setbonus.error.notEnoughPotionBonusArgs=Not enough arguments for potion bonus: %s
+setbonus.error.potionBonusIDNotFound=Bonus ID not found (%s) for potion bonus: %s
+
+
+
 setbonus.config.clientSettings=Client Settings
 setbonus.config.serverSettings=Server Settings
 

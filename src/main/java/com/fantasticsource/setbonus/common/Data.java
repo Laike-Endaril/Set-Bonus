@@ -5,6 +5,7 @@ import com.fantasticsource.mctools.items.ItemFilter;
 import com.fantasticsource.mctools.potions.Potions;
 import com.fantasticsource.setbonus.config.SyncedConfig;
 import com.fantasticsource.tools.datastructures.Pair;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.PotionEffect;
@@ -31,19 +32,19 @@ public class Data
 
 
         //Initialize equipment
-        for (String string : SyncedConfig.equipment)
+        for (String equipString : SyncedConfig.equipment)
         {
-            String[] tokens = string.split(",");
+            String[] tokens = equipString.split(",");
             if (tokens.length != 2)
             {
-                System.err.println("Wrong number of arguments for equipment: " + string + "\r\nPlease see the examples by hovering the mouse over the config option in the mod config menu");
+                System.err.println(I18n.format(SetBonus.MODID + ".error.equipArgCount", equipString));
                 continue;
             }
 
             String id = tokens[0].trim();
             if (id.equals(""))
             {
-                System.err.println("No equipment id specified for equipment: " + string + "\r\nPlease see the examples by hovering the mouse over the config option in the mod config menu");
+                System.err.println(I18n.format(SetBonus.MODID + ".error.noEquipID", equipString));
                 continue;
             }
 
@@ -53,19 +54,19 @@ public class Data
 
 
         //Initialize sets
-        for (String string : SyncedConfig.sets)
+        for (String setString : SyncedConfig.sets)
         {
-            String[] tokens = string.split(",");
+            String[] tokens = setString.split(",");
             if (tokens.length < 3)
             {
-                System.err.println("Not enough arguments for set: " + string + "\r\nPlease see the examples by hovering the mouse over the config option in the mod config menu");
+                System.err.println(I18n.format(SetBonus.MODID + ".error.notEnoughSetArgs", setString));
                 continue;
             }
 
             String id = tokens[0].trim();
             if (id.equals(""))
             {
-                System.err.println("No set id specified for set: " + string + "\r\nPlease see the examples by hovering the mouse over the config option in the mod config menu");
+                System.err.println(I18n.format(SetBonus.MODID + ".error.noSetID", setString));
                 continue;
             }
 
@@ -82,14 +83,14 @@ public class Data
             String[] tokens = bonusString.split(",");
             if (tokens.length < 3)
             {
-                System.err.println("Not enough arguments for bonus: " + bonusString + "\r\nPlease see the examples by hovering the mouse over the config option in the mod config menu");
+                System.err.println(I18n.format(SetBonus.MODID + ".error.notEnoughBonusArgs", bonusString));
                 continue;
             }
 
             String id = tokens[0].trim();
             if (id.equals(""))
             {
-                System.err.println("No bonus id specified for bonus: " + bonusString + "\r\nPlease see the examples by hovering the mouse over the config option in the mod config menu");
+                System.err.println(I18n.format(SetBonus.MODID + ".error.noBonusID", bonusString));
                 continue;
             }
 
@@ -102,12 +103,12 @@ public class Data
             }
             catch (NumberFormatException e)
             {
-                System.err.println("Third argument must be a number from 0 to 3 (inclusive): " + bonusString + "\r\nPlease see the examples by hovering the mouse over the config option in the mod config menu");
+                System.err.println(I18n.format(SetBonus.MODID + ".error.bonusDiscoveryMode", bonusString));
                 continue;
             }
             if (bonus.discoveryMode < 0 || bonus.discoveryMode > 3)
             {
-                System.err.println("Third argument must be a number from 0 to 3 (inclusive): " + bonusString + "\r\nPlease see the examples by hovering the mouse over the config option in the mod config menu");
+                System.err.println(I18n.format(SetBonus.MODID + ".error.bonusDiscoveryMode", bonusString));
                 continue;
             }
 
@@ -134,7 +135,7 @@ public class Data
                         }
                         catch (NumberFormatException e)
                         {
-                            System.err.println("Malformed set requirement for bonus: " + bonusString);
+                            System.err.println(I18n.format(SetBonus.MODID + ".error.malformedSetReq", bonusString));
                             success = false;
                             break;
                         }
@@ -156,7 +157,7 @@ public class Data
                 }
 
                 //Error!
-                System.err.println("Unrecognized bonus requirement: " + bonusString + "\r\nPlease see the examples by hovering the mouse over the config option in the mod config menu");
+                System.err.println(I18n.format(SetBonus.MODID + ".error.unknownBonusReq", bonusString));
                 success = false;
                 break;
             }
@@ -166,19 +167,19 @@ public class Data
 
 
         //Initialize attribute modifiers
-        for (String string : SyncedConfig.attributeMods)
+        for (String attribString : SyncedConfig.attributeMods)
         {
-            String[] tokens = string.split(",");
+            String[] tokens = attribString.split(",");
             if (tokens.length < 2)
             {
-                System.err.println("Not enough arguments for attribute bonus: " + string + "\r\nPlease see the examples by hovering the mouse over the config option in the mod config menu");
+                System.err.println(I18n.format(SetBonus.MODID + ".error.notEnoughAttribBonusArgs", attribString));
                 continue;
             }
 
             Bonus bonus = Bonus.bonusMap.get(tokens[0].trim());
             if (bonus == null)
             {
-                System.err.println("Bonus ID not found (" + tokens[0].trim() + ") for potion bonus: " + string + "\r\nPlease see the examples by hovering the mouse over the config option in the mod config menu");
+                System.err.println(I18n.format(SetBonus.MODID + ".error.attribBonusIDNotFound", tokens[0].trim(), attribString));
                 continue;
             }
 
@@ -193,19 +194,19 @@ public class Data
 
 
         //Initialize potions
-        for (String string : SyncedConfig.potions)
+        for (String potionString : SyncedConfig.potions)
         {
-            String[] tokens = string.split(",");
+            String[] tokens = potionString.split(",");
             if (tokens.length < 2)
             {
-                System.err.println("Not enough arguments for potion bonus: " + string + "\r\nPlease see the examples by hovering the mouse over the config option in the mod config menu");
+                System.err.println(I18n.format(SetBonus.MODID + ".error.notEnoughPotionBonusArgs", potionString));
                 continue;
             }
 
             Bonus bonus = Bonus.bonusMap.get(tokens[0].trim());
             if (bonus == null)
             {
-                System.err.println("Bonus ID not found (" + tokens[0].trim() + ") for potion bonus: " + string + "\r\nPlease see the examples by hovering the mouse over the config option in the mod config menu");
+                System.err.println(I18n.format(SetBonus.MODID + ".error.potionBonusIDNotFound", tokens[0].trim(), potionString));
                 continue;
             }
 
