@@ -7,6 +7,7 @@ import com.fantasticsource.setbonus.config.SyncedConfig;
 import com.fantasticsource.tools.datastructures.Pair;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.potion.PotionEffect;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -76,24 +77,37 @@ public class Data
 
 
         //Initialize bonuses
-        for (String string : SyncedConfig.bonuses)
+        for (String bonusString : SyncedConfig.bonuses)
         {
-            String[] tokens = string.split(",");
+            String[] tokens = bonusString.split(",");
             if (tokens.length < 3)
             {
-                System.err.println("Not enough arguments for bonus: " + string + "\r\nPlease see the examples by hovering the mouse over the config option in the mod config menu");
+                System.err.println("Not enough arguments for bonus: " + bonusString + "\r\nPlease see the examples by hovering the mouse over the config option in the mod config menu");
+                continue;
+            }
+
+            String id = tokens[0].trim();
+            if (id.equals(""))
+            {
+                System.err.println("No bonus id specified for bonus: " + bonusString + "\r\nPlease see the examples by hovering the mouse over the config option in the mod config menu");
                 continue;
             }
 
             Bonus bonus = new Bonus();
             bonus.name = tokens[1].trim();
+
             try
             {
-                bonus.mode = Integer.parseInt(tokens[2].trim());
+                bonus.discoveryMode = Integer.parseInt(tokens[2].trim());
             }
             catch (NumberFormatException e)
             {
-                System.err.println("Third argument must be a number: " + string + "\r\nPlease see the examples by hovering the mouse over the config option in the mod config menu");
+                System.err.println("Third argument must be a number from 0 to 3 (inclusive): " + bonusString + "\r\nPlease see the examples by hovering the mouse over the config option in the mod config menu");
+                continue;
+            }
+            if (bonus.discoveryMode < 0 || bonus.discoveryMode > 3)
+            {
+                System.err.println("Third argument must be a number from 0 to 3 (inclusive): " + bonusString + "\r\nPlease see the examples by hovering the mouse over the config option in the mod config menu");
                 continue;
             }
 
@@ -113,8 +127,17 @@ public class Data
                     else
                     {
                         //Partial set
-                        int num = Integer.parseInt(tokens2[1].trim());
-                        if (num > 0) bonus.setRequirements.put(set, num);
+                        try
+                        {
+                            int num = Integer.parseInt(tokens2[1].trim());
+                            if (num > 0) bonus.setRequirements.put(set, num);
+                        }
+                        catch (NumberFormatException e)
+                        {
+                            System.err.println("Malformed set requirement for bonus: " + bonusString);
+                            success = false;
+                            break;
+                        }
                     }
                     continue;
                 }
@@ -133,7 +156,7 @@ public class Data
                 }
 
                 //Error!
-                System.err.println("Unrecognized bonus requirement: " + string + "\r\nPlease see the examples by hovering the mouse over the config option in the mod config menu");
+                System.err.println("Unrecognized bonus requirement: " + bonusString + "\r\nPlease see the examples by hovering the mouse over the config option in the mod config menu");
                 success = false;
                 break;
             }
@@ -159,7 +182,10 @@ public class Data
                 continue;
             }
 
-            for (AttributeModifier modifier : AttributeMods.parseMods(Arrays.copyOfRange(tokens, 1, tokens.length)))
+            ArrayList<AttributeModifier> modifiers = AttributeMods.parseMods(Arrays.copyOfRange(tokens, 1, tokens.length));
+            if (modifiers == null) continue;
+
+            for (AttributeModifier modifier : modifiers)
             {
                 bonus.modifiers.put(modifier.getName(), modifier.setSaved(false));
             }
@@ -183,7 +209,10 @@ public class Data
                 continue;
             }
 
-            bonus.potions.addAll(Potions.parsePotions(Arrays.copyOfRange(tokens, 1, tokens.length), true));
+            ArrayList<PotionEffect> potions = Potions.parsePotions(Arrays.copyOfRange(tokens, 1, tokens.length), true);
+            if (potions == null) continue;
+
+            bonus.potions.addAll(potions);
         }
     }
 }

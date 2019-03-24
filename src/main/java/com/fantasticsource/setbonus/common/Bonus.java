@@ -19,7 +19,7 @@ public class Bonus
             MODE_GLOBALLY_KNOWN = 2;
     public static LinkedHashMap<String, Bonus> bonusMap = new LinkedHashMap<>();
     public String name;
-    public int mode;
+    public int discoveryMode;
     public LinkedHashMap<SetData, Integer> setRequirements = new LinkedHashMap<>();
     public LinkedHashMap<String, DoubleRequirement> attributeRequirements = new LinkedHashMap<>();
     public Multimap<String, AttributeModifier> modifiers = ArrayListMultimap.create();
