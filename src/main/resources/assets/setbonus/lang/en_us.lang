@@ -24,19 +24,6 @@ setbonus.error.wrongSlotArgCount=Wrong number of arguments for slot/equipment de
 setbonus.error.unknownSlot=Unknown slot (%s) in slot/equipment definition: %s
 setbonus.error.slotBadEquipID=Equipment ID not found (%s) in slot/equipment definition: %s
 
-setbonus.error.
-setbonus.error.
-setbonus.error.
-setbonus.error.
-setbonus.error.
-setbonus.error.
-setbonus.error.
-setbonus.error.
-setbonus.error.
-setbonus.error.
-setbonus.error.
-setbonus.error.
-
 
 
 setbonus.config.clientSettings=Client Settings
