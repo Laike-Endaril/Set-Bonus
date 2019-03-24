@@ -5,7 +5,7 @@ import com.fantasticsource.setbonus.config.client.ClientConfig;
 import com.fantasticsource.setbonus.config.server.ServerConfig;
 import net.minecraftforge.common.config.Config;
 
-@Config(modid = SetBonus.MODID)
+@Config(modid = SetBonus.MODID, name = ConfigHandler.CONFIG_NAME)
 public class SetBonusConfig
 {
     @Config.Name("Client Settings")
