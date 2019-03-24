@@ -4,6 +4,7 @@ import com.fantasticsource.mctools.ServerTickTimer;
 import com.fantasticsource.setbonus.client.TooltipRenderer;
 import com.fantasticsource.setbonus.config.SyncedConfig;
 import com.fantasticsource.tools.Tools;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Config;
@@ -65,7 +66,7 @@ public class SetBonus
     @SubscribeEvent
     public static void calcConfigs(ConfigChangedEvent.PostConfigChangedEvent event)
     {
-        if (event.getModID().equals(MODID)) Data.update();
+        if (event.getModID().equals(MODID) && Minecraft.getMinecraft().player != null) Data.update();
     }
 
     @SubscribeEvent
