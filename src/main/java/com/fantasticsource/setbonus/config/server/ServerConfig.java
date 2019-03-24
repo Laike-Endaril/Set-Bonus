@@ -9,9 +9,9 @@ public class ServerConfig
     @Config.LangKey(SetBonus.MODID + ".config.equipment")
     @Config.Comment(
             {
-                    "Each item you want to include in a set needs to be defined here first",
+                    "FILLSCREEN Each item you want to include in a set needs to be defined here first",
                     "",
-                    "The layout of each entry is...",
+                    "Layout is...",
                     "Equipment id, domain:item:meta > nbtkey1 = nbtvalue1 & nbtkey2 = nbtvalue2...",
                     "The equipment id must be unique, and is only used to refer to the item in the equipment set config",
                     "",
@@ -25,6 +25,7 @@ public class ServerConfig
                     "TetraSickleSingle, tetra:duplex_tool_modular > duplex/sickle_left_material & duplex/butt_right_material",
                     "",
                     "WirtsLeggings, diamond_leggings > display:Name = \"Wirt's Leggings\" & ench: = minecraft:protection ; lvl:4s",
+                    " ",
             })
     public String[] equipment = new String[]{};
 
@@ -32,20 +33,22 @@ public class ServerConfig
     @Config.LangKey(SetBonus.MODID + ".config.sets")
     @Config.Comment(
             {
-                    "Each equipment set is defined here",
-                    "",
+                    "FILLSCREEN Each equipment set is defined here",
                     "Each custom id must be defined in the Equipment list first",
-                    "The layout of each set is...",
-                    "Set id, set name, slot | slot | slot... = custom id | custom id | custom id..., slot... = custom id...",
-                    "Vanilla slots: mainhand, offhand, head, chest, legs, feet, hotbar, inventory",
-                    "Baubles slots: bauble_amulet, bauble_ring, bauble_belt, bauble_head, bauble_body, bauble_charm, bauble_trinket",
-                    "You can also refer to slots by their slot number, eg. the top-left slot of the inventory is 9",
+                    "",
+                    "Layout is...",
+                    "Set id, set name, slot | slot = custom id | custom id, slot | slot = custom id | custom id, etc.",
+                    "",
+                    "- Vanilla slots: mainhand, offhand, head, chest, legs, feet, hotbar, inventory",
+                    "- Baubles slots: bauble_amulet, bauble_ring, bauble_belt, bauble_head, bauble_body, bauble_charm, bauble_trinket",
+                    "- You can also refer to slots by their slot number, eg. the top-left slot of the inventory is 9",
                     "",
                     "eg...",
                     "",
                     "SnD, Sword and Dagger, mainhand | offhand = WSword | SSword | ISword | GSword | DSword, mainhand | offhand = WDagger | SDagger | IDagger | GDagger | DDagger",
                     "",
-                    "DArmor, Diamond Armor, head = DHelm, chest = DChest, legs = DLegs, feet = DBoots"
+                    "DArmor, Diamond Armor, head = DHelm, chest = DChest, legs = DLegs, feet = DBoots",
+                    " ",
             })
     public String[] sets = new String[]{};
 
@@ -53,18 +56,25 @@ public class ServerConfig
     @Config.LangKey(SetBonus.MODID + ".config.bonuses")
     @Config.Comment(
             {
-                    "Each 'bonus' has a bonus id, a name, a discovery setting, and a set of requirements that need to be meet to activate it",
+                    "FILLSCREEN Each bonus is defined here",
                     "",
-                    "The bonus id is only used in other config settings, and the name is what appears in tooltips or other displays",
+                    "Layout is...",
+                    "Bonus id, bonus name, discovery mode, requirement, requirement, requirement, etc.",
                     "",
-                    "The discovery setting is 0, 1, or 2:",
-                    "0 means 'Discoverable'; the tooltip will not show for a player until they've activated the bonus at least once",
-                    "1 means 'Identifiable'; the tooltip will show, but be obfuscated for a player until they've activated the bonus at least once",
-                    "2 means 'Globally Known; the tooltip will always show",
+                    "Discovery mode is a number:",
+                    "0 = hidden until the player has activated the bonus at least once",
+                    "1 = obfuscated until the player has activated the bonus at least once",
+                    "2 = always visible",
                     "",
-                    "Lastly, any number of requirements can be defined which must be met for the bonus to activate, separated by commas.  This can include any combination of...",
-                    "...equipment sets; just put in the set id.  For a partial set, add a period and the number of set items required",
-                    "...attribute totals; put in the attribute name followed by a sign and a number, eg. generic.armor < 5, generic.attackDamage > 10"
+                    "Each requirement is one of these:",
+                    "A set; just put in the set id.  For a partial set, add a period and the number of set items required",
+                    "an attribute total; put in the attribute name followed by a sign and a number, eg.",
+                    "generic.armor > 7",
+                    "",
+                    "eg...",
+                    "",
+                    "DualWieldSnD, Dual Wield, 0, SnD, generic.armor <= 5",
+                    " ",
             })
     public String[] bonuses = new String[]{};
 
@@ -72,15 +82,16 @@ public class ServerConfig
     @Config.LangKey(SetBonus.MODID + ".config.attributeModifiers")
     @Config.Comment(
             {
-                    "Attribute modifiers you receive as bonuses",
+                    "FILLSCREEN Attribute modifiers you receive as part of a bonus",
                     "",
                     "Layout is...",
-                    "Set id, number of set items required (or the keyword 'all'), attribute = amount @ operation, attribute = amount @ operation",
+                    "Bonus id, attribute = amount @ operation, attribute = amount @ operation, etc.",
                     "",
                     "eg...",
                     "",
-                    "This should make the Sword and Dagger set give a 50% attack damage bonus",
-                    "SnD, all, generic.attackDamage = 0.5 @ 1",
+                    "This makes the Dual Wield bonus from the bonus example give a 50% attack damage bonus",
+                    "DualWieldSnD, generic.attackDamage = 0.5 @ 1",
+                    " ",
             })
     public String[] attributeMods = new String[]{};
 
@@ -88,18 +99,16 @@ public class ServerConfig
     @Config.LangKey(SetBonus.MODID + ".config.potionEffects")
     @Config.Comment(
             {
-                    "Constant potion effects received as a bonus",
+                    "FILLSCREEN Constant potion effects received as part of a bonus",
                     "",
                     "Layout is...",
-                    "Set id, number of set items required (or the keyword 'all'), potion.level, potion.level...",
+                    "Bonus id, potion.level, potion.level, etc.",
                     "",
                     "eg...",
                     "",
-                    "SnD, all, haste.2",
-                    "",
-                    "DArmor, 2, resistance",
-                    "",
-                    "DArmor, all, resistance.2"
+                    "This makes the Dual Wield bonus from the bonus example give haste 2",
+                    "DualWieldSnD, haste.2",
+                    " ",
             })
     public String[] potions = new String[]{};
 }
