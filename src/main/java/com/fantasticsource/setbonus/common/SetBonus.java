@@ -84,8 +84,16 @@ public class SetBonus
     }
 
     @SubscribeEvent
+    public static void playerConnect(PlayerEvent.PlayerLoggedInEvent event)
+    {
+        //TODO Load discoveries
+        Bonus.updateBonuses(event.player);
+    }
+
+    @SubscribeEvent
     public static void playerDisconnect(PlayerEvent.PlayerLoggedOutEvent event)
     {
+        //TODO Save discoveries
         Bonus.deactivateBonuses(event.player);
     }
 
