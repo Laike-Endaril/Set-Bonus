@@ -1,14 +1,20 @@
-Add "bonuses"...
-...attribute modifiers and potion effects are directed toward bonuses instead of sets
-...bonuses are defined with conditions that need to be met to activate them (which can include a certain number of items from an equipment set)
+In config...
+...add example to bonuses
+...change tooltip for attribute modifier bonuses
+...change tooltip for potion effect bonuses
+...add new tooltips to lang file
 
 Discovery system for bonus tooltips (can apply to any part of tooltip, if applicable)...
 ...0 = Discoverable - invisible to clients until they activate it for the first time
 ...1 = Identifiable - always visible to clients, but obfuscated until they activate it for the first time
 ...2 = Globally Known - always visible to clients (keep track of discovery even if this is enabled, in case the setting is changed later)
 
-"Reactive" system for equipment sets which gives a visual indicator linking the items of a set...
+"Discover" command
+"Undiscover" command
+
+"Reactive" system for equipment sets which gives a visual indicator for set items and for linking the items of a set...
 0 means reactive within the player's inventory (an opened chest is not part of the player's inventory)
+1 means reactive only when actively contributing to a set
 1 means reactive within all opened inventories
 2 means non-reactive
 

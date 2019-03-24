@@ -4,6 +4,7 @@ import com.fantasticsource.mctools.attributes.AttributeMods;
 import com.fantasticsource.mctools.items.ItemFilter;
 import com.fantasticsource.mctools.potions.Potions;
 import com.fantasticsource.setbonus.config.SyncedConfig;
+import com.fantasticsource.tools.datastructures.Pair;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 
@@ -22,15 +23,9 @@ public class Data
     public static void update()
     {
         //Clear any existing data
-        if (equipment != null)
-        {
-            //Not the first time we've loaded; release all bonuses before we re-initialize
-            for (SetData data : sets.values()) data.dropAll();
-        }
-
+        Bonus.dropAll();
         equipment = new LinkedHashMap<>();
         sets = new LinkedHashMap<>();
-
         players.clear();
 
 
@@ -80,43 +75,93 @@ public class Data
         }
 
 
+        //Initialize bonuses
+        for (String string : SyncedConfig.bonuses)
+        {
+            String[] tokens = string.split(",");
+            if (tokens.length < 3)
+            {
+                System.err.println("Not enough arguments for bonus: " + string + "\r\nPlease see the examples by hovering the mouse over the config option in the mod config menu");
+                continue;
+            }
+
+            Bonus bonus = new Bonus();
+            bonus.name = tokens[1].trim();
+            try
+            {
+                bonus.mode = Integer.parseInt(tokens[2].trim());
+            }
+            catch (NumberFormatException e)
+            {
+                System.err.println("Third argument must be a number: " + string + "\r\nPlease see the examples by hovering the mouse over the config option in the mod config menu");
+                continue;
+            }
+
+            boolean success = true;
+            for (String s : Arrays.copyOfRange(tokens, 3, tokens.length))
+            {
+                String[] tokens2 = s.split("\\.");
+                SetData set = sets.get(tokens2[0].trim());
+                if (set != null)
+                {
+                    //It's a set
+                    if (tokens2.length == 1)
+                    {
+                        //Full set
+                        bonus.setRequirements.put(set, set.getMaxNumber());
+                    }
+                    else
+                    {
+                        //Partial set
+                        int num = Integer.parseInt(tokens2[1].trim());
+                        if (num > 0) bonus.setRequirements.put(set, num);
+                    }
+                    continue;
+                }
+
+                //Try for a DoubleRequirement
+                Pair<String, DoubleRequirement> pair = DoubleRequirement.parse(s);
+                if (pair != null)
+                {
+                    //It's a DoubleRequirement
+
+                    //For now, attributes are the only type of DoubleRequirement, so use this as one
+                    //Attributes don't have a registry, and can't really be checked ahead of time, so any malformed strings here will end up as "valid" attribute checks; beware!
+                    bonus.attributeRequirements.put(pair.getKey(), pair.getValue());
+
+                    continue;
+                }
+
+                //Error!
+                System.err.println("Unrecognized bonus requirement: " + string + "\r\nPlease see the examples by hovering the mouse over the config option in the mod config menu");
+                success = false;
+                break;
+            }
+
+            if (success) Bonus.bonusMap.put(tokens[0].trim(), bonus);
+        }
+
+
         //Initialize attribute modifiers
         for (String string : SyncedConfig.attributeMods)
         {
             String[] tokens = string.split(",");
-            if (tokens.length < 3)
+            if (tokens.length < 2)
             {
                 System.err.println("Not enough arguments for attribute bonus: " + string + "\r\nPlease see the examples by hovering the mouse over the config option in the mod config menu");
                 continue;
             }
 
-            SetData set = sets.get(tokens[0].trim());
-            if (set == null)
+            Bonus bonus = Bonus.bonusMap.get(tokens[0].trim());
+            if (bonus == null)
             {
-                System.err.println("Set ID not found (" + tokens[0].trim() + ") for attribute bonus: " + string + "\r\nPlease see the examples by hovering the mouse over the config option in the mod config menu");
+                System.err.println("Bonus ID not found (" + tokens[0].trim() + ") for potion bonus: " + string + "\r\nPlease see the examples by hovering the mouse over the config option in the mod config menu");
                 continue;
             }
 
-            int numRequired;
-            if (tokens[1].trim().toLowerCase().equals("all")) numRequired = set.getMaxNumber();
-            else numRequired = Integer.parseInt(tokens[1].trim());
-
-            if (numRequired < 1)
+            for (AttributeModifier modifier : AttributeMods.parseMods(Arrays.copyOfRange(tokens, 1, tokens.length)))
             {
-                System.err.println("Invalid number of set items required (" + tokens[1].trim() + ") for attribute bonus: " + string + "\r\nPlease see the examples by hovering the mouse over the config option in the mod config menu");
-                continue;
-            }
-
-            BonusData data = set.bonuses.get(numRequired);
-            if (data == null)
-            {
-                data = new BonusData();
-                set.bonuses.put(numRequired, data);
-            }
-
-            for (AttributeModifier modifier : AttributeMods.parseMods(Arrays.copyOfRange(tokens, 2, tokens.length)))
-            {
-                data.modifiers.put(modifier.getName(), modifier.setSaved(false));
+                bonus.modifiers.put(modifier.getName(), modifier.setSaved(false));
             }
         }
 
@@ -125,37 +170,20 @@ public class Data
         for (String string : SyncedConfig.potions)
         {
             String[] tokens = string.split(",");
-            if (tokens.length < 3)
+            if (tokens.length < 2)
             {
                 System.err.println("Not enough arguments for potion bonus: " + string + "\r\nPlease see the examples by hovering the mouse over the config option in the mod config menu");
                 continue;
             }
 
-            SetData set = sets.get(tokens[0].trim());
-            if (set == null)
+            Bonus bonus = Bonus.bonusMap.get(tokens[0].trim());
+            if (bonus == null)
             {
-                System.err.println("Set ID not found (" + tokens[0].trim() + ") for potion bonus: " + string + "\r\nPlease see the examples by hovering the mouse over the config option in the mod config menu");
+                System.err.println("Bonus ID not found (" + tokens[0].trim() + ") for potion bonus: " + string + "\r\nPlease see the examples by hovering the mouse over the config option in the mod config menu");
                 continue;
             }
 
-            int numRequired;
-            if (tokens[1].trim().toLowerCase().equals("all")) numRequired = set.getMaxNumber();
-            else numRequired = Integer.parseInt(tokens[1].trim());
-
-            if (numRequired < 1)
-            {
-                System.err.println("Invalid number of set items required (" + tokens[1].trim() + ") for potion bonus: " + string + "\r\nPlease see the examples by hovering the mouse over the config option in the mod config menu");
-                continue;
-            }
-
-            BonusData data = set.bonuses.get(numRequired);
-            if (data == null)
-            {
-                data = new BonusData();
-                set.bonuses.put(numRequired, data);
-            }
-
-            data.potions.addAll(Potions.parsePotions(Arrays.copyOfRange(tokens, 2, tokens.length), true));
+            bonus.potions.addAll(Potions.parsePotions(Arrays.copyOfRange(tokens, 1, tokens.length), true));
         }
     }
 }

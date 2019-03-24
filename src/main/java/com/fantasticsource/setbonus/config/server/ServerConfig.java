@@ -63,7 +63,7 @@ public class ServerConfig
                     "2 means 'Globally Known; the tooltip will always show",
                     "",
                     "Lastly, any number of requirements can be defined which must be met for the bonus to activate, separated by commas.  This can include any combination of...",
-                    "...equipment sets; just put in the set id.  For a partial set, add an equals sign to it with the number of set items required after the equals sign",
+                    "...equipment sets; just put in the set id.  For a partial set, add a period and the number of set items required",
                     "...attribute totals; put in the attribute name followed by a sign and a number, eg. generic.armor < 5, generic.attackDamage > 10"
             })
     public String[] bonuses = new String[]{};

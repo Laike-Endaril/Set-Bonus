@@ -29,7 +29,7 @@ public class Network
 
     public static class ConfigPacket implements IMessage
     {
-        private String[] equipment, sets, attributeMods, potions;
+        private String[] equipment, sets, bonuses, attributeMods, potions;
 
         public ConfigPacket() //Required; probably for when the packet is received
         {
@@ -42,6 +42,10 @@ public class Network
             for (String string : serverSettings.equipment) ByteBufUtils.writeUTF8String(buf, string);
             buf.writeInt(serverSettings.sets.length);
             for (String string : serverSettings.sets) ByteBufUtils.writeUTF8String(buf, string);
+
+            buf.writeInt(serverSettings.bonuses.length);
+            for (String string : serverSettings.bonuses) ByteBufUtils.writeUTF8String(buf, string);
+
             buf.writeInt(serverSettings.attributeMods.length);
             for (String string : serverSettings.attributeMods) ByteBufUtils.writeUTF8String(buf, string);
             buf.writeInt(serverSettings.potions.length);
@@ -64,6 +68,15 @@ public class Network
                 list.add(ByteBufUtils.readUTF8String(buf));
             }
             sets = list.toArray(new String[list.size()]);
+
+
+            list = new ArrayList<>();
+            for (int i = buf.readInt(); i > 0; i--)
+            {
+                list.add(ByteBufUtils.readUTF8String(buf));
+            }
+            bonuses = list.toArray(new String[list.size()]);
+
 
             list = new ArrayList<>();
             for (int i = buf.readInt(); i > 0; i--)
@@ -92,6 +105,9 @@ public class Network
                 {
                     SyncedConfig.equipment = packet.equipment;
                     SyncedConfig.sets = packet.sets;
+
+                    SyncedConfig.bonuses = packet.bonuses;
+
                     SyncedConfig.attributeMods = packet.attributeMods;
                     SyncedConfig.potions = packet.potions;
 

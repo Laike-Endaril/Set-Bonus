@@ -15,6 +15,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
@@ -76,9 +77,15 @@ public class SetBonus
 
             if (Tools.posMod(ServerTickTimer.currentTick(), 20) == Tools.posMod(player.getUniqueID().getLeastSignificantBits(), 20))
             {
-                updateBonuses(player);
+                Bonus.updateBonuses(player);
             }
         }
+    }
+
+    @SubscribeEvent
+    public static void playerDisconnect(PlayerEvent.PlayerLoggedOutEvent event)
+    {
+        Bonus.deactivateBonuses(event.player);
     }
 
 //    @SubscribeEvent
@@ -99,12 +106,4 @@ public class SetBonus
 //            }
 //        }
 //    }
-
-    private static void updateBonuses(EntityPlayer player)
-    {
-        for (SetData data : Data.sets.values())
-        {
-            data.updateBonuses(player);
-        }
-    }
 }

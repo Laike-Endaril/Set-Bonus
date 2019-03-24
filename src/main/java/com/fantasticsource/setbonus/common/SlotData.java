@@ -8,6 +8,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 public class SlotData
 {
@@ -19,7 +20,7 @@ public class SlotData
     {
     }
 
-    public static SlotData getInstance(String slotsAndEquipment, ArrayList<String> setdataEquipIDTracker)
+    public static SlotData getInstance(String slotsAndEquipment, LinkedHashMap<String, ItemFilter> setdataEquipIDTracker)
     {
         SlotData result = new SlotData();
 
@@ -107,7 +108,7 @@ public class SlotData
             }
 
             result.equipment.add(filter);
-            if (!setdataEquipIDTracker.contains(equipString)) setdataEquipIDTracker.add(equipString);
+            setdataEquipIDTracker.put(equipString, filter);
         }
 
 

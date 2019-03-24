@@ -23,6 +23,9 @@ public class SyncedConfig
 
     public static String[] equipment = serverSettings.equipment.clone();
     public static String[] sets = serverSettings.sets.clone();
+
+    public static String[] bonuses = serverSettings.bonuses.clone();
+
     public static String[] attributeMods = serverSettings.attributeMods.clone();
     public static String[] potions = serverSettings.potions.clone();
 
@@ -79,6 +82,9 @@ public class SyncedConfig
     {
         equipment = serverSettings.equipment.clone();
         sets = serverSettings.sets.clone();
+
+        bonuses = serverSettings.bonuses.clone();
+
         attributeMods = serverSettings.attributeMods.clone();
         potions = serverSettings.potions.clone();
     }

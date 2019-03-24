@@ -1,18 +1,19 @@
 package com.fantasticsource.setbonus.common;
 
+import com.fantasticsource.mctools.ServerTickTimer;
+import com.fantasticsource.mctools.items.ItemFilter;
+import com.fantasticsource.tools.datastructures.Pair;
 import net.minecraft.entity.player.EntityPlayer;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.Map;
 
 public class SetData
 {
-    public LinkedHashMap<Integer, BonusData> bonuses = new LinkedHashMap<>(); //The int is the number of set items required for the bonus
-    public ArrayList<String> involvedEquipIDs = new ArrayList<>();
-    private String name;
+    public LinkedHashMap<String, ItemFilter> involvedEquips = new LinkedHashMap<>();
+    public String name;
     private ArrayList<SlotData> slotData = new ArrayList<>();
-    private LinkedHashMap<EntityPlayer, Integer> numEquipped = new LinkedHashMap<>();
+    private LinkedHashMap<EntityPlayer, Pair<Integer, Long>> numEquipped = new LinkedHashMap<>();
 
 
     private SetData()
@@ -27,7 +28,7 @@ public class SetData
 
         for (String string : equipment)
         {
-            SlotData data = SlotData.getInstance(string, result.involvedEquipIDs);
+            SlotData data = SlotData.getInstance(string, result.involvedEquips);
             if (data != null) result.slotData.add(data);
         }
         if (result.slotData.size() == 0) return null;
@@ -35,12 +36,23 @@ public class SetData
         return result;
     }
 
-    public String getName()
+    public int getNumberEquipped(EntityPlayer player)
     {
-        return name;
+        int result;
+        long tick = ServerTickTimer.currentTick();
+
+        Pair<Integer, Long> pair = numEquipped.computeIfAbsent(player, k -> new Pair<>(0, tick - 1));
+        if (pair.getValue() != tick)
+        {
+            result = getNumberEquippedInternal(player);
+            pair.set(result, tick);
+            return result;
+        }
+
+        return pair.getKey();
     }
 
-    public int getNumberEquipped(EntityPlayer player)
+    private int getNumberEquippedInternal(EntityPlayer player)
     {
         int result = 0;
         ArrayList<Integer> blocked = new ArrayList<>();
@@ -59,51 +71,5 @@ public class SetData
     public int getMaxNumber()
     {
         return slotData.size();
-    }
-
-    public void updateBonuses(EntityPlayer player)
-    {
-        int currentNum = getNumberEquipped(player);
-        int oldNum = 0;
-        if (numEquipped.containsKey(player)) oldNum = numEquipped.get(player);
-
-        if (currentNum > oldNum) //Equipped more pieces
-        {
-            for (Map.Entry<Integer, BonusData> entry : bonuses.entrySet())
-            {
-                if (currentNum >= entry.getKey()) entry.getValue().activate(player);
-            }
-            numEquipped.put(player, currentNum);
-        }
-        else if (currentNum < oldNum) //Removed some pieces
-        {
-            for (Map.Entry<Integer, BonusData> entry : bonuses.entrySet())
-            {
-                if (currentNum < entry.getKey()) entry.getValue().deactivate(player);
-            }
-            numEquipped.put(player, currentNum);
-        }
-        else //Unchanged; check potions in case they got removed
-        {
-            for (Map.Entry<Integer, BonusData> entry : bonuses.entrySet())
-            {
-                if (currentNum >= entry.getKey()) entry.getValue().checkPotions(player);
-            }
-        }
-    }
-
-    public void dropAll()
-    {
-        for (Map.Entry<EntityPlayer, Integer> numEntry : numEquipped.entrySet())
-        {
-            if (0 < numEntry.getValue())
-            {
-                for (Map.Entry<Integer, BonusData> entry : bonuses.entrySet())
-                {
-                    if (0 < entry.getKey()) entry.getValue().deactivate(numEntry.getKey());
-                }
-                numEntry.setValue(0);
-            }
-        }
     }
 }
