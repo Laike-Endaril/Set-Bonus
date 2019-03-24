@@ -20,6 +20,23 @@ setbonus.error.attribBonusIDNotFound=Bonus ID not found (%s) for attribute modif
 setbonus.error.notEnoughPotionBonusArgs=Not enough arguments for potion bonus: %s
 setbonus.error.potionBonusIDNotFound=Bonus ID not found (%s) for potion bonus: %s
 
+setbonus.error.wrongSlotArgCount=Wrong number of arguments for slot/equipment definition: %s
+setbonus.error.unknownSlot=Unknown slot (%s) in slot/equipment definition: %s
+setbonus.error.slotBadEquipID=Equipment ID not found (%s) in slot/equipment definition: %s
+
+setbonus.error.
+setbonus.error.
+setbonus.error.
+setbonus.error.
+setbonus.error.
+setbonus.error.
+setbonus.error.
+setbonus.error.
+setbonus.error.
+setbonus.error.
+setbonus.error.
+setbonus.error.
+
 
 
 setbonus.config.clientSettings=Client Settings

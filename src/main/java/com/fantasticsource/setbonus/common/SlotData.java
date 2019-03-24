@@ -4,6 +4,7 @@ import baubles.api.BaubleType;
 import baubles.api.BaublesApi;
 import baubles.api.cap.IBaublesItemHandler;
 import com.fantasticsource.mctools.items.ItemFilter;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 
@@ -27,7 +28,7 @@ public class SlotData
         String[] tokens = slotsAndEquipment.split("=");
         if (tokens.length != 2)
         {
-            System.err.println("Wrong number of arguments for slot/equipment definition: " + slotsAndEquipment + "\r\nPlease see the examples by hovering the mouse over the config option in the mod config menu");
+            System.err.println(I18n.format(SetBonus.MODID + ".error.wrongSlotArgCount", slotsAndEquipment));
             return null;
         }
 
@@ -89,7 +90,7 @@ public class SlotData
                 }
                 catch (NumberFormatException e)
                 {
-                    System.err.println("Unknown slot (" + slotString + ") in slot/equipment definition: " + slotsAndEquipment + "\r\nPlease see the examples by hovering the mouse over the config option in the mod config menu");
+                    System.err.println(I18n.format(SetBonus.MODID + ".error.unknownSlot", slotString, slotsAndEquipment));
                     return null;
                 }
             }
@@ -103,7 +104,7 @@ public class SlotData
             ItemFilter filter = Data.equipment.get(equipString);
             if (filter == null)
             {
-                System.err.println("Equipment ID not found (" + equipString + ") in slot/equipment definition: " + slotsAndEquipment + "\r\nPlease see the examples by hovering the mouse over the config option in the mod config menu");
+                System.err.println(I18n.format(SetBonus.MODID + ".error.slotBadEquipID", equipString, slotsAndEquipment));
                 return null;
             }
 
