@@ -1,12 +1,18 @@
 package com.fantasticsource.setbonus.common;
 
+import com.fantasticsource.mctools.MCTools;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.world.World;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -26,6 +32,46 @@ public class Bonus
     public ArrayList<PotionEffect> potions = new ArrayList<>();
 
     public LinkedHashMap<EntityPlayer, BonusData> bonusData = new LinkedHashMap<>();
+
+
+    public static void saveDiscoveries(EntityPlayer player)
+    {
+        World world = player.world;
+        if (!world.isRemote)
+        {
+            try
+            {
+                String string = MCTools.getDataDir(world.getMinecraftServer()) + SetBonus.MODID + File.separator;
+                File file = new File(string);
+                if (!file.exists()) file.mkdir();
+
+                string += "discoveries" + File.separator;
+                file = new File(string);
+                if (!file.exists()) file.mkdir();
+
+                string += player.getCachedUniqueIdString() + ".txt";
+                file = new File(string);
+                BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+
+                for (Map.Entry<String, Bonus> entry : bonusMap.entrySet())
+                {
+                    BonusData data = entry.getValue().bonusData.get(player);
+                    if (data != null && data.identified) writer.write(entry.getKey());
+                }
+
+                writer.close();
+            }
+            catch (IOException e)
+            {
+                MCTools.crash(e, 901, false);
+            }
+        }
+    }
+
+    public static void loadDiscoveries(EntityPlayer player)
+    {
+        //TODO
+    }
 
 
     public static void dropAll()
@@ -119,7 +165,11 @@ public class Bonus
                 {
                     //Activating
                     active = true;
-                    identified = true;
+                    if (!identified)
+                    {
+                        identified = true;
+                        saveDiscoveries(player);
+                    }
                     for (PotionEffect potion : potions) player.addPotionEffect(potion);
                     player.getAttributeMap().applyAttributeModifiers(modifiers);
                 }

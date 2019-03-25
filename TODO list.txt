@@ -11,6 +11,7 @@ SetBonus GUI...
 
 "Discover" command
 "Undiscover" command
+"WipeDiscoveries" command
 
 "Reactive" system for equipment sets which gives a visual indicator for set items and for linking the items of a set...
 0 means reactive within the player's inventory (an opened chest is not part of the player's inventory)

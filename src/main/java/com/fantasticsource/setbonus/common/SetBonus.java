@@ -20,6 +20,8 @@ import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
+import java.io.IOException;
+
 import static net.minecraftforge.fml.common.Mod.EventHandler;
 
 @Mod(modid = SetBonus.MODID, name = SetBonus.NAME, version = SetBonus.VERSION, dependencies = "required-after:fantasticlib@[1.12.2.009a,)")
@@ -87,14 +89,14 @@ public class SetBonus
     @SubscribeEvent
     public static void playerConnect(PlayerEvent.PlayerLoggedInEvent event)
     {
-        //TODO Load discoveries
-        Bonus.updateBonuses(event.player);
+        EntityPlayer player = event.player;
+        Bonus.loadDiscoveries(player);
+        Bonus.updateBonuses(player);
     }
 
     @SubscribeEvent
     public static void playerDisconnect(PlayerEvent.PlayerLoggedOutEvent event)
     {
-        //TODO Save discoveries
         Bonus.deactivateBonuses(event.player);
     }
 
