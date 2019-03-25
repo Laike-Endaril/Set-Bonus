@@ -2,8 +2,8 @@ package com.fantasticsource.setbonus.common;
 
 import com.fantasticsource.setbonus.common.bonuselements.ModifierBonus;
 import com.fantasticsource.setbonus.common.bonuselements.PotionBonus;
-import com.fantasticsource.setbonus.common.bonusrequirements.Equip;
-import com.fantasticsource.setbonus.common.bonusrequirements.Set;
+import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Equip;
+import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Set;
 import com.fantasticsource.setbonus.config.SyncedConfig;
 import net.minecraft.entity.player.EntityPlayer;
 

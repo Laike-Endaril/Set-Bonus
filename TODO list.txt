@@ -1,5 +1,4 @@
 Abstractify bonus requirements
-Merge SetData and SlotData if possible
 Merge Set and SetData if possible
 Merge Bonus and BonusData if possible
 

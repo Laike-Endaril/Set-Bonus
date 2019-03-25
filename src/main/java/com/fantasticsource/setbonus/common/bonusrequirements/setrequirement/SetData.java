@@ -1,4 +1,4 @@
-package com.fantasticsource.setbonus.common.bonusrequirements;
+package com.fantasticsource.setbonus.common.bonusrequirements.setrequirement;
 
 import com.fantasticsource.mctools.ServerTickTimer;
 import com.fantasticsource.mctools.items.ItemFilter;

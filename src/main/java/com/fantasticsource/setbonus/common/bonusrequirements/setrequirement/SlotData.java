@@ -1,4 +1,4 @@
-package com.fantasticsource.setbonus.common.bonusrequirements;
+package com.fantasticsource.setbonus.common.bonusrequirements.setrequirement;
 
 import baubles.api.BaubleType;
 import baubles.api.BaublesApi;

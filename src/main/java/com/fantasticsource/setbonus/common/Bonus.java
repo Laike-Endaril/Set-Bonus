@@ -2,7 +2,7 @@ package com.fantasticsource.setbonus.common;
 
 import com.fantasticsource.setbonus.SetBonus;
 import com.fantasticsource.setbonus.common.bonusrequirements.DoubleRequirement;
-import com.fantasticsource.setbonus.common.bonusrequirements.Set;
+import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Set;
 import com.fantasticsource.tools.datastructures.Pair;
 import net.minecraft.client.resources.I18n;
 
