@@ -5,22 +5,23 @@ import com.fantasticsource.setbonus.client.TooltipRenderer;
 import com.fantasticsource.setbonus.config.SyncedConfig;
 import com.fantasticsource.tools.Tools;
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
-
-import java.io.IOException;
 
 import static net.minecraftforge.fml.common.Mod.EventHandler;
 
@@ -49,15 +50,20 @@ public class SetBonus
     }
 
     @EventHandler
-    public static void postInit(FMLPostInitializationEvent event)
+    public static void serverStarting(FMLServerStartingEvent event)
     {
+        //This event is very reliable
+        //It happens very early when a logical server is starting and does not happen when the client connects to a remote server
+        //It works for both dedicated and integrated as well
+
+        event.registerServerCommand(new Commands());
         Data.update();
     }
 
     @EventHandler
-    public static void serverStarting(FMLServerStartingEvent event)
+    public static void serverStop(FMLServerStoppingEvent event)
     {
-        event.registerServerCommand(new Commands());
+        Bonus.dropAll();
     }
 
     @SubscribeEvent
@@ -87,11 +93,16 @@ public class SetBonus
     }
 
     @SubscribeEvent
-    public static void playerConnect(PlayerEvent.PlayerLoggedInEvent event)
+    public static void playerConnect(EntityJoinWorldEvent event)
     {
-        EntityPlayer player = event.player;
-        Bonus.loadDiscoveries(player);
-        Bonus.updateBonuses(player);
+        Entity entity = event.getEntity();
+        if (entity instanceof EntityPlayerMP && !event.getWorld().isRemote)
+        {
+            EntityPlayerMP player = (EntityPlayerMP) entity;
+            Bonus.loadDiscoveries(player);
+            Bonus.updateBonuses(player);
+            SyncedConfig.sendConfig(player);
+        }
     }
 
     @SubscribeEvent

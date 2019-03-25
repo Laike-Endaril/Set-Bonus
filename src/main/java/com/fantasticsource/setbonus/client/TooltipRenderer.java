@@ -47,7 +47,7 @@ public class TooltipRenderer
                     {
                         if (bonus.setRequirements.keySet().contains(set))
                         {
-                            Bonus.BonusData bonusData = bonus.bonusData.get(player);
+                            Bonus.BonusData bonusData = bonus.getData(player);
                             color = "" + (bonusData != null && bonusData.active ? GREEN : RED);
                             tooltip.add(color + " " + bonus.name);
                         }

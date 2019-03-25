@@ -1,13 +1,11 @@
 package com.fantasticsource.setbonus.config;
 
 import com.fantasticsource.setbonus.common.Network;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -38,16 +36,6 @@ public class SyncedConfig
     }
 
     @SubscribeEvent
-    public static void playerJoin(EntityJoinWorldEvent event)
-    {
-        Entity entity = event.getEntity();
-        if (entity instanceof EntityPlayerMP && !entity.world.isRemote)
-        {
-            sendConfig((EntityPlayerMP) entity);
-        }
-    }
-
-    @SubscribeEvent
     public static void serverTick(TickEvent.ServerTickEvent event)
     {
         if (configChanged > 0) configChanged--;
@@ -73,7 +61,7 @@ public class SyncedConfig
         reset();
     }
 
-    private static void sendConfig(EntityPlayerMP player)
+    public static void sendConfig(EntityPlayerMP player)
     {
         Network.WRAPPER.sendTo(new Network.ConfigPacket(), player);
     }

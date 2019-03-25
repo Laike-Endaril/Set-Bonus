@@ -9,10 +9,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -31,8 +28,7 @@ public class Bonus
     public Multimap<String, AttributeModifier> modifiers = ArrayListMultimap.create();
     public ArrayList<PotionEffect> potions = new ArrayList<>();
 
-    public LinkedHashMap<EntityPlayer, BonusData> bonusData = new LinkedHashMap<>();
-
+    private LinkedHashMap<EntityPlayer, BonusData> bonusData = new LinkedHashMap<>();
 
     public static void saveDiscoveries(EntityPlayer player)
     {
@@ -70,13 +66,52 @@ public class Bonus
 
     public static void loadDiscoveries(EntityPlayer player)
     {
-        //TODO
-    }
+        World world = player.world;
+        if (!world.isRemote)
+        {
+            try
+            {
+                String string = MCTools.getDataDir(world.getMinecraftServer()) + SetBonus.MODID + File.separator;
+                File file = new File(string);
+                if (!file.exists()) return;
 
+                string += "discoveries" + File.separator;
+                file = new File(string);
+                if (!file.exists()) return;
+
+                string += player.getCachedUniqueIdString() + ".txt";
+                file = new File(string);
+                if (!file.exists()) return;
+
+                BufferedReader reader = new BufferedReader(new FileReader(file));
+
+                string = reader.readLine();
+                while (string != null && !string.equals(""))
+                {
+                    Bonus bonus = Bonus.bonusMap.get(string);
+                    if (bonus != null)
+                    {
+                        bonus.getData(player).identified = true;
+                    }
+                    string = reader.readLine();
+                }
+
+                reader.close();
+            }
+            catch (IOException e)
+            {
+                MCTools.crash(e, 901, false);
+            }
+        }
+
+        //To remove the saved discovery of any removed bonuses
+        saveDiscoveries(player);
+    }
 
     public static void dropAll()
     {
         //Needs to be done right before new configs are applied, to remove any eg. potion effects (because they might not be part of the bonus anymore)
+        //Also called when a server is stopping, to remove any bonuses on players before they get unloaded, in case said bonuses don't exist next time the server starts due to config changes
         for (Bonus bonus : bonusMap.values())
         {
             for (BonusData data : bonus.bonusData.values()) data.update(false);
@@ -99,6 +134,11 @@ public class Bonus
         for (Bonus bonus : bonusMap.values()) bonus.update(player);
     }
 
+    public BonusData getData(EntityPlayer player)
+    {
+        BonusData result = bonusData.computeIfAbsent(player, k -> new BonusData(player));
+        return result;
+    }
 
     public void update(EntityPlayer player)
     {
