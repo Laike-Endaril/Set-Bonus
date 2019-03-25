@@ -17,20 +17,12 @@ import java.util.Map;
 
 public class BonusData
 {
-    public static int
-            MODE_DISCOVERABLE = 0,
-            MODE_IDENTIFIABLE = 1,
-            MODE_GLOBALLY_KNOWN = 2;
-
-
-    public String name;
-    public int discoveryMode;
     public LinkedHashMap<SetData, Integer> setRequirements = new LinkedHashMap<>();
     public LinkedHashMap<String, DoubleRequirement> attributeRequirements = new LinkedHashMap<>();
     public Multimap<String, AttributeModifier> modifiers = ArrayListMultimap.create();
     public ArrayList<PotionEffect> potions = new ArrayList<>();
 
-    private LinkedHashMap<EntityPlayer, BonusInstance> bonusData = new LinkedHashMap<>();
+    private LinkedHashMap<EntityPlayer, BonusInstance> instances = new LinkedHashMap<>();
 
     public static void saveDiscoveries(EntityPlayer player)
     {
@@ -51,9 +43,9 @@ public class BonusData
                 file = new File(string);
                 BufferedWriter writer = new BufferedWriter(new FileWriter(file));
 
-                for (Map.Entry<String, BonusData> entry : Data.bonuses.entrySet())
+                for (Map.Entry<String, Bonus> entry : Data.bonuses.entrySet())
                 {
-                    BonusInstance data = entry.getValue().bonusData.get(player);
+                    BonusInstance data = entry.getValue().data.instances.get(player);
                     if (data != null && data.identified) writer.write(entry.getKey());
                 }
 
@@ -90,10 +82,10 @@ public class BonusData
                 string = reader.readLine();
                 while (string != null && !string.equals(""))
                 {
-                    BonusData bonusData = Data.bonuses.get(string);
-                    if (bonusData != null)
+                    Bonus bonus = Data.bonuses.get(string);
+                    if (bonus != null)
                     {
-                        bonusData.getData(player).identified = true;
+                        bonus.data.getInstance(player).identified = true;
                     }
                     string = reader.readLine();
                 }
@@ -114,18 +106,18 @@ public class BonusData
     {
         //Needs to be done right before new configs are applied, to remove any eg. potion effects (because they might not be part of the bonus anymore)
         //Also called when a server is stopping, to remove any bonuses on players before they get unloaded, in case said bonuses don't exist next time the server starts due to config changes
-        for (BonusData bonusData : Data.bonuses.values())
+        for (Bonus bonus : Data.bonuses.values())
         {
-            for (BonusInstance data : bonusData.bonusData.values()) data.update(false);
+            for (BonusInstance data : bonus.data.instances.values()) data.update(false);
         }
         Data.bonuses.clear();
     }
 
     public static void deactivateBonuses(EntityPlayer player)
     {
-        for (BonusData bonusData : Data.bonuses.values())
+        for (Bonus bonus : Data.bonuses.values())
         {
-            BonusInstance data = bonusData.bonusData.get(player);
+            BonusInstance data = bonus.data.instances.get(player);
             if (data != null) data.update(false);
         }
     }
@@ -133,18 +125,18 @@ public class BonusData
     public static void updateBonuses(EntityPlayer player)
     {
         //Happens once per second on player tick event
-        for (BonusData bonusData : Data.bonuses.values()) bonusData.update(player);
+        for (Bonus bonus : Data.bonuses.values()) bonus.data.update(player);
     }
 
-    public BonusInstance getData(EntityPlayer player)
+    public BonusInstance getInstance(EntityPlayer player)
     {
-        BonusInstance result = bonusData.computeIfAbsent(player, k -> new BonusInstance(player));
+        BonusInstance result = instances.computeIfAbsent(player, k -> new BonusInstance(player));
         return result;
     }
 
     public void update(EntityPlayer player)
     {
-        BonusInstance data = bonusData.computeIfAbsent(player, k -> new BonusInstance(player));
+        BonusInstance data = instances.computeIfAbsent(player, k -> new BonusInstance(player));
 
         for (Map.Entry<SetData, Integer> entry : setRequirements.entrySet())
         {

@@ -2,6 +2,7 @@ package com.fantasticsource.setbonus.client;
 
 import com.fantasticsource.mctools.items.ItemFilter;
 import com.fantasticsource.setbonus.SetBonus;
+import com.fantasticsource.setbonus.common.Bonus;
 import com.fantasticsource.setbonus.common.BonusData;
 import com.fantasticsource.setbonus.common.Data;
 import com.fantasticsource.setbonus.common.Set;
@@ -43,13 +44,13 @@ public class TooltipRenderer
                     int max = set.data.getMaxNumber();
                     String color = "" + (count == 0 ? RED : count == max ? GREEN : YELLOW);
                     tooltip.add(color + BOLD + "=== " + set.name + " (" + count + "/" + max + ") ===");
-                    for (BonusData bonusData : Data.bonuses.values())
+                    for (Bonus bonus : Data.bonuses.values())
                     {
-                        if (bonusData.setRequirements.keySet().contains(set.data))
+                        if (bonus.data.setRequirements.keySet().contains(set.data))
                         {
-                            BonusData.BonusInstance bonusInstance = bonusData.getData(player);
+                            BonusData.BonusInstance bonusInstance = bonus.data.getInstance(player);
                             color = "" + (bonusInstance != null && bonusInstance.active ? GREEN : RED);
-                            tooltip.add(color + " " + bonusData.name);
+                            tooltip.add(color + " " + bonus.name);
                         }
                     }
                     tooltip.add("");
