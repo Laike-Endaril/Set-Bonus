@@ -4,7 +4,7 @@ import com.fantasticsource.mctools.items.ItemFilter;
 import com.fantasticsource.setbonus.SetBonus;
 import com.fantasticsource.setbonus.common.Bonus;
 import com.fantasticsource.setbonus.common.Data;
-import com.fantasticsource.setbonus.common.SetData;
+import com.fantasticsource.setbonus.common.Set;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
@@ -26,9 +26,9 @@ public class TooltipRenderer
         List<String> tooltip = event.getToolTip();
 
         boolean edited = false;
-        for (SetData set : Data.sets.values())
+        for (Set set : Data.sets.values())
         {
-            for (ItemFilter filter : set.involvedEquips.values())
+            for (ItemFilter filter : set.data.involvedEquips.values())
             {
                 if (filter.matches(event.getItemStack()))
                 {
@@ -39,16 +39,16 @@ public class TooltipRenderer
                         tooltip.add("" + LIGHT_PURPLE + UNDERLINE + I18n.format(SetBonus.MODID + ".tooltip.pressDetailKey"));
                         tooltip.add("");
                     }
-                    int count = set.getNumberEquipped(player);
-                    int max = set.getMaxNumber();
+                    int count = set.data.getNumberEquipped(player);
+                    int max = set.data.getMaxNumber();
                     String color = "" + (count == 0 ? RED : count == max ? GREEN : YELLOW);
                     tooltip.add(color + BOLD + "=== " + set.name + " (" + count + "/" + max + ") ===");
-                    for (Bonus bonus : Bonus.bonusMap.values())
+                    for (Bonus bonus : Data.bonuses.values())
                     {
-                        if (bonus.setRequirements.keySet().contains(set))
+                        if (bonus.setRequirements.keySet().contains(set.data))
                         {
-                            Bonus.BonusData bonusData = bonus.getData(player);
-                            color = "" + (bonusData != null && bonusData.active ? GREEN : RED);
+                            Bonus.BonusInstance bonusInstance = bonus.getData(player);
+                            color = "" + (bonusInstance != null && bonusInstance.active ? GREEN : RED);
                             tooltip.add(color + " " + bonus.name);
                         }
                     }

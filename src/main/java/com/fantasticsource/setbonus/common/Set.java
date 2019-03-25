@@ -7,8 +7,8 @@ import java.util.Arrays;
 
 public class Set
 {
-    String parsedString, id, name;
-    SetData data;
+    public String parsedString, id, name;
+    public SetData data;
 
     private Set()
     {

@@ -30,7 +30,7 @@ public class Bonus
     public Multimap<String, AttributeModifier> modifiers = ArrayListMultimap.create();
     public ArrayList<PotionEffect> potions = new ArrayList<>();
 
-    private LinkedHashMap<EntityPlayer, BonusData> bonusData = new LinkedHashMap<>();
+    private LinkedHashMap<EntityPlayer, BonusInstance> bonusData = new LinkedHashMap<>();
 
     public static void saveDiscoveries(EntityPlayer player)
     {
@@ -53,7 +53,7 @@ public class Bonus
 
                 for (Map.Entry<String, Bonus> entry : Data.bonuses.entrySet())
                 {
-                    BonusData data = entry.getValue().bonusData.get(player);
+                    BonusInstance data = entry.getValue().bonusData.get(player);
                     if (data != null && data.identified) writer.write(entry.getKey());
                 }
 
@@ -116,7 +116,7 @@ public class Bonus
         //Also called when a server is stopping, to remove any bonuses on players before they get unloaded, in case said bonuses don't exist next time the server starts due to config changes
         for (Bonus bonus : Data.bonuses.values())
         {
-            for (BonusData data : bonus.bonusData.values()) data.update(false);
+            for (BonusInstance data : bonus.bonusData.values()) data.update(false);
         }
         Data.bonuses.clear();
     }
@@ -125,7 +125,7 @@ public class Bonus
     {
         for (Bonus bonus : Data.bonuses.values())
         {
-            BonusData data = bonus.bonusData.get(player);
+            BonusInstance data = bonus.bonusData.get(player);
             if (data != null) data.update(false);
         }
     }
@@ -136,15 +136,15 @@ public class Bonus
         for (Bonus bonus : Data.bonuses.values()) bonus.update(player);
     }
 
-    public BonusData getData(EntityPlayer player)
+    public BonusInstance getData(EntityPlayer player)
     {
-        BonusData result = bonusData.computeIfAbsent(player, k -> new BonusData(player));
+        BonusInstance result = bonusData.computeIfAbsent(player, k -> new BonusInstance(player));
         return result;
     }
 
     public void update(EntityPlayer player)
     {
-        BonusData data = bonusData.computeIfAbsent(player, k -> new BonusData(player));
+        BonusInstance data = bonusData.computeIfAbsent(player, k -> new BonusInstance(player));
 
         for (Map.Entry<SetData, Integer> entry : setRequirements.entrySet())
         {
@@ -174,13 +174,13 @@ public class Bonus
     }
 
 
-    public class BonusData
+    public class BonusInstance
     {
         public boolean active, identified;
         EntityPlayer player;
 
 
-        public BonusData(EntityPlayer player)
+        public BonusInstance(EntityPlayer player)
         {
             this.player = player;
 
