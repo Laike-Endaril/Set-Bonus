@@ -18,6 +18,7 @@ public class Data
 {
     public static LinkedHashMap<String, Equip> equipment = null;
     public static LinkedHashMap<String, Set> sets;
+    public static LinkedHashMap<String, Bonus> bonuses = new LinkedHashMap<>();
 
     public static ArrayList<EntityPlayer> players = new ArrayList<>();
 
@@ -132,7 +133,7 @@ public class Data
                 break;
             }
 
-            if (success) Bonus.bonusMap.put(tokens[0].trim(), bonus);
+            if (success) Data.bonuses.put(tokens[0].trim(), bonus);
         }
 
 
@@ -146,7 +147,7 @@ public class Data
                 continue;
             }
 
-            Bonus bonus = Bonus.bonusMap.get(tokens[0].trim());
+            Bonus bonus = Data.bonuses.get(tokens[0].trim());
             if (bonus == null)
             {
                 System.err.println(I18n.format(SetBonus.MODID + ".error.attribBonusIDNotFound", tokens[0].trim(), attribString));
@@ -173,7 +174,7 @@ public class Data
                 continue;
             }
 
-            Bonus bonus = Bonus.bonusMap.get(tokens[0].trim());
+            Bonus bonus = Data.bonuses.get(tokens[0].trim());
             if (bonus == null)
             {
                 System.err.println(I18n.format(SetBonus.MODID + ".error.potionBonusIDNotFound", tokens[0].trim(), potionString));
