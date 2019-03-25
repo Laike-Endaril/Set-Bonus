@@ -1,9 +1,9 @@
 package com.fantasticsource.setbonus.client;
 
 import com.fantasticsource.mctools.items.ItemFilter;
+import com.fantasticsource.setbonus.SetBonus;
 import com.fantasticsource.setbonus.common.Bonus;
 import com.fantasticsource.setbonus.common.Data;
-import com.fantasticsource.setbonus.common.SetBonus;
 import com.fantasticsource.setbonus.common.SetData;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;

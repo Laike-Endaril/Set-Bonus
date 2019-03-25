@@ -4,6 +4,7 @@ import baubles.api.BaubleType;
 import baubles.api.BaublesApi;
 import baubles.api.cap.IBaublesItemHandler;
 import com.fantasticsource.mctools.items.ItemFilter;
+import com.fantasticsource.setbonus.SetBonus;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -14,7 +15,7 @@ import java.util.LinkedHashMap;
 public class SlotData
 {
     public ArrayList<Integer> slots = new ArrayList<>(); //Because multiple slot options can be defined
-    public ArrayList<ItemFilter> equipment = new ArrayList<>();
+    public ArrayList<ItemFilter> involvedItems = new ArrayList<>();
 
 
     private SlotData()
@@ -101,15 +102,15 @@ public class SlotData
         for (String equipString : tokens[1].split("[|]"))
         {
             equipString = equipString.trim();
-            ItemFilter filter = Data.equipment.get(equipString);
-            if (filter == null)
+            Equip equip = Data.equipment.get(equipString);
+            if (equip == null)
             {
                 System.err.println(I18n.format(SetBonus.MODID + ".error.slotBadEquipID", equipString, slotsAndEquipment));
                 return null;
             }
 
-            result.equipment.add(filter);
-            setdataEquipIDTracker.put(equipString, filter);
+            result.involvedItems.add(equip.filter);
+            setdataEquipIDTracker.put(equipString, equip.filter);
         }
 
 
@@ -133,7 +134,7 @@ public class SlotData
             {
                 //Vanilla slot
                 IInventory inv = player.inventory;
-                for (ItemFilter filter : equipment)
+                for (ItemFilter filter : involvedItems)
                 {
                     if (filter.matches(inv.getStackInSlot(slot))) return slot;
                 }
@@ -142,7 +143,7 @@ public class SlotData
             {
                 //Numbered baubles slot
                 IBaublesItemHandler handler = BaublesApi.getBaublesHandler(player);
-                for (ItemFilter filter : equipment)
+                for (ItemFilter filter : involvedItems)
                 {
                     if (filter.matches(handler.getStackInSlot(slot - Integer.MIN_VALUE - 1))) return slot;
                 }

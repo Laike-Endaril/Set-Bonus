@@ -1,5 +1,6 @@
 package com.fantasticsource.setbonus.common;
 
+import com.fantasticsource.setbonus.SetBonus;
 import com.fantasticsource.setbonus.config.SyncedConfig;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;

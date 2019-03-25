@@ -1,6 +1,7 @@
 package com.fantasticsource.setbonus.common;
 
 import com.fantasticsource.mctools.MCTools;
+import com.fantasticsource.setbonus.SetBonus;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;

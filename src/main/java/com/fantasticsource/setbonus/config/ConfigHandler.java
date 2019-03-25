@@ -1,6 +1,6 @@
 package com.fantasticsource.setbonus.config;
 
-import com.fantasticsource.setbonus.common.SetBonus;
+import com.fantasticsource.setbonus.SetBonus;
 
 public class ConfigHandler
 {

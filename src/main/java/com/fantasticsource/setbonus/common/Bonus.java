@@ -1,6 +1,7 @@
 package com.fantasticsource.setbonus.common;
 
 import com.fantasticsource.mctools.MCTools;
+import com.fantasticsource.setbonus.SetBonus;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.entity.ai.attributes.AttributeModifier;

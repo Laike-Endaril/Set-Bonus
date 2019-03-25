@@ -1,8 +1,12 @@
-package com.fantasticsource.setbonus.common;
+package com.fantasticsource.setbonus;
 
 import com.fantasticsource.mctools.MCTools;
 import com.fantasticsource.mctools.ServerTickTimer;
 import com.fantasticsource.setbonus.client.TooltipRenderer;
+import com.fantasticsource.setbonus.common.Bonus;
+import com.fantasticsource.setbonus.common.Commands;
+import com.fantasticsource.setbonus.common.Data;
+import com.fantasticsource.setbonus.common.Network;
 import com.fantasticsource.setbonus.config.SyncedConfig;
 import com.fantasticsource.tools.Tools;
 import net.minecraft.client.Minecraft;

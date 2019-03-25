@@ -1,8 +1,8 @@
 package com.fantasticsource.setbonus.common;
 
 import com.fantasticsource.mctools.attributes.AttributeMods;
-import com.fantasticsource.mctools.items.ItemFilter;
 import com.fantasticsource.mctools.potions.Potions;
+import com.fantasticsource.setbonus.SetBonus;
 import com.fantasticsource.setbonus.config.SyncedConfig;
 import com.fantasticsource.tools.datastructures.Pair;
 import net.minecraft.client.resources.I18n;
@@ -16,7 +16,7 @@ import java.util.LinkedHashMap;
 
 public class Data
 {
-    public static LinkedHashMap<String, ItemFilter> equipment = null;
+    public static LinkedHashMap<String, Equip> equipment = null;
     public static LinkedHashMap<String, SetData> sets;
 
     public static ArrayList<EntityPlayer> players = new ArrayList<>();
@@ -34,22 +34,8 @@ public class Data
         //Initialize equipment
         for (String equipString : SyncedConfig.equipment)
         {
-            String[] tokens = equipString.split(",");
-            if (tokens.length != 2)
-            {
-                System.err.println(I18n.format(SetBonus.MODID + ".error.equipArgCount", equipString));
-                continue;
-            }
-
-            String id = tokens[0].trim();
-            if (id.equals(""))
-            {
-                System.err.println(I18n.format(SetBonus.MODID + ".error.noEquipID", equipString));
-                continue;
-            }
-
-            ItemFilter filter = ItemFilter.getInstance(tokens[1]);
-            if (filter != null) equipment.put(id, filter);
+            Equip equip = Equip.getInstance(equipString);
+            if (equip != null) equipment.put(equip.id, equip);
         }
 
 
