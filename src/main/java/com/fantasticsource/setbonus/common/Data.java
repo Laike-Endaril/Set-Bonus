@@ -18,7 +18,7 @@ public class Data
 {
     public static LinkedHashMap<String, Equip> equipment = null;
     public static LinkedHashMap<String, Set> sets;
-    public static LinkedHashMap<String, Bonus> bonuses = new LinkedHashMap<>();
+    public static LinkedHashMap<String, BonusData> bonuses = new LinkedHashMap<>();
 
     public static ArrayList<EntityPlayer> players = new ArrayList<>();
 
@@ -26,7 +26,7 @@ public class Data
     public static void update()
     {
         //Clear any existing data
-        Bonus.dropAll();
+        BonusData.dropAll();
         equipment = new LinkedHashMap<>();
         sets = new LinkedHashMap<>();
         players.clear();
@@ -65,19 +65,19 @@ public class Data
                 continue;
             }
 
-            Bonus bonus = new Bonus();
-            bonus.name = tokens[1].trim();
+            BonusData bonusData = new BonusData();
+            bonusData.name = tokens[1].trim();
 
             try
             {
-                bonus.discoveryMode = Integer.parseInt(tokens[2].trim());
+                bonusData.discoveryMode = Integer.parseInt(tokens[2].trim());
             }
             catch (NumberFormatException e)
             {
                 System.err.println(I18n.format(SetBonus.MODID + ".error.bonusDiscoveryMode", bonusString));
                 continue;
             }
-            if (bonus.discoveryMode < 0 || bonus.discoveryMode > 3)
+            if (bonusData.discoveryMode < 0 || bonusData.discoveryMode > 3)
             {
                 System.err.println(I18n.format(SetBonus.MODID + ".error.bonusDiscoveryMode", bonusString));
                 continue;
@@ -94,7 +94,7 @@ public class Data
                     if (tokens2.length == 1)
                     {
                         //Full set
-                        bonus.setRequirements.put(set.data, set.data.getMaxNumber());
+                        bonusData.setRequirements.put(set.data, set.data.getMaxNumber());
                     }
                     else
                     {
@@ -102,7 +102,7 @@ public class Data
                         try
                         {
                             int num = Integer.parseInt(tokens2[1].trim());
-                            if (num > 0) bonus.setRequirements.put(set.data, num);
+                            if (num > 0) bonusData.setRequirements.put(set.data, num);
                         }
                         catch (NumberFormatException e)
                         {
@@ -122,7 +122,7 @@ public class Data
 
                     //For now, attributes are the only type of DoubleRequirement, so use this as one
                     //Attributes don't have a registry, and can't really be checked ahead of time, so any malformed strings here will end up as "valid" attribute checks; beware!
-                    bonus.attributeRequirements.put(pair.getKey(), pair.getValue());
+                    bonusData.attributeRequirements.put(pair.getKey(), pair.getValue());
 
                     continue;
                 }
@@ -133,7 +133,7 @@ public class Data
                 break;
             }
 
-            if (success) Data.bonuses.put(tokens[0].trim(), bonus);
+            if (success) Data.bonuses.put(tokens[0].trim(), bonusData);
         }
 
 
@@ -147,8 +147,8 @@ public class Data
                 continue;
             }
 
-            Bonus bonus = Data.bonuses.get(tokens[0].trim());
-            if (bonus == null)
+            BonusData bonusData = Data.bonuses.get(tokens[0].trim());
+            if (bonusData == null)
             {
                 System.err.println(I18n.format(SetBonus.MODID + ".error.attribBonusIDNotFound", tokens[0].trim(), attribString));
                 continue;
@@ -159,7 +159,7 @@ public class Data
 
             for (AttributeModifier modifier : modifiers)
             {
-                bonus.modifiers.put(modifier.getName(), modifier.setSaved(false));
+                bonusData.modifiers.put(modifier.getName(), modifier.setSaved(false));
             }
         }
 
@@ -174,8 +174,8 @@ public class Data
                 continue;
             }
 
-            Bonus bonus = Data.bonuses.get(tokens[0].trim());
-            if (bonus == null)
+            BonusData bonusData = Data.bonuses.get(tokens[0].trim());
+            if (bonusData == null)
             {
                 System.err.println(I18n.format(SetBonus.MODID + ".error.potionBonusIDNotFound", tokens[0].trim(), potionString));
                 continue;
@@ -184,7 +184,7 @@ public class Data
             ArrayList<PotionEffect> potions = Potions.parsePotions(Arrays.copyOfRange(tokens, 1, tokens.length), true);
             if (potions == null) continue;
 
-            bonus.potions.addAll(potions);
+            bonusData.potions.addAll(potions);
         }
     }
 }

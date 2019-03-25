@@ -3,7 +3,7 @@ package com.fantasticsource.setbonus;
 import com.fantasticsource.mctools.MCTools;
 import com.fantasticsource.mctools.ServerTickTimer;
 import com.fantasticsource.setbonus.client.TooltipRenderer;
-import com.fantasticsource.setbonus.common.Bonus;
+import com.fantasticsource.setbonus.common.BonusData;
 import com.fantasticsource.setbonus.common.Commands;
 import com.fantasticsource.setbonus.common.Data;
 import com.fantasticsource.setbonus.common.Network;
@@ -70,7 +70,7 @@ public class SetBonus
     @EventHandler
     public static void serverStop(FMLServerStoppingEvent event)
     {
-        Bonus.dropAll();
+        BonusData.dropAll();
     }
 
     @SubscribeEvent
@@ -120,7 +120,7 @@ public class SetBonus
 
             if (Tools.posMod(ServerTickTimer.currentTick(), 20) == Tools.posMod(player.getUniqueID().getLeastSignificantBits(), 20))
             {
-                Bonus.updateBonuses(player);
+                BonusData.updateBonuses(player);
             }
         }
     }
@@ -132,8 +132,8 @@ public class SetBonus
         if (entity instanceof EntityPlayerMP && !event.getWorld().isRemote)
         {
             EntityPlayerMP player = (EntityPlayerMP) entity;
-            Bonus.loadDiscoveries(player);
-            Bonus.updateBonuses(player);
+            BonusData.loadDiscoveries(player);
+            BonusData.updateBonuses(player);
             SyncedConfig.sendConfig(player);
         }
     }
@@ -141,7 +141,7 @@ public class SetBonus
     @SubscribeEvent
     public static void playerDisconnect(PlayerEvent.PlayerLoggedOutEvent event)
     {
-        Bonus.deactivateBonuses(event.player);
+        BonusData.deactivateBonuses(event.player);
     }
 
     @SubscribeEvent

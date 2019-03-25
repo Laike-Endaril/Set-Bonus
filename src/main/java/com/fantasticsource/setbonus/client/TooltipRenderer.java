@@ -2,7 +2,7 @@ package com.fantasticsource.setbonus.client;
 
 import com.fantasticsource.mctools.items.ItemFilter;
 import com.fantasticsource.setbonus.SetBonus;
-import com.fantasticsource.setbonus.common.Bonus;
+import com.fantasticsource.setbonus.common.BonusData;
 import com.fantasticsource.setbonus.common.Data;
 import com.fantasticsource.setbonus.common.Set;
 import net.minecraft.client.resources.I18n;
@@ -43,13 +43,13 @@ public class TooltipRenderer
                     int max = set.data.getMaxNumber();
                     String color = "" + (count == 0 ? RED : count == max ? GREEN : YELLOW);
                     tooltip.add(color + BOLD + "=== " + set.name + " (" + count + "/" + max + ") ===");
-                    for (Bonus bonus : Data.bonuses.values())
+                    for (BonusData bonusData : Data.bonuses.values())
                     {
-                        if (bonus.setRequirements.keySet().contains(set.data))
+                        if (bonusData.setRequirements.keySet().contains(set.data))
                         {
-                            Bonus.BonusInstance bonusInstance = bonus.getData(player);
+                            BonusData.BonusInstance bonusInstance = bonusData.getData(player);
                             color = "" + (bonusInstance != null && bonusInstance.active ? GREEN : RED);
-                            tooltip.add(color + " " + bonus.name);
+                            tooltip.add(color + " " + bonusData.name);
                         }
                     }
                     tooltip.add("");

@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class Bonus
+public class BonusData
 {
     public static int
             MODE_DISCOVERABLE = 0,
@@ -51,7 +51,7 @@ public class Bonus
                 file = new File(string);
                 BufferedWriter writer = new BufferedWriter(new FileWriter(file));
 
-                for (Map.Entry<String, Bonus> entry : Data.bonuses.entrySet())
+                for (Map.Entry<String, BonusData> entry : Data.bonuses.entrySet())
                 {
                     BonusInstance data = entry.getValue().bonusData.get(player);
                     if (data != null && data.identified) writer.write(entry.getKey());
@@ -90,10 +90,10 @@ public class Bonus
                 string = reader.readLine();
                 while (string != null && !string.equals(""))
                 {
-                    Bonus bonus = Data.bonuses.get(string);
-                    if (bonus != null)
+                    BonusData bonusData = Data.bonuses.get(string);
+                    if (bonusData != null)
                     {
-                        bonus.getData(player).identified = true;
+                        bonusData.getData(player).identified = true;
                     }
                     string = reader.readLine();
                 }
@@ -114,18 +114,18 @@ public class Bonus
     {
         //Needs to be done right before new configs are applied, to remove any eg. potion effects (because they might not be part of the bonus anymore)
         //Also called when a server is stopping, to remove any bonuses on players before they get unloaded, in case said bonuses don't exist next time the server starts due to config changes
-        for (Bonus bonus : Data.bonuses.values())
+        for (BonusData bonusData : Data.bonuses.values())
         {
-            for (BonusInstance data : bonus.bonusData.values()) data.update(false);
+            for (BonusInstance data : bonusData.bonusData.values()) data.update(false);
         }
         Data.bonuses.clear();
     }
 
     public static void deactivateBonuses(EntityPlayer player)
     {
-        for (Bonus bonus : Data.bonuses.values())
+        for (BonusData bonusData : Data.bonuses.values())
         {
-            BonusInstance data = bonus.bonusData.get(player);
+            BonusInstance data = bonusData.bonusData.get(player);
             if (data != null) data.update(false);
         }
     }
@@ -133,7 +133,7 @@ public class Bonus
     public static void updateBonuses(EntityPlayer player)
     {
         //Happens once per second on player tick event
-        for (Bonus bonus : Data.bonuses.values()) bonus.update(player);
+        for (BonusData bonusData : Data.bonuses.values()) bonusData.update(player);
     }
 
     public BonusInstance getData(EntityPlayer player)
