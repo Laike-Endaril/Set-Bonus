@@ -1,14 +1,12 @@
 package com.fantasticsource.setbonus.common;
 
-import com.fantasticsource.mctools.potions.Potions;
-import com.fantasticsource.setbonus.SetBonus;
+import com.fantasticsource.setbonus.common.bonuselements.BonusElement;
+import com.fantasticsource.setbonus.common.bonuselements.ModifierBonus;
+import com.fantasticsource.setbonus.common.bonuselements.PotionBonus;
 import com.fantasticsource.setbonus.config.SyncedConfig;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.potion.PotionEffect;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedHashMap;
 
 public class Data
@@ -18,7 +16,7 @@ public class Data
 
     public static LinkedHashMap<String, Bonus> bonuses = new LinkedHashMap<>();
 
-    public static LinkedHashMap<ModifierBonus, Bonus> modifierBonuses = new LinkedHashMap<>();
+    public static LinkedHashMap<BonusElement, Bonus> bonusElements = new LinkedHashMap<>();
 
 
     public static ArrayList<EntityPlayer> players = new ArrayList<>();
@@ -60,32 +58,16 @@ public class Data
         //Initialize attribute modifiers
         for (String modifierString : SyncedConfig.attributeMods)
         {
-            ModifierBonus modifierBonus = ModifierBonus.getInstance(modifierString);
-            if (modifierBonus != null) modifierBonuses.put(modifierBonus, modifierBonus.bonus);
+            BonusElement bonusElement = ModifierBonus.getInstance(modifierString);
+            if (bonusElement != null) bonusElements.put(bonusElement, bonusElement.bonus);
         }
 
 
         //Initialize potions
         for (String potionString : SyncedConfig.potions)
         {
-            String[] tokens = potionString.split(",");
-            if (tokens.length < 2)
-            {
-                System.err.println(I18n.format(SetBonus.MODID + ".error.notEnoughPotionBonusArgs", potionString));
-                continue;
-            }
-
-            Bonus bonus = Data.bonuses.get(tokens[0].trim());
-            if (bonus == null)
-            {
-                System.err.println(I18n.format(SetBonus.MODID + ".error.potionBonusIDNotFound", tokens[0].trim(), potionString));
-                continue;
-            }
-
-            ArrayList<PotionEffect> potions = Potions.parsePotions(Arrays.copyOfRange(tokens, 1, tokens.length), true);
-            if (potions == null) continue;
-
-            bonus.data.potions.addAll(potions);
+            BonusElement bonusElement = PotionBonus.getInstance(potionString);
+            if (bonusElement != null) bonusElements.put(bonusElement, bonusElement.bonus);
         }
     }
 }

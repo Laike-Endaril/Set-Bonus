@@ -6,8 +6,8 @@ import net.minecraft.client.resources.I18n;
 
 public class Equip
 {
-    String parsedString, id;
-    ItemFilter filter;
+    public String parsedString, id;
+    public ItemFilter filter;
 
     private Equip()
     {
