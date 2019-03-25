@@ -1,9 +1,9 @@
 package com.fantasticsource.setbonus.common;
 
+import com.fantasticsource.mctools.DoubleRequirement;
 import com.fantasticsource.mctools.MCTools;
 import com.fantasticsource.setbonus.SetBonus;
 import com.fantasticsource.setbonus.common.bonuselements.ABonusElement;
-import com.fantasticsource.setbonus.common.bonusrequirements.DoubleRequirement;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.SetData;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
