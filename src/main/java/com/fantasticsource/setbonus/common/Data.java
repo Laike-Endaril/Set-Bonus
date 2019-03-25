@@ -1,8 +1,9 @@
 package com.fantasticsource.setbonus.common;
 
-import com.fantasticsource.setbonus.common.bonuselements.ABonusElement;
 import com.fantasticsource.setbonus.common.bonuselements.ModifierBonus;
 import com.fantasticsource.setbonus.common.bonuselements.PotionBonus;
+import com.fantasticsource.setbonus.common.bonusrequirements.Equip;
+import com.fantasticsource.setbonus.common.bonusrequirements.Set;
 import com.fantasticsource.setbonus.config.SyncedConfig;
 import net.minecraft.entity.player.EntityPlayer;
 
@@ -15,8 +16,6 @@ public class Data
     public static LinkedHashMap<String, Set> sets;
 
     public static LinkedHashMap<String, Bonus> bonuses = new LinkedHashMap<>();
-
-    public static LinkedHashMap<ABonusElement, Bonus> bonusElements = new LinkedHashMap<>();
 
 
     public static ArrayList<EntityPlayer> players = new ArrayList<>();
@@ -58,16 +57,14 @@ public class Data
         //Initialize attribute modifiers
         for (String modifierString : SyncedConfig.attributeMods)
         {
-            ABonusElement bonusElement = ModifierBonus.getInstance(modifierString);
-            if (bonusElement != null) bonusElements.put(bonusElement, bonusElement.bonus);
+            ModifierBonus.getInstance(modifierString);
         }
 
 
         //Initialize potions
         for (String potionString : SyncedConfig.potions)
         {
-            ABonusElement bonusElement = PotionBonus.getInstance(potionString);
-            if (bonusElement != null) bonusElements.put(bonusElement, bonusElement.bonus);
+            PotionBonus.getInstance(potionString);
         }
     }
 }

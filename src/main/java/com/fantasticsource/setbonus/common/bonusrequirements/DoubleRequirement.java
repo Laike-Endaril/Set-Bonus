@@ -1,4 +1,4 @@
-package com.fantasticsource.setbonus.common;
+package com.fantasticsource.setbonus.common.bonusrequirements;
 
 import com.fantasticsource.tools.datastructures.Pair;
 

@@ -1,5 +1,3 @@
-Store config strings in all objects
-
 Implement discovery system; only send discovered bonuses to clients...
 ...0 = Discoverable - invisible to clients until they activate it for the first time
 ...1 = Identifiable - always visible to clients, but obfuscated until they activate it for the first time

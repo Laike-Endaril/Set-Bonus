@@ -5,7 +5,7 @@ import com.fantasticsource.setbonus.SetBonus;
 import com.fantasticsource.setbonus.common.Bonus;
 import com.fantasticsource.setbonus.common.BonusData;
 import com.fantasticsource.setbonus.common.Data;
-import com.fantasticsource.setbonus.common.Set;
+import com.fantasticsource.setbonus.common.bonusrequirements.Set;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;

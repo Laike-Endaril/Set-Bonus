@@ -1,4 +1,4 @@
-package com.fantasticsource.setbonus.common;
+package com.fantasticsource.setbonus.common.bonusrequirements;
 
 import com.fantasticsource.setbonus.SetBonus;
 import net.minecraft.client.resources.I18n;

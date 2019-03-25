@@ -1,10 +1,11 @@
-package com.fantasticsource.setbonus.common;
+package com.fantasticsource.setbonus.common.bonusrequirements;
 
 import baubles.api.BaubleType;
 import baubles.api.BaublesApi;
 import baubles.api.cap.IBaublesItemHandler;
 import com.fantasticsource.mctools.items.ItemFilter;
 import com.fantasticsource.setbonus.SetBonus;
+import com.fantasticsource.setbonus.common.Data;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
