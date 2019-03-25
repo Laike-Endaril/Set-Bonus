@@ -1,5 +1,6 @@
 package com.fantasticsource.setbonus.common;
 
+import com.fantasticsource.mctools.MCTools;
 import com.fantasticsource.mctools.ServerTickTimer;
 import com.fantasticsource.setbonus.client.TooltipRenderer;
 import com.fantasticsource.setbonus.config.SyncedConfig;
@@ -8,6 +9,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
@@ -21,7 +23,9 @@ import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static net.minecraftforge.fml.common.Mod.EventHandler;
 
@@ -39,7 +43,6 @@ public class SetBonus
         Network.init();
 
         MinecraftForge.EVENT_BUS.register(SetBonus.class);
-        MinecraftForge.EVENT_BUS.register(SyncedConfig.class);
         MinecraftForge.EVENT_BUS.register(ServerTickTimer.class);
 
         if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
@@ -67,15 +70,41 @@ public class SetBonus
     }
 
     @SubscribeEvent
+    @SideOnly(Side.CLIENT)
     public static void saveConfig(ConfigChangedEvent.OnConfigChangedEvent event)
     {
         if (event.getModID().equals(MODID)) ConfigManager.sync(MODID, Config.Type.INSTANCE);
     }
 
     @SubscribeEvent
+    @SideOnly(Side.CLIENT)
     public static void calcConfigs(ConfigChangedEvent.PostConfigChangedEvent event)
     {
-        if (event.getModID().equals(MODID) && Minecraft.getMinecraft().player != null) Data.update();
+        //Only auto-update data from configs if we are on the title screen OR if we are hosting the world
+        if (event.isWorldRunning())
+        {
+            if (MCTools.hosting())
+            {
+                //Changed config while in-game (hosting)
+                SyncedConfig.reloadFromConfig();
+
+                EntityPlayer localPlayer = Minecraft.getMinecraft().player;
+                World world = localPlayer.world;
+                for (EntityPlayer player : world.playerEntities)
+                {
+                    if (player != localPlayer) SyncedConfig.sendConfig((EntityPlayerMP) player);
+                }
+            }
+            else
+            {
+                //Changed config while in-game (not hosting)
+            }
+        }
+        else
+        {
+            //Changed config from title screen
+            SyncedConfig.reloadFromConfig();
+        }
     }
 
     @SubscribeEvent
@@ -109,6 +138,12 @@ public class SetBonus
     public static void playerDisconnect(PlayerEvent.PlayerLoggedOutEvent event)
     {
         Bonus.deactivateBonuses(event.player);
+    }
+
+    @SubscribeEvent
+    public static void disconnectFromServer(FMLNetworkEvent.ClientDisconnectionFromServerEvent event)
+    {
+        SyncedConfig.reloadFromConfig();
     }
 
 //    @SubscribeEvent
