@@ -24,7 +24,6 @@ public class Data
 
     public static void update()
     {
-        System.out.println("=========================================================================================");
         //Clear any existing data
         Bonus.dropAll();
         equipment = new LinkedHashMap<>();
