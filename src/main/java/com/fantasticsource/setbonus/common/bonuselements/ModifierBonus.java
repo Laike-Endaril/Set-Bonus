@@ -4,17 +4,27 @@ import com.fantasticsource.mctools.attributes.AttributeMods;
 import com.fantasticsource.setbonus.SetBonus;
 import com.fantasticsource.setbonus.common.Bonus;
 import com.fantasticsource.setbonus.common.Data;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.player.EntityPlayer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class ModifierBonus extends BonusElement
+public class ModifierBonus extends ABonusElement
 {
-    protected ModifierBonus(String parsableBonusElement, Bonus bonus)
+    private Multimap<String, AttributeModifier> modifiers = ArrayListMultimap.create();
+
+    protected ModifierBonus(String parsableBonusElement, Bonus bonus, ArrayList<AttributeModifier> modifiers)
     {
         super(parsableBonusElement, bonus);
+
+        for (AttributeModifier modifier : modifiers)
+        {
+            this.modifiers.put(modifier.getName(), modifier.setSaved(false));
+        }
     }
 
     public static ModifierBonus getInstance(String parsableModifierBonus)
@@ -36,11 +46,23 @@ public class ModifierBonus extends BonusElement
         ArrayList<AttributeModifier> modifiers = AttributeMods.parseMods(Arrays.copyOfRange(tokens, 1, tokens.length));
         if (modifiers == null) return null;
 
-        for (AttributeModifier modifier : modifiers)
-        {
-            bonus.data.modifiers.put(modifier.getName(), modifier.setSaved(false));
-        }
+        return new ModifierBonus(parsableModifierBonus, bonus, modifiers);
+    }
 
-        return new ModifierBonus(parsableModifierBonus, bonus);
+    @Override
+    public void activate(EntityPlayer player)
+    {
+        player.getAttributeMap().applyAttributeModifiers(modifiers);
+    }
+
+    @Override
+    public void deactivate(EntityPlayer player)
+    {
+        player.getAttributeMap().removeAttributeModifiers(modifiers);
+    }
+
+    @Override
+    public void updateActive(EntityPlayer player)
+    {
     }
 }

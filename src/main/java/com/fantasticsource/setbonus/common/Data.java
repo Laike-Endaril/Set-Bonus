@@ -1,6 +1,6 @@
 package com.fantasticsource.setbonus.common;
 
-import com.fantasticsource.setbonus.common.bonuselements.BonusElement;
+import com.fantasticsource.setbonus.common.bonuselements.ABonusElement;
 import com.fantasticsource.setbonus.common.bonuselements.ModifierBonus;
 import com.fantasticsource.setbonus.common.bonuselements.PotionBonus;
 import com.fantasticsource.setbonus.config.SyncedConfig;
@@ -16,7 +16,7 @@ public class Data
 
     public static LinkedHashMap<String, Bonus> bonuses = new LinkedHashMap<>();
 
-    public static LinkedHashMap<BonusElement, Bonus> bonusElements = new LinkedHashMap<>();
+    public static LinkedHashMap<ABonusElement, Bonus> bonusElements = new LinkedHashMap<>();
 
 
     public static ArrayList<EntityPlayer> players = new ArrayList<>();
@@ -58,7 +58,7 @@ public class Data
         //Initialize attribute modifiers
         for (String modifierString : SyncedConfig.attributeMods)
         {
-            BonusElement bonusElement = ModifierBonus.getInstance(modifierString);
+            ABonusElement bonusElement = ModifierBonus.getInstance(modifierString);
             if (bonusElement != null) bonusElements.put(bonusElement, bonusElement.bonus);
         }
 
@@ -66,7 +66,7 @@ public class Data
         //Initialize potions
         for (String potionString : SyncedConfig.potions)
         {
-            BonusElement bonusElement = PotionBonus.getInstance(potionString);
+            ABonusElement bonusElement = PotionBonus.getInstance(potionString);
             if (bonusElement != null) bonusElements.put(bonusElement, bonusElement.bonus);
         }
     }

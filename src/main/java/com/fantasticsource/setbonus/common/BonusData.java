@@ -2,12 +2,9 @@ package com.fantasticsource.setbonus.common;
 
 import com.fantasticsource.mctools.MCTools;
 import com.fantasticsource.setbonus.SetBonus;
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Multimap;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
+import com.fantasticsource.setbonus.common.bonuselements.ABonusElement;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 
 import java.io.*;
@@ -19,8 +16,8 @@ public class BonusData
 {
     public LinkedHashMap<SetData, Integer> setRequirements = new LinkedHashMap<>();
     public LinkedHashMap<String, DoubleRequirement> attributeRequirements = new LinkedHashMap<>();
-    public Multimap<String, AttributeModifier> modifiers = ArrayListMultimap.create();
-    public ArrayList<PotionEffect> potions = new ArrayList<>();
+
+    public ArrayList<ABonusElement> bonusElements = new ArrayList<>();
 
     private LinkedHashMap<EntityPlayer, BonusInstance> instances = new LinkedHashMap<>();
 
@@ -130,8 +127,7 @@ public class BonusData
 
     public BonusInstance getInstance(EntityPlayer player)
     {
-        BonusInstance result = instances.computeIfAbsent(player, k -> new BonusInstance(player));
-        return result;
+        return instances.computeIfAbsent(player, k -> new BonusInstance(player));
     }
 
     public void update(EntityPlayer player)
@@ -204,17 +200,13 @@ public class BonusData
                         identified = true;
                         saveDiscoveries(player);
                     }
-                    for (PotionEffect potion : potions) player.addPotionEffect(potion);
-                    player.getAttributeMap().applyAttributeModifiers(modifiers);
+
+                    for (ABonusElement element : bonusElements) element.activate(player);
                 }
                 else
                 {
                     //Remaining active
-                    for (PotionEffect potion : potions)
-                    {
-                        PotionEffect potionEffect = player.getActivePotionEffect(potion.getPotion());
-                        if (potionEffect == null) player.addPotionEffect(potion);
-                    }
+                    for (ABonusElement element : bonusElements) element.updateActive(player);
                 }
             }
             else
@@ -223,8 +215,7 @@ public class BonusData
                 {
                     //Deactivating
                     active = false;
-                    for (PotionEffect potion : potions) player.removePotionEffect(potion.getPotion());
-                    player.getAttributeMap().removeAttributeModifiers(modifiers);
+                    for (ABonusElement element : bonusElements) element.deactivate(player);
                 }
             }
         }
