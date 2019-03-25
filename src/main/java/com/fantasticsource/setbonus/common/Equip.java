@@ -35,7 +35,6 @@ public class Equip
         if (result.filter == null) return null;
 
         result.parsedString = parsableEquip;
-
         return result;
     }
 }

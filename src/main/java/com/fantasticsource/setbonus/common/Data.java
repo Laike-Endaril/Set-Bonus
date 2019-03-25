@@ -17,7 +17,7 @@ import java.util.LinkedHashMap;
 public class Data
 {
     public static LinkedHashMap<String, Equip> equipment = null;
-    public static LinkedHashMap<String, SetData> sets;
+    public static LinkedHashMap<String, Set> sets;
 
     public static ArrayList<EntityPlayer> players = new ArrayList<>();
 
@@ -42,24 +42,8 @@ public class Data
         //Initialize sets
         for (String setString : SyncedConfig.sets)
         {
-            String[] tokens = setString.split(",");
-            if (tokens.length < 3)
-            {
-                System.err.println(I18n.format(SetBonus.MODID + ".error.notEnoughSetArgs", setString));
-                continue;
-            }
-
-            String id = tokens[0].trim();
-            if (id.equals(""))
-            {
-                System.err.println(I18n.format(SetBonus.MODID + ".error.noSetID", setString));
-                continue;
-            }
-
-            String name = tokens[1].trim();
-
-            SetData data = SetData.getInstance(name, Arrays.copyOfRange(tokens, 2, tokens.length));
-            if (data != null) sets.put(id, data);
+            Set set = Set.getInstance(setString);
+            if (set != null) sets.put(set.id, set);
         }
 
 
@@ -102,14 +86,14 @@ public class Data
             for (String s : Arrays.copyOfRange(tokens, 3, tokens.length))
             {
                 String[] tokens2 = s.split("\\.");
-                SetData set = sets.get(tokens2[0].trim());
+                Set set = sets.get(tokens2[0].trim());
                 if (set != null)
                 {
                     //It's a set
                     if (tokens2.length == 1)
                     {
                         //Full set
-                        bonus.setRequirements.put(set, set.getMaxNumber());
+                        bonus.setRequirements.put(set.data, set.data.getMaxNumber());
                     }
                     else
                     {
@@ -117,7 +101,7 @@ public class Data
                         try
                         {
                             int num = Integer.parseInt(tokens2[1].trim());
-                            if (num > 0) bonus.setRequirements.put(set, num);
+                            if (num > 0) bonus.setRequirements.put(set.data, num);
                         }
                         catch (NumberFormatException e)
                         {
