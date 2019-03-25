@@ -1,3 +1,8 @@
+Abstractify bonus requirements
+Merge SetData and SlotData if possible
+Merge Set and SetData if possible
+Merge Bonus and BonusData if possible
+
 Implement discovery system; only send discovered bonuses to clients...
 ...0 = Discoverable - invisible to clients until they activate it for the first time
 ...1 = Identifiable - always visible to clients, but obfuscated until they activate it for the first time
