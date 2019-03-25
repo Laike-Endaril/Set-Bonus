@@ -34,10 +34,10 @@ public class ServerConfig
     @Config.Comment(
             {
                     "FILLSCREEN Each equipment set is defined here",
-                    "Each custom id must be defined in the Equipment list first",
+                    "Each equip id must be defined in the Equipment list first",
                     "",
                     "Layout is...",
-                    "Set id, set name, slot | slot = custom id | custom id, slot | slot = custom id | custom id, etc.",
+                    "Set id, set name, slot | slot = equip id | equip id, slot | slot = equip id | equip id, etc.",
                     "",
                     "- Vanilla slots: mainhand, offhand, head, chest, legs, feet, hotbar, inventory",
                     "- Baubles slots: bauble_amulet, bauble_ring, bauble_belt, bauble_head, bauble_body, bauble_charm, bauble_trinket",
