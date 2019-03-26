@@ -2,6 +2,8 @@ package com.fantasticsource.setbonus.common;
 
 import com.fantasticsource.mctools.MCTools;
 import com.fantasticsource.setbonus.SetBonus;
+import com.fantasticsource.setbonus.config.ConfigHandler;
+import com.fantasticsource.setbonus.config.SyncedConfig;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
@@ -61,7 +63,8 @@ public class Commands extends CommandBase
         {
             try
             {
-                MCTools.reloadConfig(configDir + SetBonus.MODID + ".cfg", SetBonus.MODID);
+                MCTools.reloadConfig(ConfigHandler.FULL_CONFIG_NAME + ".cfg", SetBonus.MODID);
+                SyncedConfig.reloadFromConfig();
                 Data.update();
                 notifyCommandListener(sender, this, SetBonus.MODID + ".cmd.reloaded");
             }
