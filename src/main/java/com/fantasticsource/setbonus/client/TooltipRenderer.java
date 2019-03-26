@@ -32,7 +32,7 @@ public class TooltipRenderer
         boolean edited = false;
         for (Set set : Data.sets.values())
         {
-            for (ItemFilter filter : set.data.involvedEquips.values())
+            for (ItemFilter filter : set.involvedEquips.values())
             {
                 if (filter.matches(event.getItemStack()))
                 {
@@ -43,8 +43,8 @@ public class TooltipRenderer
                         tooltip.add("" + LIGHT_PURPLE + UNDERLINE + I18n.format(SetBonus.MODID + ".tooltip.pressDetailKey"));
                         tooltip.add("");
                     }
-                    int count = set.data.getNumberEquipped(player);
-                    int max = set.data.getMaxNumber();
+                    int count = set.getNumberEquipped(player);
+                    int max = set.getMaxNumber();
                     String color = "" + (count == 0 ? RED : count == max ? GREEN : YELLOW);
                     tooltip.add(color + BOLD + "=== " + set.name + " (" + count + "/" + max + ") ===");
                     for (Bonus bonus : Data.bonuses.values())
@@ -72,7 +72,7 @@ public class TooltipRenderer
                         if (bonusInstance.active) color += GREEN; //All requirements met
                         else
                         {
-                            int active = set.data.getNumberEquipped(player);
+                            int active = set.getNumberEquipped(player);
 
                             if (active >= req) color += DARK_PURPLE; //Set requirements are met, but non-set requirements are not met
                             else if (active == 0) color += RED; //No set requirements met

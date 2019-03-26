@@ -23,7 +23,7 @@ public class SetRequirement extends ABonusRequirement
         if (set == null) return null;
 
         //Full set?
-        if (tokens2.length == 1) return new SetRequirement(set, set.data.getMaxNumber());
+        if (tokens2.length == 1) return new SetRequirement(set, set.getMaxNumber());
 
         //Partial set?
         int num = Integer.parseInt(tokens2[1].trim());
@@ -36,7 +36,7 @@ public class SetRequirement extends ABonusRequirement
     @Override
     public int active(EntityPlayer player)
     {
-        return set.data.getNumberEquipped(player);
+        return set.getNumberEquipped(player);
     }
 
     @Override

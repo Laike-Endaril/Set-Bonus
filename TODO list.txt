@@ -1,5 +1,5 @@
-Merge Set and SetData if possible
 Merge Bonus and BonusData if possible
+Add new errors (see to dos)
 
 Implement discovery system; only send discovered bonuses to clients...
 ...0 = Discoverable - invisible to clients until they activate it for the first time
@@ -32,4 +32,4 @@ Improve efficiency via...
 ...inventory change detection (from library)
 ...caching
 
-Make some default sets
+Make some default bonuses
