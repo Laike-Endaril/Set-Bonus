@@ -116,11 +116,12 @@ public class SetBonus
     {
         if (event.side == Side.SERVER && event.phase == TickEvent.Phase.START)
         {
-            EntityPlayer player = event.player;
+            EntityPlayerMP player = (EntityPlayerMP) event.player;
 
             if (Tools.posMod(ServerTickTimer.currentTick(), 20) == Tools.posMod(player.getUniqueID().getLeastSignificantBits(), 20))
             {
                 Bonus.updateBonuses(player);
+                Network.WRAPPER.sendTo(new Network.UpdatePacket(), player);
             }
         }
     }

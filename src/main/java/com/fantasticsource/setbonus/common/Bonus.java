@@ -236,24 +236,33 @@ public class Bonus
 
         private void update(boolean activate)
         {
+            boolean server = !player.world.isRemote;
+
             if (activate)
             {
                 if (!active)
                 {
                     //Activating
                     active = true;
-                    if (!identified)
-                    {
-                        identified = true;
-                        saveDiscoveries(player);
-                    }
 
-                    for (ABonusElement element : bonusElements) element.activate(player);
+                    if (server)
+                    {
+                        if (!identified)
+                        {
+                            identified = true;
+                            saveDiscoveries(player);
+                        }
+
+                        for (ABonusElement element : bonusElements) element.activate(player);
+                    }
                 }
                 else
                 {
                     //Remaining active
-                    for (ABonusElement element : bonusElements) element.updateActive(player);
+                    if (server)
+                    {
+                        for (ABonusElement element : bonusElements) element.updateActive(player);
+                    }
                 }
             }
             else
@@ -262,7 +271,11 @@ public class Bonus
                 {
                     //Deactivating
                     active = false;
-                    for (ABonusElement element : bonusElements) element.deactivate(player);
+
+                    if (server)
+                    {
+                        for (ABonusElement element : bonusElements) element.deactivate(player);
+                    }
                 }
             }
         }

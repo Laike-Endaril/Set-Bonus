@@ -6,9 +6,11 @@ import com.fantasticsource.setbonus.config.ConfigHandler;
 import com.fantasticsource.setbonus.config.SyncedConfig;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Loader;
 
 import javax.annotation.Nullable;
@@ -66,6 +68,11 @@ public class Commands extends CommandBase
                 MCTools.reloadConfig(ConfigHandler.FULL_CONFIG_NAME + ".cfg", SetBonus.MODID);
                 SyncedConfig.reloadFromConfig();
                 Data.update();
+
+                for (EntityPlayerMP player : FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayers())
+                {
+                    Network.WRAPPER.sendTo(new Network.ConfigPacket(), player);
+                }
                 notifyCommandListener(sender, this, SetBonus.MODID + ".cmd.reloaded");
             }
             catch (IllegalAccessException e)

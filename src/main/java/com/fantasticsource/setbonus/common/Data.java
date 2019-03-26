@@ -5,9 +5,7 @@ import com.fantasticsource.setbonus.common.bonuselements.PotionBonus;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Equip;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Set;
 import com.fantasticsource.setbonus.config.SyncedConfig;
-import net.minecraft.entity.player.EntityPlayer;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 public class Data
@@ -18,16 +16,12 @@ public class Data
     public static LinkedHashMap<String, Bonus> bonuses = new LinkedHashMap<>();
 
 
-    public static ArrayList<EntityPlayer> players = new ArrayList<>();
-
-
     public static void update()
     {
         //Clear any existing data
         Bonus.dropAll();
         equipment = new LinkedHashMap<>();
         sets = new LinkedHashMap<>();
-        players.clear();
 
 
         //Initialize equipment
