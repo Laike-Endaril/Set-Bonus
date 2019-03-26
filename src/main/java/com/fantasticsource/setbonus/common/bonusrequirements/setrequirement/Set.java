@@ -46,17 +46,13 @@ public class Set
         for (String string : Arrays.copyOfRange(tokens, 2, tokens.length))
         {
             SlotData data = SlotData.getInstance(string, result.involvedEquips);
-            if (data == null)
-            {
-                //TODO error
-                return null;
-            }
+            if (data == null) return null;
 
             result.slotData.add(data);
         }
         if (result.slotData.size() == 0)
         {
-            //TODO error
+            System.err.println(I18n.format(SetBonus.MODID + ".error.noSetReqs", parsableSet));
             return null;
         }
 
