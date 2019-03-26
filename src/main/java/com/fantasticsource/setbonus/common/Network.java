@@ -25,7 +25,6 @@ public class Network
     public static void init()
     {
         WRAPPER.registerMessage(ConfigPacketHandler.class, ConfigPacket.class, discriminator++, Side.CLIENT);
-        WRAPPER.registerMessage(UpdatePacketHandler.class, UpdatePacket.class, discriminator++, Side.CLIENT);
     }
 
 
@@ -115,38 +114,6 @@ public class Network
 
                     Data.update();
                 });
-            }
-
-            return null;
-        }
-    }
-
-
-    public static class UpdatePacket implements IMessage
-    {
-        public UpdatePacket() //Required; probably for when the packet is received
-        {
-        }
-
-        @Override
-        public void toBytes(ByteBuf buf)
-        {
-        }
-
-        @Override
-        public void fromBytes(ByteBuf buf)
-        {
-        }
-    }
-
-    public static class UpdatePacketHandler implements IMessageHandler<UpdatePacket, IMessage>
-    {
-        @Override
-        public IMessage onMessage(UpdatePacket packet, MessageContext ctx)
-        {
-            if (ctx.side == Side.CLIENT)
-            {
-                Minecraft.getMinecraft().addScheduledTask(Data::update);
             }
 
             return null;

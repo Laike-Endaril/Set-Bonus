@@ -197,6 +197,7 @@ public class Bonus
         for (Bonus bonus : Data.bonuses.values()) bonus.update(player);
     }
 
+
     @Nonnull
     public BonusInstance getBonusInstance(EntityPlayer player)
     {

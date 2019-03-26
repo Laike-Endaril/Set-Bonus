@@ -114,14 +114,22 @@ public class SetBonus
     @SubscribeEvent
     public static void playerTick(TickEvent.PlayerTickEvent event)
     {
-        if (event.side == Side.SERVER && event.phase == TickEvent.Phase.START)
+        if (event.phase == TickEvent.Phase.START)
         {
-            EntityPlayerMP player = (EntityPlayerMP) event.player;
-
-            if (Tools.posMod(ServerTickTimer.currentTick(), 20) == Tools.posMod(player.getUniqueID().getLeastSignificantBits(), 20))
+            if (event.side == Side.SERVER)
             {
-                Bonus.updateBonuses(player);
-                Network.WRAPPER.sendTo(new Network.UpdatePacket(), player);
+                EntityPlayerMP player = (EntityPlayerMP) event.player;
+
+                if (Tools.posMod(ServerTickTimer.currentTick(), 20) == Tools.posMod(player.getUniqueID().getLeastSignificantBits(), 20))
+                {
+                    Bonus.updateBonuses(player);
+                }
+            }
+            else
+            {
+                //Client side
+                EntityPlayer player = event.player;
+                if (event.player.world.getTotalWorldTime() % 20 == 0 && Minecraft.getMinecraft().player == player) Bonus.updateBonuses(event.player);
             }
         }
     }
