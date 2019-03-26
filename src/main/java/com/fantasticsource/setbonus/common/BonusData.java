@@ -1,14 +1,13 @@
 package com.fantasticsource.setbonus.common;
 
-import com.fantasticsource.mctools.DoubleRequirement;
 import com.fantasticsource.mctools.MCTools;
 import com.fantasticsource.setbonus.SetBonus;
 import com.fantasticsource.setbonus.common.bonuselements.ABonusElement;
-import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.SetData;
-import net.minecraft.entity.ai.attributes.IAttributeInstance;
+import com.fantasticsource.setbonus.common.bonusrequirements.ABonusRequirement;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -16,9 +15,7 @@ import java.util.Map;
 
 public class BonusData
 {
-    public LinkedHashMap<SetData, Integer> setRequirements = new LinkedHashMap<>();
-    public LinkedHashMap<String, DoubleRequirement> attributeRequirements = new LinkedHashMap<>();
-
+    public ArrayList<ABonusRequirement> bonusRequirements = new ArrayList<>();
     public ArrayList<ABonusElement> bonusElements = new ArrayList<>();
 
     private LinkedHashMap<EntityPlayer, BonusInstance> instances = new LinkedHashMap<>();
@@ -127,6 +124,7 @@ public class BonusData
         for (Bonus bonus : Data.bonuses.values()) bonus.data.update(player);
     }
 
+    @Nonnull
     public BonusInstance getInstance(EntityPlayer player)
     {
         return instances.computeIfAbsent(player, k -> new BonusInstance(player));
@@ -134,33 +132,7 @@ public class BonusData
 
     public void update(EntityPlayer player)
     {
-        BonusInstance data = instances.computeIfAbsent(player, k -> new BonusInstance(player));
-
-        for (Map.Entry<SetData, Integer> entry : setRequirements.entrySet())
-        {
-            if (entry.getKey().getNumberEquipped(player) < entry.getValue())
-            {
-                data.update(false);
-                return;
-            }
-        }
-
-        for (Map.Entry<String, DoubleRequirement> entry : attributeRequirements.entrySet())
-        {
-            IAttributeInstance attributeInstance = player.getAttributeMap().getAttributeInstanceByName(entry.getKey());
-            if (attributeInstance == null)
-            {
-                data.update(false);
-                return;
-            }
-            if (!entry.getValue().check(attributeInstance.getAttributeValue()))
-            {
-                data.update(false);
-                return;
-            }
-        }
-
-        data.update(true);
+        instances.computeIfAbsent(player, k -> new BonusInstance(player)).update();
     }
 
 
@@ -169,25 +141,25 @@ public class BonusData
         public boolean active, identified;
         EntityPlayer player;
 
-
         public BonusInstance(EntityPlayer player)
         {
             this.player = player;
+            update();
+        }
 
-            active = true;
-            if (attributeRequirements.size() > 0) active = false;
-            else
+        public void update()
+        {
+            for (ABonusRequirement requirement : bonusRequirements)
             {
-                for (Map.Entry<SetData, Integer> entry : setRequirements.entrySet())
+                if (requirement.active(player) < requirement.required())
                 {
-                    boolean check = entry.getValue() <= 0;
-                    active &= check;
+                    update(false);
+                    return;
                 }
             }
 
-            identified = active;
+            update(true);
         }
-
 
         private void update(boolean activate)
         {

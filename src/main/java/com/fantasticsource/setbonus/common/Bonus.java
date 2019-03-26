@@ -1,9 +1,7 @@
 package com.fantasticsource.setbonus.common;
 
-import com.fantasticsource.mctools.DoubleRequirement;
 import com.fantasticsource.setbonus.SetBonus;
-import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Set;
-import com.fantasticsource.tools.datastructures.Pair;
+import com.fantasticsource.setbonus.common.bonusrequirements.ABonusRequirement;
 import net.minecraft.client.resources.I18n;
 
 import java.util.Arrays;
@@ -60,51 +58,17 @@ public class Bonus
         }
 
         result.data = new BonusData();
-        for (String s : Arrays.copyOfRange(tokens, 3, tokens.length))
+        for (String requirementString : Arrays.copyOfRange(tokens, 3, tokens.length))
         {
-            String[] tokens2 = s.split("\\.");
-            Set set = Data.sets.get(tokens2[0].trim());
-            if (set != null)
+            ABonusRequirement requirement = ABonusRequirement.parse(requirementString);
+
+            if (requirement == null)
             {
-                //It's a set
-                if (tokens2.length == 1)
-                {
-                    //Full set
-                    result.data.setRequirements.put(set.data, set.data.getMaxNumber());
-                }
-                else
-                {
-                    //Partial set
-                    try
-                    {
-                        int num = Integer.parseInt(tokens2[1].trim());
-                        if (num > 0) result.data.setRequirements.put(set.data, num);
-                    }
-                    catch (NumberFormatException e)
-                    {
-                        System.err.println(I18n.format(SetBonus.MODID + ".error.malformedSetReq", parsableBonus));
-                        return null;
-                    }
-                }
-                continue;
+                System.err.println(I18n.format(SetBonus.MODID + ".error.unknownBonusReq", parsableBonus));
+                return null;
             }
 
-            //Try for a DoubleRequirement
-            Pair<String, DoubleRequirement> pair = DoubleRequirement.parse(s);
-            if (pair != null)
-            {
-                //It's a DoubleRequirement
-
-                //For now, attributes are the only type of DoubleRequirement, so use this as one
-                //Attributes don't have a registry, and can't really be checked ahead of time, so any malformed strings here will end up as "valid" attribute checks; beware!
-                result.data.attributeRequirements.put(pair.getKey(), pair.getValue());
-
-                continue;
-            }
-
-            //Error!
-            System.err.println(I18n.format(SetBonus.MODID + ".error.unknownBonusReq", parsableBonus));
-            return null;
+            result.data.bonusRequirements.add(requirement);
         }
 
         result.parsedString = parsableBonus;

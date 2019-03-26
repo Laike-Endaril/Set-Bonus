@@ -5,7 +5,10 @@ import com.fantasticsource.setbonus.SetBonus;
 import com.fantasticsource.setbonus.common.Bonus;
 import com.fantasticsource.setbonus.common.BonusData;
 import com.fantasticsource.setbonus.common.Data;
+import com.fantasticsource.setbonus.common.bonusrequirements.ABonusRequirement;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Set;
+import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.SetRequirement;
+import com.fantasticsource.tools.Tools;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
@@ -46,12 +49,37 @@ public class TooltipRenderer
                     tooltip.add(color + BOLD + "=== " + set.name + " (" + count + "/" + max + ") ===");
                     for (Bonus bonus : Data.bonuses.values())
                     {
-                        if (bonus.data.setRequirements.keySet().contains(set.data))
+                        int req = 0;
+                        boolean otherReqs = false;
+
+                        for (ABonusRequirement requirement : bonus.data.bonusRequirements)
                         {
-                            BonusData.BonusInstance bonusInstance = bonus.data.getInstance(player);
-                            color = "" + (bonusInstance != null && bonusInstance.active ? GREEN : RED);
-                            tooltip.add(color + " " + bonus.name);
+                            if (requirement instanceof SetRequirement)
+                            {
+                                SetRequirement setRequirement = ((SetRequirement) requirement);
+                                if (setRequirement.set == set)
+                                {
+                                    req = Tools.max(req, setRequirement.num);
+                                }
+                                else otherReqs = true;
+                            }
+                            else otherReqs = true;
                         }
+
+                        BonusData.BonusInstance bonusInstance = bonus.data.getInstance(player);
+
+                        color = "";
+                        if (bonusInstance.active) color += GREEN; //All requirements met
+                        else
+                        {
+                            int active = set.data.getNumberEquipped(player);
+
+                            if (active >= req) color += DARK_PURPLE; //Set requirements are met, but non-set requirements are not met
+                            else if (active == 0) color += RED; //No set requirements met
+                            else color += YELLOW; //Some set requirements met
+                        }
+
+                        tooltip.add(color + " " + bonus.name + (otherReqs ? "*" : ""));
                     }
                     tooltip.add("");
                 }

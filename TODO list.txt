@@ -1,4 +1,3 @@
-Abstractify bonus requirements
 Merge Set and SetData if possible
 Merge Bonus and BonusData if possible
 
