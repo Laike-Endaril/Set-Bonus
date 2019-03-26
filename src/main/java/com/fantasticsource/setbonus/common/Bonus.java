@@ -19,8 +19,7 @@ public class Bonus
 {
     public static int
             MODE_DISCOVERABLE = 0,
-            MODE_IDENTIFIABLE = 1,
-            MODE_GLOBALLY_KNOWN = 2;
+            MODE_GLOBALLY_KNOWN = 1;
 
 
     public String parsedString, id, name;
@@ -66,7 +65,7 @@ public class Bonus
             System.err.println(I18n.translateToLocalFormatted(SetBonus.MODID + ".error.bonusDiscoveryMode", parsableBonus));
             return null;
         }
-        if (result.discoveryMode < 0 || result.discoveryMode > 3)
+        if (result.discoveryMode < 0 || result.discoveryMode > 1)
         {
             System.err.println(I18n.translateToLocalFormatted(SetBonus.MODID + ".error.bonusDiscoveryMode", parsableBonus));
             return null;
@@ -111,7 +110,7 @@ public class Bonus
                 for (Map.Entry<String, Bonus> entry : Data.bonuses.entrySet())
                 {
                     BonusInstance data = entry.getValue().instances.get(player);
-                    if (data != null && data.identified) writer.write(entry.getKey());
+                    if (data != null && data.discovered) writer.write(entry.getKey());
                 }
 
                 writer.close();
@@ -150,7 +149,7 @@ public class Bonus
                     Bonus bonus = Data.bonuses.get(string);
                     if (bonus != null)
                     {
-                        bonus.getBonusInstance(player).identified = true;
+                        bonus.getBonusInstance(player).discovered = true;
                     }
                     string = reader.readLine();
                 }
@@ -212,7 +211,7 @@ public class Bonus
 
     public class BonusInstance
     {
-        public boolean active, identified;
+        public boolean active, discovered;
         EntityPlayer player;
 
         public BonusInstance(EntityPlayer player)
@@ -248,9 +247,9 @@ public class Bonus
 
                     if (server)
                     {
-                        if (!identified)
+                        if (!discovered)
                         {
-                            identified = true;
+                            discovered = true;
                             saveDiscoveries(player);
                         }
 

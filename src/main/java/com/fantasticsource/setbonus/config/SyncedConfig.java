@@ -19,7 +19,7 @@ public class SyncedConfig
 
     public static void sendConfig(EntityPlayerMP player)
     {
-        Network.WRAPPER.sendTo(new Network.ConfigPacket(), player);
+        Network.WRAPPER.sendTo(new Network.ConfigPacket(player), player);
     }
 
     public static void reloadFromConfig()

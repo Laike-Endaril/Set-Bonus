@@ -1,6 +1,5 @@
 package com.fantasticsource.setbonus.common.bonusrequirements.setrequirement;
 
-import com.fantasticsource.mctools.ServerTickTimer;
 import com.fantasticsource.mctools.items.ItemFilter;
 import com.fantasticsource.setbonus.SetBonus;
 import com.fantasticsource.tools.datastructures.Pair;
@@ -63,7 +62,7 @@ public class Set
     public int getNumberEquipped(EntityPlayer player)
     {
         int result;
-        long tick = ServerTickTimer.currentTick();
+        long tick = player.world.getTotalWorldTime();
 
         Pair<Integer, Long> pair = numEquipped.computeIfAbsent(player, k -> new Pair<>(0, tick - 1));
         if (pair.getValue() != tick)
