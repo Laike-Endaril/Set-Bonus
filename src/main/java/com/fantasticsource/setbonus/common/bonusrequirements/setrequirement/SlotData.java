@@ -6,9 +6,9 @@ import baubles.api.cap.IBaublesItemHandler;
 import com.fantasticsource.mctools.items.ItemFilter;
 import com.fantasticsource.setbonus.SetBonus;
 import com.fantasticsource.setbonus.common.Data;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.util.text.translation.I18n;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -30,7 +30,7 @@ public class SlotData
         String[] tokens = slotsAndEquipment.split("=");
         if (tokens.length != 2)
         {
-            System.err.println(I18n.format(SetBonus.MODID + ".error.wrongSlotArgCount", slotsAndEquipment));
+            System.err.println(I18n.translateToLocalFormatted(SetBonus.MODID + ".error.wrongSlotArgCount", slotsAndEquipment));
             return null;
         }
 
@@ -92,7 +92,7 @@ public class SlotData
                 }
                 catch (NumberFormatException e)
                 {
-                    System.err.println(I18n.format(SetBonus.MODID + ".error.unknownSlot", slotString, slotsAndEquipment));
+                    System.err.println(I18n.translateToLocalFormatted(SetBonus.MODID + ".error.unknownSlot", slotString, slotsAndEquipment));
                     return null;
                 }
             }
@@ -106,7 +106,7 @@ public class SlotData
             Equip equip = Data.equipment.get(equipString);
             if (equip == null)
             {
-                System.err.println(I18n.format(SetBonus.MODID + ".error.slotBadEquipID", equipString, slotsAndEquipment));
+                System.err.println(I18n.translateToLocalFormatted(SetBonus.MODID + ".error.slotBadEquipID", equipString, slotsAndEquipment));
                 return null;
             }
 

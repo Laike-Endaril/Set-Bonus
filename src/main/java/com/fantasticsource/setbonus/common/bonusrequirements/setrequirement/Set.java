@@ -4,8 +4,8 @@ import com.fantasticsource.mctools.ServerTickTimer;
 import com.fantasticsource.mctools.items.ItemFilter;
 import com.fantasticsource.setbonus.SetBonus;
 import com.fantasticsource.tools.datastructures.Pair;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.text.translation.I18n;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,14 +30,14 @@ public class Set
         String[] tokens = parsableSet.split(",");
         if (tokens.length < 3)
         {
-            System.err.println(I18n.format(SetBonus.MODID + ".error.notEnoughSetArgs", parsableSet));
+            System.err.println(I18n.translateToLocalFormatted(SetBonus.MODID + ".error.notEnoughSetArgs", parsableSet));
             return null;
         }
 
         result.id = tokens[0].trim();
         if (result.id.equals(""))
         {
-            System.err.println(I18n.format(SetBonus.MODID + ".error.noSetID", parsableSet));
+            System.err.println(I18n.translateToLocalFormatted(SetBonus.MODID + ".error.noSetID", parsableSet));
             return null;
         }
 
@@ -52,7 +52,7 @@ public class Set
         }
         if (result.slotData.size() == 0)
         {
-            System.err.println(I18n.format(SetBonus.MODID + ".error.noSetReqs", parsableSet));
+            System.err.println(I18n.translateToLocalFormatted(SetBonus.MODID + ".error.noSetReqs", parsableSet));
             return null;
         }
 

@@ -4,8 +4,8 @@ import com.fantasticsource.mctools.MCTools;
 import com.fantasticsource.setbonus.SetBonus;
 import com.fantasticsource.setbonus.common.bonuselements.ABonusElement;
 import com.fantasticsource.setbonus.common.bonusrequirements.ABonusRequirement;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
@@ -44,14 +44,14 @@ public class Bonus
         String[] tokens = parsableBonus.split(",");
         if (tokens.length < 3)
         {
-            System.err.println(I18n.format(SetBonus.MODID + ".error.notEnoughBonusArgs", parsableBonus));
+            System.err.println(I18n.translateToLocalFormatted(SetBonus.MODID + ".error.notEnoughBonusArgs", parsableBonus));
             return null;
         }
 
         result.id = tokens[0].trim();
         if (result.id.equals(""))
         {
-            System.err.println(I18n.format(SetBonus.MODID + ".error.noBonusID", parsableBonus));
+            System.err.println(I18n.translateToLocalFormatted(SetBonus.MODID + ".error.noBonusID", parsableBonus));
             return null;
         }
 
@@ -63,12 +63,12 @@ public class Bonus
         }
         catch (NumberFormatException e)
         {
-            System.err.println(I18n.format(SetBonus.MODID + ".error.bonusDiscoveryMode", parsableBonus));
+            System.err.println(I18n.translateToLocalFormatted(SetBonus.MODID + ".error.bonusDiscoveryMode", parsableBonus));
             return null;
         }
         if (result.discoveryMode < 0 || result.discoveryMode > 3)
         {
-            System.err.println(I18n.format(SetBonus.MODID + ".error.bonusDiscoveryMode", parsableBonus));
+            System.err.println(I18n.translateToLocalFormatted(SetBonus.MODID + ".error.bonusDiscoveryMode", parsableBonus));
             return null;
         }
 
@@ -78,7 +78,7 @@ public class Bonus
 
             if (requirement == null)
             {
-                System.err.println(I18n.format(SetBonus.MODID + ".error.unknownBonusReq", parsableBonus));
+                System.err.println(I18n.translateToLocalFormatted(SetBonus.MODID + ".error.unknownBonusReq", parsableBonus));
                 return null;
             }
 

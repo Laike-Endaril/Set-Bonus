@@ -6,9 +6,9 @@ import com.fantasticsource.setbonus.common.Bonus;
 import com.fantasticsource.setbonus.common.Data;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.text.translation.I18n;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,14 +32,14 @@ public class ModifierBonus extends ABonusElement
         String[] tokens = parsableModifierBonus.split(",");
         if (tokens.length < 2)
         {
-            System.err.println(I18n.format(SetBonus.MODID + ".error.notEnoughAttribBonusArgs", parsableModifierBonus));
+            System.err.println(I18n.translateToLocalFormatted(SetBonus.MODID + ".error.notEnoughAttribBonusArgs", parsableModifierBonus));
             return null;
         }
 
         Bonus bonus = Data.bonuses.get(tokens[0].trim());
         if (bonus == null)
         {
-            System.err.println(I18n.format(SetBonus.MODID + ".error.attribBonusIDNotFound", tokens[0].trim(), parsableModifierBonus));
+            System.err.println(I18n.translateToLocalFormatted(SetBonus.MODID + ".error.attribBonusIDNotFound", tokens[0].trim(), parsableModifierBonus));
             return null;
         }
 

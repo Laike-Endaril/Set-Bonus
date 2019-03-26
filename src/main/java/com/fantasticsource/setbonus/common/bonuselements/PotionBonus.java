@@ -4,9 +4,9 @@ import com.fantasticsource.mctools.potions.Potions;
 import com.fantasticsource.setbonus.SetBonus;
 import com.fantasticsource.setbonus.common.Bonus;
 import com.fantasticsource.setbonus.common.Data;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.text.translation.I18n;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,14 +26,14 @@ public class PotionBonus extends ABonusElement
         String[] tokens = parsablePotionBonus.split(",");
         if (tokens.length < 2)
         {
-            System.err.println(I18n.format(SetBonus.MODID + ".error.notEnoughPotionBonusArgs", parsablePotionBonus));
+            System.err.println(I18n.translateToLocalFormatted(SetBonus.MODID + ".error.notEnoughPotionBonusArgs", parsablePotionBonus));
             return null;
         }
 
         Bonus bonus = Data.bonuses.get(tokens[0].trim());
         if (bonus == null)
         {
-            System.err.println(I18n.format(SetBonus.MODID + ".error.potionBonusIDNotFound", tokens[0].trim(), parsablePotionBonus));
+            System.err.println(I18n.translateToLocalFormatted(SetBonus.MODID + ".error.potionBonusIDNotFound", tokens[0].trim(), parsablePotionBonus));
             return null;
         }
 

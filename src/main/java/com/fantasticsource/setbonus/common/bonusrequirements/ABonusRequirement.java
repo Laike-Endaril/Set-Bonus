@@ -2,8 +2,8 @@ package com.fantasticsource.setbonus.common.bonusrequirements;
 
 import com.fantasticsource.setbonus.SetBonus;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.SetRequirement;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.text.translation.I18n;
 
 public abstract class ABonusRequirement
 {
@@ -27,7 +27,7 @@ public abstract class ABonusRequirement
         }
         catch (Exception e)
         {
-            System.err.println(I18n.format(SetBonus.MODID + ".error.malformedSetReq", parseableBonusRequirement));
+            System.err.println(I18n.translateToLocalFormatted(SetBonus.MODID + ".error.malformedSetReq", parseableBonusRequirement));
             return null;
         }
 
@@ -41,7 +41,7 @@ public abstract class ABonusRequirement
             //NOTE: THIS MUST ALWAYS BE THE LAST CHECK, BECAUSE THERE IS NO ATTRIBUTE REGISTRY!
         }
 
-        System.err.println(I18n.format(SetBonus.MODID + ".error.unknownBonusReq", parseableBonusRequirement));
+        System.err.println(I18n.translateToLocalFormatted(SetBonus.MODID + ".error.unknownBonusReq", parseableBonusRequirement));
         return null;
     }
 

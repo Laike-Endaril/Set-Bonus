@@ -2,7 +2,7 @@ package com.fantasticsource.setbonus.common.bonusrequirements.setrequirement;
 
 import com.fantasticsource.mctools.items.ItemFilter;
 import com.fantasticsource.setbonus.SetBonus;
-import net.minecraft.client.resources.I18n;
+import net.minecraft.util.text.translation.I18n;
 
 public class Equip
 {
@@ -20,14 +20,14 @@ public class Equip
         String[] tokens = parsableEquip.split(",");
         if (tokens.length != 2)
         {
-            System.err.println(I18n.format(SetBonus.MODID + ".error.equipArgCount", parsableEquip));
+            System.err.println(I18n.translateToLocalFormatted(SetBonus.MODID + ".error.equipArgCount", parsableEquip));
             return null;
         }
 
         result.id = tokens[0].trim();
         if (result.id.equals(""))
         {
-            System.err.println(I18n.format(SetBonus.MODID + ".error.noEquipID", parsableEquip));
+            System.err.println(I18n.translateToLocalFormatted(SetBonus.MODID + ".error.noEquipID", parsableEquip));
             return null;
         }
 
