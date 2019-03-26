@@ -1,7 +1,6 @@
 package com.fantasticsource.setbonus.common.bonusrequirements;
 
 import com.fantasticsource.setbonus.SetBonus;
-import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.AttributeRequirement;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.SetRequirement;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;

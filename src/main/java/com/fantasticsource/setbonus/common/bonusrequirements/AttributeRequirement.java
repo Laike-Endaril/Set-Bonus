@@ -1,7 +1,6 @@
-package com.fantasticsource.setbonus.common.bonusrequirements.setrequirement;
+package com.fantasticsource.setbonus.common.bonusrequirements;
 
 import com.fantasticsource.mctools.DoubleRequirement;
-import com.fantasticsource.setbonus.common.bonusrequirements.ABonusRequirement;
 import com.fantasticsource.tools.datastructures.Pair;
 import net.minecraft.entity.player.EntityPlayer;
 
