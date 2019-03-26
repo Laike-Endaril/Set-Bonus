@@ -6,6 +6,11 @@ setbonus.tooltip.pressDetailKey=Press the SetBonus GUI key for details
 
 
 
+setbonus.keyCategory=Set Bonus
+setbonus.key.bonusScreen=Open Bonus Screen
+
+
+
 setbonus.error.equipArgCount=Wrong number of arguments for equipment: %s
 setbonus.error.noEquipID=No equipment id specified for equipment: %s
 setbonus.error.notEnoughSetArgs=Not enough arguments for set: %s

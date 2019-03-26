@@ -2,6 +2,7 @@ package com.fantasticsource.setbonus;
 
 import com.fantasticsource.mctools.MCTools;
 import com.fantasticsource.mctools.ServerTickTimer;
+import com.fantasticsource.setbonus.client.Keys;
 import com.fantasticsource.setbonus.client.TooltipRenderer;
 import com.fantasticsource.setbonus.common.Bonus;
 import com.fantasticsource.setbonus.common.Commands;
@@ -53,6 +54,7 @@ public class SetBonus
         {
             //Physical client
             MinecraftForge.EVENT_BUS.register(TooltipRenderer.class);
+            Keys.init(event);
         }
     }
 

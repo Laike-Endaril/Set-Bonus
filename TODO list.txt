@@ -1,12 +1,11 @@
-"Discover" command
-"Undiscover" command
-"WipeDiscoveries" command
-
 SetBonus GUI...
-...add SetBonus GUI key
 ...pressing key while an item tooltip is showing opens the SetBonus GUI in filtered mode
 ...otherwise, the key opens the SetBonus GUI in unfiltered mode
 ...create SetBonus GUI
+
+"Discover" command
+"Undiscover" command
+"WipeDiscoveries" command
 
 "Reactive" system for equipment sets which gives a visual indicator for set items and for linking the items of a set...
 0 means reactive within the player's inventory (an opened chest is not part of the player's inventory)
