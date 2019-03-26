@@ -1,4 +1,3 @@
-Merge Bonus and BonusData if possible
 Add new errors (see to dos)
 
 Implement discovery system; only send discovered bonuses to clients...

@@ -3,7 +3,6 @@ package com.fantasticsource.setbonus.client;
 import com.fantasticsource.mctools.items.ItemFilter;
 import com.fantasticsource.setbonus.SetBonus;
 import com.fantasticsource.setbonus.common.Bonus;
-import com.fantasticsource.setbonus.common.BonusData;
 import com.fantasticsource.setbonus.common.Data;
 import com.fantasticsource.setbonus.common.bonusrequirements.ABonusRequirement;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Set;
@@ -52,7 +51,7 @@ public class TooltipRenderer
                         int req = 0;
                         boolean otherReqs = false;
 
-                        for (ABonusRequirement requirement : bonus.data.bonusRequirements)
+                        for (ABonusRequirement requirement : bonus.bonusRequirements)
                         {
                             if (requirement instanceof SetRequirement)
                             {
@@ -66,7 +65,7 @@ public class TooltipRenderer
                             else otherReqs = true;
                         }
 
-                        BonusData.BonusInstance bonusInstance = bonus.data.getInstance(player);
+                        Bonus.BonusInstance bonusInstance = bonus.getBonusInstance(player);
 
                         color = "";
                         if (bonusInstance.active) color += GREEN; //All requirements met

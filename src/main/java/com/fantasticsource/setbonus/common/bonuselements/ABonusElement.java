@@ -12,7 +12,7 @@ public abstract class ABonusElement
     {
         parsedString = parsableBonusElement;
         this.bonus = bonus;
-        bonus.data.bonusElements.add(this);
+        bonus.bonusElements.add(this);
     }
 
     public abstract void activate(EntityPlayer player);

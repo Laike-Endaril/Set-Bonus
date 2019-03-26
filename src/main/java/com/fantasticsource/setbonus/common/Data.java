@@ -24,7 +24,7 @@ public class Data
     public static void update()
     {
         //Clear any existing data
-        BonusData.dropAll();
+        Bonus.dropAll();
         equipment = new LinkedHashMap<>();
         sets = new LinkedHashMap<>();
         players.clear();
