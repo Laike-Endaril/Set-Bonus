@@ -141,7 +141,7 @@ public class SetBonus
     @SubscribeEvent
     public static void playerDisconnect(PlayerEvent.PlayerLoggedOutEvent event)
     {
-        Bonus.deactivateBonuses(event.player);
+        Bonus.clearMem(event.player);
     }
 
     @SubscribeEvent

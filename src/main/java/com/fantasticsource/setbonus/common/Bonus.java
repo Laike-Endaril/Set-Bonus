@@ -178,12 +178,16 @@ public class Bonus
         Data.bonuses.clear();
     }
 
-    public static void deactivateBonuses(EntityPlayer player)
+    public static void clearMem(EntityPlayer player)
     {
         for (Bonus bonus : Data.bonuses.values())
         {
             BonusInstance data = bonus.instances.get(player);
-            if (data != null) data.update(false);
+            if (data != null)
+            {
+                data.update(false);
+                bonus.instances.remove(player);
+            }
         }
     }
 
