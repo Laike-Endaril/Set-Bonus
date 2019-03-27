@@ -1,5 +1,35 @@
 SetBonus GUI...
-...create SetBonus GUI
+
+*Left column is category...
+...Bonuses
+...Sets
+...Items
+...Attributes
+...Potion Effects
+
+*Center column is category entry list, with sorting mode on top
+Bonuses...
+...sort by activity (default) shows all active bonuses in alphabetical order, then all bonuses with partial requirement progress in progress order, then all other known bonuses in alphabetical order
+...sort by name
+Sets...
+...sort by activity (default) shows all active sets in alphabetical order, then all partially active sets in progress order, then all other known sets in alphabetical order
+...sort by name
+Items...
+...sort by activity (default) shows all items in all known sets; currently equipped ones first (in alphabetical order), then unequipped ones (in alphabetical order)
+...sort by name
+Attributes...
+...sort by activity (default) shows all current player attribute totals from highest to lowest, then all other attributes known from bonus requirements and bonus elements in alphabetical order
+...sort by name
+Potion effects...
+...sort by activity (default) shows all current potion effects in duration order, then all other potion effects
+...sort by name
+
+*Right column is detail view of currently selected entry
+
+Make each column scrollable
+Make each text element a link (if applicable)
+
+
 
 "Discover" command
 "Undiscover" command

@@ -55,8 +55,8 @@ public class BonusScreen extends GuiScreen
 
 
     @Override
-    public boolean doesGuiPauseGame()
+    public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
-        return true;
+        drawDefaultBackground();
     }
 }
