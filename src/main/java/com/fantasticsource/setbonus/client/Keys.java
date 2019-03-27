@@ -13,7 +13,7 @@ import org.lwjgl.input.Keyboard;
 @SideOnly(Side.CLIENT)
 public class Keys
 {
-    private static final KeyBinding BONUS_SCREEN_KEY = new KeyBinding(SetBonus.MODID + ".key.bonusScreen", KeyConflictContext.UNIVERSAL, KeyModifier.SHIFT, Keyboard.KEY_B, SetBonus.MODID + ".keyCategory");
+    public static final KeyBinding BONUS_SCREEN_KEY = new KeyBinding(SetBonus.MODID + ".key.bonusScreen", KeyConflictContext.UNIVERSAL, KeyModifier.SHIFT, Keyboard.KEY_B, SetBonus.MODID + ".keyCategory");
 
     public static void init(FMLPreInitializationEvent event)
     {

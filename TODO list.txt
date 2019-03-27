@@ -1,6 +1,4 @@
 SetBonus GUI...
-...pressing key while an item tooltip is showing opens the SetBonus GUI in filtered mode
-...otherwise, the key opens the SetBonus GUI in unfiltered mode
 ...create SetBonus GUI
 
 "Discover" command
