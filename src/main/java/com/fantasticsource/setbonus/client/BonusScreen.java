@@ -1,5 +1,6 @@
 package com.fantasticsource.setbonus.client;
 
+import com.fantasticsource.tools.Tools;
 import com.fantasticsource.tools.datastructures.Color;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
@@ -16,6 +17,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
 
 import static com.fantasticsource.setbonus.client.Keys.BONUS_SCREEN_KEY;
+import static org.lwjgl.opengl.GL11.GL_QUADS;
+import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 
 @SideOnly(Side.CLIENT)
 public class BonusScreen extends GuiScreen
@@ -74,8 +77,9 @@ public class BonusScreen extends GuiScreen
 
         drawGradientRect(0, 0, width, height, black, black, aqua, aqua);
 
-        drawVBar(0, height, (double) width / 3, white, white);
-        drawVBar(0, height, (double) width * 2 / 3, white, white);
+        drawGradientBorder(0, 0, width, height, 20, white, BLANK);
+//        drawVBar(0, height, (double) width / 3, white, white);
+//        drawVBar(0, height, (double) width * 2 / 3, white, white);
 
 
         GlStateManager.shadeModel(7424);
@@ -101,7 +105,7 @@ public class BonusScreen extends GuiScreen
     {
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferbuilder = tessellator.getBuffer();
-        bufferbuilder.begin(7, DefaultVertexFormats.POSITION_COLOR);
+        bufferbuilder.begin(GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
         bufferbuilder.pos(right, top, zLevel).color(topRight.r(), topRight.g(), topRight.b(), topRight.a()).endVertex();
         bufferbuilder.pos(left, top, zLevel).color(topLeft.r(), topLeft.g(), topLeft.b(), topLeft.a()).endVertex();
         bufferbuilder.pos(left, bottom, zLevel).color(bottomLeft.r(), bottomLeft.g(), bottomLeft.b(), bottomLeft.a()).endVertex();
@@ -110,15 +114,59 @@ public class BonusScreen extends GuiScreen
     }
 
 
-    private void drawGradientBorder(double left, double top, double right, double bottom, double thickness, Color topRight, Color topLeft, Color bottomLeft, Color bottomRight, Color center)
+    private void drawGradientBorder(double left, double top, double right, double bottom, double thickness, Color border, Color center)
     {
+        thickness = Tools.min(thickness, (bottom - top) / 2, (right - left) / 2);
+
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferbuilder = tessellator.getBuffer();
-        bufferbuilder.begin(7, DefaultVertexFormats.POSITION_COLOR);
-        bufferbuilder.pos(right, top, zLevel).color(topRight.r(), topRight.g(), topRight.b(), topRight.a()).endVertex();
-        bufferbuilder.pos(left, top, zLevel).color(topLeft.r(), topLeft.g(), topLeft.b(), topLeft.a()).endVertex();
-        bufferbuilder.pos(left, bottom, zLevel).color(bottomLeft.r(), bottomLeft.g(), bottomLeft.b(), bottomLeft.a()).endVertex();
-        bufferbuilder.pos(right, bottom, zLevel).color(bottomRight.r(), bottomRight.g(), bottomRight.b(), bottomRight.a()).endVertex();
+        bufferbuilder.begin(GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
+
+
+        bufferbuilder.pos(right - thickness, top, zLevel).color(border.r(), border.g(), border.b(), border.a()).endVertex();
+        bufferbuilder.pos(left + thickness, top, zLevel).color(border.r(), border.g(), border.b(), border.a()).endVertex();
+        bufferbuilder.pos(left + thickness, top + thickness, zLevel).color(center.r(), center.g(), center.b(), center.a()).endVertex();
+        bufferbuilder.pos(right - thickness, top + thickness, zLevel).color(center.r(), center.g(), center.b(), center.a()).endVertex();
+
+        bufferbuilder.pos(right - thickness, bottom - thickness, zLevel).color(center.r(), center.g(), center.b(), center.a()).endVertex();
+        bufferbuilder.pos(left + thickness, bottom - thickness, zLevel).color(center.r(), center.g(), center.b(), center.a()).endVertex();
+        bufferbuilder.pos(left + thickness, bottom, zLevel).color(border.r(), border.g(), border.b(), border.a()).endVertex();
+        bufferbuilder.pos(right - thickness, bottom, zLevel).color(border.r(), border.g(), border.b(), border.a()).endVertex();
+
+        bufferbuilder.pos(right, top + thickness, zLevel).color(border.r(), border.g(), border.b(), border.a()).endVertex();
+        bufferbuilder.pos(right - thickness, top + thickness, zLevel).color(center.r(), center.g(), center.b(), center.a()).endVertex();
+        bufferbuilder.pos(right - thickness, bottom - thickness, zLevel).color(center.r(), center.g(), center.b(), center.a()).endVertex();
+        bufferbuilder.pos(right, bottom - thickness, zLevel).color(border.r(), border.g(), border.b(), border.a()).endVertex();
+
+        bufferbuilder.pos(left + thickness, top + thickness, zLevel).color(center.r(), center.g(), center.b(), center.a()).endVertex();
+        bufferbuilder.pos(left, top + thickness, zLevel).color(border.r(), border.g(), border.b(), border.a()).endVertex();
+        bufferbuilder.pos(left, bottom - thickness, zLevel).color(border.r(), border.g(), border.b(), border.a()).endVertex();
+        bufferbuilder.pos(left + thickness, bottom - thickness, zLevel).color(center.r(), center.g(), center.b(), center.a()).endVertex();
+
+
+        //Mind the vertex ordering; not only the winding order, but the specific order of corners matters here to correctly interpolate the compound gradients for corners
+
+        bufferbuilder.pos(right, top, zLevel).color(border.r(), border.g(), border.b(), border.a()).endVertex();
+        bufferbuilder.pos(right - thickness, top, zLevel).color(border.r(), border.g(), border.b(), border.a()).endVertex();
+        bufferbuilder.pos(right - thickness, top + thickness, zLevel).color(center.r(), center.g(), center.b(), center.a()).endVertex();
+        bufferbuilder.pos(right, top + thickness, zLevel).color(border.r(), border.g(), border.b(), border.a()).endVertex();
+
+        bufferbuilder.pos(left + thickness, bottom - thickness, zLevel).color(center.r(), center.g(), center.b(), center.a()).endVertex();
+        bufferbuilder.pos(left, bottom - thickness, zLevel).color(border.r(), border.g(), border.b(), border.a()).endVertex();
+        bufferbuilder.pos(left, bottom, zLevel).color(border.r(), border.g(), border.b(), border.a()).endVertex();
+        bufferbuilder.pos(left + thickness, bottom, zLevel).color(border.r(), border.g(), border.b(), border.a()).endVertex();
+
+        bufferbuilder.pos(right - thickness, bottom - thickness, zLevel).color(center.r(), center.g(), center.b(), center.a()).endVertex();
+        bufferbuilder.pos(right - thickness, bottom, zLevel).color(border.r(), border.g(), border.b(), border.a()).endVertex();
+        bufferbuilder.pos(right, bottom, zLevel).color(border.r(), border.g(), border.b(), border.a()).endVertex();
+        bufferbuilder.pos(right, bottom - thickness, zLevel).color(border.r(), border.g(), border.b(), border.a()).endVertex();
+
+        bufferbuilder.pos(left, top, zLevel).color(border.r(), border.g(), border.b(), border.a()).endVertex();
+        bufferbuilder.pos(left, top + thickness, zLevel).color(border.r(), border.g(), border.b(), border.a()).endVertex();
+        bufferbuilder.pos(left + thickness, top + thickness, zLevel).color(center.r(), center.g(), center.b(), center.a()).endVertex();
+        bufferbuilder.pos(left + thickness, top, zLevel).color(border.r(), border.g(), border.b(), border.a()).endVertex();
+
+
         tessellator.draw();
     }
 }
