@@ -18,7 +18,6 @@ import org.lwjgl.input.Keyboard;
 
 import static com.fantasticsource.setbonus.client.Keys.BONUS_SCREEN_KEY;
 import static org.lwjgl.opengl.GL11.GL_QUADS;
-import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 
 @SideOnly(Side.CLIENT)
 public class BonusScreen extends GuiScreen
@@ -63,6 +62,7 @@ public class BonusScreen extends GuiScreen
     }
 
 
+    static double progress = 0;
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
@@ -73,31 +73,30 @@ public class BonusScreen extends GuiScreen
         GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
 
 
-        Color black = new Color(0xCC), aqua = new Color(0x3366CC), white = new Color(0xFFFFFF33);
+        Color black = new Color(0xCC), aqua = new Color(0x3366CC), white = new Color(0xFFFFFF33), white2 = new Color(0xFFFFFF77);
 
         drawGradientRect(0, 0, width, height, black, black, aqua, aqua);
 
-        drawGradientBorder(0, 0, width, height, 20, white, BLANK);
-//        drawVBar(0, height, (double) width / 3, white, white);
-//        drawVBar(0, height, (double) width * 2 / 3, white, white);
+        //Left
+        drawGradientBorder(0, 0, (double) width / 3 - 10, height, 20, white, BLANK);
+        drawGradientVScrollbar((double) width / 3 - 10, 0, (double) width / 3, height, white2, BLANK, white2, BLANK, -1);
+
+        //Center
+        drawGradientBorder((double) width / 3, 0, (double) width * 2 / 3, (double) height / 10, 7, white2, BLANK);
+        drawGradientBorder((double) width / 3, (double) height / 10, (double) width * 2 / 3 - 10, height, 20, white, BLANK);
+        drawGradientVScrollbar((double) width * 2 / 3 - 10, (double) height / 10, (double) width * 2 / 3, height, white2, BLANK, white2, BLANK, 0);
+
+        //Right
+        drawGradientBorder((double) width * 2 / 3, 0, width - 10, height, 20, white, BLANK);
+        progress += 0.001;
+        if (progress >= 2) progress -= 2;
+        drawGradientVScrollbar(width - 10, 0, width, height, white2, BLANK, white2, BLANK, progress >= 1 ? 2 - progress : progress);
 
 
         GlStateManager.shadeModel(7424);
         GlStateManager.disableBlend();
         GlStateManager.enableAlpha();
         GlStateManager.enableTexture2D();
-    }
-
-
-    private void drawHBar(int left, int right, int y, Color leftC, Color rightC)
-    {
-
-    }
-
-    private void drawVBar(double top, double bottom, double x, Color topC, Color bottomC)
-    {
-        drawGradientRect(x - 1, top, x, bottom, topC, BLANK, BLANK, bottomC);
-        drawGradientRect(x, top, x + 1, bottom, BLANK, topC, bottomC, BLANK);
     }
 
 
@@ -121,6 +120,12 @@ public class BonusScreen extends GuiScreen
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferbuilder = tessellator.getBuffer();
         bufferbuilder.begin(GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
+
+
+        bufferbuilder.pos(right - thickness, top + thickness, zLevel).color(center.r(), center.g(), center.b(), center.a()).endVertex();
+        bufferbuilder.pos(left + thickness, top + thickness, zLevel).color(center.r(), center.g(), center.b(), center.a()).endVertex();
+        bufferbuilder.pos(left + thickness, bottom - thickness, zLevel).color(center.r(), center.g(), center.b(), center.a()).endVertex();
+        bufferbuilder.pos(right - thickness, bottom - thickness, zLevel).color(center.r(), center.g(), center.b(), center.a()).endVertex();
 
 
         bufferbuilder.pos(right - thickness, top, zLevel).color(border.r(), border.g(), border.b(), border.a()).endVertex();
@@ -168,5 +173,20 @@ public class BonusScreen extends GuiScreen
 
 
         tessellator.draw();
+    }
+
+    private void drawGradientVScrollbar(double left, double top, double right, double bottom, Color backgroundBorder, Color backgroundCenter, Color sliderBorder, Color sliderCenter, double progress)
+    {
+        double thickness = (right - left) / 3;
+        drawGradientBorder(left, top, right, bottom, thickness, backgroundBorder, backgroundCenter);
+
+        if (progress >= 0 && progress <= 1)
+        {
+            double height = bottom - top;
+            double sliderHeight = height / 10;
+            double slidertop = top + (height - sliderHeight) * progress;
+
+            drawGradientBorder(left, slidertop, right, slidertop + sliderHeight, thickness, sliderBorder, sliderCenter);
+        }
     }
 }
