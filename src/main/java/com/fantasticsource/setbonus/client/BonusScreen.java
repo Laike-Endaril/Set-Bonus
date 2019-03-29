@@ -62,7 +62,8 @@ public class BonusScreen extends GuiScreen
     }
 
 
-    static double progress = 0;
+    private static double progress = 0;
+
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
@@ -73,18 +74,24 @@ public class BonusScreen extends GuiScreen
         GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
 
 
-        Color black = new Color(0xCC), aqua = new Color(0x3366CC), white = new Color(0xFFFFFF33), white2 = new Color(0xFFFFFF77);
+        Color black = new Color(0xCC), aqua = new Color(0x3366CC), white = new Color(0xFFFFFF33), white2 = new Color(0xFFFFFF77), white3 = new Color(0xFFFFFFAA);
 
         drawGradientRect(0, 0, width, height, black, black, aqua, aqua);
 
         //Left
-        drawGradientBorder(0, 0, (double) width / 3 - 10, height, 20, white, BLANK);
-        drawGradientVScrollbar((double) width / 3 - 10, 0, (double) width / 3, height, white2, BLANK, white2, BLANK, -1);
+        drawGradientBorder(0, 0, (double) width / 3 - 13, height, 20, white, BLANK);
+        drawGradientVScrollbar((double) width / 3 - 13, 0, (double) width / 3 - 3, height, white2, BLANK, white2, BLANK, -1);
+
+        //Separator
+        drawGradientRect((double) width / 3 - 3, 0, (double) width / 3, height, white2, white3, white3, white2);
 
         //Center
-        drawGradientBorder((double) width / 3, 0, (double) width * 2 / 3, (double) height / 10, 7, white2, BLANK);
-        drawGradientBorder((double) width / 3, (double) height / 10, (double) width * 2 / 3 - 10, height, 20, white, BLANK);
-        drawGradientVScrollbar((double) width * 2 / 3 - 10, (double) height / 10, (double) width * 2 / 3, height, white2, BLANK, white2, BLANK, 0);
+        drawGradientBorder((double) width / 3, 0, (double) width * 2 / 3 - 3, (double) height / 10, 7, white2, BLANK);
+        drawGradientBorder((double) width / 3, (double) height / 10, (double) width * 2 / 3 - 13, height, 20, white, BLANK);
+        drawGradientVScrollbar((double) width * 2 / 3 - 13, (double) height / 10, (double) width * 2 / 3 - 3, height, white2, BLANK, white2, BLANK, 0);
+
+        //Separator
+        drawGradientRect((double) width * 2 / 3 - 3, 0, (double) width * 2 / 3, height, white2, white3, white3, white2);
 
         //Right
         drawGradientBorder((double) width * 2 / 3, 0, width - 10, height, 20, white, BLANK);
