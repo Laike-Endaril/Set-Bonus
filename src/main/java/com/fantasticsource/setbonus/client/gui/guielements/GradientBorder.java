@@ -93,6 +93,6 @@ public class GradientBorder extends GUIElement
     @Override
     boolean isWithin(double x, double y)
     {
-        return false;
+        return left <= x && x < right && top <= y && y < bottom;
     }
 }

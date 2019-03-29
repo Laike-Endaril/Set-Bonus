@@ -31,10 +31,13 @@ public class VerticalScrollbar extends GUIElement
 
         if (progress >= 0 && progress <= 1)
         {
-            double slidertop = (top + (this.height - sliderHeight) * progress) * height;
+            double slidertop = top + (this.height - sliderHeight) * progress;
+
             GlStateManager.pushMatrix();
             GlStateManager.translate(0, slidertop, 0);
+
             slider.draw(width, height);
+
             GlStateManager.popMatrix();
         }
     }
@@ -43,7 +46,6 @@ public class VerticalScrollbar extends GUIElement
     public void mouseWheel(double x, double y, int delta)
     {
         boolean go = isWithin(x, y);
-        System.out.println(x + ", " + y + ", " + go);
 
         if (!go)
         {
@@ -59,13 +61,22 @@ public class VerticalScrollbar extends GUIElement
 
         if (go)
         {
-
+            if (delta < 0)
+            {
+                progress += 0.1;
+                if (progress > 1) progress = 1;
+            }
+            else
+            {
+                progress -= 0.1;
+                if (progress < 0) progress = 0;
+            }
         }
     }
 
     @Override
     boolean isWithin(double x, double y)
     {
-        return false;
+        return background.isWithin(x, y);
     }
 }
