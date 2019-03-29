@@ -7,7 +7,7 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 
 import static org.lwjgl.opengl.GL11.GL_QUADS;
 
-public class GradientRect implements IGUIElement
+public class GradientRect extends GUIElement
 {
     private double left, top, right, bottom;
     private Color topRight, topLeft, bottomLeft, bottomRight;
@@ -35,5 +35,11 @@ public class GradientRect implements IGUIElement
         bufferbuilder.pos(left, bottom, 0).color(bottomLeft.r(), bottomLeft.g(), bottomLeft.b(), bottomLeft.a()).endVertex();
         bufferbuilder.pos(right, bottom, 0).color(bottomRight.r(), bottomRight.g(), bottomRight.b(), bottomRight.a()).endVertex();
         tessellator.draw();
+    }
+
+    @Override
+    boolean isWithin(double x, double y)
+    {
+        return false;
     }
 }

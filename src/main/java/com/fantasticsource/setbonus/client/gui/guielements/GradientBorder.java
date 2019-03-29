@@ -8,7 +8,7 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 
 import static org.lwjgl.opengl.GL11.GL_QUADS;
 
-public class GradientBorder implements IGUIElement
+public class GradientBorder extends GUIElement
 {
     private double left, top, right, bottom, thickness;
     private Color border, center;
@@ -88,5 +88,11 @@ public class GradientBorder implements IGUIElement
 
 
         tessellator.draw();
+    }
+
+    @Override
+    boolean isWithin(double x, double y)
+    {
+        return false;
     }
 }
