@@ -13,10 +13,6 @@ public abstract class GUIScreen extends GuiScreen
 {
     protected ArrayList<IGUIElement> guiElements = new ArrayList<>();
 
-    public GUIScreen()
-    {
-    }
-
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
