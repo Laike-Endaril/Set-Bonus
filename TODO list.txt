@@ -26,8 +26,10 @@ Potion effects...
 
 *Right column is detail view of currently selected entry
 
-Make each column scrollable
 Make each text element a link (if applicable)
+
+
+Migrate most GUI classes to library
 
 
 
