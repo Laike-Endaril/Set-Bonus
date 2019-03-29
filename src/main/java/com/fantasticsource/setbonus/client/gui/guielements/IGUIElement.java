@@ -1,4 +1,4 @@
-package com.fantasticsource.setbonus.client.guielements;
+package com.fantasticsource.setbonus.client.gui.guielements;
 
 public interface IGUIElement
 {

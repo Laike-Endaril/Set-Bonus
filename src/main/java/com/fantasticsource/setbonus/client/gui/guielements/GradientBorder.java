@@ -1,9 +1,8 @@
-package com.fantasticsource.setbonus.client.guielements;
+package com.fantasticsource.setbonus.client.gui.guielements;
 
 import com.fantasticsource.tools.Tools;
 import com.fantasticsource.tools.datastructures.Color;
 import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 
@@ -31,9 +30,6 @@ public class GradientBorder implements IGUIElement
         double min = Tools.min((right - left) * 0.5 * width, (bottom - top) * 0.5 * height, thickness * width, thickness * height);
         double xThickness = min / width;
         double yThickness = min / height;
-
-        GlStateManager.pushMatrix();
-        GlStateManager.scale(width, height, 1);
 
 
         Tessellator tessellator = Tessellator.getInstance();
@@ -92,8 +88,5 @@ public class GradientBorder implements IGUIElement
 
 
         tessellator.draw();
-
-
-        GlStateManager.popMatrix();
     }
 }
