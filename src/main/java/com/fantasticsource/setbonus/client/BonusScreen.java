@@ -1,6 +1,8 @@
 package com.fantasticsource.setbonus.client;
 
-import com.fantasticsource.tools.Tools;
+import com.fantasticsource.setbonus.client.guielements.GradientBorder;
+import com.fantasticsource.setbonus.client.guielements.IGUIElement;
+import com.fantasticsource.setbonus.client.guielements.VerticalScrollbar;
 import com.fantasticsource.tools.datastructures.Color;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
@@ -16,26 +18,45 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
 
+import java.util.ArrayList;
+
 import static com.fantasticsource.setbonus.client.Keys.BONUS_SCREEN_KEY;
 import static org.lwjgl.opengl.GL11.GL_QUADS;
 
 @SideOnly(Side.CLIENT)
 public class BonusScreen extends GuiScreen
 {
+    private static final Color BLANK = new Color(0), BLACK = new Color(0xCC), AQUA = new Color(0x3366CC), WHITE = new Color(0xFFFFFF33), WHITE_2 = new Color(0xFFFFFF77), WHITE_3 = new Color(0xFFFFFFAA);
     private static long debounce = System.currentTimeMillis();
-    private static final Color BLANK = new Color(0);
+    private static ArrayList<IGUIElement> guiElements = new ArrayList<>();
+    private static double progress = 0;
 
+    static
+    {
+        //Left
+        guiElements.add(new GradientBorder(0, 0, 19d / 60, 1, 1d / 15, WHITE, BLANK));
+        guiElements.add(new VerticalScrollbar(19d / 60, 0, 1d / 3, 1, WHITE_2, BLANK, WHITE_2, BLANK));
+
+        //Center
+        guiElements.add(new GradientBorder(1d / 3, 0, 2d / 3, 1d / 10, 1d / 50, WHITE_2, BLANK));
+        guiElements.add(new GradientBorder(1d / 3, 1d / 10, 39d / 60, 1, 1d / 15, WHITE, BLANK));
+        guiElements.add(new VerticalScrollbar(39d / 60, 1d / 10, 2d / 3, 1, WHITE_2, BLANK, WHITE_2, BLANK));
+
+        //Right
+        guiElements.add(new GradientBorder(2d / 3, 0, 59d / 60, 1, 1d / 15, WHITE, BLANK));
+        guiElements.add(new VerticalScrollbar(59d / 60, 0, 1, 1, WHITE_2, BLANK, WHITE_2, BLANK));
+    }
 
     public BonusScreen()
     {
         Minecraft.getMinecraft().displayGuiScreen(this);
     }
 
+
     public BonusScreen(ItemStack stack)
     {
         Minecraft.getMinecraft().displayGuiScreen(this);
     }
-
 
     @SubscribeEvent
     public static void tooltip(RenderTooltipEvent.PostText event)
@@ -61,8 +82,17 @@ public class BonusScreen extends GuiScreen
         }
     }
 
-
-    private static double progress = 0;
+    public static void drawGradientRect(double left, double top, double right, double bottom, Color topRight, Color topLeft, Color bottomLeft, Color bottomRight)
+    {
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder bufferbuilder = tessellator.getBuffer();
+        bufferbuilder.begin(GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
+        bufferbuilder.pos(right, top, 0).color(topRight.r(), topRight.g(), topRight.b(), topRight.a()).endVertex();
+        bufferbuilder.pos(left, top, 0).color(topLeft.r(), topLeft.g(), topLeft.b(), topLeft.a()).endVertex();
+        bufferbuilder.pos(left, bottom, 0).color(bottomLeft.r(), bottomLeft.g(), bottomLeft.b(), bottomLeft.a()).endVertex();
+        bufferbuilder.pos(right, bottom, 0).color(bottomRight.r(), bottomRight.g(), bottomRight.b(), bottomRight.a()).endVertex();
+        tessellator.draw();
+    }
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
@@ -74,126 +104,23 @@ public class BonusScreen extends GuiScreen
         GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
 
 
-        Color black = new Color(0xCC), aqua = new Color(0x3366CC), white = new Color(0xFFFFFF33), white2 = new Color(0xFFFFFF77), white3 = new Color(0xFFFFFFAA);
-
-        drawGradientRect(0, 0, width, height, black, black, aqua, aqua);
-
-        //Left
-        drawGradientBorder(0, 0, (double) width / 3 - 13, height, 20, white, BLANK);
-        drawGradientVScrollbar((double) width / 3 - 13, 0, (double) width / 3 - 3, height, white2, BLANK, white2, BLANK, -1);
+        drawGradientRect(0, 0, width, height, BLACK, BLACK, AQUA, AQUA);
 
         //Separator
-        drawGradientRect((double) width / 3 - 3, 0, (double) width / 3, height, white2, white3, white3, white2);
-
-        //Center
-        drawGradientBorder((double) width / 3, 0, (double) width * 2 / 3 - 3, (double) height / 10, 7, white2, BLANK);
-        drawGradientBorder((double) width / 3, (double) height / 10, (double) width * 2 / 3 - 13, height, 20, white, BLANK);
-        drawGradientVScrollbar((double) width * 2 / 3 - 13, (double) height / 10, (double) width * 2 / 3 - 3, height, white2, BLANK, white2, BLANK, 0);
+//        drawGradientRect((double) width / 3 - 3, 0, (double) width / 3, height, WHITE_2, WHITE_3, WHITE_3, WHITE_2);
 
         //Separator
-        drawGradientRect((double) width * 2 / 3 - 3, 0, (double) width * 2 / 3, height, white2, white3, white3, white2);
+//        drawGradientRect((double) width * 2 / 3 - 3, 0, (double) width * 2 / 3, height, WHITE_2, WHITE_3, WHITE_3, WHITE_2);
 
-        //Right
-        drawGradientBorder((double) width * 2 / 3, 0, width - 10, height, 20, white, BLANK);
         progress += 0.001;
         if (progress >= 2) progress -= 2;
-        drawGradientVScrollbar(width - 10, 0, width, height, white2, BLANK, white2, BLANK, progress >= 1 ? 2 - progress : progress);
+
+        for (IGUIElement element : guiElements) element.draw(width, height);
 
 
         GlStateManager.shadeModel(7424);
         GlStateManager.disableBlend();
         GlStateManager.enableAlpha();
         GlStateManager.enableTexture2D();
-    }
-
-
-    private void drawGradientRect(double left, double top, double right, double bottom, Color topRight, Color topLeft, Color bottomLeft, Color bottomRight)
-    {
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder bufferbuilder = tessellator.getBuffer();
-        bufferbuilder.begin(GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
-        bufferbuilder.pos(right, top, zLevel).color(topRight.r(), topRight.g(), topRight.b(), topRight.a()).endVertex();
-        bufferbuilder.pos(left, top, zLevel).color(topLeft.r(), topLeft.g(), topLeft.b(), topLeft.a()).endVertex();
-        bufferbuilder.pos(left, bottom, zLevel).color(bottomLeft.r(), bottomLeft.g(), bottomLeft.b(), bottomLeft.a()).endVertex();
-        bufferbuilder.pos(right, bottom, zLevel).color(bottomRight.r(), bottomRight.g(), bottomRight.b(), bottomRight.a()).endVertex();
-        tessellator.draw();
-    }
-
-
-    private void drawGradientBorder(double left, double top, double right, double bottom, double thickness, Color border, Color center)
-    {
-        thickness = Tools.min(thickness, (bottom - top) / 2, (right - left) / 2);
-
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder bufferbuilder = tessellator.getBuffer();
-        bufferbuilder.begin(GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
-
-
-        bufferbuilder.pos(right - thickness, top + thickness, zLevel).color(center.r(), center.g(), center.b(), center.a()).endVertex();
-        bufferbuilder.pos(left + thickness, top + thickness, zLevel).color(center.r(), center.g(), center.b(), center.a()).endVertex();
-        bufferbuilder.pos(left + thickness, bottom - thickness, zLevel).color(center.r(), center.g(), center.b(), center.a()).endVertex();
-        bufferbuilder.pos(right - thickness, bottom - thickness, zLevel).color(center.r(), center.g(), center.b(), center.a()).endVertex();
-
-
-        bufferbuilder.pos(right - thickness, top, zLevel).color(border.r(), border.g(), border.b(), border.a()).endVertex();
-        bufferbuilder.pos(left + thickness, top, zLevel).color(border.r(), border.g(), border.b(), border.a()).endVertex();
-        bufferbuilder.pos(left + thickness, top + thickness, zLevel).color(center.r(), center.g(), center.b(), center.a()).endVertex();
-        bufferbuilder.pos(right - thickness, top + thickness, zLevel).color(center.r(), center.g(), center.b(), center.a()).endVertex();
-
-        bufferbuilder.pos(right - thickness, bottom - thickness, zLevel).color(center.r(), center.g(), center.b(), center.a()).endVertex();
-        bufferbuilder.pos(left + thickness, bottom - thickness, zLevel).color(center.r(), center.g(), center.b(), center.a()).endVertex();
-        bufferbuilder.pos(left + thickness, bottom, zLevel).color(border.r(), border.g(), border.b(), border.a()).endVertex();
-        bufferbuilder.pos(right - thickness, bottom, zLevel).color(border.r(), border.g(), border.b(), border.a()).endVertex();
-
-        bufferbuilder.pos(right, top + thickness, zLevel).color(border.r(), border.g(), border.b(), border.a()).endVertex();
-        bufferbuilder.pos(right - thickness, top + thickness, zLevel).color(center.r(), center.g(), center.b(), center.a()).endVertex();
-        bufferbuilder.pos(right - thickness, bottom - thickness, zLevel).color(center.r(), center.g(), center.b(), center.a()).endVertex();
-        bufferbuilder.pos(right, bottom - thickness, zLevel).color(border.r(), border.g(), border.b(), border.a()).endVertex();
-
-        bufferbuilder.pos(left + thickness, top + thickness, zLevel).color(center.r(), center.g(), center.b(), center.a()).endVertex();
-        bufferbuilder.pos(left, top + thickness, zLevel).color(border.r(), border.g(), border.b(), border.a()).endVertex();
-        bufferbuilder.pos(left, bottom - thickness, zLevel).color(border.r(), border.g(), border.b(), border.a()).endVertex();
-        bufferbuilder.pos(left + thickness, bottom - thickness, zLevel).color(center.r(), center.g(), center.b(), center.a()).endVertex();
-
-
-        //Mind the vertex ordering; not only the winding order, but the specific order of corners matters here to correctly interpolate the compound gradients for corners
-
-        bufferbuilder.pos(right, top, zLevel).color(border.r(), border.g(), border.b(), border.a()).endVertex();
-        bufferbuilder.pos(right - thickness, top, zLevel).color(border.r(), border.g(), border.b(), border.a()).endVertex();
-        bufferbuilder.pos(right - thickness, top + thickness, zLevel).color(center.r(), center.g(), center.b(), center.a()).endVertex();
-        bufferbuilder.pos(right, top + thickness, zLevel).color(border.r(), border.g(), border.b(), border.a()).endVertex();
-
-        bufferbuilder.pos(left + thickness, bottom - thickness, zLevel).color(center.r(), center.g(), center.b(), center.a()).endVertex();
-        bufferbuilder.pos(left, bottom - thickness, zLevel).color(border.r(), border.g(), border.b(), border.a()).endVertex();
-        bufferbuilder.pos(left, bottom, zLevel).color(border.r(), border.g(), border.b(), border.a()).endVertex();
-        bufferbuilder.pos(left + thickness, bottom, zLevel).color(border.r(), border.g(), border.b(), border.a()).endVertex();
-
-        bufferbuilder.pos(right - thickness, bottom - thickness, zLevel).color(center.r(), center.g(), center.b(), center.a()).endVertex();
-        bufferbuilder.pos(right - thickness, bottom, zLevel).color(border.r(), border.g(), border.b(), border.a()).endVertex();
-        bufferbuilder.pos(right, bottom, zLevel).color(border.r(), border.g(), border.b(), border.a()).endVertex();
-        bufferbuilder.pos(right, bottom - thickness, zLevel).color(border.r(), border.g(), border.b(), border.a()).endVertex();
-
-        bufferbuilder.pos(left, top, zLevel).color(border.r(), border.g(), border.b(), border.a()).endVertex();
-        bufferbuilder.pos(left, top + thickness, zLevel).color(border.r(), border.g(), border.b(), border.a()).endVertex();
-        bufferbuilder.pos(left + thickness, top + thickness, zLevel).color(center.r(), center.g(), center.b(), center.a()).endVertex();
-        bufferbuilder.pos(left + thickness, top, zLevel).color(border.r(), border.g(), border.b(), border.a()).endVertex();
-
-
-        tessellator.draw();
-    }
-
-    private void drawGradientVScrollbar(double left, double top, double right, double bottom, Color backgroundBorder, Color backgroundCenter, Color sliderBorder, Color sliderCenter, double progress)
-    {
-        double thickness = (right - left) / 3;
-        drawGradientBorder(left, top, right, bottom, thickness, backgroundBorder, backgroundCenter);
-
-        if (progress >= 0 && progress <= 1)
-        {
-            double height = bottom - top;
-            double sliderHeight = height / 10;
-            double slidertop = top + (height - sliderHeight) * progress;
-
-            drawGradientBorder(left, slidertop, right, slidertop + sliderHeight, thickness, sliderBorder, sliderCenter);
-        }
     }
 }
