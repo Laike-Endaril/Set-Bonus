@@ -76,14 +76,12 @@ public class VerticalScrollbar extends GUIElement
             active = true;
             progress = Tools.min(Tools.max((y - this.y) / height, 0), 1);
         }
-        System.out.println(progress);
     }
 
     @Override
     public void mouseReleased(double x, double y, int button)
     {
         if (button == 0) active = false;
-        System.out.println(progress);
     }
 
     @Override
@@ -94,6 +92,5 @@ public class VerticalScrollbar extends GUIElement
             if (progress == -1) active = false;
             else progress = Tools.min(Tools.max((y - this.y) / height, 0), 1);
         }
-        System.out.println(progress);
     }
 }
