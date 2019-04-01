@@ -21,7 +21,7 @@ public class GradientRect extends GUIRectElement
     }
 
     @Override
-    public void draw(double width, double height)
+    public void draw(double screenWidth, double screenHeight)
     {
         double x2 = x + width;
         double y2 = y + height;

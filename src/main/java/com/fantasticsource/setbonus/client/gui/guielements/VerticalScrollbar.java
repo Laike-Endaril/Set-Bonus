@@ -27,14 +27,14 @@ public class VerticalScrollbar extends GUIElement
     }
 
     @Override
-    public void draw(double width, double height)
+    public void draw(double screenWidth, double screenHeight)
     {
-        background.draw(width, height);
+        background.draw(screenWidth, screenHeight);
 
         if (progress >= 0 && progress <= 1)
         {
             slider.y = y + (this.height - sliderHeight) * progress;
-            slider.draw(width, height);
+            slider.draw(screenWidth, screenHeight);
         }
     }
 

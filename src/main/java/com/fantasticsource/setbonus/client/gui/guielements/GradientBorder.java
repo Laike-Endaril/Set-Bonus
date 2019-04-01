@@ -22,14 +22,14 @@ public class GradientBorder extends GUIRectElement
     }
 
     @Override
-    public void draw(double width, double height)
+    public void draw(double screenWidth, double screenHeight)
     {
         double x2 = x + width;
         double y2 = y + height;
 
-        double min = Tools.min((x2 - x) * 0.5 * width, (y2 - y) * 0.5 * height, thickness * width, thickness * height);
-        double xThickness = min / width;
-        double yThickness = min / height;
+        double min = Tools.min((x2 - x) * 0.5 * screenWidth, (y2 - y) * 0.5 * screenHeight, thickness * screenWidth, thickness * screenHeight);
+        double xThickness = min / screenWidth;
+        double yThickness = min / screenHeight;
 
 
         Tessellator tessellator = Tessellator.getInstance();

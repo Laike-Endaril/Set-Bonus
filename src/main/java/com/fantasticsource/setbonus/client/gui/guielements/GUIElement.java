@@ -12,7 +12,7 @@ public abstract class GUIElement
 
     public abstract boolean isWithin(double x, double y);
 
-    public void draw(double width, double height)
+    public void draw(double screenWidth, double screenHeight)
     {
     }
 
