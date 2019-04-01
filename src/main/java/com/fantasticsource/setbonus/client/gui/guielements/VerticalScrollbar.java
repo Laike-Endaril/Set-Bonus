@@ -2,7 +2,6 @@ package com.fantasticsource.setbonus.client.gui.guielements;
 
 import com.fantasticsource.tools.Tools;
 import com.fantasticsource.tools.datastructures.Color;
-import net.minecraft.client.renderer.GlStateManager;
 
 public class VerticalScrollbar extends GUIElement
 {
@@ -34,14 +33,8 @@ public class VerticalScrollbar extends GUIElement
 
         if (progress >= 0 && progress <= 1)
         {
-            double slidertop = y + (this.height - sliderHeight) * progress;
-
-            GlStateManager.pushMatrix();
-            GlStateManager.translate(0, slidertop, 0);
-
+            slider.y = y + (this.height - sliderHeight) * progress;
             slider.draw(width, height);
-
-            GlStateManager.popMatrix();
         }
     }
 
@@ -74,7 +67,7 @@ public class VerticalScrollbar extends GUIElement
         if (progress != -1 && button == 0 && isWithin(x, y))
         {
             active = true;
-            progress = Tools.min(Tools.max((y - this.y) / height, 0), 1);
+            progress = Tools.min(Tools.max((y - this.y - slider.height * 0.5) / (height - slider.height), 0), 1);
         }
     }
 
@@ -90,7 +83,7 @@ public class VerticalScrollbar extends GUIElement
         if (active && button == 0)
         {
             if (progress == -1) active = false;
-            else progress = Tools.min(Tools.max((y - this.y) / height, 0), 1);
+            else progress = Tools.min(Tools.max((y - this.y - slider.height * 0.5) / (height - slider.height), 0), 1);
         }
     }
 }
