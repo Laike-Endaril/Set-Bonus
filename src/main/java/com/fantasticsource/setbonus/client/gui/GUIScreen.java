@@ -12,7 +12,8 @@ import java.util.ArrayList;
 @SideOnly(Side.CLIENT)
 public abstract class GUIScreen extends GuiScreen
 {
-    public ArrayList<GUIElement> guiElements = new ArrayList<>();
+    protected ArrayList<GUIElement> guiElements = new ArrayList<>();
+    private ArrayList<Integer> mouseButtons = new ArrayList<>();
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
@@ -39,22 +40,61 @@ public abstract class GUIScreen extends GuiScreen
     @Override
     public void handleMouseInput()
     {
+        //Cancel if outside game window
         if (!Mouse.isInsideWindow())
         {
+            //Note: isInsideWindow returns true if you drag a mouse button from inside the window to outside it, until you release said button (inclusive)
             Mouse.getDWheel(); //Clear the wheel delta, or it will trigger when mouse re-enters window
             return;
         }
 
+
+        //General setup
         double x = (double) Mouse.getX() / mc.displayWidth;
         int displayHeight = mc.displayHeight;
         double y = (double) (displayHeight - 1 - Mouse.getY()) / displayHeight;
 
+
+        //Mouse wheel
         int delta = Mouse.getDWheel();
         if (delta != 0)
         {
             for (GUIElement element : guiElements)
             {
                 element.mouseWheel(x, y, delta);
+            }
+        }
+
+
+        //Mouse press, release, and drag
+        int btn = Mouse.getEventButton();
+        if (btn != -1)
+        {
+            if (Mouse.isButtonDown(btn))
+            {
+                mouseButtons.add(btn);
+                for (GUIElement element : guiElements)
+                {
+                    element.mousePressed(x, y, btn);
+                }
+            }
+            else
+            {
+                mouseButtons.remove(btn);
+                for (GUIElement element : guiElements)
+                {
+                    element.mouseReleased(x, y, btn);
+                }
+            }
+        }
+        else
+        {
+            for (int b : mouseButtons)
+            {
+                for (GUIElement element : guiElements)
+                {
+                    element.mouseDrag(x, y, b);
+                }
             }
         }
     }

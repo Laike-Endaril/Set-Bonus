@@ -1,7 +1,7 @@
 package com.fantasticsource.setbonus.client;
 
 import com.fantasticsource.setbonus.client.gui.GUIScreen;
-import com.fantasticsource.setbonus.client.gui.guielements.GUIElement;
+import com.fantasticsource.setbonus.client.gui.guielements.GUIRectElement;
 import com.fantasticsource.setbonus.client.gui.guielements.GradientBorder;
 import com.fantasticsource.setbonus.client.gui.guielements.GradientRect;
 import com.fantasticsource.setbonus.client.gui.guielements.VerticalScrollbar;
@@ -28,7 +28,7 @@ public class BonusScreen extends GUIScreen
         guiElements.add(new GradientRect(0, 0, 1, 1, BLACK, BLACK, AQUA, AQUA));
 
         //Left
-        GUIElement element = new GradientBorder(0, 0, 19d / 60, 1, 1d / 15, WHITE, BLANK);
+        GUIRectElement element = new GradientBorder(0, 0, 19d / 60, 1, 1d / 15, WHITE, BLANK);
         guiElements.add(element);
         guiElements.add(new VerticalScrollbar(19d / 60, 0, 1d / 3, 1, WHITE_2, BLANK, WHITE_2, BLANK, element));
 
