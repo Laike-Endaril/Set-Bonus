@@ -1,10 +1,7 @@
 package com.fantasticsource.setbonus.client;
 
 import com.fantasticsource.setbonus.client.gui.GUIScreen;
-import com.fantasticsource.setbonus.client.gui.guielements.GUIRectElement;
-import com.fantasticsource.setbonus.client.gui.guielements.GradientBorder;
-import com.fantasticsource.setbonus.client.gui.guielements.GradientRect;
-import com.fantasticsource.setbonus.client.gui.guielements.VerticalScrollbar;
+import com.fantasticsource.setbonus.client.gui.guielements.*;
 import com.fantasticsource.tools.datastructures.Color;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
@@ -29,8 +26,9 @@ public class BonusScreen extends GUIScreen
 
         //Left
         GUIRectElement element = new GradientBorder(0, 0, 19d / 60, 1, 1d / 15, WHITE, BLANK);
-        guiElements.add(element);
-        guiElements.add(new VerticalScrollbar(19d / 60, 0, 1d / 3, 1, WHITE_2, BLANK, WHITE_2, BLANK, element));
+        GUIRectScrollView scrollView = new GUIRectScrollView(element);
+        guiElements.add(scrollView);
+        guiElements.add(new VerticalScrollbar(19d / 60, 0, 1d / 3, 1, WHITE_2, BLANK, WHITE_2, BLANK, scrollView));
 
         //Separator
         guiElements.add(new GradientRect(1d / 3, 0, 41d / 120, 1, WHITE_2, WHITE_3, WHITE_3, WHITE_2));
@@ -38,16 +36,18 @@ public class BonusScreen extends GUIScreen
         //Center
         guiElements.add(new GradientBorder(41d / 120, 0, 2d / 3, 1d / 10, 1d / 50, WHITE_2, BLANK));
         element = new GradientBorder(41d / 120, 1d / 10, 39d / 60, 1, 1d / 15, WHITE, BLANK);
-        guiElements.add(element);
-        guiElements.add(new VerticalScrollbar(39d / 60, 1d / 10, 2d / 3, 1, WHITE_2, BLANK, WHITE_2, BLANK, element));
+        scrollView = new GUIRectScrollView(element);
+        guiElements.add(scrollView);
+        guiElements.add(new VerticalScrollbar(39d / 60, 1d / 10, 2d / 3, 1, WHITE_2, BLANK, WHITE_2, BLANK, scrollView));
 
         //Separator
         guiElements.add(new GradientRect(2d / 3, 0, 81d / 120, 1, WHITE_2, WHITE_3, WHITE_3, WHITE_2));
 
         //Right
         element = new GradientBorder(81d / 120, 0, 59d / 60, 1, 1d / 15, WHITE, BLANK);
-        guiElements.add(element);
-        guiElements.add(new VerticalScrollbar(59d / 60, 0, 1, 1, WHITE_2, BLANK, WHITE_2, BLANK, element));
+        scrollView = new GUIRectScrollView(element);
+        guiElements.add(scrollView);
+        guiElements.add(new VerticalScrollbar(59d / 60, 0, 1, 1, WHITE_2, BLANK, WHITE_2, BLANK, scrollView));
     }
 
     @SubscribeEvent

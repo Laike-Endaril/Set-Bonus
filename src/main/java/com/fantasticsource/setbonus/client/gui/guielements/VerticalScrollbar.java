@@ -8,15 +8,13 @@ public class VerticalScrollbar extends GUIElement
     private double progress = 0;
     private double height, sliderHeight;
     private GradientBorder background, slider;
-    private GUIElement container;
-    private GUIElement[] listedElements;
+    private GUIRectScrollView scrollView;
     private boolean active;
 
-    public VerticalScrollbar(double left, double top, double right, double bottom, Color backgroundBorder, Color backgroundCenter, Color sliderBorder, Color sliderCenter, GUIRectElement container, GUIRectElement... listedElements)
+    public VerticalScrollbar(double left, double top, double right, double bottom, Color backgroundBorder, Color backgroundCenter, Color sliderBorder, Color sliderCenter, GUIRectScrollView scrollView)
     {
         super(left, top);
-        this.container = container;
-        this.listedElements = listedElements;
+        this.scrollView = scrollView;
 
         double thickness = (right - left) / 3;
         height = bottom - top;
@@ -41,7 +39,7 @@ public class VerticalScrollbar extends GUIElement
     @Override
     public void mouseWheel(double x, double y, int delta)
     {
-        if (isWithin(x, y) || container.isWithin(x, y))
+        if (isWithin(x, y) || scrollView.isWithin(x, y))
         {
             if (delta < 0)
             {

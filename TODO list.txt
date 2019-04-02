@@ -1,3 +1,6 @@
+Adapt Canvas class to work with MC, if necessary
+Use Canvas for GUIRectScrollView
+
 SetBonus GUI...
 
 *Left column is category...
