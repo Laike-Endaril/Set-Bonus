@@ -36,6 +36,8 @@ Migrate most GUI classes to library
 
 
 
+Look into enchantments as bonuses
+
 "Discover" command
 "Undiscover" command
 "WipeDiscoveries" command
