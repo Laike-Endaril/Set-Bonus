@@ -10,6 +10,7 @@ import com.fantasticsource.setbonus.common.Bonus;
 import com.fantasticsource.setbonus.common.Commands;
 import com.fantasticsource.setbonus.common.Data;
 import com.fantasticsource.setbonus.common.Network;
+import com.fantasticsource.setbonus.config.ConfigHandler;
 import com.fantasticsource.setbonus.config.SyncedConfig;
 import com.fantasticsource.tools.Tools;
 import net.minecraft.client.Minecraft;
@@ -43,6 +44,13 @@ public class SetBonus
     public static final String NAME = "Set Bonus";
     public static final String VERSION = "1.12.2.008a";
     public static final String CONFIG_VERSION = "1.12.2.009";
+
+
+    static
+    {
+        ConfigHandler.init();
+    }
+
 
     @EventHandler
     public static void preInit(FMLPreInitializationEvent event)
