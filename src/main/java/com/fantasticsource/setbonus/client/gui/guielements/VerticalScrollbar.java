@@ -1,9 +1,12 @@
 package com.fantasticsource.setbonus.client.gui.guielements;
 
+import com.fantasticsource.setbonus.client.gui.guielements.rect.GUIRectElement;
+import com.fantasticsource.setbonus.client.gui.guielements.rect.GUIRectScrollView;
+import com.fantasticsource.setbonus.client.gui.guielements.rect.GradientBorder;
 import com.fantasticsource.tools.Tools;
 import com.fantasticsource.tools.datastructures.Color;
 
-public class VerticalScrollbar extends GUIElement
+public class VerticalScrollbar extends GUIRectElement
 {
     private double progress = 0;
     private double height, sliderHeight;
@@ -13,14 +16,14 @@ public class VerticalScrollbar extends GUIElement
 
     public VerticalScrollbar(double left, double top, double right, double bottom, Color backgroundBorder, Color backgroundCenter, Color sliderBorder, Color sliderCenter, GUIRectScrollView scrollView)
     {
-        super(left, top);
+        super(left, top, right - left, bottom - top);
         this.scrollView = scrollView;
 
         double thickness = (right - left) / 3;
-        height = bottom - top;
+        background = new GradientBorder(left, top, right, bottom, thickness, backgroundBorder, backgroundCenter);
+        height = background.height;
         sliderHeight = height / 10;
 
-        background = new GradientBorder(left, top, right, bottom, thickness, backgroundBorder, backgroundCenter);
         slider = new GradientBorder(left, 0, right, sliderHeight, thickness, sliderBorder, sliderCenter);
     }
 

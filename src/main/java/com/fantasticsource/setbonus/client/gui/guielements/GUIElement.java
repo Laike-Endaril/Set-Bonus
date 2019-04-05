@@ -2,7 +2,7 @@ package com.fantasticsource.setbonus.client.gui.guielements;
 
 public abstract class GUIElement
 {
-    protected double x, y;
+    public double x, y;
 
     public GUIElement(double x, double y)
     {

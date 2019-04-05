@@ -1,8 +1,10 @@
-package com.fantasticsource.setbonus.client.gui.guielements;
+package com.fantasticsource.setbonus.client.gui.guielements.rect;
+
+import com.fantasticsource.setbonus.client.gui.guielements.GUIElement;
 
 public abstract class GUIRectElement extends GUIElement
 {
-    protected double width, height;
+    public double width, height;
 
     public GUIRectElement(double x, double y, double width, double height)
     {

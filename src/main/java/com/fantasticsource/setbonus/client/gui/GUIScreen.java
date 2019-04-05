@@ -1,6 +1,8 @@
 package com.fantasticsource.setbonus.client.gui;
 
 import com.fantasticsource.setbonus.client.gui.guielements.GUIElement;
+import com.fantasticsource.setbonus.client.gui.guielements.rect.GUIRectScrollView;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraftforge.fml.relauncher.Side;
@@ -35,6 +37,17 @@ public abstract class GUIScreen extends GuiScreen
         GlStateManager.disableBlend();
         GlStateManager.enableAlpha();
         GlStateManager.enableTexture2D();
+    }
+
+    @Override
+    public void onResize(Minecraft mcIn, int w, int h)
+    {
+        super.onResize(mcIn, w, h);
+
+        for (GUIElement element : guiElements)
+        {
+            if (element instanceof GUIRectScrollView) ((GUIRectScrollView) element).recalcHeight(w, h);
+        }
     }
 
     @Override

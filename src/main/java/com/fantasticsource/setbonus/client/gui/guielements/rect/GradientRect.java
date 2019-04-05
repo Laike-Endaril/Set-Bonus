@@ -1,4 +1,4 @@
-package com.fantasticsource.setbonus.client.gui.guielements;
+package com.fantasticsource.setbonus.client.gui.guielements.rect;
 
 import com.fantasticsource.tools.datastructures.Color;
 import net.minecraft.client.renderer.BufferBuilder;
