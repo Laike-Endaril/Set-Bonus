@@ -4,6 +4,7 @@ import com.fantasticsource.setbonus.SetBonus;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.SetRequirement;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.text.translation.I18n;
+import net.minecraftforge.fml.relauncher.Side;
 
 public abstract class ABonusRequirement
 {
@@ -16,13 +17,13 @@ public abstract class ABonusRequirement
         throw new IllegalAccessException("This method should not be called directly!  Please call the matching method of a subclass instead!");
     }
 
-    public static ABonusRequirement parse(String parseableBonusRequirement)
+    public static ABonusRequirement parse(String parseableBonusRequirement, Side side)
     {
         ABonusRequirement result;
 
         try
         {
-            result = SetRequirement.getInstance(parseableBonusRequirement);
+            result = SetRequirement.getInstance(parseableBonusRequirement, side);
             if (result != null) return result;
         }
         catch (Exception e)

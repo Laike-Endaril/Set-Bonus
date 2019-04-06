@@ -5,6 +5,7 @@ import com.fantasticsource.setbonus.common.bonuselements.ModifierBonus;
 import com.fantasticsource.setbonus.common.bonuselements.PotionBonus;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Equip;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Set;
+import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.LinkedHashMap;
 
@@ -43,7 +44,7 @@ public class ClientData
         //Initialize sets
         for (String setString : packet.sets)
         {
-            Set set = Set.getInstance(setString);
+            Set set = Set.getInstance(setString, Side.CLIENT);
             if (set != null) sets.put(set.id, set);
         }
 
@@ -59,14 +60,14 @@ public class ClientData
         //Initialize attribute modifiers
         for (String modifierString : packet.attributeMods)
         {
-            ModifierBonus.getInstance(modifierString);
+            ModifierBonus.getInstance(modifierString, Side.CLIENT);
         }
 
 
         //Initialize potions
         for (String potionString : packet.potions)
         {
-            PotionBonus.getInstance(potionString);
+            PotionBonus.getInstance(potionString, Side.CLIENT);
         }
     }
 
@@ -80,14 +81,14 @@ public class ClientData
         //Initialize attribute modifiers
         for (String modifierString : packet.attributeMods)
         {
-            ModifierBonus.getInstance(modifierString);
+            ModifierBonus.getInstance(modifierString, Side.CLIENT);
         }
 
 
         //Initialize potions
         for (String potionString : packet.potions)
         {
-            PotionBonus.getInstance(potionString);
+            PotionBonus.getInstance(potionString, Side.CLIENT);
         }
     }
 }

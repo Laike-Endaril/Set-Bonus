@@ -4,6 +4,7 @@ import com.fantasticsource.setbonus.common.bonuselements.ModifierBonus;
 import com.fantasticsource.setbonus.common.bonuselements.PotionBonus;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Equip;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Set;
+import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.LinkedHashMap;
 
@@ -36,7 +37,7 @@ public class ServerData
         //Initialize sets
         for (String setString : serverSettings.sets)
         {
-            Set set = Set.getInstance(setString);
+            Set set = Set.getInstance(setString, Side.SERVER);
             if (set != null) sets.put(set.id, set);
         }
 
@@ -52,14 +53,14 @@ public class ServerData
         //Initialize attribute modifiers
         for (String modifierString : serverSettings.attributeMods)
         {
-            ModifierBonus.getInstance(modifierString);
+            ModifierBonus.getInstance(modifierString, Side.SERVER);
         }
 
 
         //Initialize potions
         for (String potionString : serverSettings.potions)
         {
-            PotionBonus.getInstance(potionString);
+            PotionBonus.getInstance(potionString, Side.SERVER);
         }
     }
 }

@@ -150,7 +150,7 @@ public class Network
 
             for (ServerBonus bonus : ServerData.bonuses.values())
             {
-                if (bonus.discoveryMode == ServerBonus.MODE_GLOBALLY_KNOWN || bonus.getBonusInstance(player).discovered)
+                if (bonus.discoveryMode == Bonus.MODE_GLOBALLY_KNOWN || bonus.getBonusInstance(player).discovered)
                 {
                     bonuses.add(bonus.parsedString);
 

@@ -2,13 +2,15 @@ package com.fantasticsource.setbonus.common.bonuselements;
 
 import com.fantasticsource.mctools.attributes.AttributeMods;
 import com.fantasticsource.setbonus.SetBonus;
-import com.fantasticsource.setbonus.server.ServerBonus;
+import com.fantasticsource.setbonus.client.ClientData;
+import com.fantasticsource.setbonus.common.Bonus;
 import com.fantasticsource.setbonus.server.ServerData;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.text.translation.I18n;
+import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,7 +19,8 @@ public class ModifierBonus extends ABonusElement
 {
     private Multimap<String, AttributeModifier> modifiers = ArrayListMultimap.create();
 
-    protected ModifierBonus(String parsableBonusElement, ServerBonus bonus, ArrayList<AttributeModifier> modifiers)
+
+    private ModifierBonus(String parsableBonusElement, Bonus bonus, ArrayList<AttributeModifier> modifiers)
     {
         super(parsableBonusElement, bonus);
 
@@ -27,7 +30,7 @@ public class ModifierBonus extends ABonusElement
         }
     }
 
-    public static ModifierBonus getInstance(String parsableModifierBonus)
+    public static ModifierBonus getInstance(String parsableModifierBonus, Side side)
     {
         String[] tokens = parsableModifierBonus.split(",");
         if (tokens.length < 2)
@@ -36,7 +39,7 @@ public class ModifierBonus extends ABonusElement
             return null;
         }
 
-        ServerBonus bonus = ServerData.bonuses.get(tokens[0].trim());
+        Bonus bonus = side == Side.SERVER ? ServerData.bonuses.get(tokens[0].trim()) : ClientData.bonuses.get(tokens[0].trim());
         if (bonus == null)
         {
             System.err.println(I18n.translateToLocalFormatted(SetBonus.MODID + ".error.attribBonusIDNotFound", tokens[0].trim(), parsableModifierBonus));

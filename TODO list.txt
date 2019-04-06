@@ -1,3 +1,5 @@
+Entering a multiplayer game with a bonus already active throws errors in the client-side log
+
 Adapt Canvas class to work with MC, if necessary
 Use Canvas for GUIRectScrollView
 

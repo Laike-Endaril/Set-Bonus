@@ -5,10 +5,12 @@ import baubles.api.BaublesApi;
 import baubles.api.cap.IBaublesItemHandler;
 import com.fantasticsource.mctools.items.ItemFilter;
 import com.fantasticsource.setbonus.SetBonus;
+import com.fantasticsource.setbonus.client.ClientData;
 import com.fantasticsource.setbonus.server.ServerData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.util.text.translation.I18n;
+import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -23,7 +25,7 @@ public class SlotData
     {
     }
 
-    public static SlotData getInstance(String slotsAndEquipment, LinkedHashMap<String, ItemFilter> setdataEquipIDTracker)
+    public static SlotData getInstance(String slotsAndEquipment, LinkedHashMap<String, ItemFilter> setdataEquipIDTracker, Side side)
     {
         SlotData result = new SlotData();
 
@@ -100,10 +102,11 @@ public class SlotData
 
 
         //Equipment
+        LinkedHashMap<String, Equip> equipment = side == Side.SERVER ? ServerData.equipment : ClientData.equipment;
         for (String equipString : tokens[1].split("[|]"))
         {
             equipString = equipString.trim();
-            Equip equip = ServerData.equipment.get(equipString);
+            Equip equip = equipment.get(equipString);
             if (equip == null)
             {
                 System.err.println(I18n.translateToLocalFormatted(SetBonus.MODID + ".error.slotBadEquipID", equipString, slotsAndEquipment));

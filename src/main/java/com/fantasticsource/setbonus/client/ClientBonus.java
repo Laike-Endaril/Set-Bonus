@@ -1,89 +1,24 @@
 package com.fantasticsource.setbonus.client;
 
-import com.fantasticsource.setbonus.SetBonus;
-import com.fantasticsource.setbonus.common.bonuselements.ABonusElement;
+import com.fantasticsource.setbonus.common.Bonus;
 import com.fantasticsource.setbonus.common.bonusrequirements.ABonusRequirement;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.text.translation.I18n;
+import net.minecraftforge.fml.relauncher.Side;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedHashMap;
 
-public class ClientBonus
+public class ClientBonus extends Bonus
 {
-    public static int
-            MODE_DISCOVERABLE = 0,
-            MODE_GLOBALLY_KNOWN = 1;
-
-
-    public String parsedString, id, name;
-    public int discoveryMode;
-
-
-    public ArrayList<ABonusRequirement> bonusRequirements = new ArrayList<>();
-    public ArrayList<ABonusElement> bonusElements = new ArrayList<>();
-
     private LinkedHashMap<EntityPlayer, BonusInstance> instances = new LinkedHashMap<>();
 
 
-    private ClientBonus()
-    {
-    }
-
     public static ClientBonus getInstance(String parsableBonus)
     {
-        ClientBonus result = new ClientBonus();
-
-        String[] tokens = parsableBonus.split(",");
-        if (tokens.length < 3)
-        {
-            System.err.println(I18n.translateToLocalFormatted(SetBonus.MODID + ".error.notEnoughBonusArgs", parsableBonus));
-            return null;
-        }
-
-        result.id = tokens[0].trim();
-        if (result.id.equals(""))
-        {
-            System.err.println(I18n.translateToLocalFormatted(SetBonus.MODID + ".error.noBonusID", parsableBonus));
-            return null;
-        }
-
-        result.name = tokens[1].trim();
-
-        try
-        {
-            result.discoveryMode = Integer.parseInt(tokens[2].trim());
-        }
-        catch (NumberFormatException e)
-        {
-            System.err.println(I18n.translateToLocalFormatted(SetBonus.MODID + ".error.bonusDiscoveryMode", parsableBonus));
-            return null;
-        }
-        if (result.discoveryMode < 0 || result.discoveryMode > 1)
-        {
-            System.err.println(I18n.translateToLocalFormatted(SetBonus.MODID + ".error.bonusDiscoveryMode", parsableBonus));
-            return null;
-        }
-
-        for (String requirementString : Arrays.copyOfRange(tokens, 3, tokens.length))
-        {
-            ABonusRequirement requirement = ABonusRequirement.parse(requirementString);
-
-            if (requirement == null)
-            {
-                System.err.println(I18n.translateToLocalFormatted(SetBonus.MODID + ".error.unknownBonusReq", parsableBonus));
-                return null;
-            }
-
-            result.bonusRequirements.add(requirement);
-        }
-
-        result.parsedString = parsableBonus;
-        return result;
+        return (ClientBonus) Bonus.getInstance(parsableBonus, Side.CLIENT);
     }
+
 
     public static void dropAll()
     {

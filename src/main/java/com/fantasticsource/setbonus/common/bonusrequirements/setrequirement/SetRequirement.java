@@ -1,8 +1,10 @@
 package com.fantasticsource.setbonus.common.bonusrequirements.setrequirement;
 
+import com.fantasticsource.setbonus.client.ClientData;
 import com.fantasticsource.setbonus.common.bonusrequirements.ABonusRequirement;
 import com.fantasticsource.setbonus.server.ServerData;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class SetRequirement extends ABonusRequirement
 {
@@ -16,10 +18,10 @@ public class SetRequirement extends ABonusRequirement
         this.num = num;
     }
 
-    public static SetRequirement getInstance(String parseableSetRequirement) throws Exception
+    public static SetRequirement getInstance(String parseableSetRequirement, Side side) throws Exception
     {
         String[] tokens2 = parseableSetRequirement.split("\\.");
-        Set set = ServerData.sets.get(tokens2[0].trim());
+        Set set = side == Side.SERVER ? ServerData.sets.get(tokens2[0].trim()) : ClientData.sets.get(tokens2[0].trim());
         if (set == null) return null;
 
         //Full set?

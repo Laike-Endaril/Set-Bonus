@@ -2,11 +2,13 @@ package com.fantasticsource.setbonus.common.bonuselements;
 
 import com.fantasticsource.mctools.potions.Potions;
 import com.fantasticsource.setbonus.SetBonus;
-import com.fantasticsource.setbonus.server.ServerBonus;
+import com.fantasticsource.setbonus.client.ClientData;
+import com.fantasticsource.setbonus.common.Bonus;
 import com.fantasticsource.setbonus.server.ServerData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.text.translation.I18n;
+import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,13 +17,13 @@ public class PotionBonus extends ABonusElement
 {
     public ArrayList<PotionEffect> potions;
 
-    protected PotionBonus(String parsableBonusElement, ServerBonus bonus, ArrayList<PotionEffect> potions)
+    protected PotionBonus(String parsableBonusElement, Bonus bonus, ArrayList<PotionEffect> potions)
     {
         super(parsableBonusElement, bonus);
         this.potions = potions;
     }
 
-    public static PotionBonus getInstance(String parsablePotionBonus)
+    public static PotionBonus getInstance(String parsablePotionBonus, Side side)
     {
         String[] tokens = parsablePotionBonus.split(",");
         if (tokens.length < 2)
@@ -30,7 +32,7 @@ public class PotionBonus extends ABonusElement
             return null;
         }
 
-        ServerBonus bonus = ServerData.bonuses.get(tokens[0].trim());
+        Bonus bonus = side == Side.SERVER ? ServerData.bonuses.get(tokens[0].trim()) : ClientData.bonuses.get(tokens[0].trim());
         if (bonus == null)
         {
             System.err.println(I18n.translateToLocalFormatted(SetBonus.MODID + ".error.potionBonusIDNotFound", tokens[0].trim(), parsablePotionBonus));
