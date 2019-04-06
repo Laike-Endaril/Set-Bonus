@@ -21,6 +21,8 @@ public class BonusScreen extends GUIScreen
     private static final Color BLANK = new Color(0), BLACK = new Color(0xCC), AQUA = new Color(0x3366CC), WHITE = new Color(0xFFFFFF33), WHITE_2 = new Color(0xFFFFFF77), WHITE_3 = new Color(0xFFFFFFAA);
     private static BonusScreen bonusScreen = new BonusScreen();
     private static long debounce = System.currentTimeMillis();
+    private static boolean ready = false;
+
     public ItemStack stack = null;
 
     @SubscribeEvent
@@ -52,32 +54,37 @@ public class BonusScreen extends GUIScreen
     @Override
     public void initGui()
     {
-        //Background
-        guiElements.add(new GradientRect(0, 0, 1, 1, BLACK, BLACK, AQUA, AQUA));
+        if (!ready)
+        {
+            ready = true;
 
-        //Left
-        GUIRectElement element = new GradientBorder(0, 0, 19d / 60, 1, 1d / 15, WHITE, BLANK);
-        GUIRectScrollView scrollView = new GUIRectScrollView(element, width, height);
-        guiElements.add(scrollView);
-        guiElements.add(new VerticalScrollbar(19d / 60, 0, 1d / 3, 1, WHITE_2, BLANK, WHITE_2, BLANK, scrollView));
+            //Background
+            guiElements.add(new GradientRect(0, 0, 1, 1, BLACK, BLACK, AQUA, AQUA));
 
-        //Separator
-        guiElements.add(new GradientRect(1d / 3, 0, 41d / 120, 1, WHITE_2, WHITE_3, WHITE_3, WHITE_2));
+            //Left
+            GUIRectElement element = new GradientBorder(0, 0, 19d / 60, 1, 1d / 15, WHITE, BLANK);
+            GUIRectScrollView scrollView = new GUIRectScrollView(element, width, height);
+            guiElements.add(scrollView);
+            guiElements.add(new VerticalScrollbar(19d / 60, 0, 1d / 3, 1, WHITE_2, BLANK, WHITE_2, BLANK, scrollView));
 
-        //Center
-        guiElements.add(new GradientBorder(41d / 120, 0, 2d / 3, 1d / 10, 1d / 50, WHITE_2, BLANK));
-        element = new GradientBorder(41d / 120, 1d / 10, 39d / 60, 1, 1d / 15, WHITE, BLANK);
-        scrollView = new GUIRectScrollView(element, width, height);
-        guiElements.add(scrollView);
-        guiElements.add(new VerticalScrollbar(39d / 60, 1d / 10, 2d / 3, 1, WHITE_2, BLANK, WHITE_2, BLANK, scrollView));
+            //Separator
+            guiElements.add(new GradientRect(1d / 3, 0, 41d / 120, 1, WHITE_2, WHITE_3, WHITE_3, WHITE_2));
 
-        //Separator
-        guiElements.add(new GradientRect(2d / 3, 0, 81d / 120, 1, WHITE_2, WHITE_3, WHITE_3, WHITE_2));
+            //Center
+            guiElements.add(new GradientBorder(41d / 120, 0, 2d / 3, 1d / 10, 1d / 50, WHITE_2, BLANK));
+            element = new GradientBorder(41d / 120, 1d / 10, 39d / 60, 1, 1d / 15, WHITE, BLANK);
+            scrollView = new GUIRectScrollView(element, width, height);
+            guiElements.add(scrollView);
+            guiElements.add(new VerticalScrollbar(39d / 60, 1d / 10, 2d / 3, 1, WHITE_2, BLANK, WHITE_2, BLANK, scrollView));
 
-        //Right
-        element = new GradientBorder(81d / 120, 0, 59d / 60, 1, 1d / 15, WHITE, BLANK);
-        scrollView = new GUIRectScrollView(element, width, height);
-        guiElements.add(scrollView);
-        guiElements.add(new VerticalScrollbar(59d / 60, 0, 1, 1, WHITE_2, BLANK, WHITE_2, BLANK, scrollView));
+            //Separator
+            guiElements.add(new GradientRect(2d / 3, 0, 81d / 120, 1, WHITE_2, WHITE_3, WHITE_3, WHITE_2));
+
+            //Right
+            element = new GradientBorder(81d / 120, 0, 59d / 60, 1, 1d / 15, WHITE, BLANK);
+            scrollView = new GUIRectScrollView(element, width, height);
+            guiElements.add(scrollView);
+            guiElements.add(new VerticalScrollbar(59d / 60, 0, 1, 1, WHITE_2, BLANK, WHITE_2, BLANK, scrollView));
+        }
     }
 }

@@ -18,9 +18,6 @@ public abstract class GUIScreen extends GuiScreen
     private ArrayList<Integer> mouseButtons = new ArrayList<>();
 
     @Override
-    public abstract void initGui();
-
-    @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
         GlStateManager.disableTexture2D();

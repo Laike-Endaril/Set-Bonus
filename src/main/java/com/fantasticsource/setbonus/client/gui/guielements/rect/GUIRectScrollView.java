@@ -64,6 +64,9 @@ public class GUIRectScrollView extends GUIRectElement
             //TODO Update canvas if elements changed
         }
 
+        GlStateManager.pushMatrix();
+        GlStateManager.scale(1 / screenWidth, 1 / screenHeight, 1);
         canvas.draw((int) x, (int) y);
+        GlStateManager.popMatrix();
     }
 }
