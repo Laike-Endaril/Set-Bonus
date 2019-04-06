@@ -246,7 +246,6 @@ public class ServerBonus
                 {
                     //Activating
                     active = true;
-                    System.out.println("activate");
 
                     if (!discovered)
                     {
