@@ -63,7 +63,7 @@ public class BonusScreen extends GUIScreen
 
             //Left
             GUIRectElement element = new GradientBorder(0, 0, 19d / 60, 1, 1d / 15, WHITE, BLANK);
-            GUIRectScrollView scrollView = new GUIRectScrollView(element, width, height);
+            GUIRectScrollView scrollView = new GUIRectScrollView(element, width, height, new GradientRect(0.25, 0.25, 0.75, 2, WHITE, BLACK, WHITE_3, BLACK));
             guiElements.add(scrollView);
             guiElements.add(new VerticalScrollbar(19d / 60, 0, 1d / 3, 1, WHITE_2, BLANK, WHITE_2, BLANK, scrollView));
 

@@ -46,7 +46,7 @@ public abstract class GUIScreen extends GuiScreen
 
         for (GUIElement element : guiElements)
         {
-            if (element instanceof GUIRectScrollView) ((GUIRectScrollView) element).recalcHeight(w, h);
+            if (element instanceof GUIRectScrollView) ((GUIRectScrollView) element).recalc(w, h);
         }
     }
 

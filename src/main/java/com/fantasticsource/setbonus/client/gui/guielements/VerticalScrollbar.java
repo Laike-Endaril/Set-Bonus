@@ -8,7 +8,6 @@ import com.fantasticsource.tools.datastructures.Color;
 
 public class VerticalScrollbar extends GUIRectElement
 {
-    private double progress = 0;
     private double height, sliderHeight;
     private GradientBorder background, slider;
     private GUIRectScrollView scrollView;
@@ -32,9 +31,9 @@ public class VerticalScrollbar extends GUIRectElement
     {
         background.draw(screenWidth, screenHeight);
 
-        if (progress >= 0 && progress <= 1)
+        if (scrollView.progress >= 0 && scrollView.progress <= 1)
         {
-            slider.y = y + (this.height - sliderHeight) * progress;
+            slider.y = y + (this.height - sliderHeight) * scrollView.progress;
             slider.draw(screenWidth, screenHeight);
         }
     }
@@ -42,17 +41,17 @@ public class VerticalScrollbar extends GUIRectElement
     @Override
     public void mouseWheel(double x, double y, int delta)
     {
-        if (isWithin(x, y) || scrollView.isWithin(x, y))
+        if (scrollView.progress != -1 && (isWithin(x, y) || scrollView.isWithin(x, y)))
         {
             if (delta < 0)
             {
-                progress += 0.1;
-                if (progress > 1) progress = 1;
+                scrollView.progress += 0.1;
+                if (scrollView.progress > 1) scrollView.progress = 1;
             }
             else
             {
-                progress -= 0.1;
-                if (progress < 0) progress = 0;
+                scrollView.progress -= 0.1;
+                if (scrollView.progress < 0) scrollView.progress = 0;
             }
         }
     }
@@ -65,10 +64,10 @@ public class VerticalScrollbar extends GUIRectElement
     @Override
     public void mousePressed(double x, double y, int button)
     {
-        if (progress != -1 && button == 0 && isWithin(x, y))
+        if (scrollView.progress != -1 && button == 0 && isWithin(x, y))
         {
             active = true;
-            progress = Tools.min(Tools.max((y - this.y - slider.height * 0.5) / (height - slider.height), 0), 1);
+            scrollView.progress = Tools.min(Tools.max((y - this.y - slider.height * 0.5) / (height - slider.height), 0), 1);
         }
     }
 
@@ -83,8 +82,8 @@ public class VerticalScrollbar extends GUIRectElement
     {
         if (active && button == 0)
         {
-            if (progress == -1) active = false;
-            else progress = Tools.min(Tools.max((y - this.y - slider.height * 0.5) / (height - slider.height), 0), 1);
+            if (scrollView.progress == -1) active = false;
+            else scrollView.progress = Tools.min(Tools.max((y - this.y - slider.height * 0.5) / (height - slider.height), 0), 1);
         }
     }
 }

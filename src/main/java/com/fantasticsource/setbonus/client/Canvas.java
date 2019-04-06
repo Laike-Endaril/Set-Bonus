@@ -24,7 +24,7 @@ public class Canvas
         GlStateManager.bindTexture(texture);
         GlStateManager.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         GlStateManager.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        GlStateManager.glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_INT, (java.nio.IntBuffer) null);
+        GlStateManager.glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_INT, null);
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture, 0);
 
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -94,7 +94,9 @@ public class Canvas
         float ty2 = (float) (canvasY + height) / this.height;
 
         GlStateManager.color(color.rf(), color.gf(), color.bf(), color.af());
+        GlStateManager.enableTexture2D();
         GlStateManager.bindTexture(texture);
+
         GlStateManager.glBegin(GL_QUADS);
         GlStateManager.glTexCoord2f(tx1, ty2);
         GlStateManager.glVertex3f(x, y + height, 0);
@@ -105,6 +107,8 @@ public class Canvas
         GlStateManager.glTexCoord2f(tx1, ty1);
         GlStateManager.glVertex3f(x, y, 0);
         GlStateManager.glEnd();
+
+        GlStateManager.disableTexture2D();
         GlStateManager.color(1, 1, 1, 1);
     }
 }
