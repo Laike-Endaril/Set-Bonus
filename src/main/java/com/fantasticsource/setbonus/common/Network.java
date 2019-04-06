@@ -10,6 +10,7 @@ import com.fantasticsource.setbonus.server.ServerData;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -34,6 +35,11 @@ public class Network
         WRAPPER.registerMessage(DiscoverBonusPacketHandler.class, DiscoverBonusPacket.class, discriminator++, Side.CLIENT);
     }
 
+    public static void updateConfig(EntityPlayerMP player)
+    {
+        Network.WRAPPER.sendTo(new Network.ConfigPacket(player), player);
+        ServerBonus.updateBonuses(player);
+    }
 
     public static class DiscoverBonusPacket implements IMessage
     {
@@ -115,7 +121,6 @@ public class Network
         }
     }
 
-
     public static class ConfigPacket implements IMessage
     {
         public ArrayList<String> equipment = new ArrayList<>();
@@ -134,7 +139,7 @@ public class Network
         {
         }
 
-        public ConfigPacket(EntityPlayer player)
+        private ConfigPacket(EntityPlayer player)
         {
             this.player = player;
         }

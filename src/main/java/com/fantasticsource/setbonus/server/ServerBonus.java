@@ -158,21 +158,21 @@ public class ServerBonus extends Bonus
         {
             this.player = player;
             this.bonus = bonus;
-            update();
         }
 
-        public void update()
+        public BonusInstance update()
         {
             for (ABonusRequirement requirement : bonusRequirements)
             {
                 if (requirement.active(player) < requirement.required())
                 {
                     update(false);
-                    return;
+                    return this;
                 }
             }
 
             update(true);
+            return this;
         }
 
         private void update(boolean activate)

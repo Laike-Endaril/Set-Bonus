@@ -108,7 +108,7 @@ public class SetBonus
                 World world = localPlayer.world;
                 for (EntityPlayer player : world.playerEntities)
                 {
-                    if (player != localPlayer) Network.WRAPPER.sendTo(new Network.ConfigPacket(player), (EntityPlayerMP) player);
+                    Network.updateConfig((EntityPlayerMP) player);
                 }
             }
             else
@@ -154,8 +154,7 @@ public class SetBonus
         {
             EntityPlayerMP player = (EntityPlayerMP) entity;
             ServerBonus.loadDiscoveries(player);
-            ServerBonus.updateBonuses(player);
-            Network.WRAPPER.sendTo(new Network.ConfigPacket(player), player);
+            Network.updateConfig(player);
         }
     }
 

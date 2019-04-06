@@ -70,7 +70,7 @@ public class Commands extends CommandBase
 
                 for (EntityPlayerMP player : FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayers())
                 {
-                    Network.WRAPPER.sendTo(new Network.ConfigPacket(player), player);
+                    Network.updateConfig(player);
                 }
                 notifyCommandListener(sender, this, SetBonus.MODID + ".cmd.reloaded");
             }

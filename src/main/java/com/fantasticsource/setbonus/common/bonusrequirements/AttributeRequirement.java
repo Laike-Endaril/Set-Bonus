@@ -15,12 +15,10 @@ public class AttributeRequirement extends ABonusRequirement
         requirement = pair.getValue();
     }
 
-    public static AttributeRequirement getInstance(String parseableAttributeRequirement) throws Exception
+    public static AttributeRequirement getInstance(String parseableAttributeRequirement)
     {
         Pair<String, DoubleRequirement> pair = DoubleRequirement.parse(parseableAttributeRequirement);
-        if (pair != null) return new AttributeRequirement(pair);
-
-        throw new Exception();
+        return pair == null ? null : new AttributeRequirement(pair);
     }
 
     @Override

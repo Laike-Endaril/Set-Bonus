@@ -81,5 +81,4 @@ public abstract class Bonus
         bonus.parsedString = parsableBonus;
         return bonus;
     }
-
 }
