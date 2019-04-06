@@ -3,15 +3,12 @@ package com.fantasticsource.setbonus;
 import com.fantasticsource.mctools.ClientTickTimer;
 import com.fantasticsource.mctools.MCTools;
 import com.fantasticsource.mctools.ServerTickTimer;
-import com.fantasticsource.setbonus.client.BonusScreen;
-import com.fantasticsource.setbonus.client.Keys;
-import com.fantasticsource.setbonus.client.TooltipRenderer;
-import com.fantasticsource.setbonus.common.Bonus;
+import com.fantasticsource.setbonus.client.*;
 import com.fantasticsource.setbonus.common.Commands;
-import com.fantasticsource.setbonus.common.Data;
 import com.fantasticsource.setbonus.common.Network;
 import com.fantasticsource.setbonus.config.ConfigHandler;
-import com.fantasticsource.setbonus.config.SyncedConfig;
+import com.fantasticsource.setbonus.server.ServerBonus;
+import com.fantasticsource.setbonus.server.ServerData;
 import com.fantasticsource.tools.Tools;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -79,13 +76,13 @@ public class SetBonus
         //It works for both dedicated and integrated as well
 
         event.registerServerCommand(new Commands());
-        Data.update();
+        ServerData.update();
     }
 
     @EventHandler
     public static void serverStop(FMLServerStoppingEvent event)
     {
-        Bonus.dropAll();
+        ServerBonus.dropAll();
     }
 
     @SubscribeEvent
@@ -105,13 +102,13 @@ public class SetBonus
             if (MCTools.hosting())
             {
                 //Changed config while in-game (hosting)
-                SyncedConfig.reloadFromConfig();
+                ServerData.update();
 
                 EntityPlayer localPlayer = Minecraft.getMinecraft().player;
                 World world = localPlayer.world;
                 for (EntityPlayer player : world.playerEntities)
                 {
-                    if (player != localPlayer) SyncedConfig.sendConfig((EntityPlayerMP) player);
+                    if (player != localPlayer) Network.WRAPPER.sendTo(new Network.ConfigPacket(player), (EntityPlayerMP) player);
                 }
             }
             else
@@ -122,7 +119,7 @@ public class SetBonus
         else
         {
             //Changed config from title screen
-            SyncedConfig.reloadFromConfig();
+            ServerData.update();
         }
     }
 
@@ -137,14 +134,14 @@ public class SetBonus
 
                 if (Tools.posMod(ServerTickTimer.currentTick(), 20) == Tools.posMod(player.getUniqueID().getLeastSignificantBits(), 20))
                 {
-                    Bonus.updateBonuses(player);
+                    ServerBonus.updateBonuses(player);
                 }
             }
             else
             {
                 //Client side
                 EntityPlayer player = event.player;
-                if (ClientTickTimer.currentTick() % 20 == 0 && Minecraft.getMinecraft().player == player) Bonus.updateBonuses(event.player);
+                if (ClientTickTimer.currentTick() % 20 == 0 && Minecraft.getMinecraft().player == player) ClientBonus.updateBonuses(event.player);
             }
         }
     }
@@ -153,25 +150,25 @@ public class SetBonus
     public static void playerConnect(EntityJoinWorldEvent event)
     {
         Entity entity = event.getEntity();
-        if (entity instanceof EntityPlayerMP && !event.getWorld().isRemote)
+        if (entity instanceof EntityPlayerMP)
         {
             EntityPlayerMP player = (EntityPlayerMP) entity;
-            Bonus.loadDiscoveries(player);
-            Bonus.updateBonuses(player);
-            SyncedConfig.sendConfig(player);
+            ServerBonus.loadDiscoveries(player);
+            ServerBonus.updateBonuses(player);
+            Network.WRAPPER.sendTo(new Network.ConfigPacket(player), player);
         }
     }
 
     @SubscribeEvent
     public static void playerDisconnect(PlayerEvent.PlayerLoggedOutEvent event)
     {
-        Bonus.clearMem(event.player);
+        ServerBonus.clearMem(event.player);
     }
 
     @SubscribeEvent
     public static void disconnectFromServer(FMLNetworkEvent.ClientDisconnectionFromServerEvent event)
     {
-        SyncedConfig.reloadFromConfig();
+        ClientData.clear();
     }
 
 //    @SubscribeEvent

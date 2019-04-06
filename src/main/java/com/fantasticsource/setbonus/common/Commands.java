@@ -3,7 +3,7 @@ package com.fantasticsource.setbonus.common;
 import com.fantasticsource.mctools.MCTools;
 import com.fantasticsource.setbonus.SetBonus;
 import com.fantasticsource.setbonus.config.ConfigHandler;
-import com.fantasticsource.setbonus.config.SyncedConfig;
+import com.fantasticsource.setbonus.server.ServerData;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -66,8 +66,7 @@ public class Commands extends CommandBase
             try
             {
                 MCTools.reloadConfig(ConfigHandler.FULL_CONFIG_NAME + ".cfg", SetBonus.MODID);
-                SyncedConfig.reloadFromConfig();
-                Data.update();
+                ServerData.update();
 
                 for (EntityPlayerMP player : FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayers())
                 {

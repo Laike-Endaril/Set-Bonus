@@ -1,10 +1,12 @@
-package com.fantasticsource.setbonus.common;
+package com.fantasticsource.setbonus.server;
 
 import com.fantasticsource.mctools.MCTools;
 import com.fantasticsource.setbonus.SetBonus;
+import com.fantasticsource.setbonus.common.Network;
 import com.fantasticsource.setbonus.common.bonuselements.ABonusElement;
 import com.fantasticsource.setbonus.common.bonusrequirements.ABonusRequirement;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 
@@ -15,7 +17,7 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class Bonus
+public class ServerBonus
 {
     public static int
             MODE_DISCOVERABLE = 0,
@@ -32,13 +34,13 @@ public class Bonus
     private LinkedHashMap<EntityPlayer, BonusInstance> instances = new LinkedHashMap<>();
 
 
-    private Bonus()
+    private ServerBonus()
     {
     }
 
-    public static Bonus getInstance(String parsableBonus)
+    public static ServerBonus getInstance(String parsableBonus)
     {
-        Bonus result = new Bonus();
+        ServerBonus result = new ServerBonus();
 
         String[] tokens = parsableBonus.split(",");
         if (tokens.length < 3)
@@ -107,7 +109,7 @@ public class Bonus
                 file = new File(string);
                 BufferedWriter writer = new BufferedWriter(new FileWriter(file));
 
-                for (Map.Entry<String, Bonus> entry : Data.bonuses.entrySet())
+                for (Map.Entry<String, ServerBonus> entry : ServerData.bonuses.entrySet())
                 {
                     BonusInstance data = entry.getValue().instances.get(player);
                     if (data != null && data.discovered) writer.write(entry.getKey());
@@ -146,7 +148,7 @@ public class Bonus
                 string = reader.readLine();
                 while (string != null && !string.equals(""))
                 {
-                    Bonus bonus = Data.bonuses.get(string);
+                    ServerBonus bonus = ServerData.bonuses.get(string);
                     if (bonus != null)
                     {
                         bonus.getBonusInstance(player).discovered = true;
@@ -170,16 +172,16 @@ public class Bonus
     {
         //Needs to be done right before new configs are applied, to remove any eg. potion effects (because they might not be part of the bonus anymore)
         //Also called when a server is stopping, to remove any bonuses on players before they get unloaded, in case said bonuses don't exist next time the server starts due to config changes
-        for (Bonus bonus : Data.bonuses.values())
+        for (ServerBonus bonus : ServerData.bonuses.values())
         {
             for (BonusInstance data : bonus.instances.values()) data.update(false);
         }
-        Data.bonuses.clear();
+        ServerData.bonuses.clear();
     }
 
     public static void clearMem(EntityPlayer player)
     {
-        for (Bonus bonus : Data.bonuses.values())
+        for (ServerBonus bonus : ServerData.bonuses.values())
         {
             BonusInstance data = bonus.instances.get(player);
             if (data != null)
@@ -193,30 +195,32 @@ public class Bonus
     public static void updateBonuses(EntityPlayer player)
     {
         //Happens once per second on player tick event
-        for (Bonus bonus : Data.bonuses.values()) bonus.update(player);
+        for (ServerBonus bonus : ServerData.bonuses.values()) bonus.update(player);
     }
 
 
     @Nonnull
     public BonusInstance getBonusInstance(EntityPlayer player)
     {
-        return instances.computeIfAbsent(player, k -> new BonusInstance(player));
+        return instances.computeIfAbsent(player, k -> new BonusInstance(player, this));
     }
 
     public void update(EntityPlayer player)
     {
-        instances.computeIfAbsent(player, k -> new BonusInstance(player)).update();
+        instances.computeIfAbsent(player, k -> new BonusInstance(player, this)).update();
     }
 
 
     public class BonusInstance
     {
         public boolean active, discovered;
-        EntityPlayer player;
+        private EntityPlayer player;
+        private ServerBonus bonus;
 
-        public BonusInstance(EntityPlayer player)
+        private BonusInstance(EntityPlayer player, ServerBonus bonus)
         {
             this.player = player;
+            this.bonus = bonus;
             update();
         }
 
@@ -236,33 +240,27 @@ public class Bonus
 
         private void update(boolean activate)
         {
-            boolean server = !player.world.isRemote;
-
             if (activate)
             {
                 if (!active)
                 {
                     //Activating
                     active = true;
+                    System.out.println("activate");
 
-                    if (server)
+                    if (!discovered)
                     {
-                        if (!discovered)
-                        {
-                            discovered = true;
-                            saveDiscoveries(player);
-                        }
-
-                        for (ABonusElement element : bonusElements) element.activate(player);
+                        discovered = true;
+                        Network.WRAPPER.sendTo(new Network.DiscoverBonusPacket(bonus), (EntityPlayerMP) player);
+                        saveDiscoveries(player);
                     }
+
+                    for (ABonusElement element : bonusElements) element.activate(player);
                 }
                 else
                 {
                     //Remaining active
-                    if (server)
-                    {
-                        for (ABonusElement element : bonusElements) element.updateActive(player);
-                    }
+                    for (ABonusElement element : bonusElements) element.updateActive(player);
                 }
             }
             else
@@ -272,10 +270,7 @@ public class Bonus
                     //Deactivating
                     active = false;
 
-                    if (server)
-                    {
-                        for (ABonusElement element : bonusElements) element.deactivate(player);
-                    }
+                    for (ABonusElement element : bonusElements) element.deactivate(player);
                 }
             }
         }

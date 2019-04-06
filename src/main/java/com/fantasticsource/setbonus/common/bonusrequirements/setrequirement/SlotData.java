@@ -5,7 +5,7 @@ import baubles.api.BaublesApi;
 import baubles.api.cap.IBaublesItemHandler;
 import com.fantasticsource.mctools.items.ItemFilter;
 import com.fantasticsource.setbonus.SetBonus;
-import com.fantasticsource.setbonus.common.Data;
+import com.fantasticsource.setbonus.server.ServerData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.util.text.translation.I18n;
@@ -103,7 +103,7 @@ public class SlotData
         for (String equipString : tokens[1].split("[|]"))
         {
             equipString = equipString.trim();
-            Equip equip = Data.equipment.get(equipString);
+            Equip equip = ServerData.equipment.get(equipString);
             if (equip == null)
             {
                 System.err.println(I18n.translateToLocalFormatted(SetBonus.MODID + ".error.slotBadEquipID", equipString, slotsAndEquipment));

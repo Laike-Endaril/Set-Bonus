@@ -2,8 +2,8 @@ package com.fantasticsource.setbonus.common.bonuselements;
 
 import com.fantasticsource.mctools.potions.Potions;
 import com.fantasticsource.setbonus.SetBonus;
-import com.fantasticsource.setbonus.common.Bonus;
-import com.fantasticsource.setbonus.common.Data;
+import com.fantasticsource.setbonus.server.ServerBonus;
+import com.fantasticsource.setbonus.server.ServerData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.text.translation.I18n;
@@ -15,7 +15,7 @@ public class PotionBonus extends ABonusElement
 {
     public ArrayList<PotionEffect> potions;
 
-    protected PotionBonus(String parsableBonusElement, Bonus bonus, ArrayList<PotionEffect> potions)
+    protected PotionBonus(String parsableBonusElement, ServerBonus bonus, ArrayList<PotionEffect> potions)
     {
         super(parsableBonusElement, bonus);
         this.potions = potions;
@@ -30,7 +30,7 @@ public class PotionBonus extends ABonusElement
             return null;
         }
 
-        Bonus bonus = Data.bonuses.get(tokens[0].trim());
+        ServerBonus bonus = ServerData.bonuses.get(tokens[0].trim());
         if (bonus == null)
         {
             System.err.println(I18n.translateToLocalFormatted(SetBonus.MODID + ".error.potionBonusIDNotFound", tokens[0].trim(), parsablePotionBonus));

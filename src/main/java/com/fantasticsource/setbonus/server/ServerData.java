@@ -1,31 +1,32 @@
-package com.fantasticsource.setbonus.common;
+package com.fantasticsource.setbonus.server;
 
 import com.fantasticsource.setbonus.common.bonuselements.ModifierBonus;
 import com.fantasticsource.setbonus.common.bonuselements.PotionBonus;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Equip;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Set;
-import com.fantasticsource.setbonus.config.SyncedConfig;
 
 import java.util.LinkedHashMap;
 
-public class Data
+import static com.fantasticsource.setbonus.config.SetBonusConfig.serverSettings;
+
+public class ServerData
 {
     public static LinkedHashMap<String, Equip> equipment = null;
     public static LinkedHashMap<String, Set> sets;
 
-    public static LinkedHashMap<String, Bonus> bonuses = new LinkedHashMap<>();
+    public static LinkedHashMap<String, ServerBonus> bonuses = new LinkedHashMap<>();
 
 
     public static void update()
     {
         //Clear any existing data
-        Bonus.dropAll();
+        ServerBonus.dropAll();
         equipment = new LinkedHashMap<>();
         sets = new LinkedHashMap<>();
 
 
         //Initialize equipment
-        for (String equipString : SyncedConfig.equipment)
+        for (String equipString : serverSettings.equipment)
         {
             Equip equip = Equip.getInstance(equipString);
             if (equip != null) equipment.put(equip.id, equip);
@@ -33,7 +34,7 @@ public class Data
 
 
         //Initialize sets
-        for (String setString : SyncedConfig.sets)
+        for (String setString : serverSettings.sets)
         {
             Set set = Set.getInstance(setString);
             if (set != null) sets.put(set.id, set);
@@ -41,22 +42,22 @@ public class Data
 
 
         //Initialize bonuses
-        for (String bonusString : SyncedConfig.bonuses)
+        for (String bonusString : serverSettings.bonuses)
         {
-            Bonus bonus = Bonus.getInstance(bonusString);
-            if (bonus != null) Data.bonuses.put(bonus.id, bonus);
+            ServerBonus bonus = ServerBonus.getInstance(bonusString);
+            if (bonus != null) bonuses.put(bonus.id, bonus);
         }
 
 
         //Initialize attribute modifiers
-        for (String modifierString : SyncedConfig.attributeMods)
+        for (String modifierString : serverSettings.attributeMods)
         {
             ModifierBonus.getInstance(modifierString);
         }
 
 
         //Initialize potions
-        for (String potionString : SyncedConfig.potions)
+        for (String potionString : serverSettings.potions)
         {
             PotionBonus.getInstance(potionString);
         }

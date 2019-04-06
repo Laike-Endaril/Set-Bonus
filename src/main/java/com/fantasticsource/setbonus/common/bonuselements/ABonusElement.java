@@ -1,14 +1,14 @@
 package com.fantasticsource.setbonus.common.bonuselements;
 
-import com.fantasticsource.setbonus.common.Bonus;
+import com.fantasticsource.setbonus.server.ServerBonus;
 import net.minecraft.entity.player.EntityPlayer;
 
 public abstract class ABonusElement
 {
     public String parsedString;
-    public Bonus bonus;
+    public ServerBonus bonus;
 
-    protected ABonusElement(String parsableBonusElement, Bonus bonus)
+    protected ABonusElement(String parsableBonusElement, ServerBonus bonus)
     {
         parsedString = parsableBonusElement;
         this.bonus = bonus;

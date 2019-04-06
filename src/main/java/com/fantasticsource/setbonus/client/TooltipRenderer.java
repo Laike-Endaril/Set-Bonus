@@ -2,8 +2,6 @@ package com.fantasticsource.setbonus.client;
 
 import com.fantasticsource.mctools.items.ItemFilter;
 import com.fantasticsource.setbonus.SetBonus;
-import com.fantasticsource.setbonus.common.Bonus;
-import com.fantasticsource.setbonus.common.Data;
 import com.fantasticsource.setbonus.common.bonusrequirements.ABonusRequirement;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Set;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.SetRequirement;
@@ -29,7 +27,7 @@ public class TooltipRenderer
         List<String> tooltip = event.getToolTip();
 
         boolean edited = false;
-        for (Set set : Data.sets.values())
+        for (Set set : ClientData.sets.values())
         {
             for (ItemFilter filter : set.involvedEquips.values())
             {
@@ -46,7 +44,7 @@ public class TooltipRenderer
                     int max = set.getMaxNumber();
                     String color = "" + (count == 0 ? RED : count == max ? GREEN : YELLOW);
                     tooltip.add(color + BOLD + "=== " + set.name + " (" + count + "/" + max + ") ===");
-                    for (Bonus bonus : Data.bonuses.values())
+                    for (ClientBonus bonus : ClientData.bonuses.values())
                     {
                         int req = 0;
                         boolean otherReqs = false;
@@ -65,7 +63,7 @@ public class TooltipRenderer
                             else otherReqs = true;
                         }
 
-                        Bonus.BonusInstance bonusInstance = bonus.getBonusInstance(player);
+                        ClientBonus.BonusInstance bonusInstance = bonus.getBonusInstance(player);
 
                         color = "";
                         if (bonusInstance.active) color += GREEN; //All requirements met

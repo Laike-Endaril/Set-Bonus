@@ -1,10 +1,12 @@
 package com.fantasticsource.setbonus.common;
 
 import com.fantasticsource.setbonus.SetBonus;
+import com.fantasticsource.setbonus.client.ClientData;
 import com.fantasticsource.setbonus.common.bonuselements.ABonusElement;
 import com.fantasticsource.setbonus.common.bonuselements.ModifierBonus;
 import com.fantasticsource.setbonus.common.bonuselements.PotionBonus;
-import com.fantasticsource.setbonus.config.SyncedConfig;
+import com.fantasticsource.setbonus.server.ServerBonus;
+import com.fantasticsource.setbonus.server.ServerData;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,8 +19,6 @@ import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import static com.fantasticsource.setbonus.config.SetBonusConfig.serverSettings;
 
@@ -37,19 +37,20 @@ public class Network
 
     public static class DiscoverBonusPacket implements IMessage
     {
-        private Bonus bonus;
+        public String bonusString;
 
-        private String bonusString;
+        public ArrayList<String> attributeMods = new ArrayList<>();
+        public ArrayList<String> potions = new ArrayList<>();
 
-        private ArrayList<String> attributeMods = new ArrayList<>();
-        private ArrayList<String> potions = new ArrayList<>();
+
+        private ServerBonus bonus;
 
 
         public DiscoverBonusPacket() //Required; probably for when the packet is received
         {
         }
 
-        public DiscoverBonusPacket(Bonus bonus)
+        public DiscoverBonusPacket(ServerBonus bonus)
         {
             this.bonus = bonus;
         }
@@ -106,21 +107,7 @@ public class Network
             {
                 Minecraft.getMinecraft().addScheduledTask(() ->
                 {
-                    List<String> list = Arrays.asList(SyncedConfig.bonuses);
-                    list.add(packet.bonusString);
-                    SyncedConfig.bonuses = list.toArray(new String[list.size()]);
-
-
-                    list = Arrays.asList(SyncedConfig.attributeMods);
-                    list.addAll(packet.attributeMods);
-                    SyncedConfig.attributeMods = list.toArray(new String[list.size()]);
-
-                    list = Arrays.asList(SyncedConfig.potions);
-                    list.addAll(packet.potions);
-                    SyncedConfig.potions = list.toArray(new String[list.size()]);
-
-
-                    Data.update();
+                    ClientData.update(packet);
                 });
             }
 
@@ -131,15 +118,16 @@ public class Network
 
     public static class ConfigPacket implements IMessage
     {
+        public ArrayList<String> equipment = new ArrayList<>();
+        public ArrayList<String> sets = new ArrayList<>();
+
+        public ArrayList<String> bonuses = new ArrayList<>();
+
+        public ArrayList<String> attributeMods = new ArrayList<>();
+        public ArrayList<String> potions = new ArrayList<>();
+
+
         private EntityPlayer player;
-
-        private ArrayList<String> equipment = new ArrayList<>();
-        private ArrayList<String> sets = new ArrayList<>();
-
-        private ArrayList<String> bonuses = new ArrayList<>();
-
-        private ArrayList<String> attributeMods = new ArrayList<>();
-        private ArrayList<String> potions = new ArrayList<>();
 
 
         public ConfigPacket() //Required; probably for when the packet is received
@@ -160,9 +148,9 @@ public class Network
             for (String string : serverSettings.sets) ByteBufUtils.writeUTF8String(buf, string);
 
 
-            for (Bonus bonus : Data.bonuses.values())
+            for (ServerBonus bonus : ServerData.bonuses.values())
             {
-                if (bonus.discoveryMode == Bonus.MODE_GLOBALLY_KNOWN || bonus.getBonusInstance(player).discovered)
+                if (bonus.discoveryMode == ServerBonus.MODE_GLOBALLY_KNOWN || bonus.getBonusInstance(player).discovered)
                 {
                     bonuses.add(bonus.parsedString);
 
@@ -231,15 +219,7 @@ public class Network
             {
                 Minecraft.getMinecraft().addScheduledTask(() ->
                 {
-                    SyncedConfig.equipment = packet.equipment.toArray(new String[packet.equipment.size()]);
-                    SyncedConfig.sets = packet.sets.toArray(new String[packet.sets.size()]);
-
-                    SyncedConfig.bonuses = packet.bonuses.toArray(new String[packet.bonuses.size()]);
-
-                    SyncedConfig.attributeMods = packet.attributeMods.toArray(new String[packet.attributeMods.size()]);
-                    SyncedConfig.potions = packet.potions.toArray(new String[packet.potions.size()]);
-
-                    Data.update();
+                    ClientData.update(packet);
                 });
             }
 

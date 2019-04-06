@@ -1,7 +1,7 @@
 package com.fantasticsource.setbonus.common.bonusrequirements.setrequirement;
 
-import com.fantasticsource.setbonus.common.Data;
 import com.fantasticsource.setbonus.common.bonusrequirements.ABonusRequirement;
+import com.fantasticsource.setbonus.server.ServerData;
 import net.minecraft.entity.player.EntityPlayer;
 
 public class SetRequirement extends ABonusRequirement
@@ -19,7 +19,7 @@ public class SetRequirement extends ABonusRequirement
     public static SetRequirement getInstance(String parseableSetRequirement) throws Exception
     {
         String[] tokens2 = parseableSetRequirement.split("\\.");
-        Set set = Data.sets.get(tokens2[0].trim());
+        Set set = ServerData.sets.get(tokens2[0].trim());
         if (set == null) return null;
 
         //Full set?

@@ -2,8 +2,8 @@ package com.fantasticsource.setbonus.common.bonuselements;
 
 import com.fantasticsource.mctools.attributes.AttributeMods;
 import com.fantasticsource.setbonus.SetBonus;
-import com.fantasticsource.setbonus.common.Bonus;
-import com.fantasticsource.setbonus.common.Data;
+import com.fantasticsource.setbonus.server.ServerBonus;
+import com.fantasticsource.setbonus.server.ServerData;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -17,7 +17,7 @@ public class ModifierBonus extends ABonusElement
 {
     private Multimap<String, AttributeModifier> modifiers = ArrayListMultimap.create();
 
-    protected ModifierBonus(String parsableBonusElement, Bonus bonus, ArrayList<AttributeModifier> modifiers)
+    protected ModifierBonus(String parsableBonusElement, ServerBonus bonus, ArrayList<AttributeModifier> modifiers)
     {
         super(parsableBonusElement, bonus);
 
@@ -36,7 +36,7 @@ public class ModifierBonus extends ABonusElement
             return null;
         }
 
-        Bonus bonus = Data.bonuses.get(tokens[0].trim());
+        ServerBonus bonus = ServerData.bonuses.get(tokens[0].trim());
         if (bonus == null)
         {
             System.err.println(I18n.translateToLocalFormatted(SetBonus.MODID + ".error.attribBonusIDNotFound", tokens[0].trim(), parsableModifierBonus));
