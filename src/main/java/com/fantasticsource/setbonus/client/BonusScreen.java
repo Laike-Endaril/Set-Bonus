@@ -23,7 +23,34 @@ public class BonusScreen extends GUIScreen
     private static long debounce = System.currentTimeMillis();
     public ItemStack stack = null;
 
-    public BonusScreen()
+    @SubscribeEvent
+    public static void tooltip(RenderTooltipEvent.PostText event)
+    {
+        ItemStack stack = event.getStack();
+        if (stack != ItemStack.EMPTY && BONUS_SCREEN_KEY.getKeyConflictContext().isActive() && BONUS_SCREEN_KEY.getKeyModifier().isActive() && Keyboard.isKeyDown(BONUS_SCREEN_KEY.getKeyCode()))
+        {
+            long time = System.currentTimeMillis();
+            if (time - debounce > 200)
+            {
+                debounce = time;
+                bonusScreen.stack = stack;
+                Minecraft.getMinecraft().displayGuiScreen(bonusScreen);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void keyPress(InputEvent.KeyInputEvent event)
+    {
+        if (BONUS_SCREEN_KEY.isPressed() && BONUS_SCREEN_KEY.getKeyConflictContext().isActive())
+        {
+            bonusScreen.stack = null;
+            Minecraft.getMinecraft().displayGuiScreen(bonusScreen);
+        }
+    }
+
+    @Override
+    public void initGui()
     {
         //Background
         guiElements.add(new GradientRect(0, 0, 1, 1, BLACK, BLACK, AQUA, AQUA));
@@ -52,31 +79,5 @@ public class BonusScreen extends GUIScreen
         scrollView = new GUIRectScrollView(element, width, height);
         guiElements.add(scrollView);
         guiElements.add(new VerticalScrollbar(59d / 60, 0, 1, 1, WHITE_2, BLANK, WHITE_2, BLANK, scrollView));
-    }
-
-    @SubscribeEvent
-    public static void tooltip(RenderTooltipEvent.PostText event)
-    {
-        ItemStack stack = event.getStack();
-        if (stack != ItemStack.EMPTY && BONUS_SCREEN_KEY.getKeyConflictContext().isActive() && BONUS_SCREEN_KEY.getKeyModifier().isActive() && Keyboard.isKeyDown(BONUS_SCREEN_KEY.getKeyCode()))
-        {
-            long time = System.currentTimeMillis();
-            if (time - debounce > 200)
-            {
-                debounce = time;
-                bonusScreen.stack = stack;
-                Minecraft.getMinecraft().displayGuiScreen(bonusScreen);
-            }
-        }
-    }
-
-    @SubscribeEvent
-    public static void keyPress(InputEvent.KeyInputEvent event)
-    {
-        if (BONUS_SCREEN_KEY.isPressed() && BONUS_SCREEN_KEY.getKeyConflictContext().isActive())
-        {
-            bonusScreen.stack = null;
-            Minecraft.getMinecraft().displayGuiScreen(bonusScreen);
-        }
     }
 }

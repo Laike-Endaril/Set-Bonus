@@ -1,6 +1,7 @@
 package com.fantasticsource.setbonus.client;
 
 import com.fantasticsource.tools.datastructures.Color;
+import net.minecraft.client.renderer.GlStateManager;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL30.*;
@@ -20,10 +21,10 @@ public class Canvas
 
         glBindFramebuffer(GL_FRAMEBUFFER, fbo);
 
-        glBindTexture(GL_TEXTURE_2D, texture);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_INT, (java.nio.ByteBuffer) null);
+        GlStateManager.bindTexture(texture);
+        GlStateManager.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        GlStateManager.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        GlStateManager.glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_INT, (java.nio.IntBuffer) null);
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture, 0);
 
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -33,7 +34,7 @@ public class Canvas
     {
         if (!destroyed)
         {
-            glDeleteTextures(texture);
+            GlStateManager.deleteTexture(texture);
             glDeleteFramebuffers(fbo);
             destroyed = true;
         }
@@ -46,17 +47,17 @@ public class Canvas
 
     public void setTarget()
     {
-        glLoadIdentity();
-        glViewport(0, 0, width, height);
-        glOrtho(0, width, 0, height, -1, 1);
+        GlStateManager.loadIdentity();
+        GlStateManager.viewport(0, 0, width, height);
+        GlStateManager.ortho(0, width, 0, height, -1, 1);
         glBindFramebuffer(GL_FRAMEBUFFER, fbo);
     }
 
     public void resetTarget(int width, int height)
     {
-        glLoadIdentity();
-        glViewport(0, 0, width, height);
-        glOrtho(0, width, height, 0, -1, 1);
+        GlStateManager.loadIdentity();
+        GlStateManager.viewport(0, 0, width, height);
+        GlStateManager.ortho(0, width, height, 0, -1, 1);
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
     }
 
@@ -92,18 +93,18 @@ public class Canvas
         float ty1 = (float) canvasY / this.height;
         float ty2 = (float) (canvasY + height) / this.height;
 
-        glColor4f(color.rf(), color.gf(), color.bf(), color.af());
-        glBindTexture(GL_TEXTURE_2D, texture);
-        glBegin(GL_QUADS);
-        glTexCoord2f(tx1, ty1);
-        glVertex2f(x, y);
-        glTexCoord2f(tx2, ty1);
-        glVertex2f(x + width, y);
-        glTexCoord2f(tx2, ty2);
-        glVertex2f(x + width, y + height);
-        glTexCoord2f(tx1, ty2);
-        glVertex2f(x, y + height);
-        glEnd();
-        glColor4f(1f, 1f, 1f, 1f);
+        GlStateManager.color(color.rf(), color.gf(), color.bf(), color.af());
+        GlStateManager.bindTexture(texture);
+        GlStateManager.glBegin(GL_QUADS);
+        GlStateManager.glTexCoord2f(tx1, ty2);
+        GlStateManager.glVertex3f(x, y + height, 0);
+        GlStateManager.glTexCoord2f(tx2, ty2);
+        GlStateManager.glVertex3f(x + width, y + height, 0);
+        GlStateManager.glTexCoord2f(tx2, ty1);
+        GlStateManager.glVertex3f(x + width, y, 0);
+        GlStateManager.glTexCoord2f(tx1, ty1);
+        GlStateManager.glVertex3f(x, y, 0);
+        GlStateManager.glEnd();
+        GlStateManager.color(1, 1, 1, 1);
     }
 }
