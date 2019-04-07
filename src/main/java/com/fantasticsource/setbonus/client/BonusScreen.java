@@ -19,7 +19,7 @@ import static com.fantasticsource.setbonus.client.Keys.BONUS_SCREEN_KEY;
 public class BonusScreen extends GUIScreen
 {
     private static final Color BLANK = new Color(0), BLACK = new Color(0xCC), AQUA = new Color(0x3366CC), WHITE = new Color(0xFFFFFF33), WHITE_2 = new Color(0xFFFFFF77), WHITE_3 = new Color(0xFFFFFFAA);
-    private static BonusScreen bonusScreen = new BonusScreen();
+    public static BonusScreen bonusScreen = new BonusScreen();
     private static long debounce = System.currentTimeMillis();
     private static boolean ready = false;
 
@@ -63,7 +63,7 @@ public class BonusScreen extends GUIScreen
 
             //Left
             GUIRectElement element = new GradientBorder(0, 0, 19d / 60, 1, 1d / 15, WHITE, BLANK);
-            GUIRectScrollView scrollView = new GUIRectScrollView(element, width, height, new GradientRect(0.25, 0.25, 0.75, 2, WHITE, BLACK, WHITE_3, BLACK));
+            GUIRectScrollView scrollView = new GUIRectScrollView(element, width, height, new GradientRect(0, 0, 1, 2.5, new Color(0xFFFFFFFF), new Color(0xFF), new Color(0xFFFFFFFF), new Color(0xFF)));
             guiElements.add(scrollView);
             guiElements.add(new VerticalScrollbar(19d / 60, 0, 1d / 3, 1, WHITE_2, BLANK, WHITE_2, BLANK, scrollView));
 

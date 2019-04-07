@@ -1,6 +1,7 @@
 package com.fantasticsource.setbonus.client;
 
 import com.fantasticsource.tools.datastructures.Color;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -17,14 +18,14 @@ public class Canvas
         this.height = height;
 
         fbo = glGenFramebuffers();
-        texture = glGenTextures();
+        texture = GlStateManager.generateTexture();
 
         glBindFramebuffer(GL_FRAMEBUFFER, fbo);
 
         GlStateManager.bindTexture(texture);
         GlStateManager.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         GlStateManager.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        GlStateManager.glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_INT, null);
+        GlStateManager.glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, null);
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture, 0);
 
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -47,18 +48,12 @@ public class Canvas
 
     public void setTarget()
     {
-        GlStateManager.loadIdentity();
-        GlStateManager.viewport(0, 0, width, height);
-        GlStateManager.ortho(0, width, 0, height, -1, 1);
         glBindFramebuffer(GL_FRAMEBUFFER, fbo);
     }
 
-    public void resetTarget(int width, int height)
+    public void resetTarget()
     {
-        GlStateManager.loadIdentity();
-        GlStateManager.viewport(0, 0, width, height);
-        GlStateManager.ortho(0, width, height, 0, -1, 1);
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        Minecraft.getMinecraft().getFramebuffer().bindFramebuffer(true);
     }
 
     public int getWidth()

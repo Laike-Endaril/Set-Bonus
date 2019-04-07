@@ -7,13 +7,16 @@ import net.minecraft.client.renderer.GlStateManager;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_QUADS;
+
 public class GUIRectScrollView extends GUIRectElement
 {
+    public double internalHeight, progress = -1;
     private Canvas canvas;
     private GUIRectElement background;
     private ArrayList<GUIRectElement> subElements = new ArrayList<>();
     private double lastScreenWidth, lastScreenHeight;
-    public double internalHeight, progress = -1;
 
     public GUIRectScrollView(GUIRectElement background, double screenWidth, double screenHeight, GUIRectElement... subElements)
     {
@@ -41,6 +44,12 @@ public class GUIRectScrollView extends GUIRectElement
         }
 
 
+        canvas = new Canvas((int) (screenWidth * width), (int) (screenHeight * height));
+    }
+
+    @Override
+    public void draw(double screenWidth, double screenHeight)
+    {
         double top;
         if (internalHeight <= height)
         {
@@ -54,22 +63,42 @@ public class GUIRectScrollView extends GUIRectElement
         }
         double bottom = top + height;
 
-        canvas = new Canvas((int) (screenWidth * width), (int) (screenHeight * height));
         canvas.setTarget();
+
+        GlStateManager.clearColor(0, 1, 0, 1);
+        GlStateManager.clear(GL_COLOR_BUFFER_BIT);
+
+        GlStateManager.disableTexture2D();
         GlStateManager.pushMatrix();
-        GlStateManager.translate(0, -top, 0);
+        GlStateManager.translate(0, -top * screenHeight, 0);
+
+
+        GlStateManager.glBegin(GL_QUADS);
+        GlStateManager.color(1, 0, 0, 1);
+        GlStateManager.glVertex3f(20000, -20000, 0);
+        GlStateManager.glVertex3f(-20000, -20000, 0);
+        GlStateManager.glVertex3f(-20000, 20000, 0);
+        GlStateManager.glVertex3f(20000, 20000, 0);
+        GlStateManager.color(0, 0, 1, 1);
+        GlStateManager.glVertex3f(200, -200, 0);
+        GlStateManager.glVertex3f(-200, -200, 0);
+        GlStateManager.glVertex3f(-200, 200, 0);
+        GlStateManager.glVertex3f(200, 200, 0);
+        GlStateManager.glEnd();
+
+        GlStateManager.scale(screenWidth, screenHeight, 1);
         for (GUIRectElement element : subElements)
         {
-            if (element.y < top || element.y + element.height >= bottom) continue;
-//            element.draw(screenWidth, screenHeight);
+            if (element.y + height < top || element.y >= bottom) continue;
+            element.draw(screenWidth, screenHeight);
         }
-        GlStateManager.popMatrix();
-        canvas.resetTarget((int) screenWidth, (int) screenHeight);
-    }
 
-    @Override
-    public void draw(double screenWidth, double screenHeight)
-    {
+
+        GlStateManager.popMatrix();
+
+        canvas.resetTarget();
+
+
         background.draw(screenWidth, screenHeight);
 
         GlStateManager.pushMatrix();
