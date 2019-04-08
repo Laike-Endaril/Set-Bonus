@@ -70,7 +70,7 @@ public class GUIRectScrollView extends GUIRectElement
 
         GlStateManager.disableTexture2D();
         GlStateManager.pushMatrix();
-        GlStateManager.translate(0, -top * screenHeight, 0);
+        GlStateManager.translate(0, top, 0);
 
 
         GlStateManager.glBegin(GL_QUADS);
@@ -86,7 +86,7 @@ public class GUIRectScrollView extends GUIRectElement
         GlStateManager.glVertex3f(200, 200, 0);
         GlStateManager.glEnd();
 
-        GlStateManager.scale(screenWidth, screenHeight, 1);
+//        GlStateManager.scale(screenWidth, screenHeight, 1);
         for (GUIRectElement element : subElements)
         {
             if (element.y + height < top || element.y >= bottom) continue;
