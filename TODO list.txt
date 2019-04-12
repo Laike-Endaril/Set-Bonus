@@ -36,6 +36,11 @@ Migrate most GUI classes to library
 
 
 
+Fix glitch where...
+...set 1 gives speed 1
+...set 2 gives speed 2
+...you equip set 1 and set 2, then unequip set 2, and still have speed 2
+
 Look into enchantments as bonuses
 
 "Discover" command
