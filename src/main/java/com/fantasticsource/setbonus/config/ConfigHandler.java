@@ -14,6 +14,6 @@ public class ConfigHandler
     public static void init()
     {
         File file = new File(MCTools.getConfigDir() + "setbonus.cfg");
-        if (file.exists()) file.renameTo(new File(MCTools.getConfigDir() + "/setbonus/setbonus (old).cfg"));
+        if (file.exists()) file.renameTo(new File(MCTools.getConfigDir() + "setbonus/setbonus (old).cfg"));
     }
 }
