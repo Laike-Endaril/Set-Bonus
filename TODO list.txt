@@ -16,7 +16,6 @@ Look into enchantments as bonuses
 2 means non-reactive
 
 Alternate requirements...
-...stat requirements
 ...Morph / Metamorph transformation
 
 Attack effects (like those in DS) that use set filtering
