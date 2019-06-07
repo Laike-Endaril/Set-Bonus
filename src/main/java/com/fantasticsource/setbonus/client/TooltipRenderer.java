@@ -37,8 +37,8 @@ public class TooltipRenderer
                     {
                         edited = true;
                         tooltip.add("");
-                        tooltip.add("" + LIGHT_PURPLE + UNDERLINE + I18n.translateToLocalFormatted(SetBonus.MODID + ".tooltip.pressDetailKey"));
-                        tooltip.add("");
+//                        tooltip.add("" + LIGHT_PURPLE + UNDERLINE + I18n.translateToLocalFormatted(SetBonus.MODID + ".tooltip.pressDetailKey"));
+//                        tooltip.add("");
                     }
                     int count = set.getNumberEquipped(player);
                     int max = set.getMaxNumber();
