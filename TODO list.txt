@@ -1,7 +1,40 @@
+Fix glitch where...
+...set 1 gives speed 1
+...set 2 gives speed 2
+...you equip set 1 and set 2, then unequip set 2, and still have speed 2
+
+Look into enchantments as bonuses
+
+"Discover" command
+"Undiscover" command
+"WipeDiscoveries" command
+
+"Reactive" system for equipment sets which gives a visual indicator for set items and for linking the items of a set...
+0 means reactive within the player's inventory (an opened chest is not part of the player's inventory)
+1 means reactive only when actively contributing to a set
+1 means reactive within all opened inventories
+2 means non-reactive
+
+Alternate requirements...
+...stat requirements
+...Morph / Metamorph transformation
+
+Attack effects (like those in DS) that use set filtering
+
+Improve efficiency via...
+...inventory change detection (from library)?
+...caching
+
+Make some default bonuses
+
+
+
+
+
+SetBonus GUI ==========================================================================================================================================================================================================
+
 Adapt Canvas class to work with MC, if necessary
 Use Canvas for GUIRectScrollView
-
-SetBonus GUI...
 
 *Left column is category...
 ...Bonuses
@@ -40,31 +73,3 @@ Fix scrollbars staying active if you release click while outside window
 
 
 
-Fix glitch where...
-...set 1 gives speed 1
-...set 2 gives speed 2
-...you equip set 1 and set 2, then unequip set 2, and still have speed 2
-
-Look into enchantments as bonuses
-
-"Discover" command
-"Undiscover" command
-"WipeDiscoveries" command
-
-"Reactive" system for equipment sets which gives a visual indicator for set items and for linking the items of a set...
-0 means reactive within the player's inventory (an opened chest is not part of the player's inventory)
-1 means reactive only when actively contributing to a set
-1 means reactive within all opened inventories
-2 means non-reactive
-
-Alternate requirements...
-...stat requirements
-...Morph / Metamorph transformation
-
-Attack effects (like those in DS) that use set filtering
-
-Improve efficiency via...
-...inventory change detection (from library)
-...caching
-
-Make some default bonuses
