@@ -75,15 +75,15 @@ public class GUIRectScrollView extends GUIRectElement
 
         GlStateManager.glBegin(GL_QUADS);
         GlStateManager.color(1, 0, 0, 1);
-        GlStateManager.glVertex3f(20000, -20000, 0);
-        GlStateManager.glVertex3f(-20000, -20000, 0);
-        GlStateManager.glVertex3f(-20000, 20000, 0);
-        GlStateManager.glVertex3f(20000, 20000, 0);
-        GlStateManager.color(0, 0, 1, 1);
         GlStateManager.glVertex3f(200, -200, 0);
         GlStateManager.glVertex3f(-200, -200, 0);
         GlStateManager.glVertex3f(-200, 200, 0);
         GlStateManager.glVertex3f(200, 200, 0);
+        GlStateManager.color(0, 0, 1, 1);
+        GlStateManager.glVertex3f(20, -20, 0);
+        GlStateManager.glVertex3f(-20, -20, 0);
+        GlStateManager.glVertex3f(-20, 20, 0);
+        GlStateManager.glVertex3f(20, 20, 0);
         GlStateManager.glEnd();
 
 //        GlStateManager.scale(screenWidth, screenHeight, 1);

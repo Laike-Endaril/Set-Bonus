@@ -36,6 +36,10 @@ Migrate most GUI classes to library
 
 
 
+Fix scrollbars staying active if you release click while outside window
+
+
+
 Fix glitch where...
 ...set 1 gives speed 1
 ...set 2 gives speed 2
