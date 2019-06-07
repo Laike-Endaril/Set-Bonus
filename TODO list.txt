@@ -2,6 +2,13 @@ Fix glitch where...
 ...set 1 gives speed 1
 ...set 2 gives speed 2
 ...you equip set 1 and set 2, then unequip set 2, and still have speed 2
+...
+...I think this is due the the potion effect being "combined" and effectively being replaced, and therefore the old potion effect is not present for removal upon bonus deactivation
+...
+...if not, check this stuff:
+...check deactivation first and see if it's being called correctly
+...check potion combination code in vanilla and see if (static? aura? beacon?) vs. non makes a difference in the way they combine
+
 
 Look into enchantments as bonuses
 
