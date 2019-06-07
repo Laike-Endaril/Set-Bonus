@@ -60,11 +60,11 @@ public class SetBonus
         if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
         {
             //Physical client
-            Keys.init(event);
+//            Keys.init(event);
 
             MinecraftForge.EVENT_BUS.register(ClientTickTimer.class);
             MinecraftForge.EVENT_BUS.register(TooltipRenderer.class);
-            MinecraftForge.EVENT_BUS.register(BonusScreen.class);
+//            MinecraftForge.EVENT_BUS.register(BonusScreen.class);
         }
     }
 
