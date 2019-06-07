@@ -48,7 +48,7 @@ public class PotionBonus extends ABonusElement
     @Override
     public void activate(EntityPlayer player)
     {
-        for (PotionEffect potion : potions) player.addPotionEffect(potion);
+        for (PotionEffect potion : potions) player.addPotionEffect(new PotionEffect(potion));
     }
 
     @Override
@@ -63,7 +63,7 @@ public class PotionBonus extends ABonusElement
         for (PotionEffect potion : potions)
         {
             PotionEffect potionEffect = player.getActivePotionEffect(potion.getPotion());
-            if (potionEffect == null) player.addPotionEffect(potion);
+            if (potionEffect == null) player.addPotionEffect(new PotionEffect(potion));
         }
     }
 }
