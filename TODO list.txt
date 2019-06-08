@@ -1,7 +1,7 @@
 Fix discoveries not persisting properly...
 ...SP: bugged
-...LAN: ?
-...Dedicated: ?
+...LAN: bugged upon rejoin *unless the host session is restarted*
+...Dedicated: Seems to work fine no matter what
 
 Add discovery system for sets (in addition to the one for bonuses)?
 
