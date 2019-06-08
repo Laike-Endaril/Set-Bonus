@@ -1,3 +1,6 @@
+Fix discoveries not persisting properly on SP...
+...Check LAN and dedicated first to see if the same issue exists
+
 Add discovery system for sets (in addition to the one for bonuses)?
 
 Look into enchantments as bonuses
