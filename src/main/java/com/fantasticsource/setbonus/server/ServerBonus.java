@@ -26,6 +26,8 @@ public class ServerBonus extends Bonus
         return (ServerBonus) Bonus.getInstance(parsableBonus, Side.SERVER);
     }
 
+    public static boolean changed;
+
 
     public static void saveDiscoveries(EntityPlayer player)
     {
@@ -132,7 +134,12 @@ public class ServerBonus extends Bonus
     public static void updateBonuses(EntityPlayer player)
     {
         //Happens once per second on player tick event
-        for (ServerBonus bonus : ServerData.bonuses.values()) bonus.update(player);
+        changed = true;
+        while (changed)
+        {
+            changed = false;
+            for (ServerBonus bonus : ServerData.bonuses.values()) bonus.update(player);
+        }
     }
 
 
@@ -182,6 +189,7 @@ public class ServerBonus extends Bonus
                 if (!active)
                 {
                     //Activating
+                    changed = true;
                     active = true;
 
                     if (!discovered)
@@ -204,6 +212,7 @@ public class ServerBonus extends Bonus
                 if (active)
                 {
                     //Deactivating
+                    changed = true;
                     active = false;
 
                     for (ABonusElement element : bonusElements) element.deactivate(player);
