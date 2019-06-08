@@ -23,6 +23,15 @@ Improve efficiency via...
 
 Make some default bonuses
 
+Look into possible race condition issue, where eg...
+...bonus A activates when armor is low enough, and increases attack power
+...bonus B activates when attack power is high enough, and increases armor
+1. bonus A activates, increasing attack power
+2. this causes bonus B to activate, increasing armor
+3. this causes bonus A to deactivate, decreasing attack power
+4. this causes bonus B to deactivate, decreasing armor
+5. repeats from 1
+
 
 
 
