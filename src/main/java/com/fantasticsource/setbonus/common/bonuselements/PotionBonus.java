@@ -63,7 +63,7 @@ public class PotionBonus extends ABonusElement
         for (PotionEffect potion : potions)
         {
             PotionEffect potionEffect = player.getActivePotionEffect(potion.getPotion());
-            if (potionEffect == null) player.addPotionEffect(new PotionEffect(potion));
+            if (potionEffect == null || potionEffect.getAmplifier() < potion.getAmplifier()) player.addPotionEffect(new PotionEffect(potion));
         }
     }
 }
