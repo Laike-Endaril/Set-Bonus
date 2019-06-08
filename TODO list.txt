@@ -1,3 +1,5 @@
+Add discovery system for sets (in addition to the one for bonuses)?
+
 Look into enchantments as bonuses
 
 "Discover" command
