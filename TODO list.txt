@@ -23,6 +23,14 @@ Improve efficiency via...
 
 Make some default bonuses
 
+Look into issue when downgrading bonuses...
+...if a bonus to health downgrades from +20 to +10 due to the number of set items decreasing, does it...
+...adjust current HP correctly?
+...keep the high value for current HP?
+...adjust current HP down to the max without *any* bonus?
+
+Make bonus re-adjustments instant (eg. when downgrading a potion effect bonus from a set from 3 to 2, or the same idea with max HP)
+
 Look into possible race condition issue, where eg...
 ...bonus A activates when armor is low enough, and increases attack power
 ...bonus B activates when attack power is high enough, and increases armor
