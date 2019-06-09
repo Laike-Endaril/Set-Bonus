@@ -55,13 +55,29 @@ public class ModifierBonus extends ABonusElement
     @Override
     public void activate(EntityPlayer player)
     {
+        float hpRatio = player.getHealth() / player.getMaxHealth();
+
         player.getAttributeMap().applyAttributeModifiers(modifiers);
+
+        //This might help with edge cases
+        if (hpRatio <= Float.MIN_VALUE) hpRatio = 0;
+        else if (hpRatio >= 1 - Float.MIN_VALUE) hpRatio = 1;
+
+        player.setHealth(hpRatio * player.getMaxHealth());
     }
 
     @Override
     public void deactivate(EntityPlayer player)
     {
+        float hpRatio = player.getHealth() / player.getMaxHealth();
+
         player.getAttributeMap().removeAttributeModifiers(modifiers);
+
+        //This might help with edge cases
+        if (hpRatio <= Float.MIN_VALUE) hpRatio = 0;
+        else if (hpRatio >= 1 - Float.MIN_VALUE) hpRatio = 1;
+
+        player.setHealth(hpRatio * player.getMaxHealth());
     }
 
     @Override
