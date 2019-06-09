@@ -9,7 +9,6 @@ import com.fantasticsource.setbonus.server.ServerBonus;
 import com.fantasticsource.setbonus.server.ServerData;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.NetworkRegistry;

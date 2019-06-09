@@ -18,48 +18,42 @@ import java.util.Map;
 
 public class ServerBonus extends Bonus
 {
+    public static boolean changed;
     private LinkedHashMap<EntityPlayer, BonusInstance> instances = new LinkedHashMap<>();
-
 
     public static ServerBonus getInstance(String parsableBonus)
     {
         return (ServerBonus) Bonus.getInstance(parsableBonus, Side.SERVER);
     }
 
-    public static boolean changed;
-
-
     public static void saveDiscoveries(EntityPlayerMP player)
     {
         World world = player.world;
-        if (!world.isRemote)
+        try
         {
-            try
+            String string = MCTools.getDataDir(world.getMinecraftServer()) + SetBonus.MODID + File.separator;
+            File file = new File(string);
+            if (!file.exists()) file.mkdir();
+
+            string += "discoveries" + File.separator;
+            file = new File(string);
+            if (!file.exists()) file.mkdir();
+
+            string += player.getCachedUniqueIdString() + ".txt";
+            file = new File(string);
+            BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+
+            for (Map.Entry<String, ServerBonus> entry : ServerData.bonuses.entrySet())
             {
-                String string = MCTools.getDataDir(world.getMinecraftServer()) + SetBonus.MODID + File.separator;
-                File file = new File(string);
-                if (!file.exists()) file.mkdir();
-
-                string += "discoveries" + File.separator;
-                file = new File(string);
-                if (!file.exists()) file.mkdir();
-
-                string += player.getCachedUniqueIdString() + ".txt";
-                file = new File(string);
-                BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-
-                for (Map.Entry<String, ServerBonus> entry : ServerData.bonuses.entrySet())
-                {
-                    BonusInstance data = entry.getValue().instances.get(player);
-                    if (data != null && data.discovered) writer.write(entry.getKey());
-                }
-
-                writer.close();
+                BonusInstance data = entry.getValue().instances.get(player);
+                if (data != null && data.discovered) writer.write(entry.getKey());
             }
-            catch (IOException e)
-            {
-                MCTools.crash(e, 901, false);
-            }
+
+            writer.close();
+        }
+        catch (IOException e)
+        {
+            MCTools.crash(e, 901, false);
         }
     }
 
