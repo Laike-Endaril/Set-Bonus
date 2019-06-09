@@ -9,7 +9,9 @@ Look into possible race condition issue, where eg...
 
 Add discovery system for sets (in addition to the one for bonuses)?
 
-Look into enchantments as bonuses
+Look into enchantments as bonuses...
+...could this be done with ItemStacks that exist only in memory?
+...if not, could it be done with inaccessible equipment slots containing dummy items?
 
 "Discover" command
 "Undiscover" command
@@ -42,6 +44,7 @@ Adapt Canvas class to work with MC, if necessary
 Use Canvas for GUIRectScrollView
 
 *Left column is category...
+...Information
 ...Bonuses
 ...Sets
 ...Items
