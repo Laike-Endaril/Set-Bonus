@@ -66,41 +66,38 @@ public class ServerBonus extends Bonus
     public static void loadDiscoveries(EntityPlayer player)
     {
         World world = player.world;
-        if (!world.isRemote)
+        try
         {
-            try
+            String string = MCTools.getDataDir(world.getMinecraftServer()) + SetBonus.MODID + File.separator;
+            File file = new File(string);
+            if (!file.exists()) return;
+
+            string += "discoveries" + File.separator;
+            file = new File(string);
+            if (!file.exists()) return;
+
+            string += player.getCachedUniqueIdString() + ".txt";
+            file = new File(string);
+            if (!file.exists()) return;
+
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+
+            string = reader.readLine();
+            while (string != null && !string.equals(""))
             {
-                String string = MCTools.getDataDir(world.getMinecraftServer()) + SetBonus.MODID + File.separator;
-                File file = new File(string);
-                if (!file.exists()) return;
-
-                string += "discoveries" + File.separator;
-                file = new File(string);
-                if (!file.exists()) return;
-
-                string += player.getCachedUniqueIdString() + ".txt";
-                file = new File(string);
-                if (!file.exists()) return;
-
-                BufferedReader reader = new BufferedReader(new FileReader(file));
-
-                string = reader.readLine();
-                while (string != null && !string.equals(""))
+                ServerBonus bonus = ServerData.bonuses.get(string);
+                if (bonus != null)
                 {
-                    ServerBonus bonus = ServerData.bonuses.get(string);
-                    if (bonus != null)
-                    {
-                        bonus.getBonusInstance(player).discovered = true;
-                    }
-                    string = reader.readLine();
+                    bonus.getBonusInstance(player).discovered = true;
                 }
+                string = reader.readLine();
+            }
 
-                reader.close();
-            }
-            catch (IOException e)
-            {
-                MCTools.crash(e, 901, false);
-            }
+            reader.close();
+        }
+        catch (IOException e)
+        {
+            MCTools.crash(e, 901, false);
         }
 
         //To remove the saved discovery of any removed bonuses

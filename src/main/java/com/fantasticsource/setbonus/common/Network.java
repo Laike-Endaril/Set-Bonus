@@ -222,10 +222,7 @@ public class Network
         {
             if (ctx.side == Side.CLIENT)
             {
-                Minecraft.getMinecraft().addScheduledTask(() ->
-                {
-                    ClientData.update(packet);
-                });
+                Minecraft.getMinecraft().addScheduledTask(() -> ClientData.update(packet));
             }
 
             return null;
