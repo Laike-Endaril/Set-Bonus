@@ -66,17 +66,17 @@ public class TooltipRenderer
                             ClientBonus.BonusInstance bonusInstance = bonus.getBonusInstance(player);
 
                             color = "";
+                            int active = set.getNumberEquipped(player);
+
                             if (bonusInstance.active) color += GREEN; //All requirements met
                             else
                             {
-                                int active = set.getNumberEquipped(player);
-
                                 if (active >= req) color += DARK_PURPLE; //Set requirements are met, but non-set requirements are not met
                                 else if (active == 0) color += RED; //No set requirements met
                                 else color += YELLOW; //Some set requirements met
                             }
 
-                            tooltip.add(color + " " + bonus.name + (otherReqs ? "*" : ""));
+                            tooltip.add(color + " " + bonus.name + " (" + active + "/" + req + ")" + (otherReqs ? "*" : ""));
                         }
                     }
                     tooltip.add("");
