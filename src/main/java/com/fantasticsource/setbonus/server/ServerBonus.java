@@ -29,7 +29,7 @@ public class ServerBonus extends Bonus
     public static boolean changed;
 
 
-    public static void saveDiscoveries(EntityPlayer player)
+    public static void saveDiscoveries(EntityPlayerMP player)
     {
         World world = player.world;
         if (!world.isRemote)
@@ -63,7 +63,7 @@ public class ServerBonus extends Bonus
         }
     }
 
-    public static void loadDiscoveries(EntityPlayer player)
+    public static void loadDiscoveries(EntityPlayerMP player)
     {
         World world = player.world;
         try
@@ -128,7 +128,7 @@ public class ServerBonus extends Bonus
         }
     }
 
-    public static void updateBonuses(EntityPlayer player)
+    public static void updateBonuses(EntityPlayerMP player)
     {
         //Happens once per second on player tick event
         changed = true;
@@ -141,12 +141,12 @@ public class ServerBonus extends Bonus
 
 
     @Nonnull
-    public BonusInstance getBonusInstance(EntityPlayer player)
+    public BonusInstance getBonusInstance(EntityPlayerMP player)
     {
         return instances.computeIfAbsent(player, k -> new BonusInstance(player, this));
     }
 
-    public void update(EntityPlayer player)
+    public void update(EntityPlayerMP player)
     {
         instances.computeIfAbsent(player, k -> new BonusInstance(player, this)).update();
     }
@@ -155,10 +155,10 @@ public class ServerBonus extends Bonus
     public class BonusInstance
     {
         public boolean active, discovered;
-        private EntityPlayer player;
+        private EntityPlayerMP player;
         private ServerBonus bonus;
 
-        private BonusInstance(EntityPlayer player, ServerBonus bonus)
+        private BonusInstance(EntityPlayerMP player, ServerBonus bonus)
         {
             this.player = player;
             this.bonus = bonus;

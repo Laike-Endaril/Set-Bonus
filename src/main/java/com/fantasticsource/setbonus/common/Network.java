@@ -132,14 +132,14 @@ public class Network
         public ArrayList<String> potions = new ArrayList<>();
 
 
-        private EntityPlayer player;
+        private EntityPlayerMP player;
 
 
         public ConfigPacket() //Required; probably for when the packet is received
         {
         }
 
-        private ConfigPacket(EntityPlayer player)
+        private ConfigPacket(EntityPlayerMP player)
         {
             this.player = player;
         }
