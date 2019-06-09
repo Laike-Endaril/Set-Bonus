@@ -46,7 +46,7 @@ public class ServerBonus extends Bonus
             for (Map.Entry<String, ServerBonus> entry : ServerData.bonuses.entrySet())
             {
                 BonusInstance data = entry.getValue().instances.get(player);
-                if (data != null && data.discovered) writer.write(entry.getKey());
+                if (data != null && data.discovered) writer.write(entry.getKey() + "\r\n");
             }
 
             writer.close();
@@ -80,10 +80,7 @@ public class ServerBonus extends Bonus
             while (string != null && !string.equals(""))
             {
                 ServerBonus bonus = ServerData.bonuses.get(string);
-                if (bonus != null)
-                {
-                    bonus.getBonusInstance(player).discovered = true;
-                }
+                if (bonus != null) bonus.getBonusInstance(player).discovered = true;
                 string = reader.readLine();
             }
 

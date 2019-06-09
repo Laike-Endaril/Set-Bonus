@@ -1,7 +1,17 @@
-Fix discoveries not persisting properly...
-...SP: bugged
-...LAN: bugged upon rejoin *unless the host session is restarted*
-...Dedicated: Seems to work fine no matter what
+Look into possible issue when downgrading bonuses...
+...if a bonus to health downgrades from +20 to +10 due to the number of set items decreasing, does it...
+...adjust current HP correctly?
+...keep the high value for current HP?
+...adjust current HP down to the max without *any* bonus?
+
+Look into possible race condition issue, where eg...
+...bonus A activates when armor is low enough, and increases attack power
+...bonus B activates when attack power is high enough, and increases armor
+1. bonus A activates, increasing attack power
+2. this causes bonus B to activate, increasing armor
+3. this causes bonus A to deactivate, decreasing attack power
+4. this causes bonus B to deactivate, decreasing armor
+5. repeats from 1
 
 Add discovery system for sets (in addition to the one for bonuses)?
 
@@ -27,21 +37,6 @@ Improve efficiency via...
 ...caching
 
 Make some default bonuses
-
-Look into issue when downgrading bonuses...
-...if a bonus to health downgrades from +20 to +10 due to the number of set items decreasing, does it...
-...adjust current HP correctly?
-...keep the high value for current HP?
-...adjust current HP down to the max without *any* bonus?
-
-Look into possible race condition issue, where eg...
-...bonus A activates when armor is low enough, and increases attack power
-...bonus B activates when attack power is high enough, and increases armor
-1. bonus A activates, increasing attack power
-2. this causes bonus B to activate, increasing armor
-3. this causes bonus A to deactivate, decreasing attack power
-4. this causes bonus B to deactivate, decreasing armor
-5. repeats from 1
 
 
 
