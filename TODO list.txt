@@ -1,5 +1,9 @@
 Move active/required to left by default, and add a config option for it (left/right)
 
+Look into simplifying configs...
+...look into on-the-fly additions/removals of config categories
+...look into enum arrays
+
 Look into possible race condition issue, where eg...
 ...bonus A activates when armor is low enough, and increases attack power
 ...bonus B activates when attack power is high enough, and increases armor
