@@ -76,7 +76,7 @@ public class TooltipRenderer
                                 else color += YELLOW; //Some set requirements met
                             }
 
-                            tooltip.add(color + " " + bonus.name + " (" + active + "/" + req + ")" + (otherReqs ? "*" : ""));
+                            tooltip.add(color + " (" + active + "/" + req + ")" + (otherReqs ? "*" : "") + " " + bonus.name);
                         }
                     }
                     tooltip.add("");
