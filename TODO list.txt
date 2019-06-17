@@ -2,6 +2,8 @@ Look into simplifying configs...
 ...look into on-the-fly additions/removals of config categories
 ...look into enum arrays
 
+Look into damage-type-specific resistances as bonuses
+
 Look into possible race condition issue, where eg...
 ...bonus A activates when armor is low enough, and increases attack power
 ...bonus B activates when attack power is high enough, and increases armor
