@@ -1,3 +1,5 @@
+Fix bug where set bonuses don't apply after death
+
 Look into simplifying configs...
 ...look into on-the-fly additions/removals of config categories
 ...look into enum arrays
