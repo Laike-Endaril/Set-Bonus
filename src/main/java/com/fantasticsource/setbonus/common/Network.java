@@ -37,7 +37,7 @@ public class Network
     public static void updateConfig(EntityPlayerMP player)
     {
         Network.WRAPPER.sendTo(new Network.ConfigPacket(player), player);
-        ServerBonus.updateBonuses(player);
+        ServerBonus.updateBonuses(player, true);
     }
 
     public static class DiscoverBonusPacket implements IMessage

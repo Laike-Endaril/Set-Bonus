@@ -121,8 +121,15 @@ public class ServerBonus extends Bonus
 
     public static void updateBonuses(EntityPlayerMP player)
     {
+        updateBonuses(player, false);
+    }
+
+    public static void updateBonuses(EntityPlayerMP player, boolean forceNew)
+    {
         //Happens once per second on player tick event
-        changed = true;
+        changed = false;
+        for (ServerBonus bonus : ServerData.bonuses.values()) bonus.update(player, forceNew);
+
         while (changed)
         {
             changed = false;
@@ -139,7 +146,18 @@ public class ServerBonus extends Bonus
 
     public void update(EntityPlayerMP player)
     {
-        instances.computeIfAbsent(player, k -> new BonusInstance(player, this)).update();
+        update(player, false);
+    }
+
+    public void update(EntityPlayerMP player, boolean forceNew)
+    {
+        if (forceNew)
+        {
+            BonusInstance instance = new BonusInstance(player, this);
+            instances.put(player, instance);
+            instance.update();
+        }
+        else instances.computeIfAbsent(player, k -> new BonusInstance(player, this)).update();
     }
 
 
@@ -183,7 +201,7 @@ public class ServerBonus extends Bonus
                     if (!discovered)
                     {
                         discovered = true;
-                        Network.WRAPPER.sendTo(new Network.DiscoverBonusPacket(bonus), (EntityPlayerMP) player);
+                        Network.WRAPPER.sendTo(new Network.DiscoverBonusPacket(bonus), player);
                         saveDiscoveries(player);
                     }
 
