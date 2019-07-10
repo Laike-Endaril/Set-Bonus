@@ -59,7 +59,7 @@ public class GUIRectScrollView extends GUIRectElement
         GlStateManager.disableTexture2D();
 
         GlStateManager.pushMatrix();
-        GlStateManager.translate(0, top, 0);
+        GlStateManager.translate(0, -top, 0);
 
         for (GUIRectElement element : subElements)
         {

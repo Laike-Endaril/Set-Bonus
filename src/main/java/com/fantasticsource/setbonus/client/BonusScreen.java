@@ -66,7 +66,7 @@ public class BonusScreen extends GUIScreen
             GUIRectElement[] subElements = new GUIRectElement[]
                     {
                             //TODO enable this and see how it goes beyond the boundary of its container...need to clip that somehow
-//                            new GradientRect(0, 0, 0.5, 1.5, new Color(0xFFFFFFFF), new Color(0xFF), new Color(0xFFFFFFFF), new Color(0xFF))
+                            new GradientRect(0, 0, 0.5, 1.5, new Color(0xFFFFFFFF), new Color(0xFF), new Color(0xFFFFFFFF), new Color(0xFF))
                     };
             GUIRectScrollView scrollView = new GUIRectScrollView(element, width, height, subElements);
             guiElements.add(scrollView);
