@@ -55,17 +55,17 @@ public class GUIRectScrollView extends GUIRectElement
         }
         double bottom = top + height;
 
+
         GlStateManager.disableTexture2D();
+
         GlStateManager.pushMatrix();
         GlStateManager.translate(0, top, 0);
-
 
         for (GUIRectElement element : subElements)
         {
             if (element.y + height < top || element.y >= bottom) continue;
             element.draw(screenWidth, screenHeight);
         }
-
 
         GlStateManager.popMatrix();
 
