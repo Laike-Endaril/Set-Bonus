@@ -6,9 +6,6 @@ import net.minecraft.client.renderer.GlStateManager;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.GL_QUADS;
-
 public class GUIRectScrollView extends GUIRectElement
 {
     public double internalHeight, progress = -1;
@@ -63,7 +60,6 @@ public class GUIRectScrollView extends GUIRectElement
         GlStateManager.translate(0, top, 0);
 
 
-//        GlStateManager.scale(screenWidth, screenHeight, 1);
         for (GUIRectElement element : subElements)
         {
             if (element.y + height < top || element.y >= bottom) continue;
@@ -73,11 +69,6 @@ public class GUIRectScrollView extends GUIRectElement
 
         GlStateManager.popMatrix();
 
-
         background.draw(screenWidth, screenHeight);
-
-        GlStateManager.pushMatrix();
-        GlStateManager.scale(1 / screenWidth, 1 / screenHeight, 1);
-        GlStateManager.popMatrix();
     }
 }
