@@ -31,7 +31,9 @@ public class GUITextRect extends GUIRectElement
 
         GlStateManager.pushMatrix();
         GlStateManager.translate(x, y, 0);
-        GlStateManager.scale(1 / screenWidth, 1 / screenHeight, 1);
+        double guiScale = Minecraft.getMinecraft().gameSettings.guiScale;
+        System.out.println(guiScale);
+        GlStateManager.scale(3d / guiScale / screenWidth, 3d / guiScale / screenHeight, 1);
 
         fontRenderer.drawString(text, (float) x, (float) y, (color.color() >> 8) | color.a() << 24, false);
 

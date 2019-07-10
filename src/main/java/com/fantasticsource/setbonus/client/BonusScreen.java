@@ -11,6 +11,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
 import org.lwjgl.input.Keyboard;
 
+import java.util.ArrayList;
+
 import static com.fantasticsource.setbonus.client.Keys.BONUS_SCREEN_KEY;
 
 public class BonusScreen extends GUIScreen
@@ -59,16 +61,17 @@ public class BonusScreen extends GUIScreen
             guiElements.add(new GradientRect(0, 0, 1, 1, BLACK, BLACK, AQUA, AQUA));
 
             //Left
-            GUIRectElement element = new GradientBorder(0, 0, 19d / 60, 1, 1d / 15, WHITE, BLANK);
-            GUIRectElement[] subElements = new GUIRectElement[]
-                    {
-                            //TODO enable this and see how it goes beyond the boundary of its container...need to clip that somehow
-//                            new GradientRect(0, 0, 0.5, 1.5, new Color(0xFFFFFFFF), new Color(0xFF), new Color(0xFFFFFFFF), new Color(0xFF)),
+            ArrayList<GUIRectElement> subElements = new ArrayList<>();
+            //TODO enable this and see how it goes beyond the boundary of its container...need to clip that somehow
+//            subElements.add(new GradientRect(0, 0, 0.5, 1.5, new Color(0xFFFFFFFF), new Color(0xFF), new Color(0xFFFFFFFF), new Color(0xFF)));
+//            subElements.add(new GradientRect(0.1, 0, 0.3, 1.5, new Color(0xFFFFFFFF), new Color(0xFF), new Color(0xFFFFFFFF), new Color(0xFF)));
+            for (double y = 0.01; y < 1.5; y += 0.1)
+            {
+                subElements.add(new GUITextRect(0.1, y, 1, "Test", WHITE_3));
+            }
 
-//                            new GradientRect(0, 0, 0.5, 1.5, new Color(0xFFFFFFFF), new Color(0xFF), new Color(0xFFFFFFFF), new Color(0xFF)),
-                            new GUITextRect(0.1, 0.1, 1, "Test", WHITE_3),
-                    };
-            GUIRectScrollView scrollView = new GUIRectScrollView(element, width, height, subElements);
+            GUIRectElement element = new GradientBorder(0, 0, 19d / 60, 1, 1d / 15, WHITE, BLANK);
+            GUIRectScrollView scrollView = new GUIRectScrollView(element, width, height, subElements.toArray(new GUIRectElement[0]));
             guiElements.add(scrollView);
             guiElements.add(new VerticalScrollbar(19d / 60, 0, 1d / 3, 1, WHITE_2, BLANK, WHITE_2, BLANK, scrollView));
 
