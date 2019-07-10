@@ -56,8 +56,6 @@ public class GUIRectScrollView extends GUIRectElement
         double bottom = top + height;
 
 
-        GlStateManager.disableTexture2D();
-
         GlStateManager.pushMatrix();
         GlStateManager.translate(0, -top, 0);
 
@@ -68,6 +66,7 @@ public class GUIRectScrollView extends GUIRectElement
         }
 
         GlStateManager.popMatrix();
+
 
         background.draw(screenWidth, screenHeight);
     }

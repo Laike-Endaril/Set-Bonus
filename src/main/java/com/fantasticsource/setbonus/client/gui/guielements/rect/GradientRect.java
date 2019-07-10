@@ -21,6 +21,9 @@ public class GradientRect extends GUIRectElement
     @Override
     public void draw(double screenWidth, double screenHeight)
     {
+        GlStateManager.disableTexture2D();
+        GlStateManager.disableAlpha();
+
         float x1 = (float) x;
         float y1 = (float) y;
         float x2 = (float) (x + width);

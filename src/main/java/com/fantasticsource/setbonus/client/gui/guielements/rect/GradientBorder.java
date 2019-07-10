@@ -3,6 +3,7 @@ package com.fantasticsource.setbonus.client.gui.guielements.rect;
 import com.fantasticsource.tools.Tools;
 import com.fantasticsource.tools.datastructures.Color;
 import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 
@@ -24,6 +25,9 @@ public class GradientBorder extends GUIRectElement
     @Override
     public void draw(double screenWidth, double screenHeight)
     {
+        GlStateManager.disableTexture2D();
+        GlStateManager.disableAlpha();
+
         double x2 = x + width;
         double y2 = y + height;
 

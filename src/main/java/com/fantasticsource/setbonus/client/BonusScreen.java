@@ -2,10 +2,7 @@ package com.fantasticsource.setbonus.client;
 
 import com.fantasticsource.setbonus.client.gui.GUIScreen;
 import com.fantasticsource.setbonus.client.gui.guielements.VerticalScrollbar;
-import com.fantasticsource.setbonus.client.gui.guielements.rect.GUIRectElement;
-import com.fantasticsource.setbonus.client.gui.guielements.rect.GUIRectScrollView;
-import com.fantasticsource.setbonus.client.gui.guielements.rect.GradientBorder;
-import com.fantasticsource.setbonus.client.gui.guielements.rect.GradientRect;
+import com.fantasticsource.setbonus.client.gui.guielements.rect.*;
 import com.fantasticsource.tools.datastructures.Color;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
@@ -66,7 +63,10 @@ public class BonusScreen extends GUIScreen
             GUIRectElement[] subElements = new GUIRectElement[]
                     {
                             //TODO enable this and see how it goes beyond the boundary of its container...need to clip that somehow
-                            new GradientRect(0, 0, 0.5, 1.5, new Color(0xFFFFFFFF), new Color(0xFF), new Color(0xFFFFFFFF), new Color(0xFF))
+//                            new GradientRect(0, 0, 0.5, 1.5, new Color(0xFFFFFFFF), new Color(0xFF), new Color(0xFFFFFFFF), new Color(0xFF)),
+
+//                            new GradientRect(0, 0, 0.5, 1.5, new Color(0xFFFFFFFF), new Color(0xFF), new Color(0xFFFFFFFF), new Color(0xFF)),
+                            new GUITextRect(0.1, 0.1, 1, "Test", WHITE_3),
                     };
             GUIRectScrollView scrollView = new GUIRectScrollView(element, width, height, subElements);
             guiElements.add(scrollView);
