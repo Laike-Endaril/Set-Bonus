@@ -10,13 +10,16 @@ public class GUITextRect extends GUIRectElement
     private static FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
 
     private String text;
-    private Color color;
+    private Color color, hoverColor, pressedColor;
+    private boolean active = false;
 
-    public GUITextRect(double x, double y, double width, String text, Color color)
+    public GUITextRect(double x, double y, double width, String text, Color color, Color hoverColor, Color pressedColor)
     {
         super(x, y, width, 0);
         this.text = text;
         this.color = color;
+        this.hoverColor = hoverColor;
+        this.pressedColor = pressedColor;
     }
 
     public void recalcHeight(double width, double screenHeight)
@@ -25,21 +28,44 @@ public class GUITextRect extends GUIRectElement
     }
 
     @Override
+    public void mousePressed(double x, double y, int button)
+    {
+        if (button != 0 || !isMouseWithin()) return;
+
+        active = true;
+    }
+
+    @Override
+    public void mouseReleased(double x, double y, int button)
+    {
+        if (button != 0 || !active) return;
+        active = false;
+
+        if (!isMouseWithin()) return;
+
+        //TODO Do stuff here!
+        System.out.println(text + " pressed!");
+    }
+
+    @Override
     public void draw(double screenWidth, double screenHeight)
     {
+        double xx = getScreenX(), yy = getScreenY();
+        Color c;
+
         //Hitbox debugging
-        Color c = new Color(255, 0, 0, 100);
-        new GradientRect(x, y, x + width, y + height, c, c, c, c).draw(screenWidth, screenHeight);
+//        c = new Color(255, isWithin(getMouseX(), getMouseY()) ? 255 : 0, 0, 100);
+//        new GradientRect(xx, yy, xx + width, yy + height, c, c, c, c).draw(screenWidth, screenHeight);
 
 
         GlStateManager.enableTexture2D();
 
         GlStateManager.pushMatrix();
-        GlStateManager.translate(x, y, 0);
-        double guiScale = Minecraft.getMinecraft().gameSettings.guiScale;
+        GlStateManager.translate(xx, yy, 0);
         GlStateManager.scale(1 / screenWidth, 1 / screenHeight, 1);
 
-        fontRenderer.drawString(text, (float) x, (float) y, (color.color() >> 8) | color.a() << 24, false);
+        c = !isMouseWithin() ? color : active ? pressedColor : hoverColor;
+        fontRenderer.drawString(text, 0, 0, (c.color() >> 8) | c.a() << 24, false);
 
         GlStateManager.popMatrix();
     }

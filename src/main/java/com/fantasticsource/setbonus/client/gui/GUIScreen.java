@@ -14,6 +14,7 @@ import java.util.ArrayList;
 @SideOnly(Side.CLIENT)
 public abstract class GUIScreen extends GuiScreen
 {
+    public static double mouseX, mouseY;
     protected ArrayList<GUIElement> guiElements = new ArrayList<>();
     private ArrayList<Integer> mouseButtons = new ArrayList<>();
 
@@ -63,9 +64,9 @@ public abstract class GUIScreen extends GuiScreen
 
 
         //General setup
-        double x = (double) Mouse.getX() / mc.displayWidth;
+        mouseX = (double) Mouse.getX() / mc.displayWidth;
         int displayHeight = mc.displayHeight;
-        double y = (double) (displayHeight - 1 - Mouse.getY()) / displayHeight;
+        mouseY = (double) (displayHeight - 1 - Mouse.getY()) / displayHeight;
 
 
         //Mouse wheel
@@ -74,7 +75,7 @@ public abstract class GUIScreen extends GuiScreen
         {
             for (GUIElement element : guiElements)
             {
-                element.mouseWheel(x, y, delta);
+                element.mouseWheel(mouseX, mouseY, delta);
             }
         }
 
@@ -88,7 +89,7 @@ public abstract class GUIScreen extends GuiScreen
                 mouseButtons.add(btn);
                 for (GUIElement element : guiElements)
                 {
-                    element.mousePressed(x, y, btn);
+                    element.mousePressed(mouseX, mouseY, btn);
                 }
             }
             else
@@ -96,7 +97,7 @@ public abstract class GUIScreen extends GuiScreen
                 mouseButtons.remove(btn);
                 for (GUIElement element : guiElements)
                 {
-                    element.mouseReleased(x, y, btn);
+                    element.mouseReleased(mouseX, mouseY, btn);
                 }
             }
         }
@@ -106,7 +107,7 @@ public abstract class GUIScreen extends GuiScreen
             {
                 for (GUIElement element : guiElements)
                 {
-                    element.mouseDrag(x, y, b);
+                    element.mouseDrag(mouseX, mouseY, b);
                 }
             }
         }

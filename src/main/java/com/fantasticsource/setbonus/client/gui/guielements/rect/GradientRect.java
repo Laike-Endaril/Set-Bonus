@@ -24,10 +24,10 @@ public class GradientRect extends GUIRectElement
         GlStateManager.disableTexture2D();
         GlStateManager.disableAlpha();
 
-        float x1 = (float) x;
-        float y1 = (float) y;
-        float x2 = (float) (x + width);
-        float y2 = (float) (y + height);
+        float x1 = (float) getScreenX();
+        float y1 = (float) getScreenY();
+        float x2 = (float) (x1 + width);
+        float y2 = (float) (y1 + height);
 
         GlStateManager.glBegin(GL_QUADS);
         GlStateManager.color(topRight.rf(), topRight.gf(), topRight.bf(), topRight.af());

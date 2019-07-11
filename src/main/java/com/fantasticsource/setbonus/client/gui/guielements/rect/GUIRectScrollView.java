@@ -11,7 +11,7 @@ public class GUIRectScrollView extends GUIRectElement
     public double internalHeight, progress = -1;
     private GUIRectElement background;
     private ArrayList<GUIRectElement> subElements = new ArrayList<>();
-    private double lastScreenWidth, lastScreenHeight;
+    private double lastScreenWidth, lastScreenHeight, top, bottom;
 
     public GUIRectScrollView(GUIRectElement background, double screenWidth, double screenHeight, GUIRectElement... subElements)
     {
@@ -34,15 +34,16 @@ public class GUIRectScrollView extends GUIRectElement
         internalHeight = 0;
         for (GUIRectElement element : subElements)
         {
+            element.parent = this;
             if (element instanceof GUITextRect) ((GUITextRect) element).recalcHeight(pxWidth, screenHeight);
             internalHeight = Tools.max(internalHeight, element.y + element.height);
         }
+
+        recalc2();
     }
 
-    @Override
-    public void draw(double screenWidth, double screenHeight)
+    private void recalc2()
     {
-        double top;
         if (internalHeight <= height)
         {
             progress = -1;
@@ -53,8 +54,13 @@ public class GUIRectScrollView extends GUIRectElement
             if (progress == -1) progress = 0;
             top = (internalHeight - height) * progress;
         }
-        double bottom = top + height;
+        bottom = top + height;
+    }
 
+    @Override
+    public void draw(double screenWidth, double screenHeight)
+    {
+        recalc2();
 
         GlStateManager.pushMatrix();
         GlStateManager.translate(0, -top, 0);
@@ -69,5 +75,55 @@ public class GUIRectScrollView extends GUIRectElement
 
 
         background.draw(screenWidth, screenHeight);
+    }
+
+    @Override
+    public void mousePressed(double x, double y, int button)
+    {
+        recalc2();
+        y -= top;
+        for (GUIRectElement element : subElements)
+        {
+            element.mousePressed(x, y, button);
+        }
+    }
+
+    @Override
+    public void mouseReleased(double x, double y, int button)
+    {
+        recalc2();
+        y -= top;
+        for (GUIRectElement element : subElements)
+        {
+            element.mouseReleased(x, y, button);
+        }
+    }
+
+    @Override
+    public void mouseDrag(double x, double y, int button)
+    {
+        recalc2();
+        y -= top;
+        for (GUIRectElement element : subElements)
+        {
+            element.mouseDrag(x, y, button);
+        }
+    }
+
+    @Override
+    public void mouseWheel(double x, double y, int delta)
+    {
+        recalc2();
+        y -= top;
+        for (GUIRectElement element : subElements)
+        {
+            element.mouseWheel(x, y, delta);
+        }
+    }
+
+    @Override
+    public double childMouseYOffset()
+    {
+        return top;
     }
 }

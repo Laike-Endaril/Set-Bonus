@@ -41,7 +41,7 @@ public class VerticalScrollbar extends GUIRectElement
     @Override
     public void mouseWheel(double x, double y, int delta)
     {
-        if (scrollView.progress != -1 && (isWithin(x, y) || scrollView.isWithin(x, y)))
+        if (scrollView.progress != -1 && (isMouseWithin() || scrollView.isMouseWithin()))
         {
             if (delta < 0)
             {
@@ -56,6 +56,7 @@ public class VerticalScrollbar extends GUIRectElement
         }
     }
 
+    @Override
     public boolean isWithin(double x, double y)
     {
         return background.isWithin(x, y);
@@ -64,7 +65,7 @@ public class VerticalScrollbar extends GUIRectElement
     @Override
     public void mousePressed(double x, double y, int button)
     {
-        if (scrollView.progress != -1 && button == 0 && isWithin(x, y))
+        if (scrollView.progress != -1 && button == 0 && isMouseWithin())
         {
             active = true;
             scrollView.progress = Tools.min(Tools.max((y - this.y - slider.height * 0.5) / (height - slider.height), 0), 1);

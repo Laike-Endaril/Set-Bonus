@@ -17,7 +17,16 @@ import static com.fantasticsource.setbonus.client.Keys.BONUS_SCREEN_KEY;
 
 public class BonusScreen extends GUIScreen
 {
-    private static final Color BLANK = new Color(0), BLACK = new Color(0xCC), AQUA = new Color(0x3366CC), WHITE = new Color(0xFFFFFF33), WHITE_2 = new Color(0xFFFFFF77), WHITE_3 = new Color(0xFFFFFFAA);
+    private static final Color
+            BLANK = new Color(0),
+            BLACK = new Color(0xCC),
+            AQUA = new Color(0x3366CC),
+            WHITE = new Color(0xFFFFFF33),
+            WHITE_2 = new Color(0xFFFFFF77),
+            WHITE_3 = new Color(0xFFFFFFAA),
+            WHITE_4 = new Color(0xFFFFFFFF),
+            TEAL = new Color(0x44FFFFFF);
+
     public static BonusScreen bonusScreen = new BonusScreen();
     private static long debounce = System.currentTimeMillis();
     private static boolean ready = false;
@@ -65,9 +74,10 @@ public class BonusScreen extends GUIScreen
             //TODO enable this and see how it goes beyond the boundary of its container...need to clip that somehow
 //            subElements.add(new GradientRect(0, 0, 0.5, 1.5, new Color(0xFFFFFFFF), new Color(0xFF), new Color(0xFFFFFFFF), new Color(0xFF)));
 //            subElements.add(new GradientRect(0.1, 0, 0.3, 1.5, new Color(0xFFFFFFFF), new Color(0xFF), new Color(0xFFFFFFFF), new Color(0xFF)));
+            int i = 0;
             for (double y = 0.01; y < 1.5; y += 0.1)
             {
-                subElements.add(new GUITextRect(1d / 60, y, 17d / 60, "Test", WHITE_3));
+                subElements.add(new GUITextRect(1d / 60, y, 17d / 60, "Test " + i++, WHITE_3, TEAL, WHITE_4));
             }
 
             GUIRectElement element = new GradientBorder(0, 0, 19d / 60, 1, 1d / 15, WHITE, BLANK);
