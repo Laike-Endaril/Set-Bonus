@@ -67,7 +67,7 @@ public class BonusScreen extends GUIScreen
 //            subElements.add(new GradientRect(0.1, 0, 0.3, 1.5, new Color(0xFFFFFFFF), new Color(0xFF), new Color(0xFFFFFFFF), new Color(0xFF)));
             for (double y = 0.01; y < 1.5; y += 0.1)
             {
-                subElements.add(new GUITextRect(0.1, y, 1, "Test", WHITE_3));
+                subElements.add(new GUITextRect(1d / 60, y, 17d / 60, "Test", WHITE_3));
             }
 
             GUIRectElement element = new GradientBorder(0, 0, 19d / 60, 1, 1d / 15, WHITE, BLANK);

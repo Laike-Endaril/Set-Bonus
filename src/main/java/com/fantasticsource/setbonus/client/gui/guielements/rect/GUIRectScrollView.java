@@ -35,7 +35,7 @@ public class GUIRectScrollView extends GUIRectElement
         for (GUIRectElement element : subElements)
         {
             if (element instanceof GUITextRect) ((GUITextRect) element).recalcHeight(pxWidth, screenHeight);
-            internalHeight = Tools.max(internalHeight, element.x + element.height);
+            internalHeight = Tools.max(internalHeight, element.y + element.height);
         }
     }
 

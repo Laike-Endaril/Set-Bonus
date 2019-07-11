@@ -27,6 +27,11 @@ public class GUITextRect extends GUIRectElement
     @Override
     public void draw(double screenWidth, double screenHeight)
     {
+        //Hitbox debugging
+        Color c = new Color(255, 0, 0, 100);
+        new GradientRect(x, y, x + width, y + height, c, c, c, c).draw(screenWidth, screenHeight);
+
+
         GlStateManager.enableTexture2D();
 
         GlStateManager.pushMatrix();
