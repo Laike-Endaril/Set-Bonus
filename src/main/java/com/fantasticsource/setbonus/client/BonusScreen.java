@@ -77,7 +77,7 @@ public class BonusScreen extends GUIScreen
             int i = 0;
             for (double y = 0.01; y < 1.5; y += 0.1)
             {
-                subElements.add(new GUITextRect(1d / 60, y, 17d / 60, "Test " + i++, WHITE_3, TEAL, WHITE_4));
+                subElements.add(new GUITextRect(1d / 60, y, 17d / 60, "Test #" + i++, WHITE_3, TEAL, WHITE_4));
             }
 
             GUIRectElement element = new GradientBorder(0, 0, 19d / 60, 1, 1d / 15, WHITE, BLANK);
