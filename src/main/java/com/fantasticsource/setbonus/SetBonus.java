@@ -110,7 +110,7 @@ public class SetBonus
                 World world = localPlayer.world;
                 for (EntityPlayer player : world.playerEntities)
                 {
-                    Network.updateConfig((EntityPlayerMP) player);
+                    if (player != localPlayer) Network.updateConfig((EntityPlayerMP) player);
                 }
             }
             else
