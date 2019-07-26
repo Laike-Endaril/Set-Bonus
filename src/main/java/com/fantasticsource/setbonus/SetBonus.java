@@ -3,9 +3,7 @@ package com.fantasticsource.setbonus;
 import com.fantasticsource.mctools.ClientTickTimer;
 import com.fantasticsource.mctools.MCTools;
 import com.fantasticsource.mctools.ServerTickTimer;
-import com.fantasticsource.setbonus.client.ClientBonus;
-import com.fantasticsource.setbonus.client.ClientData;
-import com.fantasticsource.setbonus.client.TooltipRenderer;
+import com.fantasticsource.setbonus.client.*;
 import com.fantasticsource.setbonus.common.Commands;
 import com.fantasticsource.setbonus.common.Network;
 import com.fantasticsource.setbonus.config.ConfigHandler;
@@ -62,11 +60,11 @@ public class SetBonus
         if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
         {
             //Physical client
-//            Keys.init(event);
+            Keys.init(event);
 
             MinecraftForge.EVENT_BUS.register(ClientTickTimer.class);
             MinecraftForge.EVENT_BUS.register(TooltipRenderer.class);
-//            MinecraftForge.EVENT_BUS.register(BonusScreen.class);
+            MinecraftForge.EVENT_BUS.register(BonusScreen.class);
         }
     }
 
