@@ -1,11 +1,12 @@
 package com.fantasticsource.setbonus.client;
 
 import com.fantasticsource.mctools.gui.GUIScreen;
-import com.fantasticsource.mctools.gui.guielements.VerticalScrollbar;
+import com.fantasticsource.mctools.gui.guielements.GUIVerticalScrollbar;
+import com.fantasticsource.mctools.gui.guielements.rect.GUIGradientBorder;
+import com.fantasticsource.mctools.gui.guielements.rect.GUIGradientRect;
 import com.fantasticsource.mctools.gui.guielements.rect.GUIRectElement;
-import com.fantasticsource.mctools.gui.guielements.rect.GUIRectScrollView;
-import com.fantasticsource.mctools.gui.guielements.rect.GradientBorder;
-import com.fantasticsource.mctools.gui.guielements.rect.GradientRect;
+import com.fantasticsource.mctools.gui.guielements.rect.GUITextRect;
+import com.fantasticsource.mctools.gui.guielements.rect.view.GUIRectScrollView;
 import com.fantasticsource.tools.datastructures.Color;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
@@ -59,32 +60,39 @@ public class BonusScreen extends GUIScreen
             ready = true;
 
             //Background
-            guiElements.add(new GradientRect(this, 0, 0, 1, 1, BLACK, BLACK, AQUA, AQUA));
+            guiElements.add(new GUIGradientRect(this, 0, 0, 1, 1, BLACK, BLACK, AQUA, AQUA));
 
             //Left
-            GUIRectElement element = new GradientBorder(this, 0, 0, 19d / 60, 1, 1d / 15, WHITE, BLANK);
-            GUIRectScrollView scrollView = new GUIRectScrollView(this, element, width, height);
+            GUIRectElement element = new GUIGradientBorder(this, 0, 0, 19d / 60, 1, 1d / 15, WHITE, BLANK);
+            GUIRectElement[] elements = new GUIRectElement[]
+                    {
+                            new GUITextRect(this, 0, 0, "Test1", WHITE, AQUA, WHITE_3)
+                    };
+            GUIRectScrollView scrollView = new GUIRectScrollView(this, element.x, element.y, element.width, element.height, elements);
             guiElements.add(scrollView);
-            guiElements.add(new VerticalScrollbar(this, 19d / 60, 0, 1d / 3, 1, WHITE_2, BLANK, WHITE_2, BLANK, scrollView));
+            guiElements.add(element);
+            guiElements.add(new GUIVerticalScrollbar(this, 19d / 60, 0, 1d / 3, 1, WHITE_2, BLANK, WHITE_2, BLANK, scrollView));
 
             //Separator
-            guiElements.add(new GradientRect(this, 1d / 3, 0, 41d / 120, 1, WHITE_2, WHITE_3, WHITE_3, WHITE_2));
+            guiElements.add(new GUIGradientRect(this, 1d / 3, 0, 41d / 120, 1, WHITE_2, WHITE_3, WHITE_3, WHITE_2));
 
             //Center
-            guiElements.add(new GradientBorder(this, 41d / 120, 0, 2d / 3, 1d / 10, 1d / 50, WHITE_2, BLANK));
-            element = new GradientBorder(this, 41d / 120, 1d / 10, 39d / 60, 1, 1d / 15, WHITE, BLANK);
-            scrollView = new GUIRectScrollView(this, element, width, height);
+            guiElements.add(new GUIGradientBorder(this, 41d / 120, 0, 2d / 3, 1d / 10, 1d / 50, WHITE_2, BLANK));
+            element = new GUIGradientBorder(this, 41d / 120, 1d / 10, 39d / 60, 1, 1d / 15, WHITE, BLANK);
+            scrollView = new GUIRectScrollView(this, element.x, element.y, element.width, element.height);
             guiElements.add(scrollView);
-            guiElements.add(new VerticalScrollbar(this, 39d / 60, 1d / 10, 2d / 3, 1, WHITE_2, BLANK, WHITE_2, BLANK, scrollView));
+            guiElements.add(element);
+            guiElements.add(new GUIVerticalScrollbar(this, 39d / 60, 1d / 10, 2d / 3, 1, WHITE_2, BLANK, WHITE_2, BLANK, scrollView));
 
             //Separator
-            guiElements.add(new GradientRect(this, 2d / 3, 0, 81d / 120, 1, WHITE_2, WHITE_3, WHITE_3, WHITE_2));
+            guiElements.add(new GUIGradientRect(this, 2d / 3, 0, 81d / 120, 1, WHITE_2, WHITE_3, WHITE_3, WHITE_2));
 
             //Right
-            element = new GradientBorder(this, 81d / 120, 0, 59d / 60, 1, 1d / 15, WHITE, BLANK);
-            scrollView = new GUIRectScrollView(this, element, width, height);
+            element = new GUIGradientBorder(this, 81d / 120, 0, 59d / 60, 1, 1d / 15, WHITE, BLANK);
+            scrollView = new GUIRectScrollView(this, element.x, element.y, element.width, element.height);
             guiElements.add(scrollView);
-            guiElements.add(new VerticalScrollbar(this, 59d / 60, 0, 1, 1, WHITE_2, BLANK, WHITE_2, BLANK, scrollView));
+            guiElements.add(element);
+            guiElements.add(new GUIVerticalScrollbar(this, 59d / 60, 0, 1, 1, WHITE_2, BLANK, WHITE_2, BLANK, scrollView));
         }
     }
 }
