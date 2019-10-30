@@ -3,7 +3,10 @@ package com.fantasticsource.setbonus;
 import com.fantasticsource.mctools.ClientTickTimer;
 import com.fantasticsource.mctools.MCTools;
 import com.fantasticsource.mctools.ServerTickTimer;
-import com.fantasticsource.setbonus.client.*;
+import com.fantasticsource.setbonus.client.BonusScreen;
+import com.fantasticsource.setbonus.client.ClientBonus;
+import com.fantasticsource.setbonus.client.ClientData;
+import com.fantasticsource.setbonus.client.TooltipRenderer;
 import com.fantasticsource.setbonus.common.Commands;
 import com.fantasticsource.setbonus.common.Network;
 import com.fantasticsource.setbonus.config.ConfigHandler;
@@ -34,7 +37,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static net.minecraftforge.fml.common.Mod.EventHandler;
 
-@Mod(modid = SetBonus.MODID, name = SetBonus.NAME, version = SetBonus.VERSION, dependencies = "required-after:fantasticlib@[1.12.2.021a,)")
+@Mod(modid = SetBonus.MODID, name = SetBonus.NAME, version = SetBonus.VERSION, dependencies = "required-after:fantasticlib@[1.12.2.026,)")
 public class SetBonus
 {
     public static final String MODID = "setbonus";
@@ -60,7 +63,7 @@ public class SetBonus
         if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
         {
             //Physical client
-            Keys.init(event);
+//            Keys.init(event);
 
             MinecraftForge.EVENT_BUS.register(ClientTickTimer.class);
             MinecraftForge.EVENT_BUS.register(TooltipRenderer.class);
