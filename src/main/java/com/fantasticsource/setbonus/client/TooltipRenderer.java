@@ -4,6 +4,7 @@ import com.fantasticsource.mctools.items.ItemFilter;
 import com.fantasticsource.setbonus.common.bonusrequirements.ABonusRequirement;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Set;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.SetRequirement;
+import com.fantasticsource.setbonus.config.SetBonusConfig;
 import com.fantasticsource.tools.Tools;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
@@ -19,6 +20,8 @@ public class TooltipRenderer
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void tooltips(ItemTooltipEvent event)
     {
+        if (!SetBonusConfig.clientSettings.enableTooltips) return;
+
         EntityPlayer player = event.getEntityPlayer();
         if (player == null) return;
 
