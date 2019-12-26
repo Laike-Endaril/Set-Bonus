@@ -1,5 +1,6 @@
 package com.fantasticsource.setbonus.common.bonuselements;
 
+import com.fantasticsource.mctools.potions.FantasticPotionEffect;
 import com.fantasticsource.mctools.potions.Potions;
 import com.fantasticsource.setbonus.SetBonus;
 import com.fantasticsource.setbonus.client.ClientData;
@@ -15,9 +16,9 @@ import java.util.Arrays;
 
 public class PotionBonus extends ABonusElement
 {
-    public ArrayList<PotionEffect> potions;
+    public ArrayList<FantasticPotionEffect> potions;
 
-    protected PotionBonus(String parsableBonusElement, Bonus bonus, ArrayList<PotionEffect> potions)
+    protected PotionBonus(String parsableBonusElement, Bonus bonus, ArrayList<FantasticPotionEffect> potions)
     {
         super(parsableBonusElement, bonus);
         this.potions = potions;
@@ -39,7 +40,7 @@ public class PotionBonus extends ABonusElement
             return null;
         }
 
-        ArrayList<PotionEffect> potions = Potions.parsePotions(Arrays.copyOfRange(tokens, 1, tokens.length), true);
+        ArrayList<FantasticPotionEffect> potions = Potions.parsePotions(Arrays.copyOfRange(tokens, 1, tokens.length), true);
         if (potions.size() == 0) return null;
 
         return new PotionBonus(parsablePotionBonus, bonus, potions);
