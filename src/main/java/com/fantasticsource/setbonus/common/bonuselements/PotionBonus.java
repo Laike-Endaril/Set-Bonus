@@ -40,7 +40,7 @@ public class PotionBonus extends ABonusElement
         }
 
         ArrayList<PotionEffect> potions = Potions.parsePotions(Arrays.copyOfRange(tokens, 1, tokens.length), true);
-        if (potions == null) return null;
+        if (potions.size() == 0) return null;
 
         return new PotionBonus(parsablePotionBonus, bonus, potions);
     }
