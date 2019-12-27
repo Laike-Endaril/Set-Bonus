@@ -101,12 +101,15 @@ public class ServerConfig
                     "FILLSCREEN Constant potion effects received as part of a bonus",
                     "",
                     "Layout is...",
-                    "Bonus id, potion.level, potion.level, etc.",
+                    "Bonus id, potion.level.duration.interval, potion.level.duration.interval, etc.",
                     "",
                     "eg...",
                     "",
                     "This makes the Dual Wield bonus from the bonus example give haste 2",
                     "DualWieldSnD, haste.2",
+                    "",
+                    "And this does the same thing, but the potion effect is only active for 5 seconds, every 10 seconds (5 on, 5 off, repeat)",
+                    "DualWieldSnD, haste.2.100.200",
                     " ",
             })
     public String[] potions = new String[]{};

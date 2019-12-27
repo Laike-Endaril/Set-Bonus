@@ -12,7 +12,6 @@ import com.fantasticsource.setbonus.common.Network;
 import com.fantasticsource.setbonus.config.ConfigHandler;
 import com.fantasticsource.setbonus.server.ServerBonus;
 import com.fantasticsource.setbonus.server.ServerData;
-import com.fantasticsource.tools.Tools;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -37,7 +36,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static net.minecraftforge.fml.common.Mod.EventHandler;
 
-@Mod(modid = SetBonus.MODID, name = SetBonus.NAME, version = SetBonus.VERSION, dependencies = "required-after:fantasticlib@[1.12.2.029b,)")
+@Mod(modid = SetBonus.MODID, name = SetBonus.NAME, version = SetBonus.VERSION, dependencies = "required-after:fantasticlib@[1.12.2.030,)")
 public class SetBonus
 {
     public static final String MODID = "setbonus";
@@ -133,18 +132,14 @@ public class SetBonus
         {
             if (event.side == Side.SERVER)
             {
-                EntityPlayerMP player = (EntityPlayerMP) event.player;
-
-                if (Tools.posMod(ServerTickTimer.currentTick(), 20) == Tools.posMod(player.getUniqueID().getLeastSignificantBits(), 20))
-                {
-                    ServerBonus.updateBonuses(player);
-                }
+                //Server side
+                ServerBonus.updateBonuses((EntityPlayerMP) event.player);
             }
             else
             {
                 //Client side
                 EntityPlayer player = event.player;
-                if (ClientTickTimer.currentTick() % 20 == 0 && Minecraft.getMinecraft().player == player) ClientBonus.updateBonuses(event.player);
+                if (Minecraft.getMinecraft().player == player) ClientBonus.updateBonuses(player);
             }
         }
     }

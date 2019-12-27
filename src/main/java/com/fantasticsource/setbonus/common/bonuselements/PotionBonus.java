@@ -1,5 +1,6 @@
 package com.fantasticsource.setbonus.common.bonuselements;
 
+import com.fantasticsource.mctools.ServerTickTimer;
 import com.fantasticsource.mctools.potions.FantasticPotionEffect;
 import com.fantasticsource.mctools.potions.Potions;
 import com.fantasticsource.setbonus.SetBonus;
@@ -49,7 +50,12 @@ public class PotionBonus extends ABonusElement
     @Override
     public void activate(EntityPlayer player)
     {
-        for (PotionEffect potion : potions) player.addPotionEffect(new PotionEffect(potion));
+        long tick = ServerTickTimer.currentTick();
+
+        for (FantasticPotionEffect potion : potions)
+        {
+            if (potion.interval == 0 || tick % potion.interval == 0) player.addPotionEffect(new PotionEffect(potion));
+        }
     }
 
     @Override
@@ -61,10 +67,11 @@ public class PotionBonus extends ABonusElement
     @Override
     public void updateActive(EntityPlayer player)
     {
-        for (PotionEffect potion : potions)
+        long tick = ServerTickTimer.currentTick();
+
+        for (FantasticPotionEffect potion : potions)
         {
-            PotionEffect potionEffect = player.getActivePotionEffect(potion.getPotion());
-            if (potionEffect == null || potionEffect.getAmplifier() < potion.getAmplifier()) player.addPotionEffect(new PotionEffect(potion));
+            if (potion.interval == 0 || tick % potion.interval == 0) player.addPotionEffect(new PotionEffect(potion));
         }
     }
 }
