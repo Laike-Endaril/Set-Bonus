@@ -146,10 +146,13 @@ public class Network
         @Override
         public void toBytes(ByteBuf buf)
         {
-            buf.writeInt(serverSettings.equipment.length);
-            for (String string : serverSettings.equipment) ByteBufUtils.writeUTF8String(buf, string);
-            buf.writeInt(serverSettings.sets.length);
-            for (String string : serverSettings.sets) ByteBufUtils.writeUTF8String(buf, string);
+            ArrayList<String> equipment = serverSettings.getEquipment();
+            buf.writeInt(equipment.size());
+            for (String string : equipment) ByteBufUtils.writeUTF8String(buf, string);
+
+            ArrayList<String> sets = serverSettings.getSets();
+            buf.writeInt(sets.size());
+            for (String string : sets) ByteBufUtils.writeUTF8String(buf, string);
 
 
             for (ServerBonus bonus : ServerData.bonuses.values())

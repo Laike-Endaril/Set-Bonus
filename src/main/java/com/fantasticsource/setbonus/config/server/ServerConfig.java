@@ -3,6 +3,8 @@ package com.fantasticsource.setbonus.config.server;
 import com.fantasticsource.setbonus.SetBonus;
 import net.minecraftforge.common.config.Config;
 
+import java.util.ArrayList;
+
 public class ServerConfig
 {
     @Config.Name("1. Equipment")
@@ -113,4 +115,40 @@ public class ServerConfig
                     " ",
             })
     public String[] potions = new String[]{};
+
+
+    public ArrayList<String> getEquipment()
+    {
+        ArrayList<String> result = new ArrayList<>();
+        for (String s : equipment) if (!s.trim().equals("")) result.add(s);
+        return result;
+    }
+
+    public ArrayList<String> getSets()
+    {
+        ArrayList<String> result = new ArrayList<>();
+        for (String s : sets) if (!s.trim().equals("")) result.add(s);
+        return result;
+    }
+
+    public ArrayList<String> getBonuses()
+    {
+        ArrayList<String> result = new ArrayList<>();
+        for (String s : bonuses) if (!s.trim().equals("")) result.add(s);
+        return result;
+    }
+
+    public ArrayList<String> getAttributeMods()
+    {
+        ArrayList<String> result = new ArrayList<>();
+        for (String s : attributeMods) if (!s.trim().equals("")) result.add(s);
+        return result;
+    }
+
+    public ArrayList<String> getPotions()
+    {
+        ArrayList<String> result = new ArrayList<>();
+        for (String s : potions) if (!s.trim().equals("")) result.add(s);
+        return result;
+    }
 }

@@ -27,7 +27,7 @@ public class ServerData
 
 
         //Initialize equipment
-        for (String equipString : serverSettings.equipment)
+        for (String equipString : serverSettings.getEquipment())
         {
             Equip equip = Equip.getInstance(equipString);
             if (equip != null) equipment.put(equip.id, equip);
@@ -35,7 +35,7 @@ public class ServerData
 
 
         //Initialize sets
-        for (String setString : serverSettings.sets)
+        for (String setString : serverSettings.getSets())
         {
             Set set = Set.getInstance(setString, Side.SERVER);
             if (set != null) sets.put(set.id, set);
@@ -43,7 +43,7 @@ public class ServerData
 
 
         //Initialize bonuses
-        for (String bonusString : serverSettings.bonuses)
+        for (String bonusString : serverSettings.getBonuses())
         {
             ServerBonus bonus = ServerBonus.getInstance(bonusString);
             if (bonus != null) bonuses.put(bonus.id, bonus);
@@ -51,14 +51,14 @@ public class ServerData
 
 
         //Initialize attribute modifiers
-        for (String modifierString : serverSettings.attributeMods)
+        for (String modifierString : serverSettings.getAttributeMods())
         {
             ModifierBonus.getInstance(modifierString, Side.SERVER);
         }
 
 
         //Initialize potions
-        for (String potionString : serverSettings.potions)
+        for (String potionString : serverSettings.getPotions())
         {
             PotionBonus.getInstance(potionString, Side.SERVER);
         }
