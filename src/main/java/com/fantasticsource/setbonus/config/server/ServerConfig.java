@@ -119,36 +119,39 @@ public class ServerConfig
 
     public ArrayList<String> getEquipment()
     {
-        ArrayList<String> result = new ArrayList<>();
-        for (String s : equipment) if (!s.trim().equals("")) result.add(s);
-        return result;
+        return processedInputs(equipment);
     }
 
     public ArrayList<String> getSets()
     {
-        ArrayList<String> result = new ArrayList<>();
-        for (String s : sets) if (!s.trim().equals("")) result.add(s);
-        return result;
+        return processedInputs(sets);
     }
 
     public ArrayList<String> getBonuses()
     {
-        ArrayList<String> result = new ArrayList<>();
-        for (String s : bonuses) if (!s.trim().equals("")) result.add(s);
-        return result;
+        return processedInputs(bonuses);
     }
 
     public ArrayList<String> getAttributeMods()
     {
-        ArrayList<String> result = new ArrayList<>();
-        for (String s : attributeMods) if (!s.trim().equals("")) result.add(s);
-        return result;
+        return processedInputs(attributeMods);
     }
 
     public ArrayList<String> getPotions()
     {
+        return processedInputs(potions);
+    }
+    
+
+    protected static ArrayList<String> processedInputs(String[] inputs)
+    {
         ArrayList<String> result = new ArrayList<>();
-        for (String s : potions) if (!s.trim().equals("")) result.add(s);
+        for (String line : inputs)
+        {
+            int index = line.indexOf('`');
+            line = index == -1 ? line.trim() : line.substring(0, index).trim();
+            if (!line.equals("")) result.add(line);
+        }
         return result;
     }
 }
