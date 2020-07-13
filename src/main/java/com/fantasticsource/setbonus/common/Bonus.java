@@ -15,7 +15,8 @@ public abstract class Bonus
 {
     public static int
             MODE_DISCOVERABLE = 0,
-            MODE_GLOBALLY_KNOWN = 1;
+            MODE_GLOBALLY_KNOWN = 1,
+            MODE_GLOBALLY_HIDDEN = 2;
 
 
     public String parsedString, id, name;
