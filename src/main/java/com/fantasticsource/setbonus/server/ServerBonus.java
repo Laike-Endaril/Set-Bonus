@@ -80,7 +80,7 @@ public class ServerBonus extends Bonus
             while (string != null && !string.equals(""))
             {
                 ServerBonus bonus = ServerData.bonuses.get(string);
-                if (bonus != null) bonus.getBonusInstance(player).discovered = true;
+                if (bonus != null && bonus.discoveryMode != MODE_GLOBALLY_HIDDEN) bonus.getBonusInstance(player).discovered = true;
                 string = reader.readLine();
             }
 
@@ -198,7 +198,7 @@ public class ServerBonus extends Bonus
                     changed = true;
                     active = true;
 
-                    if (!discovered)
+                    if (bonus.discoveryMode != MODE_GLOBALLY_HIDDEN && !discovered)
                     {
                         discovered = true;
                         Network.WRAPPER.sendTo(new Network.DiscoverBonusPacket(bonus), player);

@@ -60,7 +60,7 @@ public abstract class Bonus
             System.err.println(I18n.translateToLocalFormatted(SetBonus.MODID + ".error.bonusDiscoveryMode", parsableBonus));
             return null;
         }
-        if (bonus.discoveryMode < 0 || bonus.discoveryMode > 1)
+        if (bonus.discoveryMode < 0 || bonus.discoveryMode > 2)
         {
             System.err.println(I18n.translateToLocalFormatted(SetBonus.MODID + ".error.bonusDiscoveryMode", parsableBonus));
             return null;

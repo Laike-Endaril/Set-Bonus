@@ -66,6 +66,7 @@ public class ServerConfig
                     "Discovery mode is a number:",
                     "0 = hidden until the player has activated the bonus at least once",
                     "1 = always visible",
+                    "2 = always hidden",
                     "",
                     "Each requirement is one of these:",
                     "A set; just put in the set id.  For a partial set, add a period and the number of set items required",
