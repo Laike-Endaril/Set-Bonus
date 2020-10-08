@@ -1,3 +1,9 @@
+Add discovery system for sets (in addition to the one for bonuses)?
+
+"I see that Set Bonus can separate items by meta. But is it possible to have an item only count for a bonus at specific durability or even better a durability range?"
+
+Option for displaying detailed bonus info
+
 Look into simplifying configs...
 ...look into on-the-fly additions/removals of config categories
 ...look into enum array config type
@@ -12,8 +18,6 @@ Look into possible race condition issue, where eg...
 3. this causes bonus A to deactivate, decreasing attack power
 4. this causes bonus B to deactivate, decreasing armor
 5. repeats from 1
-
-Add discovery system for sets (in addition to the one for bonuses)?
 
 Look into enchantments as bonuses...
 ...could this be done with ItemStacks that exist only in memory?
