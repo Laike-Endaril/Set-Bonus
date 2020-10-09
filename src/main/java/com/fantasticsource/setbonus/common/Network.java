@@ -5,6 +5,9 @@ import com.fantasticsource.setbonus.client.ClientData;
 import com.fantasticsource.setbonus.common.bonuselements.ABonusElement;
 import com.fantasticsource.setbonus.common.bonuselements.ModifierBonus;
 import com.fantasticsource.setbonus.common.bonuselements.PotionBonus;
+import com.fantasticsource.setbonus.common.bonusrequirements.ABonusRequirement;
+import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Set;
+import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.SetRequirement;
 import com.fantasticsource.setbonus.server.ServerBonus;
 import com.fantasticsource.setbonus.server.ServerData;
 import io.netty.buffer.ByteBuf;
@@ -18,9 +21,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
 
-import java.util.ArrayList;
-
-import static com.fantasticsource.setbonus.config.SetBonusConfig.serverSettings;
+import java.util.HashSet;
 
 public class Network
 {
@@ -42,10 +43,13 @@ public class Network
 
     public static class DiscoverBonusPacket implements IMessage
     {
+        public HashSet<String> equipment = new HashSet<>();
+        public HashSet<String> sets = new HashSet<>();
+
         public String bonusString;
 
-        public ArrayList<String> attributeMods = new ArrayList<>();
-        public ArrayList<String> potions = new ArrayList<>();
+        public HashSet<String> attributeMods = new HashSet<>();
+        public HashSet<String> potions = new HashSet<>();
 
 
         private ServerBonus bonus;
@@ -65,8 +69,18 @@ public class Network
         {
             ByteBufUtils.writeUTF8String(buf, bonus.parsedString);
 
-            ArrayList<String> attributeMods = new ArrayList<>();
-            ArrayList<String> potions = new ArrayList<>();
+
+            for (ABonusRequirement bonusRequirement : bonus.bonusRequirements)
+            {
+                if (bonusRequirement instanceof SetRequirement)
+                {
+                    Set set = ((SetRequirement) bonusRequirement).set;
+                    sets.add(set.parsedString);
+
+                    for (String equipName : set.involvedEquips.keySet()) equipment.add(ServerData.equipment.get(equipName).parsedString);
+                }
+            }
+
             for (ABonusElement element : bonus.bonusElements)
             {
                 if (element instanceof ModifierBonus)
@@ -79,8 +93,16 @@ public class Network
                 }
             }
 
+
+            buf.writeInt(equipment.size());
+            for (String string : equipment) ByteBufUtils.writeUTF8String(buf, string);
+
+            buf.writeInt(sets.size());
+            for (String string : sets) ByteBufUtils.writeUTF8String(buf, string);
+
             buf.writeInt(attributeMods.size());
             for (String string : attributeMods) ByteBufUtils.writeUTF8String(buf, string);
+
             buf.writeInt(potions.size());
             for (String string : potions) ByteBufUtils.writeUTF8String(buf, string);
         }
@@ -89,6 +111,17 @@ public class Network
         public void fromBytes(ByteBuf buf)
         {
             bonusString = ByteBufUtils.readUTF8String(buf);
+
+
+            for (int i = buf.readInt(); i > 0; i--)
+            {
+                equipment.add(ByteBufUtils.readUTF8String(buf));
+            }
+
+            for (int i = buf.readInt(); i > 0; i--)
+            {
+                sets.add(ByteBufUtils.readUTF8String(buf));
+            }
 
 
             for (int i = buf.readInt(); i > 0; i--)
@@ -110,10 +143,7 @@ public class Network
         {
             if (ctx.side == Side.CLIENT)
             {
-                Minecraft.getMinecraft().addScheduledTask(() ->
-                {
-                    ClientData.update(packet);
-                });
+                Minecraft.getMinecraft().addScheduledTask(() -> ClientData.update(packet));
             }
 
             return null;
@@ -122,13 +152,13 @@ public class Network
 
     public static class ConfigPacket implements IMessage
     {
-        public ArrayList<String> equipment = new ArrayList<>();
-        public ArrayList<String> sets = new ArrayList<>();
+        public HashSet<String> equipment = new HashSet<>();
+        public HashSet<String> sets = new HashSet<>();
 
-        public ArrayList<String> bonuses = new ArrayList<>();
+        public HashSet<String> bonuses = new HashSet<>();
 
-        public ArrayList<String> attributeMods = new ArrayList<>();
-        public ArrayList<String> potions = new ArrayList<>();
+        public HashSet<String> attributeMods = new HashSet<>();
+        public HashSet<String> potions = new HashSet<>();
 
 
         private EntityPlayerMP player;
@@ -146,20 +176,22 @@ public class Network
         @Override
         public void toBytes(ByteBuf buf)
         {
-            ArrayList<String> equipment = serverSettings.getEquipment();
-            buf.writeInt(equipment.size());
-            for (String string : equipment) ByteBufUtils.writeUTF8String(buf, string);
-
-            ArrayList<String> sets = serverSettings.getSets();
-            buf.writeInt(sets.size());
-            for (String string : sets) ByteBufUtils.writeUTF8String(buf, string);
-
-
             for (ServerBonus bonus : ServerData.bonuses.values())
             {
                 if (bonus.discoveryMode == Bonus.MODE_GLOBALLY_KNOWN || (bonus.discoveryMode == Bonus.MODE_DISCOVERABLE && bonus.getBonusInstance(player).discovered))
                 {
                     bonuses.add(bonus.parsedString);
+
+                    for (ABonusRequirement bonusRequirement : bonus.bonusRequirements)
+                    {
+                        if (bonusRequirement instanceof SetRequirement)
+                        {
+                            Set set = ((SetRequirement) bonusRequirement).set;
+                            sets.add(set.parsedString);
+
+                            for (String equipName : set.involvedEquips.keySet()) equipment.add(ServerData.equipment.get(equipName).parsedString);
+                        }
+                    }
 
                     for (ABonusElement element : bonus.bonusElements)
                     {
@@ -176,11 +208,18 @@ public class Network
             }
 
 
+            buf.writeInt(equipment.size());
+            for (String string : equipment) ByteBufUtils.writeUTF8String(buf, string);
+
+            buf.writeInt(sets.size());
+            for (String string : sets) ByteBufUtils.writeUTF8String(buf, string);
+
             buf.writeInt(bonuses.size());
             for (String string : bonuses) ByteBufUtils.writeUTF8String(buf, string);
 
             buf.writeInt(attributeMods.size());
             for (String string : attributeMods) ByteBufUtils.writeUTF8String(buf, string);
+
             buf.writeInt(potions.size());
             for (String string : potions) ByteBufUtils.writeUTF8String(buf, string);
         }

@@ -4,6 +4,7 @@ import com.fantasticsource.setbonus.SetBonus;
 import net.minecraftforge.common.config.Config;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class ServerConfig
 {
@@ -118,35 +119,35 @@ public class ServerConfig
     public String[] potions = new String[]{};
 
 
-    public ArrayList<String> getEquipment()
+    public HashSet<String> getEquipment()
     {
         return processedInputs(equipment);
     }
 
-    public ArrayList<String> getSets()
+    public HashSet<String> getSets()
     {
         return processedInputs(sets);
     }
 
-    public ArrayList<String> getBonuses()
+    public HashSet<String> getBonuses()
     {
         return processedInputs(bonuses);
     }
 
-    public ArrayList<String> getAttributeMods()
+    public HashSet<String> getAttributeMods()
     {
         return processedInputs(attributeMods);
     }
 
-    public ArrayList<String> getPotions()
+    public HashSet<String> getPotions()
     {
         return processedInputs(potions);
     }
     
 
-    protected static ArrayList<String> processedInputs(String[] inputs)
+    protected static HashSet<String> processedInputs(String[] inputs)
     {
-        ArrayList<String> result = new ArrayList<>();
+        HashSet<String> result = new HashSet<>();
         for (String line : inputs)
         {
             int index = line.indexOf('`');

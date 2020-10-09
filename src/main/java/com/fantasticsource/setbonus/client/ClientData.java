@@ -5,6 +5,7 @@ import com.fantasticsource.setbonus.common.bonuselements.ModifierBonus;
 import com.fantasticsource.setbonus.common.bonuselements.PotionBonus;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Equip;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Set;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.LinkedHashMap;
@@ -74,6 +75,23 @@ public class ClientData
 
     public static void update(Network.DiscoverBonusPacket packet)
     {
+        //Initialize equipment
+        for (String equipString : packet.equipment)
+        {
+            Equip equip = Equip.getInstance(equipString);
+            if (equip != null) equipment.put(equip.id, equip);
+        }
+
+
+        //Initialize sets
+        for (String setString : packet.sets)
+        {
+            Set set = Set.getInstance(setString, Side.CLIENT);
+            if (set != null) sets.put(set.id, set);
+        }
+
+
+        //Initialize bonus
         ClientBonus bonus = ClientBonus.getInstance(packet.bonusString);
         if (bonus != null) bonuses.put(bonus.id, bonus);
 

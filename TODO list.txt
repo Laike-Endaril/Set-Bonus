@@ -1,5 +1,3 @@
-Add discovery system for sets (in addition to the one for bonuses)?
-
 "I see that Set Bonus can separate items by meta. But is it possible to have an item only count for a bonus at specific durability or even better a durability range?"
 
 Option for displaying detailed bonus info
