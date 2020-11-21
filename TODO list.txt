@@ -1,3 +1,9 @@
+Look into enchantments as bonuses...
+...have config entry specify which slot or equip the enchantment will apply to
+...check the item for same enchant first and track the item and the existing enchant level
+...apply the new enchant level (or add to existing as a config option)
+...when removing bonus, revert enchant on item
+
 "I see that Set Bonus can separate items by meta. But is it possible to have an item only count for a bonus at specific durability or even better a durability range?"
 
 Option for displaying detailed bonus info
@@ -17,10 +23,6 @@ Look into possible race condition issue, where eg...
 4. this causes bonus B to deactivate, decreasing armor
 5. repeats from 1
 
-Look into enchantments as bonuses...
-...could this be done with ItemStacks that exist only in memory?
-...if not, could it be done with inaccessible equipment slots containing dummy items?
-
 "Discover" command
 "Undiscover" command
 "WipeDiscoveries" command
@@ -35,10 +37,6 @@ Alternate requirements...
 ...Morph / Metamorph transformation
 
 Attack effects (like those in DS) that use set filtering
-
-Improve efficiency via...
-...inventory change detection (from library)?
-...caching
 
 Make some default bonuses
 
