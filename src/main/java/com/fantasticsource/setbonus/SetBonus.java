@@ -153,6 +153,8 @@ public class SetBonus
             EntityPlayerMP player = (EntityPlayerMP) entity;
             ServerBonus.loadDiscoveries(player);
             Network.updateConfig(player);
+
+            ServerTickTimer.schedule(1, () -> Network.WRAPPER.sendTo(new Network.HPFixPacket(player), player));
         }
     }
 

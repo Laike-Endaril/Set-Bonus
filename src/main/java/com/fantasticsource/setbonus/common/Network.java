@@ -33,6 +33,7 @@ public class Network
     {
         WRAPPER.registerMessage(ConfigPacketHandler.class, ConfigPacket.class, discriminator++, Side.CLIENT);
         WRAPPER.registerMessage(DiscoverBonusPacketHandler.class, DiscoverBonusPacket.class, discriminator++, Side.CLIENT);
+        WRAPPER.registerMessage(HPFixPacketHandler.class, HPFixPacket.class, discriminator++, Side.CLIENT);
     }
 
     public static void updateConfig(EntityPlayerMP player)
@@ -40,6 +41,7 @@ public class Network
         Network.WRAPPER.sendTo(new Network.ConfigPacket(player), player);
         ServerBonus.updateBonuses(player, true);
     }
+
 
     public static class DiscoverBonusPacket implements IMessage
     {
@@ -149,6 +151,7 @@ public class Network
             return null;
         }
     }
+
 
     public static class ConfigPacket implements IMessage
     {
@@ -264,6 +267,47 @@ public class Network
             if (ctx.side == Side.CLIENT)
             {
                 Minecraft.getMinecraft().addScheduledTask(() -> ClientData.update(packet));
+            }
+
+            return null;
+        }
+    }
+
+
+    public static class HPFixPacket implements IMessage
+    {
+        public float hp;
+
+        public HPFixPacket() //Required; probably for when the packet is received
+        {
+        }
+
+        public HPFixPacket(EntityPlayerMP player)
+        {
+            hp = player.getHealth();
+        }
+
+        @Override
+        public void toBytes(ByteBuf buf)
+        {
+            buf.writeFloat(hp);
+        }
+
+        @Override
+        public void fromBytes(ByteBuf buf)
+        {
+            hp = buf.readFloat();
+        }
+    }
+
+    public static class HPFixPacketHandler implements IMessageHandler<HPFixPacket, IMessage>
+    {
+        @Override
+        public IMessage onMessage(HPFixPacket packet, MessageContext ctx)
+        {
+            if (ctx.side == Side.CLIENT)
+            {
+                Minecraft.getMinecraft().addScheduledTask(() -> Minecraft.getMinecraft().player.setHealth(packet.hp));
             }
 
             return null;
