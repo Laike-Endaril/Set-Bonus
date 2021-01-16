@@ -145,7 +145,15 @@ public class SetBonus
     }
 
     @SubscribeEvent
-    public static void playerConnect(EntityJoinWorldEvent event)
+    public static void playerLogin(PlayerEvent.PlayerLoggedInEvent event)
+    {
+        EntityPlayerMP player = (EntityPlayerMP) event.player;
+        Network.WRAPPER.sendTo(new Network.HPFixPacket(player), player);
+        ServerTickTimer.schedule(20, () -> Network.WRAPPER.sendTo(new Network.HPFixPacket(player), player));
+    }
+
+    @SubscribeEvent
+    public static void playerJoinWorld(EntityJoinWorldEvent event)
     {
         Entity entity = event.getEntity();
         if (entity instanceof EntityPlayerMP)
@@ -154,12 +162,13 @@ public class SetBonus
             ServerBonus.loadDiscoveries(player);
             Network.updateConfig(player);
 
-            ServerTickTimer.schedule(1, () -> Network.WRAPPER.sendTo(new Network.HPFixPacket(player), player));
+            Network.WRAPPER.sendTo(new Network.HPFixPacket(player), player);
+            ServerTickTimer.schedule(20, () -> Network.WRAPPER.sendTo(new Network.HPFixPacket(player), player));
         }
     }
 
     @SubscribeEvent
-    public static void playerDisconnect(PlayerEvent.PlayerLoggedOutEvent event)
+    public static void playerLogout(PlayerEvent.PlayerLoggedOutEvent event)
     {
         ServerBonus.clearMem(event.player);
     }
