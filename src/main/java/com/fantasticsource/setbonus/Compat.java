@@ -1,12 +1,6 @@
 package com.fantasticsource.setbonus;
 
 import com.fantasticsource.tools.ReflectionTool;
-import mezz.jei.JustEnoughItems;
-import mezz.jei.api.IModPlugin;
-import mezz.jei.gui.textures.Textures;
-import mezz.jei.startup.JeiStarter;
-import mezz.jei.startup.ProxyCommonClient;
-import mezz.jei.util.Log;
 import net.minecraftforge.fml.common.Loader;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Logger;
@@ -17,12 +11,15 @@ import org.apache.logging.log4j.message.MessageFactory;
 import org.apache.logging.log4j.util.MessageSupplier;
 import org.apache.logging.log4j.util.Supplier;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.List;
 
 public class Compat
 {
-    public static Method jeiProxyCommonClientReloadItemList;
+    public static Class jeiProxyCommonClient;
+    public static Method justEnoughItemsGetProxy, jeiProxyCommonClientReloadItemList, jeiStarterStart;
+    public static Field jeiLogLogger, jeiProxyCommonClientStarter, jeiProxyCommonClientPlugins, jeiProxyCommonClientTextures;
     public static FakeLogger fakeLogger;
 
     public static boolean jei = false;
@@ -32,7 +29,18 @@ public class Compat
         if (Loader.isModLoaded("jei"))
         {
             jei = true;
+
+            jeiProxyCommonClient = ReflectionTool.getClassByName("mezz.jei.startup.ProxyCommonClient");
+
+            jeiLogLogger = ReflectionTool.getField(ReflectionTool.getClassByName("mezz.jei.util.Log"), "LOGGER");
+            jeiProxyCommonClientStarter = ReflectionTool.getField(jeiProxyCommonClient, "starter");
+            jeiProxyCommonClientPlugins = ReflectionTool.getField(jeiProxyCommonClient, "plugins");
+            jeiProxyCommonClientTextures = ReflectionTool.getField(jeiProxyCommonClient, "textures");
+
+            justEnoughItemsGetProxy = ReflectionTool.getMethod(ReflectionTool.getClassByName("mezz.jei.JustEnoughItems"), "getProxy");
             jeiProxyCommonClientReloadItemList = ReflectionTool.getMethod(ReflectionTool.getClassByName("mezz.jei.startup.ProxyCommonClient"), "reloadItemList");
+            jeiStarterStart = ReflectionTool.getMethod(ReflectionTool.getClassByName("mezz.jei.startup.JeiStarter"), "start");
+
             fakeLogger = new FakeLogger();
         }
     }
@@ -42,14 +50,23 @@ public class Compat
         if (!jei) return;
 
 
-        Logger logger = Log.get();
-        ReflectionTool.set(Log.class, "LOGGER", null, fakeLogger);
+        Logger logger = (Logger) ReflectionTool.get(jeiLogLogger, null);
+        ReflectionTool.set(jeiLogLogger, null, fakeLogger);
 
-        ProxyCommonClient proxy = (ProxyCommonClient) JustEnoughItems.getProxy();
-        JeiStarter starter = (JeiStarter) ReflectionTool.get(ProxyCommonClient.class, "starter", proxy);
-        starter.start((List<IModPlugin>) ReflectionTool.get(ProxyCommonClient.class, "plugins", proxy), (Textures) ReflectionTool.get(ProxyCommonClient.class, "textures", proxy));
+        Object proxy = ReflectionTool.invoke(justEnoughItemsGetProxy, null);
+        Object starter = ReflectionTool.get(jeiProxyCommonClientStarter, proxy);
+        Object plugins = ReflectionTool.get(jeiProxyCommonClientPlugins, proxy);
+        Object textures = ReflectionTool.get(jeiProxyCommonClientTextures, proxy);
+        try
+        {
+            jeiStarterStart.invoke(starter, plugins, textures);
+        }
+        catch (IllegalAccessException | InvocationTargetException e)
+        {
+            e.printStackTrace();
+        }
 
-        ReflectionTool.set(Log.class, "LOGGER", null, logger);
+        ReflectionTool.set(jeiLogLogger, null, logger);
     }
 
 
