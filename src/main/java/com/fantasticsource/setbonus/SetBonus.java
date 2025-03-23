@@ -54,6 +54,8 @@ public class SetBonus
     @EventHandler
     public static void preInit(FMLPreInitializationEvent event)
     {
+        Compat.init();
+
         Network.init();
 
         MinecraftForge.EVENT_BUS.register(SetBonus.class);

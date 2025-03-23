@@ -1,5 +1,6 @@
 package com.fantasticsource.setbonus.client;
 
+import com.fantasticsource.setbonus.Compat;
 import com.fantasticsource.setbonus.common.Bonus;
 import com.fantasticsource.setbonus.common.bonusrequirements.ABonusRequirement;
 import net.minecraft.client.Minecraft;
@@ -11,6 +12,8 @@ import java.util.LinkedHashMap;
 
 public class ClientBonus extends Bonus
 {
+    public static boolean refreshJEI = false;
+
     private LinkedHashMap<EntityPlayer, BonusInstance> instances = new LinkedHashMap<>();
 
 
@@ -29,12 +32,18 @@ public class ClientBonus extends Bonus
             for (BonusInstance data : bonus.instances.values()) data.update(false);
         }
         ClientData.bonuses.clear();
+        Compat.refreshJEITooltips();
     }
 
     public static void updateBonuses(EntityPlayer player)
     {
         //Happens once per second on player tick event
         for (ClientBonus bonus : ClientData.bonuses.values()) bonus.update(player);
+        if (refreshJEI)
+        {
+            Compat.refreshJEITooltips();
+            refreshJEI = false;
+        }
     }
 
     @Nonnull
@@ -58,6 +67,7 @@ public class ClientBonus extends Bonus
 
     public class BonusInstance
     {
+        public int[] lastReqStatus = new int[0]; //Right now this is strictly for JEI compat; for more detailed requirement count stuff, see TooltipRenderer
         public boolean active;
 
         private BonusInstance()
@@ -66,16 +76,32 @@ public class ClientBonus extends Bonus
 
         public void update()
         {
+            boolean activate = true;
+            int[] reqStatus = new int[bonusRequirements.size() << 1];
+            int i = 0;
             for (ABonusRequirement requirement : bonusRequirements)
             {
-                if (requirement.active(Minecraft.getMinecraft().player) < requirement.required())
+                reqStatus[i++] = requirement.active(Minecraft.getMinecraft().player);
+                reqStatus[i++] = requirement.required();
+                if (reqStatus[i - 2] < reqStatus[i - 1]) activate = false;
+            }
+
+            update(activate);
+
+            if (reqStatus.length != lastReqStatus.length) refreshJEI = true;
+            else
+            {
+                for (i = 0; i < reqStatus.length; i++)
                 {
-                    update(false);
-                    return;
+                    if (reqStatus[i] != lastReqStatus[i])
+                    {
+                        refreshJEI = true;
+                        break;
+                    }
                 }
             }
 
-            update(true);
+            lastReqStatus = reqStatus;
         }
 
         private void update(boolean activate)
