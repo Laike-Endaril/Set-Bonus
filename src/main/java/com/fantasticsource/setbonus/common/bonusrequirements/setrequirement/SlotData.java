@@ -111,7 +111,7 @@ public class SlotData
 
         for (String slotString : slots.split("[|]"))
         {
-            slotIDs = getSlotID(slotString);
+            slotIDs = getSlotIDs(slotString);
             if (slotIDs == null) errors.add(slotString.trim().toLowerCase());
             else arrayList.addAll(slotIDs);
         }
@@ -119,7 +119,7 @@ public class SlotData
         return errors;
     }
 
-    public static ArrayList<Integer> getSlotID(String slotString)
+    public static ArrayList<Integer> getSlotIDs(String slotString)
     {
         ArrayList<Integer> result = new ArrayList<>();
         slotString = slotString.trim().toLowerCase();
