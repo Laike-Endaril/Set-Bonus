@@ -17,6 +17,7 @@ import java.util.LinkedHashMap;
 
 public class EnchantmentBonus extends ABonusElement
 {
+    //TODO WIP
     public HashMap<Enchantment, Integer> enchantments;
     public ArrayList<Integer> validSlots;
 
