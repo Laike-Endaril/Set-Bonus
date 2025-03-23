@@ -1,7 +1,9 @@
 package com.fantasticsource.setbonus;
 
 import com.fantasticsource.tools.ReflectionTool;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.relauncher.Side;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.Marker;
@@ -29,18 +31,21 @@ public class Compat
         {
             jei = true;
 
-            jeiProxyCommonClient = ReflectionTool.getClassByName("mezz.jei.startup.ProxyCommonClient");
+            if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+            {
+                jeiProxyCommonClient = ReflectionTool.getClassByName("mezz.jei.startup.ProxyCommonClient");
 
-            jeiLogLogger = ReflectionTool.getField(ReflectionTool.getClassByName("mezz.jei.util.Log"), "LOGGER");
-            jeiProxyCommonClientStarter = ReflectionTool.getField(jeiProxyCommonClient, "starter");
-            jeiProxyCommonClientPlugins = ReflectionTool.getField(jeiProxyCommonClient, "plugins");
-            jeiProxyCommonClientTextures = ReflectionTool.getField(jeiProxyCommonClient, "textures");
+                jeiLogLogger = ReflectionTool.getField(ReflectionTool.getClassByName("mezz.jei.util.Log"), "LOGGER");
+                jeiProxyCommonClientStarter = ReflectionTool.getField(jeiProxyCommonClient, "starter");
+                jeiProxyCommonClientPlugins = ReflectionTool.getField(jeiProxyCommonClient, "plugins");
+                jeiProxyCommonClientTextures = ReflectionTool.getField(jeiProxyCommonClient, "textures");
 
-            justEnoughItemsGetProxy = ReflectionTool.getMethod(ReflectionTool.getClassByName("mezz.jei.JustEnoughItems"), "getProxy");
-            jeiProxyCommonClientReloadItemList = ReflectionTool.getMethod(ReflectionTool.getClassByName("mezz.jei.startup.ProxyCommonClient"), "reloadItemList");
-            jeiStarterStart = ReflectionTool.getMethod(ReflectionTool.getClassByName("mezz.jei.startup.JeiStarter"), "start");
+                justEnoughItemsGetProxy = ReflectionTool.getMethod(ReflectionTool.getClassByName("mezz.jei.JustEnoughItems"), "getProxy");
+                jeiProxyCommonClientReloadItemList = ReflectionTool.getMethod(ReflectionTool.getClassByName("mezz.jei.startup.ProxyCommonClient"), "reloadItemList");
+                jeiStarterStart = ReflectionTool.getMethod(ReflectionTool.getClassByName("mezz.jei.startup.JeiStarter"), "start");
 
-            fakeLogger = new FakeLogger();
+                fakeLogger = new FakeLogger();
+            }
         }
     }
 
