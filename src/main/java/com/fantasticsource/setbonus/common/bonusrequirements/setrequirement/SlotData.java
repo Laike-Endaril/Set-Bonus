@@ -38,10 +38,10 @@ public class SlotData
 
 
         //Slots
-        String errorString = addSlotsFromString(tokens[0], result.slots);
-        if (errorString != null)
+        ArrayList<String> errors = addSlotsFromString(tokens[0], result.slots);
+        if (errors.size() > 0)
         {
-            System.err.println(I18n.translateToLocalFormatted(SetBonus.MODID + ".error.unknownSlot", errorString, slotsAndEquipment));
+            for (String error : errors) System.err.println(I18n.translateToLocalFormatted(SetBonus.MODID + ".error.unknownSlot", error, slotsAndEquipment));
             return null;
         }
 
@@ -104,69 +104,82 @@ public class SlotData
 
 
     //Returns the error-causing part of the string, or null if successful
-    public static String addSlotsFromString(String slots, ArrayList<Integer> arrayList)
+    public static ArrayList<String> addSlotsFromString(String slots, ArrayList<Integer> arrayList)
     {
+        ArrayList<String> errors = new ArrayList<>();
+        ArrayList<Integer> slotIDs;
+
         for (String slotString : slots.split("[|]"))
         {
-            slotString = slotString.trim().toLowerCase();
+            slotIDs = getSlotID(slotString);
+            if (slotIDs == null) errors.add(slotString.trim().toLowerCase());
+            else arrayList.addAll(slotIDs);
+        }
 
-            if (slotString.equals("mainhand")) arrayList.add(-1); //Mainhand is not a specific slot #
-            else if (slotString.equals("hotbar"))
-            {
-                for (int i = 0; i < 9; i++) arrayList.add(i);
-            }
-            else if (slotString.equals("inventory"))
-            {
-                for (int i = 9; i < 36; i++) arrayList.add(i);
-            }
-            else if (slotString.equals("feet")) arrayList.add(36);
-            else if (slotString.equals("legs")) arrayList.add(37);
-            else if (slotString.equals("chest")) arrayList.add(38);
-            else if (slotString.equals("head")) arrayList.add(39);
-            else if (slotString.equals("offhand")) arrayList.add(40);
+        return errors;
+    }
 
-            else if (slotString.equals("bauble_amulet"))
-            {
-                for (int i : BaubleType.AMULET.getValidSlots()) arrayList.add(Integer.MIN_VALUE + 1 + i);
-            }
-            else if (slotString.equals("bauble_ring"))
-            {
-                for (int i : BaubleType.RING.getValidSlots()) arrayList.add(Integer.MIN_VALUE + 1 + i);
-            }
-            else if (slotString.equals("bauble_belt"))
-            {
-                for (int i : BaubleType.BELT.getValidSlots()) arrayList.add(Integer.MIN_VALUE + 1 + i);
-            }
-            else if (slotString.equals("bauble_head"))
-            {
-                for (int i : BaubleType.HEAD.getValidSlots()) arrayList.add(Integer.MIN_VALUE + 1 + i);
-            }
-            else if (slotString.equals("bauble_body"))
-            {
-                for (int i : BaubleType.BODY.getValidSlots()) arrayList.add(Integer.MIN_VALUE + 1 + i);
-            }
-            else if (slotString.equals("bauble_charm"))
-            {
-                for (int i : BaubleType.CHARM.getValidSlots()) arrayList.add(Integer.MIN_VALUE + 1 + i);
-            }
-            else if (slotString.equals("bauble_trinket"))
-            {
-                for (int i : BaubleType.TRINKET.getValidSlots()) arrayList.add(Integer.MIN_VALUE + 1 + i);
-            }
+    public static ArrayList<Integer> getSlotID(String slotString)
+    {
+        ArrayList<Integer> result = new ArrayList<>();
+        slotString = slotString.trim().toLowerCase();
 
-            else
+        if (slotString.equals("mainhand")) result.add(-1); //Mainhand is not a specific slot #
+        else if (slotString.equals("hotbar"))
+        {
+            for (int i = 0; i < 9; i++) result.add(i);
+        }
+        else if (slotString.equals("inventory"))
+        {
+            for (int i = 9; i < 36; i++) result.add(i);
+        }
+        else if (slotString.equals("feet")) result.add(36);
+        else if (slotString.equals("legs")) result.add(37);
+        else if (slotString.equals("chest")) result.add(38);
+        else if (slotString.equals("head")) result.add(39);
+        else if (slotString.equals("offhand")) result.add(40);
+
+        else if (slotString.equals("bauble_amulet"))
+        {
+            for (int i : BaubleType.AMULET.getValidSlots()) result.add(Integer.MIN_VALUE + 1 + i);
+        }
+        else if (slotString.equals("bauble_ring"))
+        {
+            for (int i : BaubleType.RING.getValidSlots()) result.add(Integer.MIN_VALUE + 1 + i);
+        }
+        else if (slotString.equals("bauble_belt"))
+        {
+            for (int i : BaubleType.BELT.getValidSlots()) result.add(Integer.MIN_VALUE + 1 + i);
+        }
+        else if (slotString.equals("bauble_head"))
+        {
+            for (int i : BaubleType.HEAD.getValidSlots()) result.add(Integer.MIN_VALUE + 1 + i);
+        }
+        else if (slotString.equals("bauble_body"))
+        {
+            for (int i : BaubleType.BODY.getValidSlots()) result.add(Integer.MIN_VALUE + 1 + i);
+        }
+        else if (slotString.equals("bauble_charm"))
+        {
+            for (int i : BaubleType.CHARM.getValidSlots()) result.add(Integer.MIN_VALUE + 1 + i);
+        }
+        else if (slotString.equals("bauble_trinket"))
+        {
+            for (int i : BaubleType.TRINKET.getValidSlots()) result.add(Integer.MIN_VALUE + 1 + i);
+        }
+
+        else
+        {
+            try
             {
-                try
-                {
-                    arrayList.add(Integer.parseInt(slotString));
-                }
-                catch (NumberFormatException e)
-                {
-                    return slotString;
-                }
+                result.add(Integer.parseInt(slotString));
+            }
+            catch (NumberFormatException e)
+            {
+                return null;
             }
         }
 
-        return null;
+        return result;
     }
 }
