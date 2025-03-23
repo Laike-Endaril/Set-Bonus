@@ -12,7 +12,6 @@ import org.apache.logging.log4j.util.MessageSupplier;
 import org.apache.logging.log4j.util.Supplier;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 public class Compat
@@ -57,14 +56,7 @@ public class Compat
         Object starter = ReflectionTool.get(jeiProxyCommonClientStarter, proxy);
         Object plugins = ReflectionTool.get(jeiProxyCommonClientPlugins, proxy);
         Object textures = ReflectionTool.get(jeiProxyCommonClientTextures, proxy);
-        try
-        {
-            jeiStarterStart.invoke(starter, plugins, textures);
-        }
-        catch (IllegalAccessException | InvocationTargetException e)
-        {
-            e.printStackTrace();
-        }
+        ReflectionTool.invoke(jeiStarterStart, starter, plugins, textures);
 
         ReflectionTool.set(jeiLogLogger, null, logger);
     }
