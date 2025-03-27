@@ -127,7 +127,7 @@ public class EnchantmentBonus extends ABonusElement
             //This should mean that we're activating an enchantment bonus on the item when it has no other enchantment bonus active yet
             //DO NOT USE EnchantmentHelper METHODS!  THEY WON'T HAVE INTENDED FUNCTIONS IN REGARD TO ENCHANTED BOOKS FOR THIS MOD'S PURPOSES!
 
-            if (!compound.hasKey("ench")) compound.setBoolean("OldEnchants", false);
+            if (!compound.hasKey("ench")) compound.setTag("OldEnchants", new NBTTagList());
             else
             {
                 NBTTagList oldEnchants = compound.getTagList("ench", 10);
@@ -223,15 +223,8 @@ public class EnchantmentBonus extends ABonusElement
         NBTTagCompound compound = stack.getTagCompound();
         if (compound == null) return;
 
-        NBTBase oldEnchants = compound.getTag("OldEnchants");
-        if (!(oldEnchants instanceof NBTTagList))
-        {
-            compound.removeTag("ench");
-            return;
-        }
-
-
-        compound.setTag("ench", compound.getTag("OldEnchants"));
+        if (compound.hasKey("OldEnchants")) compound.setTag("ench", compound.getTag("OldEnchants"));
+        //NOTE: If the stack somehow has enchantment bonus enchantments applied but is somehow missing the "OldEnchants" tag, it will keep the bonus enchantments permanently
 
 
         boolean otherApplied = false;
@@ -245,7 +238,7 @@ public class EnchantmentBonus extends ABonusElement
 
                 for (ABonusElement bonusElement : bonus.bonusElements)
                 {
-                    if (bonusElement instanceof EnchantmentBonus)
+                    if (bonusElement instanceof EnchantmentBonus && bonusElement != this)
                     {
                         ((EnchantmentBonus) bonusElement).addToStack(player, stack);
                         otherApplied = true;
@@ -263,7 +256,7 @@ public class EnchantmentBonus extends ABonusElement
 
                 for (ABonusElement bonusElement : bonus.bonusElements)
                 {
-                    if (bonusElement instanceof EnchantmentBonus)
+                    if (bonusElement instanceof EnchantmentBonus && bonusElement != this)
                     {
                         ((EnchantmentBonus) bonusElement).addToStack(player, stack);
                         otherApplied = true;
