@@ -178,7 +178,7 @@ public class SetBonus
     @SubscribeEvent
     public static void disconnectFromServer(FMLNetworkEvent.ClientDisconnectionFromServerEvent event)
     {
-        ClientData.clear();
+        Minecraft.getMinecraft().addScheduledTask(ClientData::clear);
     }
 
 //    @SubscribeEvent
