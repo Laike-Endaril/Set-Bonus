@@ -57,7 +57,7 @@ public class EnchantmentBonus extends ABonusElement
         SlotData slotDataToEnchant = SlotData.getInstance(tokens[1].trim(), null, side);
 
         //Error messages handled in library
-        HashMap<Pair<Enchantment, Integer>, Integer> enchantments = Enchantments.parseEnchantments(Arrays.copyOfRange(tokens, 1, tokens.length));
+        HashMap<Pair<Enchantment, Integer>, Integer> enchantments = Enchantments.parseEnchantments(Arrays.copyOfRange(tokens, 2, tokens.length));
         if (enchantments.size() == 0) return null;
 
         return new EnchantmentBonus(parsableEnchantmentBonus, bonus, slotDataToEnchant, enchantments);
