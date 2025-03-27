@@ -2,24 +2,27 @@ package com.fantasticsource.setbonus.common.bonuselements;
 
 import com.fantasticsource.mctools.enchantments.Enchantments;
 import com.fantasticsource.setbonus.SetBonus;
+import com.fantasticsource.setbonus.client.ClientBonus;
 import com.fantasticsource.setbonus.client.ClientData;
 import com.fantasticsource.setbonus.common.Bonus;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.SlotData;
+import com.fantasticsource.setbonus.server.ServerBonus;
 import com.fantasticsource.setbonus.server.ServerData;
 import com.fantasticsource.tools.Tools;
 import com.fantasticsource.tools.datastructures.Pair;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.text.translation.I18n;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 public class EnchantmentBonus extends ABonusElement
@@ -68,8 +71,8 @@ public class EnchantmentBonus extends ABonusElement
         {
             ItemStack stack = SlotData.getStackInSlot(player, equippedInSlot);
             ItemStack old = affectedItemStacks.get(player);
-            if (old != null) removeFromStack(old);
-            addToStack(stack);
+            if (old != null) removeFromStack(player, old);
+            addToStack(player, stack);
         }
     }
 
@@ -78,7 +81,7 @@ public class EnchantmentBonus extends ABonusElement
     {
         //Real / permanent enchantments are generally applied or removed when the item is NOT equipped to the player, so we shouldn't need to worry about the state of real / permanent enchantments changing while the bonus is active, hopefully
         ItemStack stack = affectedItemStacks.get(player);
-        if (stack != null) removeFromStack(stack);
+        if (stack != null) removeFromStack(player, stack);
     }
 
     @Override
@@ -97,15 +100,20 @@ public class EnchantmentBonus extends ABonusElement
                 }
             }
             if (found) return;
-            else removeFromStack(stack);
+
+
+            removeFromStack(player, stack);
         }
 
         activate(player);
     }
 
 
-    public void addToStack(ItemStack stack)
+    public void addToStack(EntityPlayer player, ItemStack stack)
     {
+        affectedItemStacks.put(player, stack);
+
+
         HashMap<Integer, Integer> data = new HashMap<>();
 
         NBTTagCompound compound = stack.getTagCompound();
@@ -121,9 +129,9 @@ public class EnchantmentBonus extends ABonusElement
                 compound.setTag("OldEnchants", oldEnchants);
 
                 NBTTagCompound c;
-                for (Iterator<NBTBase> it = oldEnchants.iterator(); it.hasNext(); )
+                for (NBTBase oldEnchant : oldEnchants)
                 {
-                    c = (NBTTagCompound) it.next();
+                    c = (NBTTagCompound) oldEnchant;
                     data.put((int) c.getShort("id"), (int) c.getShort("lvl"));
                 }
             }
@@ -133,9 +141,9 @@ public class EnchantmentBonus extends ABonusElement
             NBTTagList oldEnchants = compound.getTagList("ench", 10);
 
             NBTTagCompound c;
-            for (Iterator<NBTBase> it = oldEnchants.iterator(); it.hasNext(); )
+            for (NBTBase oldEnchant : oldEnchants)
             {
-                c = (NBTTagCompound) it.next();
+                c = (NBTTagCompound) oldEnchant;
                 data.put((int) c.getShort("id"), (int) c.getShort("lvl"));
             }
         }
@@ -202,9 +210,64 @@ public class EnchantmentBonus extends ABonusElement
     }
 
 
-    public void removeFromStack(ItemStack stack)
+    public void removeFromStack(EntityPlayer player, ItemStack stack)
     {
+        affectedItemStacks.remove(player, stack);
 
-        //TODO revert affected item's enchantments to permanent values, then re-apply any other enchantment bonuses that are still active on the item
+
+        NBTTagCompound compound = stack.getTagCompound();
+        if (compound == null) return;
+
+        NBTBase oldEnchants = compound.getTag("OldEnchants");
+        if (!(oldEnchants instanceof NBTTagList))
+        {
+            compound.removeTag("ench");
+            return;
+        }
+
+
+        compound.setTag("ench", compound.getTag("OldEnchants"));
+
+
+        boolean otherApplied = false;
+        if (FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER)
+        {
+            ServerBonus.BonusInstance bonusInstance;
+            for (ServerBonus bonus : ServerData.bonuses.values())
+            {
+                bonusInstance = bonus.getBonusInstance((EntityPlayerMP) player);
+                if (!bonusInstance.active) continue;
+
+                for (ABonusElement bonusElement : bonus.bonusElements)
+                {
+                    if (bonusElement instanceof EnchantmentBonus)
+                    {
+                        ((EnchantmentBonus) bonusElement).addToStack(player, stack);
+                        otherApplied = true;
+                    }
+                }
+            }
+        }
+        else
+        {
+            ClientBonus.BonusInstance bonusInstance;
+            for (ClientBonus bonus : ClientData.bonuses.values())
+            {
+                bonusInstance = bonus.getBonusInstance(player);
+                if (!bonusInstance.active) continue;
+
+                for (ABonusElement bonusElement : bonus.bonusElements)
+                {
+                    if (bonusElement instanceof EnchantmentBonus)
+                    {
+                        ((EnchantmentBonus) bonusElement).addToStack(player, stack);
+                        otherApplied = true;
+                    }
+                }
+            }
+        }
+
+
+        if (!otherApplied) compound.removeTag("OldEnchants");
     }
 }
