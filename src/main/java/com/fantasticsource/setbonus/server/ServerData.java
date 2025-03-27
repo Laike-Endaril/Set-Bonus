@@ -1,5 +1,6 @@
 package com.fantasticsource.setbonus.server;
 
+import com.fantasticsource.setbonus.common.bonuselements.EnchantmentBonus;
 import com.fantasticsource.setbonus.common.bonuselements.ModifierBonus;
 import com.fantasticsource.setbonus.common.bonuselements.PotionBonus;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Equip;
@@ -61,6 +62,13 @@ public class ServerData
         for (String potionString : serverSettings.getPotions())
         {
             PotionBonus.getInstance(potionString, Side.SERVER);
+        }
+
+
+        //Initialize enchantments
+        for (String enchantString : serverSettings.getEnchantments())
+        {
+            EnchantmentBonus.getInstance(enchantString, Side.SERVER);
         }
     }
 }

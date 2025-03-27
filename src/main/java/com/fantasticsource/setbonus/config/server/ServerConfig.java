@@ -3,7 +3,6 @@ package com.fantasticsource.setbonus.config.server;
 import com.fantasticsource.setbonus.SetBonus;
 import net.minecraftforge.common.config.Config;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 
 public class ServerConfig
@@ -118,6 +117,36 @@ public class ServerConfig
             })
     public String[] potions = new String[]{};
 
+    @Config.Name("5. Enchantments")
+    @Config.LangKey(SetBonus.MODID + ".config.enchantments")
+    @Config.Comment(
+            {
+                    "FILLSCREEN Temporary item enchantments received as part of a bonus",
+                    "The enchantments of the item are reverted when it no longer qualifies for them",
+                    "The slot / equipment here defines the slots to search for items to be enchanted, and which items those are; these do not need to be items that are required to receive the bonus",
+                    "If multiple enchantment bonuses are applied to the same item, they are applied in the order in which they are defined in the config",
+                    "",
+                    "Layout is...",
+                    "Bonus id, slot | slot = equip id | equip id, enchantment.level.mode, enchantment.level.mode, etc.",
+                    "",
+                    "Modes are...",
+                    "0 - Vanilla enchantment combination behavior",
+                    "1 - Vanilla behavior, but without limits (can go above max level)",
+                    "2 - Set the level directly, overriding whatever level it might've had before",
+                    "3 - Add to the existing level (can be used to subtract from existing level if you put in a negative level number)",
+                    "4 - Add to existing level, without limits",
+                    "",
+                    "eg...",
+                    "",
+                    "This makes the Dual Wield bonus from the bonus example put sharpness 2 on the sword, or sharpness 3 if the sword already has sharpness 2",
+                    "DualWieldSnD, DSword, sharpness.2",
+                    "",
+                    "And this SUBTRACTS 1 level of sharpness (but doesn't go below 0)",
+                    "DualWieldSnD, DSword, sharpness.-1.3",
+                    " ",
+            })
+    public String[] enchantments = new String[]{};
+
 
     public HashSet<String> getEquipment()
     {
@@ -143,7 +172,12 @@ public class ServerConfig
     {
         return processedInputs(potions);
     }
-    
+
+    public HashSet<String> getEnchantments()
+    {
+        return processedInputs(enchantments);
+    }
+
 
     protected static HashSet<String> processedInputs(String[] inputs)
     {

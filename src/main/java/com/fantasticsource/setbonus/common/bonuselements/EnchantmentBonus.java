@@ -29,7 +29,7 @@ public class EnchantmentBonus extends ABonusElement
 {
     public SlotData slotDataToEnchant;
     public HashMap<Pair<Enchantment, Integer>, Integer> enchantments;
-    public HashMap<EntityPlayer, ItemStack> affectedItemStacks = null; //NOT static; if it were static, there could be bad overwrites from OTHER ENCHANTMENT BONUSES
+    public HashMap<EntityPlayer, ItemStack> affectedItemStacks = new HashMap<>(); //NOT static; if it were static, there could be bad overwrites from OTHER ENCHANTMENT BONUSES
 
     protected EnchantmentBonus(String parsableEnchantmentBonus, Bonus bonus, SlotData slotDataToEnchant, HashMap<Pair<Enchantment, Integer>, Integer> enchantments)
     {
@@ -117,6 +117,11 @@ public class EnchantmentBonus extends ABonusElement
         HashMap<Integer, Integer> data = new HashMap<>();
 
         NBTTagCompound compound = stack.getTagCompound();
+        if (compound == null)
+        {
+            compound = new NBTTagCompound();
+            stack.setTagCompound(compound);
+        }
         if (!compound.hasKey("OldEnchants"))
         {
             //This should mean that we're activating an enchantment bonus on the item when it has no other enchantment bonus active yet
