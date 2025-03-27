@@ -8,6 +8,7 @@ import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Slot
 import com.fantasticsource.setbonus.server.ServerData;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.relauncher.Side;
 
@@ -18,6 +19,7 @@ public class EnchantmentBonus extends ABonusElement
 {
     public SlotData slotDataToEnchant;
     public HashMap<Enchantment, Integer> enchantments;
+    public HashMap<EntityPlayer, ItemStack> affectedItemStacks = null; //NOT static; if it were static, there could be bad overwrites from OTHER ENCHANTMENT BONUSES
 
     protected EnchantmentBonus(String parsableEnchantmentBonus, Bonus bonus, SlotData slotDataToEnchant, HashMap<Enchantment, Integer> enchantments)
     {
@@ -54,17 +56,53 @@ public class EnchantmentBonus extends ABonusElement
     @Override
     public void activate(EntityPlayer player)
     {
-        System.out.println("Activate");
+        int equippedInSlot = slotDataToEnchant.equipped(player, null, false);
+        if (equippedInSlot != Integer.MIN_VALUE)
+        {
+            ItemStack stack = SlotData.getStackInSlot(player, equippedInSlot);
+            ItemStack old = affectedItemStacks.get(player);
+            if (old != null) removeFromStack(old);
+            addToStack(stack);
+        }
     }
 
     @Override
     public void deactivate(EntityPlayer player)
     {
-        System.out.println("Deactivate");
+        //Real / permanent enchantments are generally applied or removed when the item is NOT equipped to the player, so we shouldn't need to worry about the state of real / permanent enchantments changing while the bonus is active, hopefully
+        ItemStack stack = affectedItemStacks.get(player);
+        if (stack != null) removeFromStack(stack);
     }
 
     @Override
     public void updateActive(EntityPlayer player)
     {
+        ItemStack stack = affectedItemStacks.get(player);
+        if (stack != null)
+        {
+            boolean found = false;
+            for (int slot : slotDataToEnchant.slots)
+            {
+                if (SlotData.getStackInSlot(player, slot) == stack)
+                {
+                    found = true;
+                    break;
+                }
+            }
+            if (found) return;
+            else removeFromStack(stack);
+        }
+
+        activate(player);
+    }
+
+    public void addToStack(ItemStack stack)
+    {
+        //TODO alter item's enchantments; make sure to SAVE THE STATE OF PERMANENT ENCHANTMENTS TO NBT FIRST...BUT ONLY IF IT'S NOT ALREADY SAVED THERE BY ANOTHER BONUS, and account for other enchantment bonuses that may be active (check them!)
+    }
+
+    public void removeFromStack(ItemStack stack)
+    {
+        //TODO revert affected item's enchantment changes; make sure to account for other enchantment bonuses that may still be active (check them!)
     }
 }

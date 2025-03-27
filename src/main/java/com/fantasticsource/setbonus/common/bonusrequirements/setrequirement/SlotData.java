@@ -2,13 +2,12 @@ package com.fantasticsource.setbonus.common.bonusrequirements.setrequirement;
 
 import baubles.api.BaubleType;
 import baubles.api.BaublesApi;
-import baubles.api.cap.IBaublesItemHandler;
 import com.fantasticsource.mctools.items.ItemFilter;
 import com.fantasticsource.setbonus.SetBonus;
 import com.fantasticsource.setbonus.client.ClientData;
 import com.fantasticsource.setbonus.server.ServerData;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.relauncher.Side;
 
@@ -67,7 +66,27 @@ public class SlotData
     }
 
 
-    public int equipped(EntityPlayer player, ArrayList<Integer> blocked)
+    public static ItemStack getStackInSlot(EntityPlayer player, int slot)
+    {
+        if (slot == -1)
+        {
+            //Mainhand
+            slot = player.inventory.currentItem;
+        }
+
+        if (slot > -1)
+        {
+            //Vanilla slot
+            return player.inventory.getStackInSlot(slot);
+        }
+        else
+        {
+            //Numbered baubles slot
+            return BaublesApi.getBaublesHandler(player).getStackInSlot(slot - Integer.MIN_VALUE - 1);
+        }
+    }
+
+    public int equipped(EntityPlayer player, ArrayList<Integer> blocked, boolean allowEmptyStackIfMatching)
     {
         for (int slot : slots)
         {
@@ -77,25 +96,16 @@ public class SlotData
                 slot = player.inventory.currentItem;
             }
 
-            if (blocked.contains(slot)) continue;
 
-            if (slot > -1)
+            if (blocked != null && blocked.contains(slot)) continue;
+
+            ItemStack stack = getStackInSlot(player, slot);
+            if (!allowEmptyStackIfMatching && stack == ItemStack.EMPTY) continue;
+
+
+            for (ItemFilter filter : involvedItems)
             {
-                //Vanilla slot
-                IInventory inv = player.inventory;
-                for (ItemFilter filter : involvedItems)
-                {
-                    if (filter.matches(inv.getStackInSlot(slot))) return slot;
-                }
-            }
-            else
-            {
-                //Numbered baubles slot
-                IBaublesItemHandler handler = BaublesApi.getBaublesHandler(player);
-                for (ItemFilter filter : involvedItems)
-                {
-                    if (filter.matches(handler.getStackInSlot(slot - Integer.MIN_VALUE - 1))) return slot;
-                }
+                if (filter.matches(stack)) return slot;
             }
         }
 

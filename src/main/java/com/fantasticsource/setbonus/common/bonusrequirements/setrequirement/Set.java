@@ -82,7 +82,7 @@ public class Set
         ArrayList<Integer> blocked = new ArrayList<>();
         for (SlotData data : slotData)
         {
-            int slot = data.equipped(player, blocked);
+            int slot = data.equipped(player, blocked, true);
             if (slot != Integer.MIN_VALUE)
             {
                 blocked.add(slot);
