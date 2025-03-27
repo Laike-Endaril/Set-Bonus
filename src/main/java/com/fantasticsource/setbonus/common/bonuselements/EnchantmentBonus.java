@@ -1,39 +1,35 @@
 package com.fantasticsource.setbonus.common.bonuselements;
 
+import com.fantasticsource.mctools.enchantments.Enchantments;
 import com.fantasticsource.setbonus.SetBonus;
 import com.fantasticsource.setbonus.client.ClientData;
 import com.fantasticsource.setbonus.common.Bonus;
+import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.SlotData;
 import com.fantasticsource.setbonus.server.ServerData;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.relauncher.Side;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 
 public class EnchantmentBonus extends ABonusElement
 {
-    //TODO WIP
+    public SlotData slotDataToEnchant;
     public HashMap<Enchantment, Integer> enchantments;
-    public ArrayList<Integer> validSlots;
 
-    public LinkedHashMap<EntityPlayer, ItemStack> activeItems = new LinkedHashMap<>();
-
-    protected EnchantmentBonus(String parsableEnchantmentBonus, Bonus bonus, HashMap<Enchantment, Integer> enchantments, ArrayList<Integer> validSlots)
+    protected EnchantmentBonus(String parsableEnchantmentBonus, Bonus bonus, SlotData slotDataToEnchant, HashMap<Enchantment, Integer> enchantments)
     {
         super(parsableEnchantmentBonus, bonus);
-        this.validSlots = validSlots;
+        this.slotDataToEnchant = slotDataToEnchant;
         this.enchantments = enchantments;
     }
 
     public static EnchantmentBonus getInstance(String parsableEnchantmentBonus, Side side)
     {
         String[] tokens = parsableEnchantmentBonus.split(",");
-        if (tokens.length < 2)
+        if (tokens.length < 3)
         {
             System.err.println(I18n.translateToLocalFormatted(SetBonus.MODID + ".error.notEnoughEnchantmentBonusArgs", parsableEnchantmentBonus));
             return null;
@@ -46,27 +42,25 @@ public class EnchantmentBonus extends ABonusElement
             return null;
         }
 
-        LinkedHashMap<Enchantment, Integer> enchants = new LinkedHashMap<>();
-        for (String enchantString : Arrays.copyOfRange(tokens, 2, tokens.length))
-        {
-            //TODO
-        }
-        if (enchants.size() == 0) return null;
+        SlotData slotDataToEnchant = SlotData.getInstance(tokens[1].trim(), null, side);
 
-        //TODO set bonuses don't even necessarily require items at all...but if this one does, we can reference the requirements in the bonus object and find applicable items based on config...maybe?
-        ArrayList<Integer> validSlots = null;
+        //Error messages handled in library
+        HashMap<Enchantment, Integer> enchantments = Enchantments.parseEnchantments(Arrays.copyOfRange(tokens, 1, tokens.length));
+        if (enchantments.size() == 0) return null;
 
-        return new EnchantmentBonus(parsableEnchantmentBonus, bonus, enchants, validSlots);
+        return new EnchantmentBonus(parsableEnchantmentBonus, bonus, slotDataToEnchant, enchantments);
     }
 
     @Override
     public void activate(EntityPlayer player)
     {
+        System.out.println("Activate");
     }
 
     @Override
     public void deactivate(EntityPlayer player)
     {
+        System.out.println("Deactivate");
     }
 
     @Override

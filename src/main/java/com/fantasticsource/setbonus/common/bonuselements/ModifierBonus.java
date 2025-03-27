@@ -46,6 +46,7 @@ public class ModifierBonus extends ABonusElement
             return null;
         }
 
+        //Error messages handled in library
         ArrayList<AttributeModifier> modifiers = AttributeMods.parseMods(Arrays.copyOfRange(tokens, 1, tokens.length));
         if (modifiers == null) return null;
 

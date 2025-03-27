@@ -41,6 +41,7 @@ public class PotionBonus extends ABonusElement
             return null;
         }
 
+        //Error messages handled in library
         ArrayList<FantasticPotionEffect> potions = Potions.parsePotions(Arrays.copyOfRange(tokens, 1, tokens.length), true);
         if (potions.size() == 0) return null;
 

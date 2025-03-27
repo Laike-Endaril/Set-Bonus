@@ -59,7 +59,7 @@ public class SlotData
             }
 
             result.involvedItems.add(equip.filter);
-            setdataEquipIDTracker.put(equipString, equip.filter);
+            if (setdataEquipIDTracker != null) setdataEquipIDTracker.put(equipString, equip.filter);
         }
 
 
