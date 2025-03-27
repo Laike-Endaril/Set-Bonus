@@ -1,6 +1,8 @@
 package com.fantasticsource.setbonus.common.bonuselements;
 
+import com.fantasticsource.mctools.GlobalInventory;
 import com.fantasticsource.mctools.enchantments.Enchantments;
+import com.fantasticsource.mctools.event.InventoryChangedEvent;
 import com.fantasticsource.setbonus.SetBonus;
 import com.fantasticsource.setbonus.client.ClientBonus;
 import com.fantasticsource.setbonus.client.ClientData;
@@ -13,12 +15,16 @@ import com.fantasticsource.tools.datastructures.Pair;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.text.translation.I18n;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.player.PlayerContainerEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.Arrays;
@@ -27,6 +33,13 @@ import java.util.Map;
 
 public class EnchantmentBonus extends ABonusElement
 {
+    static
+    {
+        InventoryChangedEvent.watchedClasses.add(EntityPlayer.class);
+        MinecraftForge.EVENT_BUS.register(EnchantmentBonus.class);
+    }
+
+
     public SlotData slotDataToEnchant;
     public HashMap<Pair<Enchantment, Integer>, Integer> enchantments;
     public HashMap<EntityPlayer, ItemStack> affectedItemStacks = new HashMap<>(); //NOT static; if it were static, there could be bad overwrites from OTHER ENCHANTMENT BONUSES
@@ -72,7 +85,7 @@ public class EnchantmentBonus extends ABonusElement
             ItemStack stack = SlotData.getStackInSlot(player, equippedInSlot);
             ItemStack old = affectedItemStacks.get(player);
             if (old != null) removeFromStack(player, old);
-            addToStack(player, stack);
+            addToStack(player, stack, equippedInSlot);
         }
     }
 
@@ -109,12 +122,9 @@ public class EnchantmentBonus extends ABonusElement
     }
 
 
-    public void addToStack(EntityPlayer player, ItemStack stack)
+    public void addToStack(EntityPlayer player, ItemStack stack, int slot)
     {
         affectedItemStacks.put(player, stack);
-
-
-        HashMap<Integer, Integer> data = new HashMap<>();
 
         NBTTagCompound compound = stack.getTagCompound();
         if (compound == null)
@@ -122,6 +132,12 @@ public class EnchantmentBonus extends ABonusElement
             compound = new NBTTagCompound();
             stack.setTagCompound(compound);
         }
+
+
+        compound.setInteger("SBSlot", slot);
+
+
+        HashMap<Integer, Integer> data = new HashMap<>();
         if (!compound.hasKey("OldEnchants"))
         {
             //This should mean that we're activating an enchantment bonus on the item when it has no other enchantment bonus active yet
@@ -223,7 +239,12 @@ public class EnchantmentBonus extends ABonusElement
         NBTTagCompound compound = stack.getTagCompound();
         if (compound == null) return;
 
-        if (compound.hasKey("OldEnchants")) compound.setTag("ench", compound.getTag("OldEnchants"));
+        if (compound.hasKey("OldEnchants"))
+        {
+            NBTTagList oldEnchants = compound.getTagList("OldEnchants", 10);
+            if (oldEnchants.tagCount() == 0) compound.removeTag("ench");
+            else compound.setTag("ench", compound.getTag("OldEnchants"));
+        }
         //NOTE: If the stack somehow has enchantment bonus enchantments applied but is somehow missing the "OldEnchants" tag, it will keep the bonus enchantments permanently
 
 
@@ -240,8 +261,8 @@ public class EnchantmentBonus extends ABonusElement
                 {
                     if (bonusElement instanceof EnchantmentBonus && bonusElement != this)
                     {
-                        ((EnchantmentBonus) bonusElement).addToStack(player, stack);
-                        otherApplied = true;
+                        bonusElement.activate(player);
+                        if (((EnchantmentBonus) bonusElement).affectedItemStacks.get(player) == stack) otherApplied = true;
                     }
                 }
             }
@@ -258,14 +279,68 @@ public class EnchantmentBonus extends ABonusElement
                 {
                     if (bonusElement instanceof EnchantmentBonus && bonusElement != this)
                     {
-                        ((EnchantmentBonus) bonusElement).addToStack(player, stack);
-                        otherApplied = true;
+                        bonusElement.activate(player);
+                        if (((EnchantmentBonus) bonusElement).affectedItemStacks.get(player) == stack) otherApplied = true;
                     }
                 }
             }
         }
 
 
-        if (!otherApplied) compound.removeTag("OldEnchants");
+        if (!otherApplied)
+        {
+            compound.removeTag("OldEnchants");
+            compound.removeTag("SBSlot");
+            if (compound.getSize() == 0) stack.setTagCompound(null);
+        }
+    }
+
+
+    @SubscribeEvent
+    public static void inventoryChanged(InventoryChangedEvent event)
+    {
+        if (!(event.getEntity() instanceof EntityPlayer)) return;
+
+
+        //Just reset enchantments is the itemstack gets messed with; if it should have any enchantment bonuses re-applied, the bonuses will detect so automatically in updateActive()
+        EntityPlayer player = (EntityPlayer) event.getEntity();
+        NBTTagCompound compound;
+        for (ItemStack stack : GlobalInventory.getAllNonSkinItems(player))
+        {
+            compound = stack.getTagCompound();
+            if (compound != null && compound.hasKey("SBSlot"))
+            {
+                if (stack != SlotData.getStackInSlot(player, compound.getInteger("SBSlot")))
+                {
+                    if (compound.getTagList("OldEnchants", 10).tagCount() == 0) compound.removeTag("ench");
+                    else compound.setTag("ench", compound.getTag("OldEnchants"));
+
+                    compound.removeTag("OldEnchants");
+                    compound.removeTag("SBSlot");
+                    if (compound.getSize() == 0) stack.setTagCompound(null);
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void openedContainer(PlayerContainerEvent.Open event)
+    {
+        ItemStack stack;
+        NBTTagCompound compound;
+        for (Slot slot : event.getContainer().inventorySlots)
+        {
+            stack = slot.getStack();
+            compound = stack.getTagCompound();
+            if (compound != null && compound.hasKey("SBSlot"))
+            {
+                if (compound.getTagList("OldEnchants", 10).tagCount() == 0) compound.removeTag("ench");
+                else compound.setTag("ench", compound.getTag("OldEnchants"));
+
+                compound.removeTag("OldEnchants");
+                compound.removeTag("SBSlot");
+                if (compound.getSize() == 0) stack.setTagCompound(null);
+            }
+        }
     }
 }
