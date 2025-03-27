@@ -51,7 +51,7 @@ public class Compat
 
     public static void refreshJEITooltips()
     {
-        if (!jei) return;
+        if (!jei || FMLCommonHandler.instance().getEffectiveSide() != Side.CLIENT) return;
 
 
         Logger logger = (Logger) ReflectionTool.get(jeiLogLogger, null);
