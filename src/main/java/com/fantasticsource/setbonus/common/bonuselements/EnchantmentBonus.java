@@ -121,6 +121,9 @@ public class EnchantmentBonus extends ABonusElement
     public void addToStack(EntityPlayer player, ItemStack stack, int slot)
     {
         ItemStack old = affectedItemStacks.get(player);
+        if (old == stack) return;
+
+
         if (old != null) removeFromStack(player, old);
 
         affectedItemStacks.put(player, stack);

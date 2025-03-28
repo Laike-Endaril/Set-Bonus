@@ -1,6 +1,6 @@
 package com.fantasticsource.setbonus.common.bonusrequirements.setrequirement;
 
-import com.fantasticsource.mctools.items.ItemFilter;
+import com.fantasticsource.mctools.items.RegistryRegexItemFilter;
 import com.fantasticsource.setbonus.SetBonus;
 import com.fantasticsource.tools.datastructures.Pair;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 public class Set
 {
     public String parsedString, id, name;
-    public LinkedHashMap<String, ItemFilter> involvedEquips = new LinkedHashMap<>();
+    public LinkedHashMap<String, RegistryRegexItemFilter> involvedEquips = new LinkedHashMap<>();
 
     private ArrayList<SlotData> slotData = new ArrayList<>();
     private LinkedHashMap<EntityPlayer, Pair<Integer, Long>> numEquipped = new LinkedHashMap<>();

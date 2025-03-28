@@ -16,6 +16,7 @@ public class ServerConfig
                     "Layout is...",
                     "Equipment id, domain:item:meta > nbtkey1 = nbtvalue1 & nbtkey2 = nbtvalue2...",
                     "The equipment id must be unique, and is only used to refer to the item in the equipment set config",
+                    "Each of the domain, name, and meta can be regex: .*:.*:.* will match all items, .* will match all vanilla items with 0 meta",
                     "",
                     "eg...",
                     "",

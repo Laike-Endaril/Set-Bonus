@@ -1,13 +1,13 @@
 package com.fantasticsource.setbonus.common.bonusrequirements.setrequirement;
 
-import com.fantasticsource.mctools.items.ItemFilter;
+import com.fantasticsource.mctools.items.RegistryRegexItemFilter;
 import com.fantasticsource.setbonus.SetBonus;
 import net.minecraft.util.text.translation.I18n;
 
 public class Equip
 {
     public String parsedString, id;
-    public ItemFilter filter;
+    public RegistryRegexItemFilter filter;
 
     private Equip()
     {
@@ -31,7 +31,7 @@ public class Equip
             return null;
         }
 
-        result.filter = ItemFilter.getInstance(tokens[1]);
+        result.filter = RegistryRegexItemFilter.getInstance(tokens[1]);
         if (result.filter == null) return null;
 
         result.parsedString = parsableEquip;

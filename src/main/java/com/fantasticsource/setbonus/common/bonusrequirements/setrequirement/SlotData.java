@@ -2,7 +2,7 @@ package com.fantasticsource.setbonus.common.bonusrequirements.setrequirement;
 
 import baubles.api.BaubleType;
 import baubles.api.BaublesApi;
-import com.fantasticsource.mctools.items.ItemFilter;
+import com.fantasticsource.mctools.items.RegistryRegexItemFilter;
 import com.fantasticsource.setbonus.SetBonus;
 import com.fantasticsource.setbonus.client.ClientData;
 import com.fantasticsource.setbonus.server.ServerData;
@@ -17,14 +17,14 @@ import java.util.LinkedHashMap;
 public class SlotData
 {
     public ArrayList<Integer> slots = new ArrayList<>(); //Because multiple slot options can be defined
-    public LinkedHashMap<String, ItemFilter> involvedEquips = new LinkedHashMap<>();
+    public LinkedHashMap<String, RegistryRegexItemFilter> involvedEquips = new LinkedHashMap<>();
 
 
     private SlotData()
     {
     }
 
-    public static SlotData getInstance(String slotsAndEquipment, LinkedHashMap<String, ItemFilter> setdataEquipIDTracker, Side side)
+    public static SlotData getInstance(String slotsAndEquipment, LinkedHashMap<String, RegistryRegexItemFilter> setdataEquipIDTracker, Side side)
     {
         SlotData result = new SlotData();
 
@@ -103,9 +103,9 @@ public class SlotData
             if (!allowEmptyStackIfMatching && stack == ItemStack.EMPTY) continue;
 
 
-            for (ItemFilter filter : involvedEquips.values())
+            for (RegistryRegexItemFilter filter : involvedEquips.values())
             {
-                if (filter.matches(stack)) return slot;
+                if (stack.getMaxStackSize() == 1 && filter.matches(stack)) return slot;
             }
         }
 

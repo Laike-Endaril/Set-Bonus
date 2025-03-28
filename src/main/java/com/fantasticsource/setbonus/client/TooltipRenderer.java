@@ -1,12 +1,13 @@
 package com.fantasticsource.setbonus.client;
 
-import com.fantasticsource.mctools.items.ItemFilter;
+import com.fantasticsource.mctools.items.RegistryRegexItemFilter;
 import com.fantasticsource.setbonus.common.bonusrequirements.ABonusRequirement;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Set;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.SetRequirement;
 import com.fantasticsource.setbonus.config.SetBonusConfig;
 import com.fantasticsource.tools.Tools;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -25,14 +26,15 @@ public class TooltipRenderer
         EntityPlayer player = event.getEntityPlayer();
         if (player == null) return;
 
+        ItemStack stack = event.getItemStack();
         List<String> tooltip = event.getToolTip();
 
         boolean edited = false;
         for (Set set : ClientData.sets.values())
         {
-            for (ItemFilter filter : set.involvedEquips.values())
+            for (RegistryRegexItemFilter filter : set.involvedEquips.values())
             {
-                if (filter.matches(event.getItemStack()))
+                if (stack.getMaxStackSize() == 1 && filter.matches(stack))
                 {
                     if (!edited)
                     {
