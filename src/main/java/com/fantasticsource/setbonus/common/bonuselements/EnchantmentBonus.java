@@ -80,13 +80,7 @@ public class EnchantmentBonus extends ABonusElement
     public void activate(EntityPlayer player)
     {
         int equippedInSlot = slotDataToEnchant.equipped(player, null, false);
-        if (equippedInSlot != Integer.MIN_VALUE)
-        {
-            ItemStack stack = SlotData.getStackInSlot(player, equippedInSlot);
-            ItemStack old = affectedItemStacks.get(player);
-            if (old != null) removeFromStack(player, old);
-            addToStack(player, stack, equippedInSlot);
-        }
+        if (equippedInSlot != Integer.MIN_VALUE) addToStack(player, SlotData.getStackInSlot(player, equippedInSlot), equippedInSlot);
     }
 
     @Override
@@ -124,6 +118,10 @@ public class EnchantmentBonus extends ABonusElement
 
     public void addToStack(EntityPlayer player, ItemStack stack, int slot)
     {
+        ItemStack old = affectedItemStacks.get(player);
+        if (old != null) removeFromStack(player, old);
+
+
         affectedItemStacks.put(player, stack);
 
         NBTTagCompound compound = stack.getTagCompound();
