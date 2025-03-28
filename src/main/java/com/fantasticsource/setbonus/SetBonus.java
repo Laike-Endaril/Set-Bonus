@@ -180,23 +180,4 @@ public class SetBonus
     {
         Minecraft.getMinecraft().addScheduledTask(ClientData::clear);
     }
-
-//    @SubscribeEvent
-//    public static void test(PlayerInteractEvent.RightClickEmpty event)
-//    {
-//        ItemStack itemStack = event.getEntityPlayer().inventory.getStackInSlot(0);
-//        if (itemStack == ItemStack.EMPTY) System.out.println("empty");
-//        else
-//        {
-//            System.out.println(itemStack.getDisplayName());
-//            NBTTagCompound nbt = itemStack.getTagCompound();
-//            if (nbt != null)
-//            {
-//                for (String string : nbt.getKeySet())
-//                {
-//                    System.out.println(string + ", " + nbt.getTag(string));
-//                }
-//            }
-//        }
-//    }
 }
