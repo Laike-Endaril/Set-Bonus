@@ -3,6 +3,7 @@ package com.fantasticsource.setbonus.common;
 import com.fantasticsource.setbonus.SetBonus;
 import com.fantasticsource.setbonus.client.ClientData;
 import com.fantasticsource.setbonus.common.bonuselements.ABonusElement;
+import com.fantasticsource.setbonus.common.bonuselements.EnchantmentBonus;
 import com.fantasticsource.setbonus.common.bonuselements.ModifierBonus;
 import com.fantasticsource.setbonus.common.bonuselements.PotionBonus;
 import com.fantasticsource.setbonus.common.bonusrequirements.ABonusRequirement;
@@ -52,6 +53,7 @@ public class Network
 
         public HashSet<String> attributeMods = new HashSet<>();
         public HashSet<String> potions = new HashSet<>();
+        public HashSet<String> enchants = new HashSet<>();
 
 
         private ServerBonus bonus;
@@ -93,6 +95,10 @@ public class Network
                 {
                     potions.add(element.parsedString);
                 }
+                else if (element instanceof EnchantmentBonus)
+                {
+                    enchants.add(element.parsedString);
+                }
             }
 
 
@@ -107,6 +113,9 @@ public class Network
 
             buf.writeInt(potions.size());
             for (String string : potions) ByteBufUtils.writeUTF8String(buf, string);
+
+            buf.writeInt(enchants.size());
+            for (String string : enchants) ByteBufUtils.writeUTF8String(buf, string);
         }
 
         @Override
@@ -134,6 +143,11 @@ public class Network
             for (int i = buf.readInt(); i > 0; i--)
             {
                 potions.add(ByteBufUtils.readUTF8String(buf));
+            }
+
+            for (int i = buf.readInt(); i > 0; i--)
+            {
+                enchants.add(ByteBufUtils.readUTF8String(buf));
             }
         }
     }

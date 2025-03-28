@@ -1,11 +1,11 @@
 package com.fantasticsource.setbonus.client;
 
 import com.fantasticsource.setbonus.common.Network;
+import com.fantasticsource.setbonus.common.bonuselements.EnchantmentBonus;
 import com.fantasticsource.setbonus.common.bonuselements.ModifierBonus;
 import com.fantasticsource.setbonus.common.bonuselements.PotionBonus;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Equip;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Set;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.LinkedHashMap;
@@ -82,7 +82,6 @@ public class ClientData
             if (equip != null) equipment.put(equip.id, equip);
         }
 
-
         //Initialize sets
         for (String setString : packet.sets)
         {
@@ -102,11 +101,16 @@ public class ClientData
             ModifierBonus.getInstance(modifierString, Side.CLIENT);
         }
 
-
         //Initialize potions
         for (String potionString : packet.potions)
         {
             PotionBonus.getInstance(potionString, Side.CLIENT);
+        }
+
+        //Initialize enchantments
+        for (String enchantString : packet.enchants)
+        {
+            EnchantmentBonus.getInstance(enchantString, Side.CLIENT);
         }
     }
 }
