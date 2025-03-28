@@ -1,6 +1,7 @@
 package com.fantasticsource.setbonus.common.bonuselements;
 
 import com.fantasticsource.mctools.GlobalInventory;
+import com.fantasticsource.mctools.ServerTickTimer;
 import com.fantasticsource.mctools.enchantments.Enchantments;
 import com.fantasticsource.mctools.event.InventoryChangedEvent;
 import com.fantasticsource.setbonus.SetBonus;
@@ -15,14 +16,13 @@ import com.fantasticsource.tools.datastructures.Pair;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.player.PlayerContainerEvent;
+import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -134,7 +134,9 @@ public class EnchantmentBonus extends ABonusElement
         }
 
 
+        compound.setUniqueId("SBOwner", player.getUniqueID());
         compound.setInteger("SBSlot", slot);
+        compound.setInteger("SBRandom", Tools.random(Integer.MAX_VALUE));
 
 
         HashMap<Integer, Integer> data = new HashMap<>();
@@ -290,7 +292,10 @@ public class EnchantmentBonus extends ABonusElement
         if (!otherApplied)
         {
             compound.removeTag("OldEnchants");
+            compound.removeTag("SBOwnerMost");
+            compound.removeTag("SBOwnerLeast");
             compound.removeTag("SBSlot");
+            compound.removeTag("SBRandom");
             if (compound.getSize() == 0) stack.setTagCompound(null);
         }
     }
@@ -310,13 +315,16 @@ public class EnchantmentBonus extends ABonusElement
             compound = stack.getTagCompound();
             if (compound != null && compound.hasKey("SBSlot"))
             {
-                if (stack != SlotData.getStackInSlot(player, compound.getInteger("SBSlot")))
+                if (!stack.isItemEqual(SlotData.getStackInSlot(player, compound.getInteger("SBSlot"))))
                 {
                     if (compound.getTagList("OldEnchants", 10).tagCount() == 0) compound.removeTag("ench");
                     else compound.setTag("ench", compound.getTag("OldEnchants"));
 
                     compound.removeTag("OldEnchants");
+                    compound.removeTag("SBOwnerMost");
+                    compound.removeTag("SBOwnerLeast");
                     compound.removeTag("SBSlot");
+                    compound.removeTag("SBRandom");
                     if (compound.getSize() == 0) stack.setTagCompound(null);
                 }
             }
@@ -324,23 +332,33 @@ public class EnchantmentBonus extends ABonusElement
     }
 
     @SubscribeEvent
-    public static void openedContainer(PlayerContainerEvent.Open event)
+    public static void itemStackCreation(AttachCapabilitiesEvent<ItemStack> event)
     {
-        ItemStack stack;
-        NBTTagCompound compound;
-        for (Slot slot : event.getContainer().inventorySlots)
+        //Minecraft likes to "move" (or even leave in the same place) items by duplicating them and deleting the original...
+        //The new clone doesn't have the NBT set yet when this event happens, but if it's scheduled with minimal delay like this then it does
+        if (FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER)
         {
-            stack = slot.getStack();
-            compound = stack.getTagCompound();
-            if (compound != null && compound.hasKey("SBSlot"))
+            ServerTickTimer.schedule(1, () ->
             {
-                if (compound.getTagList("OldEnchants", 10).tagCount() == 0) compound.removeTag("ench");
-                else compound.setTag("ench", compound.getTag("OldEnchants"));
+                ItemStack stack = event.getObject();
+                NBTTagCompound compound = stack.getTagCompound();
+                if (compound != null && compound.hasKey("SBSlot"))
+                {
+                    EntityPlayer player = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayerByUUID(compound.getUniqueId("SBOwner"));
+                    if (player == null || !stack.isItemEqual(SlotData.getStackInSlot(player, compound.getInteger("SBSlot"))))
+                    {
+                        if (compound.getTagList("OldEnchants", 10).tagCount() == 0) compound.removeTag("ench");
+                        else compound.setTag("ench", compound.getTag("OldEnchants"));
 
-                compound.removeTag("OldEnchants");
-                compound.removeTag("SBSlot");
-                if (compound.getSize() == 0) stack.setTagCompound(null);
-            }
+                        compound.removeTag("OldEnchants");
+                        compound.removeTag("SBOwnerMost");
+                        compound.removeTag("SBOwnerLeast");
+                        compound.removeTag("SBSlot");
+                        compound.removeTag("SBRandom");
+                        if (compound.getSize() == 0) stack.setTagCompound(null);
+                    }
+                }
+            });
         }
     }
 }
