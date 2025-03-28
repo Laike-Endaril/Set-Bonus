@@ -1,6 +1,7 @@
 package com.fantasticsource.setbonus.common.bonuselements;
 
 import com.fantasticsource.mctools.GlobalInventory;
+import com.fantasticsource.mctools.MCTools;
 import com.fantasticsource.mctools.ServerTickTimer;
 import com.fantasticsource.mctools.enchantments.Enchantments;
 import com.fantasticsource.mctools.event.InventoryChangedEvent;
@@ -87,7 +88,7 @@ public class EnchantmentBonus extends ABonusElement
     public void deactivate(EntityPlayer player)
     {
         //Real / permanent enchantments are generally applied or removed when the item is NOT equipped to the player, so we shouldn't need to worry about the state of real / permanent enchantments changing while the bonus is active, hopefully
-        ItemStack stack = affectedItemStacks.get(player);
+        ItemStack stack = affectedItemStacks.remove(player);
         if (stack != null) removeFromStack(player, stack);
     }
 
@@ -103,6 +104,7 @@ public class EnchantmentBonus extends ABonusElement
                 if (SlotData.getStackInSlot(player, slot) == stack)
                 {
                     found = true;
+                    stack.getTagCompound().setInteger("SBSlot", slot);
                     break;
                 }
             }
@@ -120,7 +122,6 @@ public class EnchantmentBonus extends ABonusElement
     {
         ItemStack old = affectedItemStacks.get(player);
         if (old != null) removeFromStack(player, old);
-
 
         affectedItemStacks.put(player, stack);
 
@@ -327,6 +328,8 @@ public class EnchantmentBonus extends ABonusElement
                 }
             }
         }
+
+        MCTools.syncInventory((EntityPlayerMP) player);
     }
 
     @SubscribeEvent
@@ -342,7 +345,7 @@ public class EnchantmentBonus extends ABonusElement
                 NBTTagCompound compound = stack.getTagCompound();
                 if (compound != null && compound.hasKey("SBSlot"))
                 {
-                    EntityPlayer player = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayerByUUID(compound.getUniqueId("SBOwner"));
+                    EntityPlayerMP player = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayerByUUID(compound.getUniqueId("SBOwner"));
                     if (player == null || !stack.isItemEqual(SlotData.getStackInSlot(player, compound.getInteger("SBSlot"))))
                     {
                         if (compound.getTagList("OldEnchants", 10).tagCount() == 0) compound.removeTag("ench");
@@ -354,6 +357,8 @@ public class EnchantmentBonus extends ABonusElement
                         compound.removeTag("SBSlot");
                         compound.removeTag("SBRandom");
                         if (compound.getSize() == 0) stack.setTagCompound(null);
+
+                        if (player != null) MCTools.syncInventory(player);
                     }
                 }
             });
