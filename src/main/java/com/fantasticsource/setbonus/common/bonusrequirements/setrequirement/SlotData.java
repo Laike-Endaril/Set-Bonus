@@ -17,7 +17,7 @@ import java.util.LinkedHashMap;
 public class SlotData
 {
     public ArrayList<Integer> slots = new ArrayList<>(); //Because multiple slot options can be defined
-    public ArrayList<ItemFilter> involvedItems = new ArrayList<>();
+    public LinkedHashMap<String, ItemFilter> involvedEquips = new LinkedHashMap<>();
 
 
     private SlotData()
@@ -47,18 +47,18 @@ public class SlotData
 
         //Equipment
         LinkedHashMap<String, Equip> equipment = side == Side.SERVER ? ServerData.equipment : ClientData.equipment;
-        for (String equipString : tokens[1].split("[|]"))
+        for (String equipID : tokens[1].split("[|]"))
         {
-            equipString = equipString.trim();
-            Equip equip = equipment.get(equipString);
+            equipID = equipID.trim();
+            Equip equip = equipment.get(equipID);
             if (equip == null)
             {
-                System.err.println(I18n.translateToLocalFormatted(SetBonus.MODID + ".error.slotBadEquipID", equipString, slotsAndEquipment));
+                System.err.println(I18n.translateToLocalFormatted(SetBonus.MODID + ".error.slotBadEquipID", equipID, slotsAndEquipment));
                 return null;
             }
 
-            result.involvedItems.add(equip.filter);
-            if (setdataEquipIDTracker != null) setdataEquipIDTracker.put(equipString, equip.filter);
+            result.involvedEquips.put(equip.parsedString, equip.filter);
+            if (setdataEquipIDTracker != null) setdataEquipIDTracker.put(equipID, equip.filter);
         }
 
 
@@ -103,7 +103,7 @@ public class SlotData
             if (!allowEmptyStackIfMatching && stack == ItemStack.EMPTY) continue;
 
 
-            for (ItemFilter filter : involvedItems)
+            for (ItemFilter filter : involvedEquips.values())
             {
                 if (filter.matches(stack)) return slot;
             }

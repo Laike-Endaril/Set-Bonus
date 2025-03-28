@@ -98,6 +98,7 @@ public class Network
                 else if (element instanceof EnchantmentBonus)
                 {
                     enchants.add(element.parsedString);
+                    equipment.addAll(((EnchantmentBonus) element).slotDataToEnchant.involvedEquips.keySet());
                 }
             }
 
