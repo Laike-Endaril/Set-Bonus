@@ -126,7 +126,6 @@ public class ServerBonus extends Bonus
 
     public static void updateBonuses(EntityPlayerMP player, boolean forceNew)
     {
-        //Happens once per second on player tick event
         changed = false;
         for (ServerBonus bonus : ServerData.bonuses.values()) bonus.update(player, forceNew);
 
