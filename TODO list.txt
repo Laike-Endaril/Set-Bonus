@@ -1,18 +1,32 @@
-Look into enchantments as bonuses...
-...have config entry specify which slot or equip the enchantment will apply to
-...check the item for same enchant first and track the item and the existing enchant level
-...apply the new enchant level (or add to existing as a config option)
-...when removing bonus, revert enchant on item
+Look into simplifying configs via my own GUI system (may want to do before adding a ton of new requirement / bonus types!)
 
-"I see that Set Bonus can separate items by meta. But is it possible to have an item only count for a bonus at specific durability or even better a durability range?"
+More requirement types...
+...Dimension
+...Biome
+...Elevation
+...Whether you're on the ground or not
+...Nearby block detection / filters (choose eye or foot position, then relative position from there)
+...Time of day
+...Moon phase
+...Sky / block light levels
+...Morph / Metamorph transformation
+...Reskillable levels
 
-Option for displaying detailed bonus info
+More bonus types...
+...summoned items
+...resistances to specific damage types (including modded types)
 
-Look into simplifying configs...
-...look into on-the-fly additions/removals of config categories
-...look into enum array config type
 
-Look into damage-type-specific resistances as bonuses
+
+"Reactive" system for equipment sets which gives a visual indicator for set items and for linking the items of a set...
+0 means reactive within the player's inventory (an opened chest is not part of the player's inventory)
+1 means reactive only when actively contributing to a set
+1 means reactive within all opened inventories
+2 means non-reactive
+
+Attack effects (like those in DS) that use set filtering
+
+
 
 Look into possible race condition issue, where eg...
 ...bonus A activates when armor is low enough, and increases attack power
@@ -22,25 +36,6 @@ Look into possible race condition issue, where eg...
 3. this causes bonus A to deactivate, decreasing attack power
 4. this causes bonus B to deactivate, decreasing armor
 5. repeats from 1
-
-"Discover" command
-"Undiscover" command
-"WipeDiscoveries" command
-
-"Reactive" system for equipment sets which gives a visual indicator for set items and for linking the items of a set...
-0 means reactive within the player's inventory (an opened chest is not part of the player's inventory)
-1 means reactive only when actively contributing to a set
-1 means reactive within all opened inventories
-2 means non-reactive
-
-Alternate requirements...
-...Morph / Metamorph transformation
-
-Attack effects (like those in DS) that use set filtering
-
-Make some default bonuses
-
-
 
 
 
