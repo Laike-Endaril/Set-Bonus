@@ -80,7 +80,7 @@ public class EnchantmentBonus extends ABonusElement
     @Override
     public void activate(EntityPlayer player)
     {
-        int equippedInSlot = slotDataToEnchant.equipped(player, null, false);
+        int equippedInSlot = slotDataToEnchant.equipped(player, null, false, false);
         if (equippedInSlot != Integer.MIN_VALUE) addToStack(player, SlotData.getStackInSlot(player, equippedInSlot), equippedInSlot);
     }
 

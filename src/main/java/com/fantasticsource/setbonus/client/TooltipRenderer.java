@@ -34,7 +34,7 @@ public class TooltipRenderer
         {
             for (RegistryRegexItemFilter filter : set.involvedEquips.values())
             {
-                if (stack.getMaxStackSize() == 1 && filter.matches(stack))
+                if (filter.matches(stack))
                 {
                     if (!edited)
                     {

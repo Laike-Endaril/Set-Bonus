@@ -86,7 +86,7 @@ public class SlotData
         }
     }
 
-    public int equipped(EntityPlayer player, ArrayList<Integer> blocked, boolean allowEmptyStackIfMatching)
+    public int equipped(EntityPlayer player, ArrayList<Integer> blocked, boolean allowEmptyStackIfMatching, boolean allowStackableItems)
     {
         for (int slot : slots)
         {
@@ -101,11 +101,12 @@ public class SlotData
 
             ItemStack stack = getStackInSlot(player, slot);
             if (!allowEmptyStackIfMatching && stack == ItemStack.EMPTY) continue;
+            if (!allowStackableItems && stack.getMaxStackSize() != 1) continue;
 
 
             for (RegistryRegexItemFilter filter : involvedEquips.values())
             {
-                if (stack.getMaxStackSize() == 1 && filter.matches(stack)) return slot;
+                if (filter.matches(stack)) return slot;
             }
         }
 
