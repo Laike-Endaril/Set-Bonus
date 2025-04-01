@@ -1,5 +1,6 @@
 package com.fantasticsource.setbonus.common;
 
+import com.fantasticsource.mctools.potions.FantasticPotionEffect;
 import com.fantasticsource.setbonus.SetBonus;
 import com.fantasticsource.setbonus.client.ClientData;
 import com.fantasticsource.setbonus.common.bonuselements.ABonusElement;
@@ -13,13 +14,18 @@ import com.fantasticsource.setbonus.server.ServerBonus;
 import com.fantasticsource.setbonus.server.ServerData;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.HashSet;
@@ -35,6 +41,7 @@ public class Network
         WRAPPER.registerMessage(ConfigPacketHandler.class, ConfigPacket.class, discriminator++, Side.CLIENT);
         WRAPPER.registerMessage(DiscoverBonusPacketHandler.class, DiscoverBonusPacket.class, discriminator++, Side.CLIENT);
         WRAPPER.registerMessage(HPFixPacketHandler.class, HPFixPacket.class, discriminator++, Side.CLIENT);
+        WRAPPER.registerMessage(PotionFixPacketHandler.class, PotionFixPacket.class, discriminator++, Side.CLIENT);
     }
 
     public static void updateConfig(EntityPlayerMP player)
@@ -323,6 +330,58 @@ public class Network
             if (ctx.side == Side.CLIENT)
             {
                 Minecraft.getMinecraft().addScheduledTask(() -> Minecraft.getMinecraft().player.setHealth(packet.hp));
+            }
+
+            return null;
+        }
+    }
+
+
+    public static class PotionFixPacket implements IMessage
+    {
+        public Potion potion;
+
+        public PotionFixPacket() //Required; probably for when the packet is received
+        {
+        }
+
+        public PotionFixPacket(Potion potion)
+        {
+            this.potion = potion;
+        }
+
+        @Override
+        public void toBytes(ByteBuf buf)
+        {
+            ByteBufUtils.writeUTF8String(buf, potion.getRegistryName().toString());
+        }
+
+        @Override
+        public void fromBytes(ByteBuf buf)
+        {
+            potion = ForgeRegistries.POTIONS.getValue(new ResourceLocation(ByteBufUtils.readUTF8String(buf)));
+        }
+    }
+
+    public static class PotionFixPacketHandler implements IMessageHandler<PotionFixPacket, IMessage>
+    {
+        @Override
+        public IMessage onMessage(PotionFixPacket packet, MessageContext ctx)
+        {
+            if (ctx.side == Side.CLIENT)
+            {
+                Minecraft.getMinecraft().addScheduledTask(() ->
+                {
+                    EntityPlayer player = Minecraft.getMinecraft().player;
+                    PotionEffect potionEffect = player.getActivePotionEffect(packet.potion);
+                    if (potionEffect != null)
+                    {
+                        player.removePotionEffect(potionEffect.getPotion());
+                        potionEffect = new FantasticPotionEffect(potionEffect.getPotion(), potionEffect.getDuration(), potionEffect.getAmplifier(), potionEffect.getIsAmbient(), potionEffect.doesShowParticles());
+                        potionEffect.setPotionDurationMax(potionEffect.getDuration() >= FantasticPotionEffect.MAX_DURATION_THRESHOLD);
+                        player.addPotionEffect(potionEffect);
+                    }
+                });
             }
 
             return null;

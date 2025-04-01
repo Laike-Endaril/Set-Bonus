@@ -6,10 +6,13 @@ import com.fantasticsource.mctools.potions.Potions;
 import com.fantasticsource.setbonus.SetBonus;
 import com.fantasticsource.setbonus.client.ClientData;
 import com.fantasticsource.setbonus.common.Bonus;
+import com.fantasticsource.setbonus.common.Network;
 import com.fantasticsource.setbonus.server.ServerData;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.text.translation.I18n;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.ArrayList;
@@ -17,6 +20,9 @@ import java.util.Arrays;
 
 public class PotionBonus extends ABonusElement
 {
+    public static EntityPlayerMP lastUpdatingPlayer = null;
+
+
     public ArrayList<FantasticPotionEffect> potions;
 
     protected PotionBonus(String parsableBonusElement, Bonus bonus, ArrayList<FantasticPotionEffect> potions)
@@ -55,7 +61,16 @@ public class PotionBonus extends ABonusElement
 
         for (FantasticPotionEffect potion : potions)
         {
-            if (potion.interval == 0 || tick % potion.interval == 0) player.addPotionEffect(new PotionEffect(potion));
+            if (potion.interval == 0 || tick % potion.interval == 0)
+            {
+                player.addPotionEffect(new PotionEffect(potion));
+
+                if (potion.getDuration() >= FantasticPotionEffect.MAX_DURATION_THRESHOLD)
+                {
+                    PotionEffect active = player.getActivePotionEffect(potion.getPotion());
+                    if (active != null && active.getAmplifier() <= potion.getAmplifier()) Network.WRAPPER.sendTo(new Network.PotionFixPacket(potion.getPotion()), (EntityPlayerMP) player);
+                }
+            }
         }
     }
 
@@ -72,7 +87,18 @@ public class PotionBonus extends ABonusElement
 
         for (FantasticPotionEffect potion : potions)
         {
-            if (potion.interval == 0 || tick % potion.interval == 0) player.addPotionEffect(new PotionEffect(potion));
+            if (potion.interval == 0 || tick % potion.interval == 0)
+            {
+                boolean needFix = player.getActivePotionEffect(potion.getPotion()) != null;
+                player.addPotionEffect(new PotionEffect(potion));
+                if (needFix) Network.WRAPPER.sendTo(new Network.PotionFixPacket(potion.getPotion()), (EntityPlayerMP) player);
+            }
+
+            if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+            {
+                PotionEffect active = player.getActivePotionEffect(potion.getPotion());
+                if (active != null && active.getDuration() < FantasticPotionEffect.MAX_DURATION_THRESHOLD) active.setPotionDurationMax(false);
+            }
         }
     }
 }
