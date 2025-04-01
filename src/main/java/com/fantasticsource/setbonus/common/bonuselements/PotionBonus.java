@@ -63,7 +63,7 @@ public class PotionBonus extends ABonusElement
         {
             if (potion.interval == 0 || tick % potion.interval == 0)
             {
-                player.addPotionEffect(new PotionEffect(potion));
+                player.addPotionEffect(new FantasticPotionEffect(potion));
 
                 if (potion.getDuration() >= FantasticPotionEffect.MAX_DURATION_THRESHOLD)
                 {
@@ -77,7 +77,11 @@ public class PotionBonus extends ABonusElement
     @Override
     public void deactivate(EntityPlayer player)
     {
-        for (PotionEffect potion : potions) player.removePotionEffect(potion.getPotion());
+        for (FantasticPotionEffect potion : potions)
+        {
+            PotionEffect active = player.getActivePotionEffect(potion.getPotion());
+            if (active != null && active.getAmplifier() == potion.getAmplifier() && active.getDuration() <= potion.getDuration()) player.removePotionEffect(potion.getPotion());
+        }
     }
 
     @Override
