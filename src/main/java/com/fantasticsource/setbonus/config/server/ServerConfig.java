@@ -44,6 +44,7 @@ public class ServerConfig
                     "",
                     "- Vanilla slots: mainhand, offhand, head, chest, legs, feet, hotbar, inventory",
                     "- Baubles slots: bauble_amulet, bauble_ring, bauble_belt, bauble_head, bauble_body, bauble_charm, bauble_trinket",
+                    "- Aether slots: aether_pendant, aether_cape, aether_shield, aether_ring, aether_glove, aether_other",
                     "- You can also refer to slots by their slot number, eg. the top-left slot of the inventory is 9",
                     "",
                     "eg...",

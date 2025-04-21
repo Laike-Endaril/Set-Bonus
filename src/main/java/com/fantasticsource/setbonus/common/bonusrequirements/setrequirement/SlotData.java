@@ -6,6 +6,7 @@ import com.fantasticsource.mctools.items.RegistryRegexItemFilter;
 import com.fantasticsource.setbonus.SetBonus;
 import com.fantasticsource.setbonus.client.ClientData;
 import com.fantasticsource.setbonus.server.ServerData;
+import com.gildedgames.the_aether.api.AetherAPI;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.translation.I18n;
@@ -16,6 +17,10 @@ import java.util.LinkedHashMap;
 
 public class SlotData
 {
+    public static final int
+            BAUBLES_OFFSET = Integer.MIN_VALUE + 1, BAUBLES_THRESHOLD = BAUBLES_OFFSET + 300,
+            AETHER_OFFSET = BAUBLES_THRESHOLD, AETHER_THRESHOLD = AETHER_OFFSET + 8;
+
     public ArrayList<Integer> slots = new ArrayList<>(); //Because multiple slot options can be defined
     public LinkedHashMap<String, RegistryRegexItemFilter> involvedEquips = new LinkedHashMap<>();
 
@@ -68,22 +73,21 @@ public class SlotData
 
     public static ItemStack getStackInSlot(EntityPlayer player, int slot)
     {
-        if (slot == -1)
-        {
-            //Mainhand
-            slot = player.inventory.currentItem;
-        }
+        //Mainhand conversion
+        if (slot == -1) slot = player.inventory.currentItem;
 
-        if (slot > -1)
-        {
-            //Vanilla slot
-            return player.inventory.getStackInSlot(slot);
-        }
-        else
-        {
-            //Numbered baubles slot
-            return BaublesApi.getBaublesHandler(player).getStackInSlot(slot - Integer.MIN_VALUE - 1);
-        }
+        //Vanilla slot
+        if (slot > -1) return player.inventory.getStackInSlot(slot);
+
+
+        //Numbered baubles slot
+        if (slot < BAUBLES_THRESHOLD) return BaublesApi.getBaublesHandler(player).getStackInSlot(slot - BAUBLES_OFFSET);
+
+        //Numbered aether accessory slot
+        if (slot < AETHER_THRESHOLD) return AetherAPI.getInstance().get(player).getAccessoryInventory().getStackInSlot(slot - AETHER_OFFSET);
+
+
+        throw new IllegalArgumentException();
     }
 
     public int equipped(EntityPlayer player, ArrayList<Integer> blocked, boolean allowEmptyStackIfMatching, boolean allowStackableItems)
@@ -135,6 +139,8 @@ public class SlotData
         ArrayList<Integer> result = new ArrayList<>();
         slotString = slotString.trim().toLowerCase();
 
+
+        //Vanilla
         if (slotString.equals("mainhand")) result.add(-1); //Mainhand is not a specific slot #
         else if (slotString.equals("hotbar"))
         {
@@ -150,35 +156,56 @@ public class SlotData
         else if (slotString.equals("head")) result.add(39);
         else if (slotString.equals("offhand")) result.add(40);
 
+
+        //Baubles
         else if (slotString.equals("bauble_amulet"))
         {
-            for (int i : BaubleType.AMULET.getValidSlots()) result.add(Integer.MIN_VALUE + 1 + i);
+            for (int i : BaubleType.AMULET.getValidSlots()) result.add(BAUBLES_OFFSET + i);
         }
         else if (slotString.equals("bauble_ring"))
         {
-            for (int i : BaubleType.RING.getValidSlots()) result.add(Integer.MIN_VALUE + 1 + i);
+            for (int i : BaubleType.RING.getValidSlots()) result.add(BAUBLES_OFFSET + i);
         }
         else if (slotString.equals("bauble_belt"))
         {
-            for (int i : BaubleType.BELT.getValidSlots()) result.add(Integer.MIN_VALUE + 1 + i);
+            for (int i : BaubleType.BELT.getValidSlots()) result.add(BAUBLES_OFFSET + i);
         }
         else if (slotString.equals("bauble_head"))
         {
-            for (int i : BaubleType.HEAD.getValidSlots()) result.add(Integer.MIN_VALUE + 1 + i);
+            for (int i : BaubleType.HEAD.getValidSlots()) result.add(BAUBLES_OFFSET + i);
         }
         else if (slotString.equals("bauble_body"))
         {
-            for (int i : BaubleType.BODY.getValidSlots()) result.add(Integer.MIN_VALUE + 1 + i);
+            for (int i : BaubleType.BODY.getValidSlots()) result.add(BAUBLES_OFFSET + i);
         }
         else if (slotString.equals("bauble_charm"))
         {
-            for (int i : BaubleType.CHARM.getValidSlots()) result.add(Integer.MIN_VALUE + 1 + i);
+            for (int i : BaubleType.CHARM.getValidSlots()) result.add(BAUBLES_OFFSET + i);
         }
         else if (slotString.equals("bauble_trinket"))
         {
-            for (int i : BaubleType.TRINKET.getValidSlots()) result.add(Integer.MIN_VALUE + 1 + i);
+            for (int i : BaubleType.TRINKET.getValidSlots()) result.add(BAUBLES_OFFSET + i);
         }
 
+
+        //The Aether
+        else if (slotString.equals("aether_pendant")) result.add(AETHER_OFFSET);
+        else if (slotString.equals("aether_cape")) result.add(AETHER_OFFSET + 1);
+        else if (slotString.equals("aether_shield")) result.add(AETHER_OFFSET + 2);
+        else if (slotString.equals("aether_ring"))
+        {
+            result.add(AETHER_OFFSET + 4);
+            result.add(AETHER_OFFSET + 5);
+        }
+        else if (slotString.equals("aether_glove") || slotString.equals("aether_gloves")) result.add(AETHER_OFFSET + 6);
+        else if (slotString.equals("aether_other"))
+        {
+            result.add(AETHER_OFFSET + 3);
+            result.add(AETHER_OFFSET + 7);
+        }
+
+
+        //Vanilla extended (if mods add slots to vanilla inventory)
         else
         {
             try
