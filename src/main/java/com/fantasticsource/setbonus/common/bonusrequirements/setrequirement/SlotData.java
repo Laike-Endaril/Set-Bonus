@@ -6,11 +6,13 @@ import com.fantasticsource.mctools.items.RegistryRegexItemFilter;
 import com.fantasticsource.setbonus.SetBonus;
 import com.fantasticsource.setbonus.client.ClientData;
 import com.fantasticsource.setbonus.server.ServerData;
+import com.fantasticsource.tools.ReflectionTool;
 import com.gildedgames.the_aether.api.AetherAPI;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.items.IItemHandlerModifiable;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -19,7 +21,8 @@ public class SlotData
 {
     public static final int
             BAUBLES_OFFSET = Integer.MIN_VALUE + 1, BAUBLES_THRESHOLD = BAUBLES_OFFSET + 300,
-            AETHER_OFFSET = BAUBLES_THRESHOLD, AETHER_THRESHOLD = AETHER_OFFSET + 8;
+            AETHER_OFFSET = BAUBLES_THRESHOLD, AETHER_THRESHOLD = AETHER_OFFSET + 8,
+            TRINKETS_OFFSET = AETHER_THRESHOLD, TRINKETS_THRESHOLD = TRINKETS_OFFSET + 32;
 
     public ArrayList<Integer> slots = new ArrayList<>(); //Because multiple slot options can be defined
     public LinkedHashMap<String, RegistryRegexItemFilter> involvedEquips = new LinkedHashMap<>();
@@ -76,15 +79,25 @@ public class SlotData
         //Mainhand conversion
         if (slot == -1) slot = player.inventory.currentItem;
 
-        //Vanilla slot
+        //Vanilla
         if (slot > -1) return player.inventory.getStackInSlot(slot);
 
 
-        //Numbered baubles slot
+        //Baubles
         if (slot < BAUBLES_THRESHOLD) return BaublesApi.getBaublesHandler(player).getStackInSlot(slot - BAUBLES_OFFSET);
 
-        //Numbered aether accessory slot
+        //Aether
         if (slot < AETHER_THRESHOLD) return AetherAPI.getInstance().get(player).getAccessoryInventory().getStackInSlot(slot - AETHER_OFFSET);
+
+        //Trinkets
+        if (slot < TRINKETS_THRESHOLD)
+        {
+            //Doesn't have a real API (API causes crash if mod is not loaded), so reflecting in
+            Class trinketHelperClass = ReflectionTool.getClassByName("xzeroair.trinkets.api.TrinketHelper");
+            IItemHandlerModifiable trinketContainerHandler = (IItemHandlerModifiable) ReflectionTool.invoke(trinketHelperClass, "getTrinketHandler", null, player);
+            slot -= TRINKETS_OFFSET;
+            return slot < trinketContainerHandler.getSlots() ? trinketContainerHandler.getStackInSlot(slot) : ItemStack.EMPTY;
+        }
 
 
         throw new IllegalArgumentException();
@@ -157,7 +170,7 @@ public class SlotData
         else if (slotString.equals("offhand")) result.add(40);
 
 
-        //Baubles
+            //Baubles
         else if (slotString.equals("bauble_amulet"))
         {
             for (int i : BaubleType.AMULET.getValidSlots()) result.add(BAUBLES_OFFSET + i);
@@ -202,6 +215,13 @@ public class SlotData
         {
             result.add(AETHER_OFFSET + 3);
             result.add(AETHER_OFFSET + 7);
+        }
+
+
+        //Trinkets
+        else if (slotString.equals("trinket"))
+        {
+            for (int i = TRINKETS_OFFSET; i < TRINKETS_THRESHOLD; i++) result.add(i);
         }
 
 
