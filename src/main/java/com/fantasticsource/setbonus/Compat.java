@@ -39,7 +39,7 @@ public class Compat
         //JEI already does this in a deferred, limited CPU-time-per-tick way, but I've improved upon their method...a LOT
         //Theirs simply used 40ms per client tick (20ms, 2 times per tick, once at START phase and once at END phase)
         //Mine limits CPU usage to END phase only, based on how much CPU time is still available to work within that tick without going below 20tps
-        IngredientFilterBackgroundBuilder backgroundBuilder = (IngredientFilterBackgroundBuilder) ReflectionTool.get(IngredientFilter.class, "backgroundBuilder", ingredientFilter);
+        Object backgroundBuilder = ReflectionTool.get(IngredientFilter.class, "backgroundBuilder", ingredientFilter);
         if (backgroundBuilder instanceof AdaptiveIngredientFilterBackgroundBuilder) ((AdaptiveIngredientFilterBackgroundBuilder) backgroundBuilder).buildOrRebuild();
         else
         {
