@@ -32,7 +32,7 @@ public class ClientBonus extends Bonus
             for (BonusInstance data : bonus.instances.values()) data.update(false);
         }
         ClientData.bonuses.clear();
-        Compat.refreshJEITooltips();
+        if (Compat.jei) Compat.refreshJEITooltips();
     }
 
     public static void updateBonuses(EntityPlayer player)
@@ -41,7 +41,7 @@ public class ClientBonus extends Bonus
         for (ClientBonus bonus : ClientData.bonuses.values()) bonus.update(player);
         if (refreshJEI)
         {
-            Compat.refreshJEITooltips();
+            if (Compat.jei) Compat.refreshJEITooltips();
             refreshJEI = false;
         }
     }
