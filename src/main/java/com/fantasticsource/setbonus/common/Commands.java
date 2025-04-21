@@ -11,17 +11,13 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.Loader;
 
 import javax.annotation.Nullable;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Commands extends CommandBase
 {
-    private static String configDir = Loader.instance().getConfigDir().getAbsolutePath() + File.separator;
-
     @Override
     public String getName()
     {
