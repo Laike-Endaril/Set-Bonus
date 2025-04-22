@@ -3,23 +3,38 @@ package com.fantasticsource.setbonus;
 import com.fantasticsource.tools.ReflectionTool;
 import it.unimi.dsi.fastutil.chars.Char2ObjectMap;
 import mezz.jei.Internal;
+import mezz.jei.config.Config;
 import mezz.jei.gui.ingredients.IIngredientListElement;
 import mezz.jei.ingredients.AdaptiveIngredientFilterBackgroundBuilder;
 import mezz.jei.ingredients.IngredientFilter;
 import mezz.jei.ingredients.IngredientFilterBackgroundBuilder;
 import mezz.jei.ingredients.TooltipSearchTree;
+import mezz.jei.startup.ProxyCommonClient;
 import mezz.jei.suffixtree.CombinedSearchTrees;
+import mezz.jei.util.Translator;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Loader;
 
 public class Compat
 {
-    public static boolean jei = false;
+    public static boolean jei = false, hei = false;
 
     public static void init()
     {
-        if (Loader.isModLoaded("jei") && Loader.instance().getIndexedModList().get("jei").getName().equals("Just Enough Items")) jei = true;
+        if (Loader.isModLoaded("jei"))
+        {
+            switch (Loader.instance().getIndexedModList().get("jei").getName())
+            {
+                case "Just Enough Items":
+                    jei = true;
+                    break;
+
+                case "Had Enough Items":
+                    hei = true;
+                    break;
+            }
+        }
     }
 
     public static void refreshJEITooltips()
@@ -48,5 +63,12 @@ public class Compat
             backgroundBuilder = new AdaptiveIngredientFilterBackgroundBuilder(prefixedSearchTrees.values(), elementList);
             ReflectionTool.set(IngredientFilter.class, "backgroundBuilder", ingredientFilter, backgroundBuilder);
         }
+    }
+
+    public static void refreshHEITooltips()
+    {
+        ReflectionTool.set(Config.class, "needToRebuildSearchTree", null, true);
+        ReflectionTool.invoke(ProxyCommonClient.class, "reloadItemList", null);
+        ReflectionTool.invoke(Translator.class, "invalidateLocale", null);
     }
 }

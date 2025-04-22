@@ -33,6 +33,7 @@ public class ClientBonus extends Bonus
         }
         ClientData.bonuses.clear();
         if (Compat.jei) Compat.refreshJEITooltips();
+        else if (Compat.hei) Compat.refreshHEITooltips();
     }
 
     public static void updateBonuses(EntityPlayer player)
@@ -42,6 +43,7 @@ public class ClientBonus extends Bonus
         if (refreshJEI)
         {
             if (Compat.jei) Compat.refreshJEITooltips();
+            else if (Compat.hei) Compat.refreshHEITooltips();
             refreshJEI = false;
         }
     }
