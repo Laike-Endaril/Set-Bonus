@@ -24,6 +24,8 @@ import java.util.Set;
 public class Compat
 {
     public static boolean jei = false, hei = false;
+    public static Class elementSearchClass;
+    public static int msPerStep = 30;
 
     public static void init()
     {
@@ -37,6 +39,7 @@ public class Compat
 
                 case "Had Enough Items":
                     hei = true;
+                    elementSearchClass = ReflectionTool.getClassByName("mezz.jei.search.ElementSearch");
                     break;
             }
         }
@@ -78,8 +81,6 @@ public class Compat
             return;
         }
 
-
-        Class elementSearchClass = ReflectionTool.getClassByName("mezz.jei.search.ElementSearch");
 
         IngredientFilter ingredientFilter = Internal.getIngredientFilter();
         Object elementSearch = ReflectionTool.get(IngredientFilter.class, "elementSearch", ingredientFilter);

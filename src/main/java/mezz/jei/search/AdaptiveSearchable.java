@@ -1,5 +1,6 @@
 package mezz.jei.search;
 
+import com.fantasticsource.setbonus.Compat;
 import mezz.jei.config.Config;
 import mezz.jei.gui.ingredients.IIngredientListElement;
 import net.minecraft.client.Minecraft;
@@ -56,11 +57,11 @@ public class AdaptiveSearchable extends PrefixedSearchable
 
         if (lastStepTime == 0)
         {
-            lastStepTime = System.currentTimeMillis() - 50;
+            lastStepTime = System.currentTimeMillis() - Compat.msPerStep;
             MinecraftForge.EVENT_BUS.register(this);
         }
 
-        final long stopTime = lastStepTime + 50;
+        final long stopTime = lastStepTime + Compat.msPerStep;
         while (lastFinishedIndex < ingredientsInProgress.length)
         {
             if (System.currentTimeMillis() >= stopTime)

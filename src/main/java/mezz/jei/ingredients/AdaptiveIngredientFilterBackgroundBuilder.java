@@ -1,5 +1,6 @@
 package mezz.jei.ingredients;
 
+import com.fantasticsource.setbonus.Compat;
 import mezz.jei.config.Config;
 import mezz.jei.gui.ingredients.IIngredientListElement;
 import mezz.jei.suffixtree.GeneralizedSuffixTree;
@@ -46,12 +47,12 @@ public class AdaptiveIngredientFilterBackgroundBuilder extends IngredientFilterB
     {
         if (lastStepTime == 0)
         {
-            lastStepTime = System.currentTimeMillis() - 50;
+            lastStepTime = System.currentTimeMillis() - Compat.msPerStep;
             MinecraftForge.EVENT_BUS.register(this);
         }
 
 
-        final long stopTime = lastStepTime + 50;
+        final long stopTime = lastStepTime + Compat.msPerStep;
         for (PrefixedSearchTree prefixedTree : this.prefixedSearchTrees)
         {
             Config.SearchMode mode = prefixedTree.getMode();
