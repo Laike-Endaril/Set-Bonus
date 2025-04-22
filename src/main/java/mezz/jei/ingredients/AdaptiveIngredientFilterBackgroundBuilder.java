@@ -68,13 +68,13 @@ public class AdaptiveIngredientFilterBackgroundBuilder extends IngredientFilterB
                 GeneralizedSuffixTree tree = prefixedTree.getTree();
                 for (int i = tree.getHighestIndex() + 1; i < this.elementList.size(); i++)
                 {
+                    if (System.currentTimeMillis() >= stopTime) return false;
+
                     IIngredientListElement element = elementList.get(i);
                     Collection<String> strings = stringsGetter.getStrings(element);
 
                     if (strings.isEmpty()) tree.put("", i);
                     else for (String string : strings) tree.put(string, i);
-
-                    if (System.currentTimeMillis() >= stopTime) return false;
                 }
             }
         }
