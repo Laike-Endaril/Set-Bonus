@@ -25,7 +25,7 @@ public class Compat
 {
     public static boolean jei = false, hei = false;
     public static Class elementSearchClass;
-    public static int msPerStep = 30;
+    public static int minMSPerStep = 10, maxMSPerStep = 30;
 
     public static void init()
     {

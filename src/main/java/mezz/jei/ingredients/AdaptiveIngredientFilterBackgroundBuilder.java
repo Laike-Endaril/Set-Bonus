@@ -1,6 +1,9 @@
 package mezz.jei.ingredients;
 
 import com.fantasticsource.setbonus.Compat;
+import com.fantasticsource.tools.ReflectionTool;
+import com.fantasticsource.tools.Tools;
+import mezz.jei.Internal;
 import mezz.jei.config.Config;
 import mezz.jei.gui.ingredients.IIngredientListElement;
 import mezz.jei.suffixtree.GeneralizedSuffixTree;
@@ -47,12 +50,12 @@ public class AdaptiveIngredientFilterBackgroundBuilder extends IngredientFilterB
     {
         if (lastStepTime == 0)
         {
-            lastStepTime = System.currentTimeMillis() - Compat.msPerStep;
+            lastStepTime = System.currentTimeMillis() - Compat.maxMSPerStep;
             MinecraftForge.EVENT_BUS.register(this);
         }
 
 
-        final long stopTime = lastStepTime + Compat.msPerStep;
+        final long stopTime = Tools.max(System.currentTimeMillis() + Compat.minMSPerStep, lastStepTime + Compat.maxMSPerStep);
         for (PrefixedSearchTree prefixedTree : this.prefixedSearchTrees)
         {
             Config.SearchMode mode = prefixedTree.getMode();
@@ -65,6 +68,8 @@ public class AdaptiveIngredientFilterBackgroundBuilder extends IngredientFilterB
                     if (System.currentTimeMillis() >= stopTime)
                     {
                         lastStepTime = stopTime;
+                        ReflectionTool.set(IngredientFilter.class, "filterCached", Internal.getIngredientFilter(), null);
+                        Internal.getRuntime().getIngredientListOverlay().updateLayout(true);
                         return;
                     }
 
@@ -79,5 +84,7 @@ public class AdaptiveIngredientFilterBackgroundBuilder extends IngredientFilterB
 
         lastStepTime = 0;
         MinecraftForge.EVENT_BUS.unregister(this);
+        ReflectionTool.set(IngredientFilter.class, "filterCached", Internal.getIngredientFilter(), null);
+        Internal.getRuntime().getIngredientListOverlay().updateLayout(true);
     }
 }
