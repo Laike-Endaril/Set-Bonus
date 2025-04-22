@@ -53,7 +53,7 @@ public class AdaptiveIngredientFilterBackgroundBuilder extends IngredientFilterB
     {
         if (lastStepTime == 0)
         {
-            lastStepTime = System.currentTimeMillis() + 50;
+            lastStepTime = System.currentTimeMillis() - 50;
             MinecraftForge.EVENT_BUS.register(this);
         }
 
