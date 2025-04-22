@@ -19,7 +19,7 @@ public class Compat
 
     public static void init()
     {
-        if (Loader.isModLoaded("jei")) jei = true;
+        if (Loader.isModLoaded("jei") && Loader.instance().getIndexedModList().get("jei").getName().equals("Just Enough Items")) jei = true;
     }
 
     public static void refreshJEITooltips()
