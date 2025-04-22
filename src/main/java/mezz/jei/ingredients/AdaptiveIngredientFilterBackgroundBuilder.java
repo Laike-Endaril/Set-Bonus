@@ -33,14 +33,7 @@ public class AdaptiveIngredientFilterBackgroundBuilder extends IngredientFilterB
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onClientTick(TickEvent.ClientTickEvent event)
     {
-        if (Minecraft.getMinecraft().player != null && event.phase == TickEvent.Phase.END)
-        {
-            if (buildOrRebuild())
-            {
-                lastStepTime = 0;
-                MinecraftForge.EVENT_BUS.unregister(this);
-            }
-        }
+        if (Minecraft.getMinecraft().player != null && event.phase == TickEvent.Phase.END) buildOrRebuild();
     }
 
     @Override
@@ -49,7 +42,7 @@ public class AdaptiveIngredientFilterBackgroundBuilder extends IngredientFilterB
         buildOrRebuild();
     }
 
-    public boolean buildOrRebuild()
+    public void buildOrRebuild()
     {
         if (lastStepTime == 0)
         {
@@ -68,7 +61,7 @@ public class AdaptiveIngredientFilterBackgroundBuilder extends IngredientFilterB
                 GeneralizedSuffixTree tree = prefixedTree.getTree();
                 for (int i = tree.getHighestIndex() + 1; i < this.elementList.size(); i++)
                 {
-                    if (System.currentTimeMillis() >= stopTime) return false;
+                    if (System.currentTimeMillis() >= stopTime) return;
 
                     IIngredientListElement element = elementList.get(i);
                     Collection<String> strings = stringsGetter.getStrings(element);
@@ -79,6 +72,7 @@ public class AdaptiveIngredientFilterBackgroundBuilder extends IngredientFilterB
             }
         }
 
-        return true;
+        lastStepTime = 0;
+        MinecraftForge.EVENT_BUS.unregister(this);
     }
 }
