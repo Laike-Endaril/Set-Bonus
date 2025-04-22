@@ -1,0 +1,125 @@
+package mezz.jei.search;
+
+import it.unimi.dsi.fastutil.chars.Char2ObjectArrayMap;
+import it.unimi.dsi.fastutil.chars.Char2ObjectMap;
+import mezz.jei.config.Config;
+import mezz.jei.gui.ingredients.IIngredientListElement;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.function.Supplier;
+
+public class PrefixInfo implements Comparable<PrefixInfo>
+{
+
+    public static final PrefixInfo NO_PREFIX = null;
+
+    private static final Char2ObjectMap<PrefixInfo> instances = new Char2ObjectArrayMap<>(6);
+
+    private static void addPrefix(PrefixInfo info)
+    {
+        instances.put(info.getPrefix(), info);
+    }
+
+    public static Collection<PrefixInfo> all()
+    {
+        return Collections.unmodifiableCollection(instances.values());
+    }
+
+    public static PrefixInfo get(char ch)
+    {
+        return instances.get(ch);
+    }
+
+    private final char prefix;
+    private final int priority;
+    private final boolean potentialDialecticInclusion, async;
+    private final String desc;
+    private final IModeGetter modeGetter;
+    private final IStringsGetter stringsGetter;
+    private final Supplier<ISearchStorage<IIngredientListElement<?>>> storage;
+
+    public PrefixInfo(char prefix, int priority, boolean potentialDialecticInclusion, String desc, IModeGetter modeGetter, IStringsGetter stringsGetter,
+                      Supplier<ISearchStorage<IIngredientListElement<?>>> storage)
+    {
+        this(prefix, priority, potentialDialecticInclusion, true, desc, modeGetter, stringsGetter, storage);
+    }
+
+    public PrefixInfo(char prefix, int priority, boolean potentialDialecticInclusion, boolean async, String desc, IModeGetter modeGetter, IStringsGetter stringsGetter,
+                      Supplier<ISearchStorage<IIngredientListElement<?>>> storage)
+    {
+        this.prefix = prefix;
+        this.priority = priority;
+        this.potentialDialecticInclusion = potentialDialecticInclusion;
+        this.async = async;
+        this.desc = desc;
+        this.modeGetter = modeGetter;
+        this.stringsGetter = stringsGetter;
+        this.storage = storage;
+    }
+
+    public char getPrefix()
+    {
+        return prefix;
+    }
+
+    public int getPriority()
+    {
+        return priority;
+    }
+
+    public boolean hasPotentialDialecticInclusion()
+    {
+        return potentialDialecticInclusion;
+    }
+
+    public boolean isAsyncable()
+    {
+        return this.async;
+    }
+
+    public String getDesc()
+    {
+        return desc;
+    }
+
+    public Config.SearchMode getMode()
+    {
+        return modeGetter.getMode();
+    }
+
+    public ISearchStorage<IIngredientListElement<?>> createStorage()
+    {
+        return this.storage.get();
+    }
+
+    public Collection<String> getStrings(IIngredientListElement<?> element)
+    {
+        return null;
+    }
+
+    @Override
+    public int compareTo(PrefixInfo o)
+    {
+        return Integer.compare(o.priority, this.priority);
+    }
+
+    @FunctionalInterface
+    public interface IStringsGetter
+    {
+        Collection<String> getStrings(IIngredientListElement<?> element);
+    }
+
+    @FunctionalInterface
+    public interface IModeGetter
+    {
+        Config.SearchMode getMode();
+    }
+
+    @Override
+    public String toString()
+    {
+        return "PrefixInfo{" + desc + '}';
+    }
+
+}
