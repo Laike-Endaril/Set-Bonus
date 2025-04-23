@@ -3,6 +3,7 @@ package com.fantasticsource.setbonus.client;
 import com.fantasticsource.setbonus.Compat;
 import com.fantasticsource.setbonus.common.Bonus;
 import com.fantasticsource.setbonus.common.bonusrequirements.ABonusRequirement;
+import com.fantasticsource.setbonus.config.SetBonusConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.relauncher.Side;
@@ -32,8 +33,7 @@ public class ClientBonus extends Bonus
             for (BonusInstance data : bonus.instances.values()) data.update(false);
         }
         ClientData.bonuses.clear();
-        if (Compat.jei) Compat.refreshJEITooltips();
-        else if (Compat.hei) Compat.refreshHEITooltips();
+        if (SetBonusConfig.clientSettings.dynamicTooltipSearch > 0) Compat.refreshTooltips();
     }
 
     public static void updateBonuses(EntityPlayer player)
@@ -42,9 +42,11 @@ public class ClientBonus extends Bonus
         for (ClientBonus bonus : ClientData.bonuses.values()) bonus.update(player);
         if (refreshJEI)
         {
-            if (Compat.jei) Compat.refreshJEITooltips();
-            else if (Compat.hei) Compat.refreshHEITooltips();
-            refreshJEI = false;
+            if (SetBonusConfig.clientSettings.dynamicTooltipSearch > 1)
+            {
+                Compat.refreshTooltips();
+                refreshJEI = false;
+            }
         }
     }
 

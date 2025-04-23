@@ -1,11 +1,13 @@
 package com.fantasticsource.setbonus.client;
 
+import com.fantasticsource.setbonus.Compat;
 import com.fantasticsource.setbonus.common.Network;
 import com.fantasticsource.setbonus.common.bonuselements.EnchantmentBonus;
 import com.fantasticsource.setbonus.common.bonuselements.ModifierBonus;
 import com.fantasticsource.setbonus.common.bonuselements.PotionBonus;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Equip;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Set;
+import com.fantasticsource.setbonus.config.SetBonusConfig;
 import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.LinkedHashMap;
@@ -112,5 +114,9 @@ public class ClientData
         {
             EnchantmentBonus.getInstance(enchantString, Side.CLIENT);
         }
+
+
+        //Reload JEI/HEI tooltips depending on config
+        if (SetBonusConfig.clientSettings.dynamicTooltipSearch > 0) Compat.refreshTooltips();
     }
 }

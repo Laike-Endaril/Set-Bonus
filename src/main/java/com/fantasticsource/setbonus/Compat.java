@@ -45,6 +45,13 @@ public class Compat
         }
     }
 
+
+    public static void refreshTooltips()
+    {
+        if (jei) refreshJEITooltips();
+        else if (hei) refreshHEITooltips();
+    }
+
     public static void refreshJEITooltips()
     {
         IngredientFilter ingredientFilter = Internal.getIngredientFilter();
