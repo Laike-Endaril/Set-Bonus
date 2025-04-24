@@ -2,6 +2,7 @@ package mezz.jei.ingredients;
 
 import com.fantasticsource.setbonus.Compat;
 import com.fantasticsource.tools.ReflectionTool;
+import it.unimi.dsi.fastutil.chars.Char2ObjectMap;
 import mezz.jei.Internal;
 import mezz.jei.config.Config;
 import mezz.jei.gui.ingredients.IIngredientListElement;
@@ -114,6 +115,16 @@ public class ThreadedIngredientFilterBackgroundBuilder extends IngredientFilterB
     @Override
     public void onClientTick(TickEvent.ClientTickEvent event)
     {
+    }
+
+
+    public static boolean needsReload(Char2ObjectMap prefixedSearchTrees)
+    {
+        for (Map.Entry<Character, PrefixedSearchTree> entry : ((Char2ObjectMap<PrefixedSearchTree>) prefixedSearchTrees).entrySet())
+        {
+            if (entry.getValue().getMode() != Config.SearchMode.DISABLED && entry.getKey() == '#') return true;
+        }
+        return false;
     }
 
 

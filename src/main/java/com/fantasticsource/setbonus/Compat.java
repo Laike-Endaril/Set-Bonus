@@ -54,6 +54,7 @@ public class Compat
         IngredientFilter ingredientFilter = Internal.getIngredientFilter();
         Object backgroundBuilder = ReflectionTool.get(IngredientFilter.class, "backgroundBuilder", ingredientFilter);
         Char2ObjectMap prefixedSearchTrees = (Char2ObjectMap) ReflectionTool.get(IngredientFilter.class, "prefixedSearchTrees", ingredientFilter);
+        if (!ThreadedIngredientFilterBackgroundBuilder.needsReload(prefixedSearchTrees)) return;
 
         MinecraftForge.EVENT_BUS.unregister(backgroundBuilder);
         NonNullList<IIngredientListElement> elementList = (NonNullList<IIngredientListElement>) ReflectionTool.get(IngredientFilter.class, "elementList", ingredientFilter);
