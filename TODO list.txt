@@ -29,20 +29,6 @@ More bonus types...
 2 means reactive within all opened inventories (render effect between the 2+ items)
 3+ means reactive in the world; the number is the detection radius in blocks (render effect between the player and each ground item / container / entity (including other players!))
 
-Attack effects (like those in DS) that use set filtering
-
-
-
-Look into possible race condition issue, where eg...
-...bonus A activates when armor is low enough, and increases attack power
-...bonus B activates when attack power is high enough, and increases armor
-1. bonus A activates, increasing attack power
-2. this causes bonus B to activate, increasing armor
-3. this causes bonus A to deactivate, decreasing attack power
-4. this causes bonus B to deactivate, decreasing armor
-5. repeats from 1
-If this becomes an issue, the best solution might be to exclude attribute modifiers from sets when calculating set bonus requirements, but so far it hasn't come and it's been several years
-
 
 
 SetBonus GUI ==========================================================================================================================================================================================================
@@ -75,3 +61,17 @@ Potion effects...
 *Right column is detail view of currently selected entry
 
 Make each text element a link (if applicable)
+
+
+
+LONG TERM NOTES ==========================================================================================================================================================================================================
+
+Possible race condition, where eg...
+...bonus A activates when armor is low enough, and increases attack power
+...bonus B activates when attack power is high enough, and increases armor
+1. bonus A activates, increasing attack power
+2. this causes bonus B to activate, increasing armor
+3. this causes bonus A to deactivate, decreasing attack power
+4. this causes bonus B to deactivate, decreasing armor
+5. repeats from 1
+If this becomes an issue, the best solution might be to exclude attribute modifiers from sets when calculating set bonus requirements, but so far it hasn't come and it's been several years
