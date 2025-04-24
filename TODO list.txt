@@ -43,6 +43,7 @@ Look into possible race condition issue, where eg...
 3. this causes bonus A to deactivate, decreasing attack power
 4. this causes bonus B to deactivate, decreasing armor
 5. repeats from 1
+If this becomes an issue, the best solution might be to exclude attribute modifiers from sets when calculating set bonus requirements, but so far it hasn't come and it's been several years
 
 
 
