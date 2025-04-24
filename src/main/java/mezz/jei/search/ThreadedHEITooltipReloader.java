@@ -67,7 +67,7 @@ public class ThreadedHEITooltipReloader
             while (thread.isAlive()) ;
         }
         thread = new Thread(runnable);
-        thread.setName("Set Bonus JEI Tooltip Reload");
+        thread.setName("Set Bonus HEI Tooltip Reload");
         thread.start();
     }
 
