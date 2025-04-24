@@ -23,11 +23,11 @@ More bonus types...
 
 
 
-"Reactive" system for equipment sets which gives a visual indicator for set items and for linking the items of a set...
-0 means reactive within the player's inventory (an opened chest is not part of the player's inventory)
-1 means reactive only when actively contributing to a set
-1 means reactive within all opened inventories
-2 means non-reactive
+"Reactive" system; indicates when another item is part of a set for which you already have at least 1 item equipped
+0 means non-reactive
+1 means reactive within the player's inventory (an opened chest is not part of the player's inventory) (render effect between the 2+ items)
+2 means reactive within all opened inventories (render effect between the 2+ items)
+3+ means reactive in the world; the number is the detection radius in blocks (render effect between the player and each ground item / container / entity (including other players!))
 
 Attack effects (like those in DS) that use set filtering
 
