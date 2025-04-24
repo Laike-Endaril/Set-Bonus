@@ -20,32 +20,38 @@ import java.util.Map;
 public class ThreadedTooltipReloader
 {
     protected static volatile ThreadedData QUEUED_DATA = null, PROCESSED_DATA = null;
+    protected static volatile boolean STOP = false;
     protected static Thread thread = null;
     protected static final Runnable runnable = () ->
     {
         ThreadedData workingData;
 
-        while (QUEUED_DATA != null)
+        workingData = QUEUED_DATA;
+        QUEUED_DATA = null;
+
+
+        Collection<String> strings;
+        for (int i = 0; i < workingData.elements.length; i++)
         {
-            workingData = QUEUED_DATA;
-            QUEUED_DATA = null;
+            strings = workingData.stringsGetter.getStrings(workingData.elements[i]);
 
-
-            Collection<String> strings;
-            for (int i = 0; i < workingData.elements.length; i++)
+            if (strings.isEmpty()) workingData.tree.put("", i);
+            else
             {
-                strings = workingData.stringsGetter.getStrings(workingData.elements[i]);
-
-                if (strings.isEmpty()) workingData.tree.put("", i);
-                else for (String string : strings) workingData.tree.put(string, i);
-
-
-                if (QUEUED_DATA != null) break;
+                for (String string : strings)
+                {
+                    workingData.tree.put(string, i);
+                    if (STOP) break;
+                }
             }
 
 
-            if (QUEUED_DATA == null) PROCESSED_DATA = workingData;
+            if (STOP) break;
         }
+
+
+        if (!STOP) PROCESSED_DATA = workingData;
+        else STOP = false;
     };
 
     static
@@ -67,13 +73,8 @@ public class ThreadedTooltipReloader
         QUEUED_DATA = new ThreadedData(tooltipTree.getStringsGetter(), elementList);
         if (thread != null && thread.isAlive())
         {
-            try
-            {
-                thread.stop();
-            }
-            catch (ThreadDeath ignored)
-            {
-            }
+            STOP = true;
+            while (thread.isAlive()) ;
         }
         thread = new Thread(runnable);
         thread.setName("Set Bonus JEI Tooltip Reload");
