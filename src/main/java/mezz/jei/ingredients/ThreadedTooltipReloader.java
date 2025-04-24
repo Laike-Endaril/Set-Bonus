@@ -1,6 +1,5 @@
 package mezz.jei.ingredients;
 
-import com.fantasticsource.setbonus.Compat;
 import com.fantasticsource.tools.ReflectionTool;
 import it.unimi.dsi.fastutil.chars.Char2ObjectMap;
 import mezz.jei.Internal;
@@ -16,10 +15,9 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Collection;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class ThreadedIngredientFilterBackgroundBuilder extends IngredientFilterBackgroundBuilder
+public class ThreadedTooltipReloader
 {
     protected static volatile ThreadedData QUEUED_DATA = null, PROCESSED_DATA = null;
     protected static Thread thread = null;
@@ -34,19 +32,14 @@ public class ThreadedIngredientFilterBackgroundBuilder extends IngredientFilterB
 
 
             Collection<String> strings;
-            for (Map.Entry<PrefixedSearchTree.IStringsGetter, GeneralizedSuffixTree> entry : workingData.dataMap.entrySet())
+            for (int i = 0; i < workingData.elements.length; i++)
             {
-                GeneralizedSuffixTree tree = entry.getValue();
-                for (int i = 0; i < workingData.elements.length; i++)
-                {
-                    strings = entry.getKey().getStrings(workingData.elements[i]);
+                strings = workingData.stringsGetter.getStrings(workingData.elements[i]);
 
-                    if (strings.isEmpty()) tree.put("", i);
-                    else for (String string : strings) tree.put(string, i);
+                if (strings.isEmpty()) workingData.tree.put("", i);
+                else for (String string : strings) workingData.tree.put(string, i);
 
 
-                    if (QUEUED_DATA != null) break;
-                }
                 if (QUEUED_DATA != null) break;
             }
 
@@ -57,23 +50,31 @@ public class ThreadedIngredientFilterBackgroundBuilder extends IngredientFilterB
 
     static
     {
-        MinecraftForge.EVENT_BUS.register(ThreadedIngredientFilterBackgroundBuilder.class);
+        MinecraftForge.EVENT_BUS.register(ThreadedTooltipReloader.class);
     }
 
 
-    protected final Collection<PrefixedSearchTree> trees;
+    protected final PrefixedSearchTree tooltipTree;
     protected final int elementCount;
 
-    public ThreadedIngredientFilterBackgroundBuilder(Collection prefixedSearchTrees, NonNullList<IIngredientListElement> elementList)
+    public ThreadedTooltipReloader(Char2ObjectMap prefixedSearchTrees, NonNullList<IIngredientListElement> elementList)
     {
-        super(null, null);
-        trees = prefixedSearchTrees;
+        tooltipTree = (PrefixedSearchTree) prefixedSearchTrees.get('#');
         elementCount = elementList.size();
 
         MinecraftForge.EVENT_BUS.register(this);
 
-        QUEUED_DATA = new ThreadedData(prefixedSearchTrees, elementList);
-        if (thread != null && thread.isAlive()) thread.stop();
+        QUEUED_DATA = new ThreadedData(tooltipTree.getStringsGetter(), elementList);
+        if (thread != null && thread.isAlive())
+        {
+            try
+            {
+                thread.stop();
+            }
+            catch (ThreadDeath ignored)
+            {
+            }
+        }
         thread = new Thread(runnable);
         thread.setName("Set Bonus JEI Tooltip Reload");
         thread.start();
@@ -91,30 +92,17 @@ public class ThreadedIngredientFilterBackgroundBuilder extends IngredientFilterB
 
             if (data.elements.length == elementCount)
             {
-                for (PrefixedSearchTree tree : trees)
-                {
-                    ReflectionTool.set(PrefixedSearchTree.class, "tree", tree, data.dataMap.get(tree.getStringsGetter()));
-                }
+                ReflectionTool.set(PrefixedSearchTree.class, "tree", tooltipTree, data.tree);
 
                 IngredientFilter ingredientFilter = Internal.getIngredientFilter();
                 Object searchTree = ReflectionTool.get(IngredientFilter.class, "searchTree", ingredientFilter);
-                CombinedSearchTrees combinedSearchTrees = (CombinedSearchTrees) ReflectionTool.invoke(IngredientFilter.class, "buildCombinedSearchTrees", ingredientFilter, searchTree, trees);
+                Char2ObjectMap<PrefixedSearchTree> trees = (Char2ObjectMap<PrefixedSearchTree>) ReflectionTool.get(IngredientFilter.class, "prefixedSearchTrees", ingredientFilter);
+                CombinedSearchTrees combinedSearchTrees = (CombinedSearchTrees) ReflectionTool.invoke(IngredientFilter.class, "buildCombinedSearchTrees", ingredientFilter, searchTree, trees.values());
                 ReflectionTool.set(IngredientFilter.class, "combinedSearchTrees", ingredientFilter, combinedSearchTrees);
                 ReflectionTool.set(IngredientFilter.class, "filterCached", ingredientFilter, null);
                 Internal.getRuntime().getIngredientListOverlay().updateLayout(true);
             }
         }
-    }
-
-    @Override
-    public void start()
-    {
-        Compat.refreshJEITooltips();
-    }
-
-    @Override
-    public void onClientTick(TickEvent.ClientTickEvent event)
-    {
     }
 
 
@@ -130,15 +118,14 @@ public class ThreadedIngredientFilterBackgroundBuilder extends IngredientFilterB
 
     public static class ThreadedData
     {
-        LinkedHashMap<PrefixedSearchTree.IStringsGetter, GeneralizedSuffixTree> dataMap = new LinkedHashMap<>();
+        PrefixedSearchTree.IStringsGetter stringsGetter;
+        GeneralizedSuffixTree tree;
         IIngredientListElement[] elements;
 
-        ThreadedData(Collection<PrefixedSearchTree> prefixedSearchTrees, NonNullList<IIngredientListElement> elementList)
+        ThreadedData(PrefixedSearchTree.IStringsGetter stringsGetter, NonNullList<IIngredientListElement> elementList)
         {
-            for (PrefixedSearchTree tree : prefixedSearchTrees)
-            {
-                if (tree.getMode() != Config.SearchMode.DISABLED) dataMap.put(tree.getStringsGetter(), new GeneralizedSuffixTree());
-            }
+            this.stringsGetter = stringsGetter;
+            tree = new GeneralizedSuffixTree();
             this.elements = elementList.toArray(new IIngredientListElement[0]);
         }
     }

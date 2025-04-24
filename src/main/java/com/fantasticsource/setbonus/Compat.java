@@ -6,7 +6,7 @@ import mezz.jei.Internal;
 import mezz.jei.config.Config;
 import mezz.jei.gui.ingredients.IIngredientListElement;
 import mezz.jei.ingredients.IngredientFilter;
-import mezz.jei.ingredients.ThreadedIngredientFilterBackgroundBuilder;
+import mezz.jei.ingredients.ThreadedTooltipReloader;
 import mezz.jei.search.AdaptiveSearchable;
 import mezz.jei.search.CombinedSearchables;
 import mezz.jei.search.PrefixInfo;
@@ -23,6 +23,7 @@ public class Compat
     public static boolean jei = false, hei = false;
     public static Class elementSearchClass;
     public static int minMSPerStep = 10, maxMSPerStep = 30;
+    public static ThreadedTooltipReloader threadedTooltipReloader = null;
 
     public static void init()
     {
@@ -52,14 +53,12 @@ public class Compat
     public static void refreshJEITooltips()
     {
         IngredientFilter ingredientFilter = Internal.getIngredientFilter();
-        Object backgroundBuilder = ReflectionTool.get(IngredientFilter.class, "backgroundBuilder", ingredientFilter);
         Char2ObjectMap prefixedSearchTrees = (Char2ObjectMap) ReflectionTool.get(IngredientFilter.class, "prefixedSearchTrees", ingredientFilter);
-        if (!ThreadedIngredientFilterBackgroundBuilder.needsReload(prefixedSearchTrees)) return;
+        if (!ThreadedTooltipReloader.needsReload(prefixedSearchTrees)) return;
 
-        MinecraftForge.EVENT_BUS.unregister(backgroundBuilder);
+        if (threadedTooltipReloader != null) MinecraftForge.EVENT_BUS.unregister(threadedTooltipReloader);
         NonNullList<IIngredientListElement> elementList = (NonNullList<IIngredientListElement>) ReflectionTool.get(IngredientFilter.class, "elementList", ingredientFilter);
-        backgroundBuilder = new ThreadedIngredientFilterBackgroundBuilder(prefixedSearchTrees.values(), elementList);
-        ReflectionTool.set(IngredientFilter.class, "backgroundBuilder", ingredientFilter, backgroundBuilder);
+        threadedTooltipReloader = new ThreadedTooltipReloader(prefixedSearchTrees, elementList);
     }
 
     public static void refreshHEITooltips()
