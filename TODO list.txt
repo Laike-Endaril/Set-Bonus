@@ -1,3 +1,5 @@
+Split the tooltip cache into a static tooltip cache and a dynamic tooltip cache (and only reload the dynamic one)?
+
 Apply bonuses to mobs?
 Could maybe limit triggers to item pickup event and 1 tick after entity joining world?
 
