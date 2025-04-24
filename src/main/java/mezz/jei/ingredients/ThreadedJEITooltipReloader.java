@@ -17,7 +17,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.Collection;
 import java.util.Map;
 
-public class ThreadedTooltipReloader
+public class ThreadedJEITooltipReloader
 {
     protected static volatile ThreadedData QUEUED_DATA = null, PROCESSED_DATA = null;
     protected static volatile boolean STOP = false;
@@ -54,16 +54,11 @@ public class ThreadedTooltipReloader
         else STOP = false;
     };
 
-    static
-    {
-        MinecraftForge.EVENT_BUS.register(ThreadedTooltipReloader.class);
-    }
-
 
     protected final PrefixedSearchTree tooltipTree;
     protected final int elementCount;
 
-    public ThreadedTooltipReloader(Char2ObjectMap prefixedSearchTrees, NonNullList<IIngredientListElement> elementList)
+    public ThreadedJEITooltipReloader(Char2ObjectMap prefixedSearchTrees, NonNullList<IIngredientListElement> elementList)
     {
         tooltipTree = (PrefixedSearchTree) prefixedSearchTrees.get('#');
         elementCount = elementList.size();
@@ -98,9 +93,11 @@ public class ThreadedTooltipReloader
                 IngredientFilter ingredientFilter = Internal.getIngredientFilter();
                 Object searchTree = ReflectionTool.get(IngredientFilter.class, "searchTree", ingredientFilter);
                 Char2ObjectMap<PrefixedSearchTree> trees = (Char2ObjectMap<PrefixedSearchTree>) ReflectionTool.get(IngredientFilter.class, "prefixedSearchTrees", ingredientFilter);
+
                 CombinedSearchTrees combinedSearchTrees = (CombinedSearchTrees) ReflectionTool.invoke(IngredientFilter.class, "buildCombinedSearchTrees", ingredientFilter, searchTree, trees.values());
                 ReflectionTool.set(IngredientFilter.class, "combinedSearchTrees", ingredientFilter, combinedSearchTrees);
                 ReflectionTool.set(IngredientFilter.class, "filterCached", ingredientFilter, null);
+
                 Internal.getRuntime().getIngredientListOverlay().updateLayout(true);
             }
         }

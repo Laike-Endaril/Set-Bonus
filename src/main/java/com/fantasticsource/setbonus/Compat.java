@@ -2,15 +2,15 @@ package com.fantasticsource.setbonus;
 
 import com.fantasticsource.tools.ReflectionTool;
 import it.unimi.dsi.fastutil.chars.Char2ObjectMap;
+import it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet;
 import mezz.jei.Internal;
 import mezz.jei.config.Config;
 import mezz.jei.gui.ingredients.IIngredientListElement;
 import mezz.jei.ingredients.IngredientFilter;
-import mezz.jei.ingredients.ThreadedTooltipReloader;
-import mezz.jei.search.AdaptiveSearchable;
-import mezz.jei.search.CombinedSearchables;
+import mezz.jei.ingredients.ThreadedJEITooltipReloader;
 import mezz.jei.search.PrefixInfo;
 import mezz.jei.search.PrefixedSearchable;
+import mezz.jei.search.ThreadedHEITooltipReloader;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Loader;
@@ -23,7 +23,7 @@ public class Compat
     public static boolean jei = false, hei = false;
     public static Class elementSearchClass;
     public static int minMSPerStep = 10, maxMSPerStep = 30;
-    public static ThreadedTooltipReloader threadedTooltipReloader = null;
+    public static Object threadedTooltipReloader = null;
 
     public static void init()
     {
@@ -54,11 +54,12 @@ public class Compat
     {
         IngredientFilter ingredientFilter = Internal.getIngredientFilter();
         Char2ObjectMap prefixedSearchTrees = (Char2ObjectMap) ReflectionTool.get(IngredientFilter.class, "prefixedSearchTrees", ingredientFilter);
-        if (!ThreadedTooltipReloader.needsReload(prefixedSearchTrees)) return;
+        if (!ThreadedJEITooltipReloader.needsReload(prefixedSearchTrees)) return;
+
 
         if (threadedTooltipReloader != null) MinecraftForge.EVENT_BUS.unregister(threadedTooltipReloader);
         NonNullList<IIngredientListElement> elementList = (NonNullList<IIngredientListElement>) ReflectionTool.get(IngredientFilter.class, "elementList", ingredientFilter);
-        threadedTooltipReloader = new ThreadedTooltipReloader(prefixedSearchTrees, elementList);
+        threadedTooltipReloader = new ThreadedJEITooltipReloader(prefixedSearchTrees, elementList);
     }
 
     public static void refreshHEITooltips()
@@ -73,26 +74,13 @@ public class Compat
         IngredientFilter ingredientFilter = Internal.getIngredientFilter();
         Object elementSearch = ReflectionTool.get(IngredientFilter.class, "elementSearch", ingredientFilter);
         Map<PrefixInfo, PrefixedSearchable> prefixedSearchables = (Map<PrefixInfo, PrefixedSearchable>) ReflectionTool.get(ReflectionTool.getClassByName("mezz.jei.search.ElementSearch"), "prefixedSearchables", elementSearch);
-        CombinedSearchables combinedSearchables = new CombinedSearchables();
-        for (PrefixInfo prefixInfo : prefixedSearchables.keySet())
-        {
-            if (prefixInfo.getPrefix() == '#')
-            {
-                PrefixedSearchable prefixedSearchable = prefixedSearchables.get(prefixInfo);
-                if (prefixedSearchable instanceof AdaptiveSearchable) MinecraftForge.EVENT_BUS.unregister(prefixedSearchable);
+        if (!ThreadedHEITooltipReloader.needsReload(prefixedSearchables)) return;
 
-                prefixedSearchable = new AdaptiveSearchable(prefixInfo);
-                prefixedSearchables.put(prefixInfo, prefixedSearchable);
-                combinedSearchables.addSearchable(prefixedSearchable);
-                prefixedSearchable.submitAll(NonNullList.from(null, ((Set<IIngredientListElement>) ReflectionTool.invoke(elementSearchClass, "getAllIngredients", elementSearch)).toArray(new IIngredientListElement[0])));
-            }
-            else
-            {
-                combinedSearchables.addSearchable(prefixedSearchables.get(prefixInfo));
-            }
-        }
-        ReflectionTool.set(elementSearchClass, "combinedSearchables", elementSearch, combinedSearchables);
 
-        ingredientFilter.invalidateCache();
+        if (threadedTooltipReloader != null) MinecraftForge.EVENT_BUS.unregister(threadedTooltipReloader);
+        Set<IIngredientListElement<?>> allIngredients = new ReferenceOpenHashSet<>();
+        prefixedSearchables.get(PrefixInfo.NO_PREFIX).getAllElements(allIngredients);
+        NonNullList<IIngredientListElement> elements = NonNullList.from(null, allIngredients.toArray(new IIngredientListElement[0]));
+        threadedTooltipReloader = new ThreadedHEITooltipReloader(prefixedSearchables, elements);
     }
 }
