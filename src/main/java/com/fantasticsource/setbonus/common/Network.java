@@ -27,6 +27,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.HashSet;
 
@@ -162,14 +163,11 @@ public class Network
 
     public static class DiscoverBonusPacketHandler implements IMessageHandler<DiscoverBonusPacket, IMessage>
     {
+        @SideOnly(Side.CLIENT)
         @Override
         public IMessage onMessage(DiscoverBonusPacket packet, MessageContext ctx)
         {
-            if (ctx.side == Side.CLIENT)
-            {
-                Minecraft.getMinecraft().addScheduledTask(() -> ClientData.update(packet));
-            }
-
+            Minecraft.getMinecraft().addScheduledTask(() -> ClientData.update(packet));
             return null;
         }
     }
@@ -283,14 +281,11 @@ public class Network
 
     public static class ConfigPacketHandler implements IMessageHandler<ConfigPacket, IMessage>
     {
+        @SideOnly(Side.CLIENT)
         @Override
         public IMessage onMessage(ConfigPacket packet, MessageContext ctx)
         {
-            if (ctx.side == Side.CLIENT)
-            {
-                Minecraft.getMinecraft().addScheduledTask(() -> ClientData.update(packet));
-            }
-
+            Minecraft.getMinecraft().addScheduledTask(() -> ClientData.update(packet));
             return null;
         }
     }
@@ -324,14 +319,11 @@ public class Network
 
     public static class HPFixPacketHandler implements IMessageHandler<HPFixPacket, IMessage>
     {
+        @SideOnly(Side.CLIENT)
         @Override
         public IMessage onMessage(HPFixPacket packet, MessageContext ctx)
         {
-            if (ctx.side == Side.CLIENT)
-            {
-                Minecraft.getMinecraft().addScheduledTask(() -> Minecraft.getMinecraft().player.setHealth(packet.hp));
-            }
-
+            Minecraft.getMinecraft().addScheduledTask(() -> Minecraft.getMinecraft().player.setHealth(packet.hp));
             return null;
         }
     }
@@ -365,25 +357,22 @@ public class Network
 
     public static class PotionFixPacketHandler implements IMessageHandler<PotionFixPacket, IMessage>
     {
+        @SideOnly(Side.CLIENT)
         @Override
         public IMessage onMessage(PotionFixPacket packet, MessageContext ctx)
         {
-            if (ctx.side == Side.CLIENT)
+            Minecraft.getMinecraft().addScheduledTask(() ->
             {
-                Minecraft.getMinecraft().addScheduledTask(() ->
+                EntityPlayer player = Minecraft.getMinecraft().player;
+                PotionEffect potionEffect = player.getActivePotionEffect(packet.potion);
+                if (potionEffect != null)
                 {
-                    EntityPlayer player = Minecraft.getMinecraft().player;
-                    PotionEffect potionEffect = player.getActivePotionEffect(packet.potion);
-                    if (potionEffect != null)
-                    {
-                        player.removePotionEffect(potionEffect.getPotion());
-                        potionEffect = new FantasticPotionEffect(potionEffect.getPotion(), potionEffect.getDuration(), potionEffect.getAmplifier(), potionEffect.getIsAmbient(), potionEffect.doesShowParticles());
-                        potionEffect.setPotionDurationMax(potionEffect.getDuration() >= FantasticPotionEffect.MAX_DURATION_THRESHOLD);
-                        player.addPotionEffect(potionEffect);
-                    }
-                });
-            }
-
+                    player.removePotionEffect(potionEffect.getPotion());
+                    potionEffect = new FantasticPotionEffect(potionEffect.getPotion(), potionEffect.getDuration(), potionEffect.getAmplifier(), potionEffect.getIsAmbient(), potionEffect.doesShowParticles());
+                    potionEffect.setPotionDurationMax(potionEffect.getDuration() >= FantasticPotionEffect.MAX_DURATION_THRESHOLD);
+                    player.addPotionEffect(potionEffect);
+                }
+            });
             return null;
         }
     }
