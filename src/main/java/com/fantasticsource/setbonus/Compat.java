@@ -65,7 +65,7 @@ public class Compat
     {
         if ((boolean) ReflectionTool.invoke(Config.class, "isUltraLowMemoryMode", null))
         {
-            System.out.println("NOTE: ULTRA LOW MEMORY MODE IS NOT COMPATIBLE WITH TOOLTIP SEARCHING (UNLESS CHANGED SINCE HEI 1.12.2-4.27.3)");
+            System.out.println("NOTE: HEI ULTRA LOW MEMORY MODE IS NOT COMPATIBLE WITH TOOLTIP SEARCHING (UNLESS CHANGED SINCE HEI 1.12.2-4.27.3)");
             return;
         }
 
