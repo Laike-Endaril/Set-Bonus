@@ -105,4 +105,14 @@ public class PotionBonus extends ABonusElement
             }
         }
     }
+
+
+    @Override
+    public String[] tooltips()
+    {
+        String[] result = new String[potions.size()];
+        int i = 0;
+        for (FantasticPotionEffect potion : potions) result[i++] = potion.toString(false);
+        return result;
+    }
 }

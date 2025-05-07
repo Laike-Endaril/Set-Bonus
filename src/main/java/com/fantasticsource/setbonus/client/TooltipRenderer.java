@@ -1,6 +1,10 @@
 package com.fantasticsource.setbonus.client;
 
 import com.fantasticsource.mctools.items.RegistryRegexItemFilter;
+import com.fantasticsource.setbonus.common.bonuselements.ABonusElement;
+import com.fantasticsource.setbonus.common.bonuselements.EnchantmentBonus;
+import com.fantasticsource.setbonus.common.bonuselements.ModifierBonus;
+import com.fantasticsource.setbonus.common.bonuselements.PotionBonus;
 import com.fantasticsource.setbonus.common.bonusrequirements.ABonusRequirement;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Set;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.SetRequirement;
@@ -12,6 +16,7 @@ import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static net.minecraft.util.text.TextFormatting.*;
@@ -36,6 +41,7 @@ public class TooltipRenderer
             {
                 if (filter.matches(stack))
                 {
+                    //This item is part of a known set; add set tooltip for the set we're currently looking at
                     if (!edited)
                     {
                         edited = true;
@@ -66,8 +72,10 @@ public class TooltipRenderer
                             else otherReqs = true;
                         }
 
+
                         if (req > 0)
                         {
+                            //This item fills a requirement for the particular bonus we're looking at, so add bonus tooltip(s) for the set bonus we're currently looking at
                             ClientBonus.BonusInstance bonusInstance = bonus.getBonusInstance(player);
 
                             color = "";
@@ -82,6 +90,43 @@ public class TooltipRenderer
                             }
 
                             tooltip.add(color + " (" + active + "/" + req + ")" + (otherReqs ? "*" : "") + " " + bonus.name);
+
+
+                            if (SetBonusConfig.clientSettings.enableAttributeModifierTooltips || SetBonusConfig.clientSettings.enablePotionEffectTooltips || SetBonusConfig.clientSettings.enableEnchantmentTooltips)
+                            {
+                                //Detailed bonus tooltips
+                                ArrayList<ModifierBonus> modifierBonuses = new ArrayList<>();
+                                ArrayList<PotionBonus> potionBonuses = new ArrayList<>();
+                                ArrayList<EnchantmentBonus> enchantmentBonuses = new ArrayList<>();
+                                for (ABonusElement element : bonus.bonusElements)
+                                {
+                                    if (element instanceof ModifierBonus) modifierBonuses.add((ModifierBonus) element);
+                                    else if (element instanceof PotionBonus) potionBonuses.add((PotionBonus) element);
+                                    else if (element instanceof EnchantmentBonus) enchantmentBonuses.add((EnchantmentBonus) element);
+                                }
+                                if (SetBonusConfig.clientSettings.enableAttributeModifierTooltips)
+                                {
+                                    for (ModifierBonus modifierBonus : modifierBonuses)
+                                    {
+                                        for (String line : modifierBonus.tooltips()) tooltip.add(color + "  " + line);
+                                    }
+                                }
+                                if (SetBonusConfig.clientSettings.enablePotionEffectTooltips)
+                                {
+                                    for (PotionBonus potionBonus : potionBonuses)
+                                    {
+                                        for (String line : potionBonus.tooltips()) tooltip.add(color + "  " + line);
+                                    }
+                                }
+                                if (SetBonusConfig.clientSettings.enableEnchantmentTooltips)
+                                {
+                                    for (EnchantmentBonus enchantmentBonus : enchantmentBonuses)
+                                    {
+                                        //TODO change how the enchantment bonus displays based on this item, where it is, where it could be, and whether it has it applied?
+                                        for (String line : enchantmentBonus.tooltips()) tooltip.add(color + "  " + line);
+                                    }
+                                }
+                            }
                         }
                     }
                     tooltip.add("");

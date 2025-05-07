@@ -33,4 +33,19 @@ public class ClientConfig
             })
     @Config.RangeInt(min = 0, max = 2)
     public int dynamicTooltipSearch = 1;
+
+    @Config.Name("3. Enable Attribute Modifier Tooltips")
+    @Config.LangKey(SetBonus.MODID + ".config.enableAttributeModifierTooltips")
+    @Config.Comment("Whether or not to show attribute modifier information in discovered set item tooltips")
+    public boolean enableAttributeModifierTooltips = true;
+
+    @Config.Name("4. Enable Potion Effect Tooltips")
+    @Config.LangKey(SetBonus.MODID + ".config.enablePotionEffectTooltips")
+    @Config.Comment("Whether or not to show potion effect information in discovered set item tooltips")
+    public boolean enablePotionEffectTooltips = true;
+
+    @Config.Name("5. Enable Enchantment Tooltips")
+    @Config.LangKey(SetBonus.MODID + ".config.enableEnchantmentTooltips")
+    @Config.Comment("Whether or not to show enchantment information in discovered set item tooltips")
+    public boolean enableEnchantmentTooltips = true;
 }

@@ -20,4 +20,6 @@ public abstract class ABonusElement
     public abstract void deactivate(EntityPlayer player);
 
     public abstract void updateActive(EntityPlayer player);
+
+    public abstract String[] tooltips();
 }

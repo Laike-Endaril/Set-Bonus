@@ -1,5 +1,6 @@
 package com.fantasticsource.setbonus.common.bonuselements;
 
+import com.fantasticsource.mctools.MCTools;
 import com.fantasticsource.mctools.attributes.AttributeMods;
 import com.fantasticsource.setbonus.SetBonus;
 import com.fantasticsource.setbonus.client.ClientData;
@@ -84,5 +85,15 @@ public class ModifierBonus extends ABonusElement
     @Override
     public void updateActive(EntityPlayer player)
     {
+    }
+
+
+    @Override
+    public String[] tooltips()
+    {
+        String[] result = new String[modifiers.size()];
+        int i = 0;
+        for (AttributeModifier modifier : modifiers.values()) result[i++] = MCTools.getAttributeModString(modifier);
+        return result;
     }
 }

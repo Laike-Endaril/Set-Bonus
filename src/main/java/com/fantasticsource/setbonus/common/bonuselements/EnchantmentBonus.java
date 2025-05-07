@@ -5,7 +5,6 @@ import com.fantasticsource.mctools.MCTools;
 import com.fantasticsource.mctools.ServerTickTimer;
 import com.fantasticsource.mctools.enchantments.Enchantments;
 import com.fantasticsource.mctools.event.InventoryChangedEvent;
-import com.fantasticsource.setbonus.SetBonus;
 import com.fantasticsource.setbonus.client.ClientBonus;
 import com.fantasticsource.setbonus.client.ClientData;
 import com.fantasticsource.setbonus.common.Bonus;
@@ -21,6 +20,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
@@ -31,6 +31,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.fantasticsource.setbonus.SetBonus.MODID;
 
 public class EnchantmentBonus extends ABonusElement
 {
@@ -57,14 +59,14 @@ public class EnchantmentBonus extends ABonusElement
         String[] tokens = parsableEnchantmentBonus.split(",");
         if (tokens.length < 3)
         {
-            System.err.println(I18n.translateToLocalFormatted(SetBonus.MODID + ".error.notEnoughEnchantmentBonusArgs", parsableEnchantmentBonus));
+            System.err.println(I18n.translateToLocalFormatted(MODID + ".error.notEnoughEnchantmentBonusArgs", parsableEnchantmentBonus));
             return null;
         }
 
         Bonus bonus = side == Side.SERVER ? ServerData.bonuses.get(tokens[0].trim()) : ClientData.bonuses.get(tokens[0].trim());
         if (bonus == null)
         {
-            System.err.println(I18n.translateToLocalFormatted(SetBonus.MODID + ".error.enchantmentBonusIDNotFound", tokens[0].trim(), parsableEnchantmentBonus));
+            System.err.println(I18n.translateToLocalFormatted(MODID + ".error.enchantmentBonusIDNotFound", tokens[0].trim(), parsableEnchantmentBonus));
             return null;
         }
 
@@ -185,30 +187,30 @@ public class EnchantmentBonus extends ABonusElement
             switch (entry.getKey().getValue())
             {
                 case 0:
-                    //Vanilla behavior
+                    //Normal; vanilla behavior
                     if (level == oldLevel) level++;
                     else level = Tools.max(level, oldLevel);
                     level = Tools.min(Tools.max(level, 0), enchantment.getMaxLevel());
                     break;
 
                 case 1:
-                    //Vanilla behavior, but without limits
+                    //Unbound; vanilla behavior, but without limits
                     if (level == oldLevel) level++;
                     else level = Tools.max(level, oldLevel);
                     break;
 
                 case 2:
-                    //Set level directly, overriding any previous value
+                    //Forced; set level directly, overriding any previous value
                     break;
 
                 case 3:
-                    //Add to level directly, with limits (0 -> max level); can be used to subtract levels if attached level is negative
+                    //Add; add to level directly, with limits (0 -> max level); can be used to subtract levels if attached level is negative
                     level += oldLevel;
                     level = Tools.min(Tools.max(level, 0), enchantment.getMaxLevel());
                     break;
 
                 case 4:
-                    //Add to level directly, without limits; can be used to subtract levels if attached level is negative
+                    //Add Unbound; add to level directly, without limits; can be used to subtract levels if attached level is negative
                     level += oldLevel;
                     break;
             }
@@ -366,5 +368,25 @@ public class EnchantmentBonus extends ABonusElement
                 }
             });
         }
+    }
+
+
+    @Override
+    public String[] tooltips()
+    {
+//        HashMap<Pair<Enchantment, Integer>, Integer> enchantments;
+        //Enchant, behavior/mode, level
+        String[] result = new String[enchantments.size()];
+        int i = 0;
+        Enchantment enchantment;
+        int mode, level;
+        for (Map.Entry<Pair<Enchantment, Integer>, Integer> entry : enchantments.entrySet())
+        {
+            enchantment = entry.getKey().getKey();
+            mode = entry.getKey().getValue();
+            level = entry.getValue();
+            result[i++] = (enchantment.isCurse() ? TextFormatting.RED : TextFormatting.GREEN) + "" + enchantment.getTranslatedName(level) + " (" + I18n.translateToLocal(MODID + ".enchantmode." + mode) + ")";
+        }
+        return result;
     }
 }
