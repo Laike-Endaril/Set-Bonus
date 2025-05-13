@@ -12,6 +12,7 @@ import com.fantasticsource.setbonus.config.SetBonusConfig;
 import com.fantasticsource.tools.Tools;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -52,7 +53,7 @@ public class TooltipRenderer
                     int count = set.getNumberEquipped(player);
                     int max = set.getMaxNumber();
                     String color = "" + (count == 0 ? RED : count == max ? GREEN : YELLOW);
-                    tooltip.add(color + BOLD + "=== " + set.name + " (" + count + "/" + max + ") ===");
+                    tooltip.add(color + BOLD + "=== " + I18n.translateToLocal(set.name) + " (" + count + "/" + max + ") ===");
                     for (ClientBonus bonus : ClientData.bonuses.values())
                     {
                         int req = 0;
@@ -89,7 +90,7 @@ public class TooltipRenderer
                                 else color += YELLOW; //Some set requirements met
                             }
 
-                            tooltip.add(color + " (" + active + "/" + req + ")" + (otherReqs ? "*" : "") + " " + bonus.name);
+                            tooltip.add(color + " (" + active + "/" + req + ")" + (otherReqs ? "*" : "") + " " + I18n.translateToLocal(bonus.name));
 
 
                             if (SetBonusConfig.clientSettings.enableAttributeModifierTooltips || SetBonusConfig.clientSettings.enablePotionEffectTooltips || SetBonusConfig.clientSettings.enableEnchantmentTooltips)
