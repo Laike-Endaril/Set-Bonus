@@ -6,9 +6,9 @@ import net.minecraftforge.client.event.RenderTooltipEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
 
-public class BonusScreen extends GUIScreen
+public class BonusGUI extends GUIScreen
 {
-    public static BonusScreen bonusScreen = new BonusScreen();
+    public static BonusGUI bonusGUI = new BonusGUI();
     private static long debounce = System.currentTimeMillis();
 
     public ItemStack stack = null;
@@ -23,8 +23,8 @@ public class BonusScreen extends GUIScreen
 //            if (time - debounce > 200)
 //            {
 //                debounce = time;
-//                bonusScreen.stack = stack;
-//                Minecraft.getMinecraft().displayGuiScreen(bonusScreen);
+//                bonusGUI.stack = stack;
+//                Minecraft.getMinecraft().displayGuiScreen(bonusGUI);
 //            }
 //        }
     }
@@ -34,8 +34,8 @@ public class BonusScreen extends GUIScreen
     {
 //        if (BONUS_SCREEN_KEY.isPressed() && BONUS_SCREEN_KEY.getKeyConflictContext().isActive())
 //        {
-//            bonusScreen.stack = null;
-//            Minecraft.getMinecraft().displayGuiScreen(bonusScreen);
+//            bonusGUI.stack = null;
+//            Minecraft.getMinecraft().displayGuiScreen(bonusGUI);
 //        }
     }
 

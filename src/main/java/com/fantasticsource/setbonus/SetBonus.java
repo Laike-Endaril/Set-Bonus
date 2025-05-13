@@ -3,10 +3,11 @@ package com.fantasticsource.setbonus;
 import com.fantasticsource.mctools.ClientTickTimer;
 import com.fantasticsource.mctools.MCTools;
 import com.fantasticsource.mctools.ServerTickTimer;
-import com.fantasticsource.setbonus.client.BonusScreen;
+import com.fantasticsource.setbonus.client.BonusGUI;
 import com.fantasticsource.setbonus.client.ClientBonus;
 import com.fantasticsource.setbonus.client.ClientData;
 import com.fantasticsource.setbonus.client.TooltipRenderer;
+import com.fantasticsource.setbonus.client.gui.SetBonusConfigGUI;
 import com.fantasticsource.setbonus.common.Commands;
 import com.fantasticsource.setbonus.common.Network;
 import com.fantasticsource.setbonus.common.bonuselements.PotionBonus;
@@ -14,14 +15,17 @@ import com.fantasticsource.setbonus.config.ConfigHandler;
 import com.fantasticsource.setbonus.server.ServerBonus;
 import com.fantasticsource.setbonus.server.ServerData;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.World;
+import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.fml.client.config.GuiConfig;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
@@ -70,7 +74,7 @@ public class SetBonus
 
             MinecraftForge.EVENT_BUS.register(ClientTickTimer.class);
             MinecraftForge.EVENT_BUS.register(TooltipRenderer.class);
-            MinecraftForge.EVENT_BUS.register(BonusScreen.class);
+            MinecraftForge.EVENT_BUS.register(BonusGUI.class);
         }
     }
 
@@ -181,5 +185,16 @@ public class SetBonus
     public static void disconnectFromServer(FMLNetworkEvent.ClientDisconnectionFromServerEvent event)
     {
         Minecraft.getMinecraft().addScheduledTask(ClientData::clear);
+    }
+
+    @SubscribeEvent
+    public static void gui(GuiOpenEvent event)
+    {
+        GuiScreen gui = event.getGui();
+        if (gui instanceof GuiConfig && MODID.equals(((GuiConfig) gui).modID))
+        {
+            event.setCanceled(true);
+            new SetBonusConfigGUI();
+        }
     }
 }
