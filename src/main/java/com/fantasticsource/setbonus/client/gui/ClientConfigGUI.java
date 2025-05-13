@@ -30,12 +30,57 @@ public class ClientConfigGUI extends GUIScreen
         root.add(new GUITextSpacer(this));
 
         GUIBooleanToggle tooltips = new GUIBooleanToggle(this, reformat(MODID + ".config.enableTooltips")).set(SetBonusConfig.clientSettings.enableTooltips);
-        tooltips.onClickActions.add(() ->
+        root.add(tooltips.setTooltip(reformat(MODID + ".config.enableTooltips.tooltip")));
+
+        GUIBooleanToggle attributeModTooltips = new GUIBooleanToggle(this, reformat(MODID + ".config.enableAttributeModifierTooltips")).set(SetBonusConfig.clientSettings.enableAttributeModifierTooltips);
+        GUIBooleanToggle potionTooltips = new GUIBooleanToggle(this, reformat(MODID + ".config.enablePotionEffectTooltips")).set(SetBonusConfig.clientSettings.enablePotionEffectTooltips);
+        GUIBooleanToggle enchantmentTooltips = new GUIBooleanToggle(this, reformat(MODID + ".config.enableEnchantmentTooltips")).set(SetBonusConfig.clientSettings.enableEnchantmentTooltips);
+
+        if (tooltips.value)
         {
-            SetBonusConfig.clientSettings.enableTooltips = tooltips.value;
+            root.add(attributeModTooltips.setTooltip(reformat(MODID + ".config.enableAttributeModifierTooltips.tooltip")));
+            root.add(potionTooltips.setTooltip(reformat(MODID + ".config.enablePotionEffectTooltips.tooltip")));
+            root.add(enchantmentTooltips.setTooltip(reformat(MODID + ".config.enableEnchantmentTooltips.tooltip")));
+        }
+
+
+        //Actions
+        tooltips.addClickActions(() ->
+        {
+            if (tooltips.value)
+            {
+                SetBonusConfig.clientSettings.enableTooltips = true;
+                root.add(attributeModTooltips);
+                root.add(potionTooltips);
+                root.add(enchantmentTooltips);
+            }
+            else
+            {
+                SetBonusConfig.clientSettings.enableTooltips = false;
+                root.remove(attributeModTooltips);
+                root.remove(potionTooltips);
+                root.remove(enchantmentTooltips);
+            }
             MCTools.saveConfig(MODID);
         });
-        root.add(tooltips.setTooltip(reformat(MODID + ".config.enableTooltips.tooltip")));
+
+        attributeModTooltips.addClickActions(() ->
+        {
+            SetBonusConfig.clientSettings.enableAttributeModifierTooltips = attributeModTooltips.value;
+            MCTools.saveConfig(MODID);
+        });
+
+        potionTooltips.addClickActions(() ->
+        {
+            SetBonusConfig.clientSettings.enablePotionEffectTooltips = potionTooltips.value;
+            MCTools.saveConfig(MODID);
+        });
+
+        enchantmentTooltips.addClickActions(() ->
+        {
+            SetBonusConfig.clientSettings.enableEnchantmentTooltips = enchantmentTooltips.value;
+            MCTools.saveConfig(MODID);
+        });
     }
 
 

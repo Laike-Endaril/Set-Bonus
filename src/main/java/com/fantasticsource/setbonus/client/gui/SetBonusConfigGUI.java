@@ -27,7 +27,7 @@ public class SetBonusConfigGUI extends GUIScreen
         root.add(new GUITextSpacer(this));
 
         element = new GUITextButton(this, reformat(MODID + ".config.clientSettings"));
-        element.onClickActions.add(ClientConfigGUI::new);
+        element.addClickActions(ClientConfigGUI::new);
         root.add(element);
 
 //        //Scrollview
