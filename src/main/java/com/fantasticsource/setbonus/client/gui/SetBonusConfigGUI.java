@@ -3,10 +3,11 @@ package com.fantasticsource.setbonus.client.gui;
 import com.fantasticsource.mctools.gui.GUIScreen;
 import com.fantasticsource.mctools.gui.element.GUIElement;
 import com.fantasticsource.mctools.gui.element.other.GUIDarkenedBackground;
-import com.fantasticsource.mctools.gui.element.other.GUIVerticalScrollbar;
 import com.fantasticsource.mctools.gui.element.text.GUINavbar;
-import com.fantasticsource.mctools.gui.element.view.GUIScrollView;
-import com.fantasticsource.tools.datastructures.Color;
+import com.fantasticsource.mctools.gui.element.text.GUITextButton;
+import com.fantasticsource.mctools.gui.element.text.GUITextSpacer;
+
+import static com.fantasticsource.setbonus.SetBonus.MODID;
 
 public class SetBonusConfigGUI extends GUIScreen
 {
@@ -16,19 +17,30 @@ public class SetBonusConfigGUI extends GUIScreen
 
 
         //Root
+        root.setSubElementAutoplaceMethod(GUIElement.AP_CENTERED_H_TOP_TO_BOTTOM);
+
         root.add(new GUIDarkenedBackground(this));
         GUIElement element = new GUINavbar(this);
         ((GUINavbar) element).maxParentsDisplayed = 0;
         root.add(element);
 
+        root.add(new GUITextSpacer(this));
 
-        //Scrollview
-        double x = 0, y = element.height, w = 0.98, h = 1 - element.height;
-        GUIScrollView view = new GUIScrollView(this, x, y, w, h);
-        root.add(view);
-        root.add(new GUIVerticalScrollbar(this, view.x + view.width, view.y, 0.02, view.height, Color.GRAY, Color.BLANK, Color.WHITE, Color.BLANK, view));
+        element = new GUITextButton(this, reformat(MODID + ".config.clientSettings"));
+        element.onClickActions.add(ClientConfigGUI::new);
+        root.add(element);
+
+//        //Scrollview
+//        double x = 0, y = element.height, w = 0.98, h = 1 - element.height;
+//        GUIScrollView view = new GUIScrollView(this, x, y, w, h);
+//        root.add(view);
+//        root.add(new GUIVerticalScrollbar(this, view.x + view.width, view.y, 0.02, view.height, Color.GRAY, Color.BLANK, Color.WHITE, Color.BLANK, view));
 
 
+        //TODO Client
+        //TODO "Enable tooltips"
+
+        //TODO Server
         //TODO Equipment
         //TODO Sets
         //TODO Set Bonuses
