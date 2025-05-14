@@ -21,7 +21,6 @@ public class ServerConfigGUI extends GUIScreen
         //Root
         root.add(new GUIDarkenedBackground(this));
         GUINavbar navbar = new GUINavbar(this);
-        navbar.maxParentsDisplayed = 1;
         root.add(navbar);
 
 

@@ -25,7 +25,6 @@ public class ClientConfigGUI extends GUIScreen
 
         root.add(new GUIDarkenedBackground(this));
         GUIElement element = new GUINavbar(this);
-        ((GUINavbar) element).maxParentsDisplayed = 1;
         root.add(element);
 
 
@@ -40,11 +39,11 @@ public class ClientConfigGUI extends GUIScreen
                 reformat(MODID + ".config.dynamicTooltipSearch.always")
         );
         dynamicTooltipSearch.set(dynamicTooltipSearch.possibleValues[SetBonusConfig.clientSettings.dynamicTooltipSearch]);
-        root.add(dynamicTooltipSearch.setTooltip(reformat(MODID + ".config.dynamicTooltipSearch.tooltip")));
+        root.add(dynamicTooltipSearch);
 
 
         GUIBooleanToggle tooltips = new GUIBooleanToggle(this, reformat(MODID + ".config.enableTooltips")).set(SetBonusConfig.clientSettings.enableTooltips);
-        root.add(tooltips.setTooltip(reformat(MODID + ".config.enableTooltips.tooltip")));
+        root.add(tooltips);
 
         GUIBooleanToggle attributeModTooltips = new GUIBooleanToggle(this, reformat(MODID + ".config.enableAttributeModifierTooltips")).set(SetBonusConfig.clientSettings.enableAttributeModifierTooltips);
         GUIBooleanToggle potionTooltips = new GUIBooleanToggle(this, reformat(MODID + ".config.enablePotionEffectTooltips")).set(SetBonusConfig.clientSettings.enablePotionEffectTooltips);
@@ -52,9 +51,9 @@ public class ClientConfigGUI extends GUIScreen
 
         if (tooltips.value)
         {
-            root.add(attributeModTooltips.setTooltip(reformat(MODID + ".config.enableAttributeModifierTooltips.tooltip")));
-            root.add(potionTooltips.setTooltip(reformat(MODID + ".config.enablePotionEffectTooltips.tooltip")));
-            root.add(enchantmentTooltips.setTooltip(reformat(MODID + ".config.enableEnchantmentTooltips.tooltip")));
+            root.add(attributeModTooltips);
+            root.add(potionTooltips);
+            root.add(enchantmentTooltips);
         }
 
 
