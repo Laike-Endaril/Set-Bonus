@@ -46,7 +46,7 @@ public class ServerConfigGUI extends GUIScreen
         GUIView center = new GUIView(this, 1d / 3, 1 - navbar.height);
         root.add(center);
 
-        GUITextLabel settingsLabel = new GUITextLabel(this, 1, Color.GREEN).setText(reformat("setbonus.config.sets"));
+        GUITextLabel settingsLabel = new GUITextLabel(this, 1, Color.GREEN); //TODO change label text to currently selected bonus or set
         center.add(settingsLabel);
         GUIScrollView settings = new GUIScrollView(this, (1d / 3 - 0.02) * 3, 1 - settingsLabel.height);
         GUIVerticalScrollbar settingsScrollbar = new GUIVerticalScrollbar(this, 1 - settings.width, settings.height, getHoverColor(Color.AQUA), Color.BLANK, Color.AQUA, Color.BLANK, settings);
@@ -57,7 +57,7 @@ public class ServerConfigGUI extends GUIScreen
         GUIView right = new GUIView(this, 1d / 3, 1 - navbar.height);
         root.add(right);
 
-        GUITextLabel settings2Label = new GUITextLabel(this, 1, Color.GREEN).setText(reformat("setbonus.config.sets"));
+        GUITextLabel settings2Label = new GUITextLabel(this, 1, Color.GREEN); //TODO change label to entry selected from center column
         right.add(settings2Label);
         GUIScrollView settings2 = new GUIScrollView(this, (1d / 3 - 0.02) * 3, 1 - settings2Label.height);
         GUIVerticalScrollbar settingsScrollbar2 = new GUIVerticalScrollbar(this, 1 - settings2.width, settings2.height, getHoverColor(Color.AQUA), Color.BLANK, Color.AQUA, Color.BLANK, settings2);
@@ -99,10 +99,6 @@ public class ServerConfigGUI extends GUIScreen
             settings2.height = 1 - settings2Label.height;
             settingsScrollbar2.height = settings2.height;
         });
-
-
-        //TODO Remember to do lang support in the GUI
-        //TODO Remember to do explanations, also with lang support
     }
 
 
