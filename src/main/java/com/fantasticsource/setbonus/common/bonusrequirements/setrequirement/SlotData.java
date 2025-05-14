@@ -16,6 +16,7 @@ import net.minecraftforge.items.IItemHandlerModifiable;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 
 public class SlotData
 {
@@ -25,7 +26,7 @@ public class SlotData
             TRINKETS_OFFSET = AETHER_THRESHOLD, TRINKETS_THRESHOLD = TRINKETS_OFFSET + 32;
 
     public ArrayList<Integer> slots = new ArrayList<>(); //Because multiple slot options can be defined
-    public LinkedHashMap<String, RegistryRegexItemFilter> involvedEquips = new LinkedHashMap<>();
+    public LinkedHashSet<Equip> involvedEquips = new LinkedHashSet<>();
 
 
     private SlotData()
@@ -65,7 +66,7 @@ public class SlotData
                 return null;
             }
 
-            result.involvedEquips.put(equip.parsedString, equip.filter);
+            result.involvedEquips.add(equip);
             if (setdataEquipIDTracker != null) setdataEquipIDTracker.put(equipID, equip.filter);
         }
 
@@ -121,9 +122,9 @@ public class SlotData
             if (!allowStackableItems && stack.getMaxStackSize() != 1) continue;
 
 
-            for (RegistryRegexItemFilter filter : involvedEquips.values())
+            for (Equip equip : involvedEquips)
             {
-                if (filter.matches(stack)) return slot;
+                if (equip.filter.matches(stack)) return slot;
             }
         }
 

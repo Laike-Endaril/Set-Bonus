@@ -34,12 +34,12 @@ import java.util.Map;
 
 import static com.fantasticsource.setbonus.SetBonus.MODID;
 
-public class EnchantmentBonus extends ABonusElement
+public class BonusElementEnchantment extends ABonusElement
 {
     static
     {
         InventoryChangedEvent.watchedClasses.add(EntityPlayer.class);
-        MinecraftForge.EVENT_BUS.register(EnchantmentBonus.class);
+        MinecraftForge.EVENT_BUS.register(BonusElementEnchantment.class);
     }
 
 
@@ -47,14 +47,14 @@ public class EnchantmentBonus extends ABonusElement
     public HashMap<Pair<Enchantment, Integer>, Integer> enchantments;
     public HashMap<EntityPlayer, ItemStack> affectedItemStacks = new HashMap<>(); //NOT static; if it were static, there could be bad overwrites from OTHER ENCHANTMENT BONUSES
 
-    protected EnchantmentBonus(String parsableEnchantmentBonus, Bonus bonus, SlotData slotDataToEnchant, HashMap<Pair<Enchantment, Integer>, Integer> enchantments)
+    protected BonusElementEnchantment(String parsableEnchantmentBonus, Bonus bonus, SlotData slotDataToEnchant, HashMap<Pair<Enchantment, Integer>, Integer> enchantments)
     {
         super(parsableEnchantmentBonus, bonus);
         this.slotDataToEnchant = slotDataToEnchant;
         this.enchantments = enchantments;
     }
 
-    public static EnchantmentBonus getInstance(String parsableEnchantmentBonus, Side side)
+    public static BonusElementEnchantment getInstance(String parsableEnchantmentBonus, Side side)
     {
         String[] tokens = parsableEnchantmentBonus.split(",");
         if (tokens.length < 3)
@@ -76,7 +76,7 @@ public class EnchantmentBonus extends ABonusElement
         HashMap<Pair<Enchantment, Integer>, Integer> enchantments = Enchantments.parseEnchantments(Arrays.copyOfRange(tokens, 2, tokens.length));
         if (enchantments.size() == 0) return null;
 
-        return new EnchantmentBonus(parsableEnchantmentBonus, bonus, slotDataToEnchant, enchantments);
+        return new BonusElementEnchantment(parsableEnchantmentBonus, bonus, slotDataToEnchant, enchantments);
     }
 
     @Override
@@ -265,10 +265,10 @@ public class EnchantmentBonus extends ABonusElement
 
                 for (ABonusElement bonusElement : bonus.bonusElements)
                 {
-                    if (bonusElement instanceof EnchantmentBonus && bonusElement != this)
+                    if (bonusElement instanceof BonusElementEnchantment && bonusElement != this)
                     {
                         bonusElement.activate(player);
-                        if (((EnchantmentBonus) bonusElement).affectedItemStacks.get(player) == stack) otherApplied = true;
+                        if (((BonusElementEnchantment) bonusElement).affectedItemStacks.get(player) == stack) otherApplied = true;
                     }
                 }
             }
@@ -283,10 +283,10 @@ public class EnchantmentBonus extends ABonusElement
 
                 for (ABonusElement bonusElement : bonus.bonusElements)
                 {
-                    if (bonusElement instanceof EnchantmentBonus && bonusElement != this)
+                    if (bonusElement instanceof BonusElementEnchantment && bonusElement != this)
                     {
                         bonusElement.activate(player);
-                        if (((EnchantmentBonus) bonusElement).affectedItemStacks.get(player) == stack) otherApplied = true;
+                        if (((BonusElementEnchantment) bonusElement).affectedItemStacks.get(player) == stack) otherApplied = true;
                     }
                 }
             }

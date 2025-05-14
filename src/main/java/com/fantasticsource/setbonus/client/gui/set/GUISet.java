@@ -1,8 +1,8 @@
 package com.fantasticsource.setbonus.client.gui.set;
 
 import com.fantasticsource.mctools.gui.GUIScreen;
-import com.fantasticsource.mctools.gui.element.GUIElement;
 import com.fantasticsource.mctools.gui.element.text.GUITextLabel;
+import com.fantasticsource.setbonus.client.gui.ServerConfigGUI;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Set;
 import com.fantasticsource.tools.datastructures.Color;
 
@@ -24,17 +24,7 @@ public class GUISet extends GUITextLabel
         addClickActions(() ->
         {
             if (internalText.activeColor == Color.PURPLE) new SetGUI(this);
-            else
-            {
-                setColor(Color.PURPLE);
-                if (parent != null)
-                {
-                    for (GUIElement element : parent.children)
-                    {
-                        if (element instanceof GUISet && element != this) ((GUISet) element).setColor(Color.AQUA);
-                    }
-                }
-            }
+            else if (screen instanceof ServerConfigGUI) ((ServerConfigGUI) screen).select(this);
         });
     }
 

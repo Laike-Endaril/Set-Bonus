@@ -3,6 +3,7 @@ package com.fantasticsource.setbonus.client.gui;
 import com.fantasticsource.mctools.gui.GUIScreen;
 import com.fantasticsource.mctools.gui.element.GUIElement;
 import com.fantasticsource.mctools.gui.element.other.GUIDarkenedBackground;
+import com.fantasticsource.mctools.gui.element.other.GUILine;
 import com.fantasticsource.mctools.gui.element.other.GUIVerticalScrollbar;
 import com.fantasticsource.mctools.gui.element.text.GUINavbar;
 import com.fantasticsource.mctools.gui.element.text.GUITextLabel;
@@ -12,15 +13,27 @@ import com.fantasticsource.setbonus.client.gui.bonus.GUIBonus;
 import com.fantasticsource.setbonus.client.gui.equip.GUIEquip;
 import com.fantasticsource.setbonus.client.gui.set.GUISet;
 import com.fantasticsource.setbonus.common.Bonus;
+import com.fantasticsource.setbonus.common.bonuselements.ABonusElement;
+import com.fantasticsource.setbonus.common.bonuselements.BonusElementEnchantment;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Equip;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Set;
 import com.fantasticsource.setbonus.server.ServerData;
 import com.fantasticsource.tools.datastructures.Color;
 
+import java.util.ArrayList;
+
 import static com.fantasticsource.setbonus.SetBonus.MODID;
 
 public class ServerConfigGUI extends GUIScreen
 {
+    public static final Color LINE_COLOR = Color.YELLOW.copy().setAF(0.2f);
+    public static final double LINE_OFFSET = 0.125;
+
+    public GUITextLabel equipsLabel, bonusesLabel, setsLabel, settingsLabel, detailsLabel;
+    public GUIScrollView equips, bonuses, sets, settings, details;
+    public ArrayList<GUILine> lines = new ArrayList<>();
+
+
     public ServerConfigGUI()
     {
         show();
@@ -36,9 +49,9 @@ public class ServerConfigGUI extends GUIScreen
         GUIView equipsColumn = new GUIView(this, 0.25, 1 - navbar.height);
         root.add(equipsColumn);
 
-        GUITextLabel equipsLabel = new GUITextLabel(this, 1, Color.GREEN).setText(reformat(MODID + ".config.equipment"));
+        equipsLabel = new GUITextLabel(this, 1, Color.GREEN).setText(reformat(MODID + ".config.equipment"));
         equipsColumn.add(equipsLabel);
-        GUIScrollView equips = new GUIScrollView(this, (1d / 3 - 0.02) * 3, 1 - equipsLabel.height);
+        equips = new GUIScrollView(this, (1d / 3 - 0.02) * 3, 1 - equipsLabel.height);
         GUIVerticalScrollbar equipsScrollbar = new GUIVerticalScrollbar(this, 1 - equips.width, equips.height, getHoverColor(Color.AQUA), Color.BLANK, Color.AQUA, Color.BLANK, equips);
         equipsColumn.addAll(equips, equipsScrollbar);
 
@@ -47,15 +60,15 @@ public class ServerConfigGUI extends GUIScreen
         GUIView bonusesAndSetsColumn = new GUIView(this, 0.25, 1 - navbar.height);
         root.add(bonusesAndSetsColumn);
 
-        GUITextLabel bonusesLabel = new GUITextLabel(this, 1, Color.GREEN).setText(reformat(MODID + ".config.bonuses"));
+        bonusesLabel = new GUITextLabel(this, 1, Color.GREEN).setText(reformat(MODID + ".config.bonuses"));
         bonusesAndSetsColumn.add(bonusesLabel);
-        GUIScrollView bonuses = new GUIScrollView(this, (1d / 3 - 0.02) * 3, 0.5 - bonusesLabel.height);
+        bonuses = new GUIScrollView(this, (1d / 3 - 0.02) * 3, 0.5 - bonusesLabel.height);
         GUIVerticalScrollbar bonusesScrollbar = new GUIVerticalScrollbar(this, 1 - bonuses.width, bonuses.height, getHoverColor(Color.AQUA), Color.BLANK, Color.AQUA, Color.BLANK, bonuses);
         bonusesAndSetsColumn.addAll(bonuses, bonusesScrollbar);
 
-        GUITextLabel setsLabel = new GUITextLabel(this, 1, Color.GREEN).setText(reformat(MODID + ".config.sets"));
+        setsLabel = new GUITextLabel(this, 1, Color.GREEN).setText(reformat(MODID + ".config.sets"));
         bonusesAndSetsColumn.add(setsLabel);
-        GUIScrollView sets = new GUIScrollView(this, (1d / 3 - 0.02) * 3, 1 - setsLabel.y - setsLabel.height);
+        sets = new GUIScrollView(this, (1d / 3 - 0.02) * 3, 1 - setsLabel.y - setsLabel.height);
         GUIVerticalScrollbar setsScrollbar = new GUIVerticalScrollbar(this, 1 - sets.width, sets.height, getHoverColor(Color.AQUA), Color.BLANK, Color.AQUA, Color.BLANK, sets);
         bonusesAndSetsColumn.addAll(sets, setsScrollbar);
 
@@ -64,9 +77,9 @@ public class ServerConfigGUI extends GUIScreen
         GUIView settingsColumn = new GUIView(this, 0.25, 1 - navbar.height);
         root.add(settingsColumn);
 
-        GUITextLabel settingsLabel = new GUITextLabel(this, 1, Color.GREEN);
+        settingsLabel = new GUITextLabel(this, 1, Color.GREEN);
         settingsColumn.add(settingsLabel);
-        GUIScrollView settings = new GUIScrollView(this, (1d / 3 - 0.02) * 3, 1 - settingsLabel.height);
+        settings = new GUIScrollView(this, (1d / 3 - 0.02) * 3, 1 - settingsLabel.height);
         GUIVerticalScrollbar settingsScrollbar = new GUIVerticalScrollbar(this, 1 - settings.width, settings.height, getHoverColor(Color.AQUA), Color.BLANK, Color.AQUA, Color.BLANK, settings);
         settingsColumn.addAll(settings, settingsScrollbar);
 
@@ -75,9 +88,9 @@ public class ServerConfigGUI extends GUIScreen
         GUIView detailsColumn = new GUIView(this, 0.25, 1 - navbar.height);
         root.add(detailsColumn);
 
-        GUITextLabel detailsLabel = new GUITextLabel(this, 1, Color.GREEN); //TODO change label to entry selected from center column
+        detailsLabel = new GUITextLabel(this, 1, Color.GREEN); //TODO change label to entry selected from center column
         detailsColumn.add(detailsLabel);
-        GUIScrollView details = new GUIScrollView(this, (1d / 3 - 0.02) * 3, 1 - detailsLabel.height);
+        details = new GUIScrollView(this, (1d / 3 - 0.02) * 3, 1 - detailsLabel.height);
         GUIVerticalScrollbar detailsScrollbar = new GUIVerticalScrollbar(this, 1 - details.width, details.height, getHoverColor(Color.AQUA), Color.BLANK, Color.AQUA, Color.BLANK, details);
         detailsColumn.addAll(details, detailsScrollbar);
 
@@ -85,12 +98,20 @@ public class ServerConfigGUI extends GUIScreen
         //Main recalcs
         navbar.addRecalcActions(() ->
         {
+            equipsColumn.height = 1 - navbar.height;
             bonusesAndSetsColumn.height = 1 - navbar.height;
             settingsColumn.height = 1 - navbar.height;
             detailsColumn.height = 1 - navbar.height;
         });
 
-        //Left column recalcs
+        //Equips recalcs
+        equipsLabel.addRecalcActions(() ->
+        {
+            equips.height = 1 - equipsLabel.height;
+            equipsScrollbar.height = equips.height;
+        });
+
+        //Bonuses and sets recalcs
         bonusesLabel.addRecalcActions(() ->
         {
             bonuses.height = 0.5 - bonusesLabel.height;
@@ -104,14 +125,14 @@ public class ServerConfigGUI extends GUIScreen
             setsScrollbar.height = sets.height;
         });
 
-        //Center column recalcs
+        //Settings recalcs
         settingsLabel.addRecalcActions(() ->
         {
             settings.height = 1 - settingsLabel.height;
             settingsScrollbar.height = settings.height;
         });
 
-        //Right column recalcs
+        //Details recalcs
         detailsLabel.addRecalcActions(() ->
         {
             details.height = 1 - detailsLabel.height;
@@ -122,55 +143,103 @@ public class ServerConfigGUI extends GUIScreen
         for (Equip equip : ServerData.equipment.values())
         {
             GUIEquip guiEquip = new GUIEquip(this, equip, 1, 0.5);
-            equips.add(guiEquip.addClickActions(() ->
-            {
-                settingsLabel.setText(guiEquip.internalText.getText());
-
-                for (GUIElement element : sets.children)
-                {
-                    if (element instanceof GUISet) ((GUISet) element).setColor(Color.AQUA);
-                }
-                for (GUIElement element : bonuses.children)
-                {
-                    if (element instanceof GUIBonus) ((GUIBonus) element).setColor(Color.AQUA);
-                }
-            }));
+            equips.add(guiEquip.addClickActions(() -> settingsLabel.setText(guiEquip.internalText.getText())));
         }
 
         for (Set set : ServerData.sets.values())
         {
             GUISet guiSet = new GUISet(this, set, 1, 0.5);
-            sets.add(guiSet.addClickActions(() ->
-            {
-                settingsLabel.setText(guiSet.internalText.getText());
-
-                for (GUIElement element : equips.children)
-                {
-                    if (element instanceof GUIEquip) ((GUIEquip) element).setColor(Color.AQUA);
-                }
-                for (GUIElement element : bonuses.children)
-                {
-                    if (element instanceof GUIBonus) ((GUIBonus) element).setColor(Color.AQUA);
-                }
-            }));
+            sets.add(guiSet.addClickActions(() -> settingsLabel.setText(guiSet.internalText.getText())));
         }
 
         for (Bonus bonus : ServerData.bonuses.values())
         {
             GUIBonus guiBonus = new GUIBonus(this, bonus, 1, 0.5);
-            bonuses.add(guiBonus.addClickActions(() ->
-            {
-                settingsLabel.setText(guiBonus.internalText.getText());
+            bonuses.add(guiBonus.addClickActions(() -> settingsLabel.setText(guiBonus.internalText.getText())));
+        }
+    }
 
-                for (GUIElement element : equips.children)
+
+    public void select(GUITextLabel selected)
+    {
+        for (GUIElement element : equips.children)
+        {
+            if (element instanceof GUIEquip) ((GUIEquip) element).setColor(Color.AQUA);
+        }
+        for (GUIElement element : bonuses.children)
+        {
+            if (element instanceof GUIBonus) ((GUIBonus) element).setColor(Color.AQUA);
+        }
+        for (GUIElement element : sets.children)
+        {
+            if (element instanceof GUISet) ((GUISet) element).setColor(Color.AQUA);
+        }
+
+        selected.setColor(Color.PURPLE);
+
+
+        for (GUILine line : lines) root.remove(line);
+        lines.clear();
+
+        if (selected instanceof GUIEquip)
+        {
+            GUIEquip guiEquip = (GUIEquip) selected;
+
+            for (GUIElement element : sets.children)
+            {
+                if (element instanceof GUISet)
                 {
-                    if (element instanceof GUIEquip) ((GUIEquip) element).setColor(Color.AQUA);
+                    GUISet other = (GUISet) element;
+                    if (other.set.involvedEquips.containsKey(guiEquip.equip.name))
+                    {
+                        GUILine line = new GUILine(this, selected.absoluteX() + selected.absoluteWidth() * (1 - LINE_OFFSET), selected.absoluteY() + selected.absoluteHeight() * 0.5, other.absoluteX() + other.absoluteWidth() * LINE_OFFSET, other.absoluteY() + other.absoluteHeight() * 0.5, LINE_COLOR, 3);
+                        line.addRecalcActions(() -> line.set(selected.absoluteX() + selected.absoluteWidth() * (1 - LINE_OFFSET), selected.absoluteY() + selected.absoluteHeight() * 0.5, other.absoluteX() + other.absoluteWidth() * LINE_OFFSET, other.absoluteY() + other.absoluteHeight() * 0.5));
+                        lines.add(line);
+                        root.add(line);
+
+                        //TODO secondary lines to bonuses
+                    }
                 }
-                for (GUIElement element : sets.children)
+            }
+
+            for (GUIElement element : bonuses.children)
+            {
+                if (element instanceof GUIBonus)
                 {
-                    if (element instanceof GUISet) ((GUISet) element).setColor(Color.AQUA);
+                    GUIBonus other = (GUIBonus) element;
+                    for (ABonusElement bonusElement : other.bonus.bonusElements)
+                    {
+                        if (bonusElement instanceof BonusElementEnchantment)
+                        {
+                            if (((BonusElementEnchantment) bonusElement).slotDataToEnchant.involvedEquips.contains(guiEquip.equip))
+                            {
+                                GUILine line = new GUILine(this, selected.absoluteX() + selected.absoluteWidth() * (1 - LINE_OFFSET), selected.absoluteY() + selected.absoluteHeight() * 0.5, other.absoluteX() + other.absoluteWidth() * LINE_OFFSET, other.absoluteY() + other.absoluteHeight() * 0.5, LINE_COLOR, 3);
+                                line.addRecalcActions(() -> line.set(selected.absoluteX() + selected.absoluteWidth() * (1 - LINE_OFFSET), selected.absoluteY() + selected.absoluteHeight() * 0.5, other.absoluteX() + other.absoluteWidth() * LINE_OFFSET, other.absoluteY() + other.absoluteHeight() * 0.5));
+                                lines.add(line);
+                                root.add(line);
+                                break;
+                            }
+                        }
+                    }
+
+//                    for (ABonusElement bonusElement : guiBonus.bonus.bonusElements)
+//                    {
+//                        if (bonusElement instanceof BonusElementEnchantment && linkedSets.contains(((SetRequirement) bonusElement).set))
+//                        {
+//                            add = true;
+//                            break;
+//                        }
+//                    }
                 }
-            }));
+            }
+        }
+        else if (selected instanceof GUIBonus)
+        {
+
+        }
+        else if (selected instanceof GUISet)
+        {
+
         }
     }
 

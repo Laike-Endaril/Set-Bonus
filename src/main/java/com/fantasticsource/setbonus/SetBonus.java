@@ -10,7 +10,7 @@ import com.fantasticsource.setbonus.client.TooltipRenderer;
 import com.fantasticsource.setbonus.client.gui.SetBonusConfigGUI;
 import com.fantasticsource.setbonus.common.Commands;
 import com.fantasticsource.setbonus.common.Network;
-import com.fantasticsource.setbonus.common.bonuselements.PotionBonus;
+import com.fantasticsource.setbonus.common.bonuselements.BonusElementPotionEffect;
 import com.fantasticsource.setbonus.config.ConfigHandler;
 import com.fantasticsource.setbonus.server.ServerBonus;
 import com.fantasticsource.setbonus.server.ServerData;
@@ -65,7 +65,7 @@ public class SetBonus
 
         MinecraftForge.EVENT_BUS.register(SetBonus.class);
         MinecraftForge.EVENT_BUS.register(ServerTickTimer.class);
-        MinecraftForge.EVENT_BUS.register(PotionBonus.class);
+        MinecraftForge.EVENT_BUS.register(BonusElementPotionEffect.class);
 
         if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
         {

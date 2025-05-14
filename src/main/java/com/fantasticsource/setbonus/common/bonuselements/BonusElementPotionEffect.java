@@ -18,20 +18,20 @@ import net.minecraftforge.fml.relauncher.Side;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class PotionBonus extends ABonusElement
+public class BonusElementPotionEffect extends ABonusElement
 {
     public static EntityPlayerMP lastUpdatingPlayer = null;
 
 
     public ArrayList<FantasticPotionEffect> potions;
 
-    protected PotionBonus(String parsableBonusElement, Bonus bonus, ArrayList<FantasticPotionEffect> potions)
+    protected BonusElementPotionEffect(String parsableBonusElement, Bonus bonus, ArrayList<FantasticPotionEffect> potions)
     {
         super(parsableBonusElement, bonus);
         this.potions = potions;
     }
 
-    public static PotionBonus getInstance(String parsablePotionBonus, Side side)
+    public static BonusElementPotionEffect getInstance(String parsablePotionBonus, Side side)
     {
         String[] tokens = parsablePotionBonus.split(",");
         if (tokens.length < 2)
@@ -51,7 +51,7 @@ public class PotionBonus extends ABonusElement
         ArrayList<FantasticPotionEffect> potions = Potions.parsePotions(Arrays.copyOfRange(tokens, 1, tokens.length), true);
         if (potions.size() == 0) return null;
 
-        return new PotionBonus(parsablePotionBonus, bonus, potions);
+        return new BonusElementPotionEffect(parsablePotionBonus, bonus, potions);
     }
 
     @Override

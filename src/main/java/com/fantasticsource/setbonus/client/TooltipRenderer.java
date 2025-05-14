@@ -2,9 +2,9 @@ package com.fantasticsource.setbonus.client;
 
 import com.fantasticsource.mctools.items.RegistryRegexItemFilter;
 import com.fantasticsource.setbonus.common.bonuselements.ABonusElement;
-import com.fantasticsource.setbonus.common.bonuselements.EnchantmentBonus;
-import com.fantasticsource.setbonus.common.bonuselements.ModifierBonus;
-import com.fantasticsource.setbonus.common.bonuselements.PotionBonus;
+import com.fantasticsource.setbonus.common.bonuselements.BonusElementEnchantment;
+import com.fantasticsource.setbonus.common.bonuselements.BonusElementAttributeModifier;
+import com.fantasticsource.setbonus.common.bonuselements.BonusElementPotionEffect;
 import com.fantasticsource.setbonus.common.bonusrequirements.ABonusRequirement;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Set;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.SetRequirement;
@@ -96,35 +96,35 @@ public class TooltipRenderer
                             if (SetBonusConfig.clientSettings.enableAttributeModifierTooltips || SetBonusConfig.clientSettings.enablePotionEffectTooltips || SetBonusConfig.clientSettings.enableEnchantmentTooltips)
                             {
                                 //Detailed bonus tooltips
-                                ArrayList<ModifierBonus> modifierBonuses = new ArrayList<>();
-                                ArrayList<PotionBonus> potionBonuses = new ArrayList<>();
-                                ArrayList<EnchantmentBonus> enchantmentBonuses = new ArrayList<>();
+                                ArrayList<BonusElementAttributeModifier> bonusElementAttributeModifiers = new ArrayList<>();
+                                ArrayList<BonusElementPotionEffect> bonusElementPotionEffects = new ArrayList<>();
+                                ArrayList<BonusElementEnchantment> bonusElementEnchantments = new ArrayList<>();
                                 for (ABonusElement element : bonus.bonusElements)
                                 {
-                                    if (element instanceof ModifierBonus) modifierBonuses.add((ModifierBonus) element);
-                                    else if (element instanceof PotionBonus) potionBonuses.add((PotionBonus) element);
-                                    else if (element instanceof EnchantmentBonus) enchantmentBonuses.add((EnchantmentBonus) element);
+                                    if (element instanceof BonusElementAttributeModifier) bonusElementAttributeModifiers.add((BonusElementAttributeModifier) element);
+                                    else if (element instanceof BonusElementPotionEffect) bonusElementPotionEffects.add((BonusElementPotionEffect) element);
+                                    else if (element instanceof BonusElementEnchantment) bonusElementEnchantments.add((BonusElementEnchantment) element);
                                 }
                                 if (SetBonusConfig.clientSettings.enableAttributeModifierTooltips)
                                 {
-                                    for (ModifierBonus modifierBonus : modifierBonuses)
+                                    for (BonusElementAttributeModifier bonusElementAttributeModifier : bonusElementAttributeModifiers)
                                     {
-                                        for (String line : modifierBonus.tooltips()) tooltip.add(color + "  " + line);
+                                        for (String line : bonusElementAttributeModifier.tooltips()) tooltip.add(color + "  " + line);
                                     }
                                 }
                                 if (SetBonusConfig.clientSettings.enablePotionEffectTooltips)
                                 {
-                                    for (PotionBonus potionBonus : potionBonuses)
+                                    for (BonusElementPotionEffect bonusElementPotionEffect : bonusElementPotionEffects)
                                     {
-                                        for (String line : potionBonus.tooltips()) tooltip.add(color + "  " + line);
+                                        for (String line : bonusElementPotionEffect.tooltips()) tooltip.add(color + "  " + line);
                                     }
                                 }
                                 if (SetBonusConfig.clientSettings.enableEnchantmentTooltips)
                                 {
-                                    for (EnchantmentBonus enchantmentBonus : enchantmentBonuses)
+                                    for (BonusElementEnchantment bonusElementEnchantment : bonusElementEnchantments)
                                     {
                                         //TODO change how the enchantment bonus displays based on this item, where it is, where it could be, and whether it has it applied?
-                                        for (String line : enchantmentBonus.tooltips()) tooltip.add(color + "  " + line);
+                                        for (String line : bonusElementEnchantment.tooltips()) tooltip.add(color + "  " + line);
                                     }
                                 }
                             }

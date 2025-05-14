@@ -4,10 +4,11 @@ import com.fantasticsource.mctools.potions.FantasticPotionEffect;
 import com.fantasticsource.setbonus.SetBonus;
 import com.fantasticsource.setbonus.client.ClientData;
 import com.fantasticsource.setbonus.common.bonuselements.ABonusElement;
-import com.fantasticsource.setbonus.common.bonuselements.EnchantmentBonus;
-import com.fantasticsource.setbonus.common.bonuselements.ModifierBonus;
-import com.fantasticsource.setbonus.common.bonuselements.PotionBonus;
+import com.fantasticsource.setbonus.common.bonuselements.BonusElementAttributeModifier;
+import com.fantasticsource.setbonus.common.bonuselements.BonusElementEnchantment;
+import com.fantasticsource.setbonus.common.bonuselements.BonusElementPotionEffect;
 import com.fantasticsource.setbonus.common.bonusrequirements.ABonusRequirement;
+import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Equip;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Set;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.SetRequirement;
 import com.fantasticsource.setbonus.server.ServerBonus;
@@ -95,18 +96,21 @@ public class Network
 
             for (ABonusElement element : bonus.bonusElements)
             {
-                if (element instanceof ModifierBonus)
+                if (element instanceof BonusElementAttributeModifier)
                 {
                     attributeMods.add(element.parsedString);
                 }
-                else if (element instanceof PotionBonus)
+                else if (element instanceof BonusElementPotionEffect)
                 {
                     potions.add(element.parsedString);
                 }
-                else if (element instanceof EnchantmentBonus)
+                else if (element instanceof BonusElementEnchantment)
                 {
                     enchants.add(element.parsedString);
-                    equipment.addAll(((EnchantmentBonus) element).slotDataToEnchant.involvedEquips.keySet());
+                    for (Equip equip : ((BonusElementEnchantment) element).slotDataToEnchant.involvedEquips)
+                    {
+                        equipment.add(equip.parsedString);
+                    }
                 }
             }
 
@@ -218,11 +222,11 @@ public class Network
 
                     for (ABonusElement element : bonus.bonusElements)
                     {
-                        if (element instanceof ModifierBonus)
+                        if (element instanceof BonusElementAttributeModifier)
                         {
                             attributeMods.add(element.parsedString);
                         }
-                        else if (element instanceof PotionBonus)
+                        else if (element instanceof BonusElementPotionEffect)
                         {
                             potions.add(element.parsedString);
                         }

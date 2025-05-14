@@ -1,8 +1,8 @@
 package com.fantasticsource.setbonus.server;
 
-import com.fantasticsource.setbonus.common.bonuselements.EnchantmentBonus;
-import com.fantasticsource.setbonus.common.bonuselements.ModifierBonus;
-import com.fantasticsource.setbonus.common.bonuselements.PotionBonus;
+import com.fantasticsource.setbonus.common.bonuselements.BonusElementEnchantment;
+import com.fantasticsource.setbonus.common.bonuselements.BonusElementAttributeModifier;
+import com.fantasticsource.setbonus.common.bonuselements.BonusElementPotionEffect;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Equip;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Set;
 import net.minecraftforge.fml.relauncher.Side;
@@ -54,21 +54,21 @@ public class ServerData
         //Initialize attribute modifiers
         for (String modifierString : serverSettings.getAttributeMods())
         {
-            ModifierBonus.getInstance(modifierString, Side.SERVER);
+            BonusElementAttributeModifier.getInstance(modifierString, Side.SERVER);
         }
 
 
         //Initialize potions
         for (String potionString : serverSettings.getPotions())
         {
-            PotionBonus.getInstance(potionString, Side.SERVER);
+            BonusElementPotionEffect.getInstance(potionString, Side.SERVER);
         }
 
 
         //Initialize enchantments
         for (String enchantString : serverSettings.getEnchantments())
         {
-            EnchantmentBonus.getInstance(enchantString, Side.SERVER);
+            BonusElementEnchantment.getInstance(enchantString, Side.SERVER);
         }
     }
 }

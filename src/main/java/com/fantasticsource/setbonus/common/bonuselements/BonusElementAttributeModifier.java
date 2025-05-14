@@ -16,12 +16,12 @@ import net.minecraftforge.fml.relauncher.Side;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class ModifierBonus extends ABonusElement
+public class BonusElementAttributeModifier extends ABonusElement
 {
     private Multimap<String, AttributeModifier> modifiers = ArrayListMultimap.create();
 
 
-    private ModifierBonus(String parsableBonusElement, Bonus bonus, ArrayList<AttributeModifier> modifiers)
+    private BonusElementAttributeModifier(String parsableBonusElement, Bonus bonus, ArrayList<AttributeModifier> modifiers)
     {
         super(parsableBonusElement, bonus);
 
@@ -31,7 +31,7 @@ public class ModifierBonus extends ABonusElement
         }
     }
 
-    public static ModifierBonus getInstance(String parsableModifierBonus, Side side)
+    public static BonusElementAttributeModifier getInstance(String parsableModifierBonus, Side side)
     {
         String[] tokens = parsableModifierBonus.split(",");
         if (tokens.length < 2)
@@ -51,7 +51,7 @@ public class ModifierBonus extends ABonusElement
         ArrayList<AttributeModifier> modifiers = AttributeMods.parseMods(Arrays.copyOfRange(tokens, 1, tokens.length));
         if (modifiers == null) return null;
 
-        return new ModifierBonus(parsableModifierBonus, bonus, modifiers);
+        return new BonusElementAttributeModifier(parsableModifierBonus, bonus, modifiers);
     }
 
     @Override
