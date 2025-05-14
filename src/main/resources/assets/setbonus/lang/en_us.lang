@@ -35,18 +35,24 @@ setbonus.error.slotBadEquipID=Equipment ID not found (%s) in slot/equipment defi
 
 
 setbonus.config.clientSettings=Client Settings
-setbonus.config.serverSettings=Server Settings
+
+setbonus.config.dynamicTooltipSearch=Dynamic Tooltip Searching (JEI/HEI)
+setbonus.config.dynamicTooltipSearch.never=Never
+setbonus.config.dynamicTooltipSearch.onBonusDiscovery=On New Bonus Discovery (suggested)
+setbonus.config.dynamicTooltipSearch.always=Always (bad performance in large packs)
+setbonus.config.dynamicTooltipSearch.tooltip=When to reload the tooltip cache for JEI/HEI
 
 setbonus.config.enableTooltips=Enable Tooltips
-setbonus.config.enableTooltips.tooltip=FIXNEWLINES FILLSCREEN Whether or not to show set bonus information in discovered set item tooltips\n \n
-setbonus.config.dynamicTooltipSearch=Dynamic Tooltip Searching (JEI/HEI)
-setbonus.config.dynamicTooltipSearch.tooltip=FIXNEWLINES FILLSCREEN When to reload the tooltip cache for JEI/HEI\nNeither JEI nor HEI normally reload tooltips at runtime, but when forced to do so, JEI is actually faster at it\nThat being said, I highly recommend mode 1 here, and not worrying about switching away from whatever your preference is between the two; they should both be fine in mode 1\n\n0 - Never\nThis is the default JEI / HEI behavior; searchable parts of tooltips generally won't update, so if you discover a new bonus, you might not be able to search for it until restart\nNo performance impact\n\n1 - On new bonus discovery\nThis will reload the tooltip cache when you discover a new bonus.  You should get accurate results when searching bonus names\nPotential performance impact, but only when discovering new bonuses\n\n2 - On set item equip / unequip\nThis will reload the tooltip cache when you equip or unequip a set item.  You should get accurate results when searching bonus names or bonus requirements\nHighest potential performance impact\n \n
+setbonus.config.enableTooltips.tooltip=Whether or not to show set bonus information in discovered set item tooltips
 setbonus.config.enableAttributeModifierTooltips=Enable Attribute Modifier Tooltips
-setbonus.config.enableAttributeModifierTooltips.tooltip=FIXNEWLINES FILLSCREEN Whether or not to show attribute modifier information in discovered set item tooltips\n \n
+setbonus.config.enableAttributeModifierTooltips.tooltip=Whether or not to show attribute modifier information in discovered set item tooltips
 setbonus.config.enablePotionEffectTooltips=Enable Potion Effect Tooltips
-setbonus.config.enablePotionEffectTooltips.tooltip=FIXNEWLINES FILLSCREEN Whether or not to show potion effect information in discovered set item tooltips\n \n
+setbonus.config.enablePotionEffectTooltips.tooltip=Whether or not to show potion effect information in discovered set item tooltips
 setbonus.config.enableEnchantmentTooltips=Enable Enchantment Tooltips
-setbonus.config.enableEnchantmentTooltips.tooltip=FIXNEWLINES FILLSCREEN Whether or not to show enchantment information in discovered set item tooltips\n \n
+setbonus.config.enableEnchantmentTooltips.tooltip=Whether or not to show enchantment information in discovered set item tooltips
+
+
+setbonus.config.serverSettings=Server Settings
 
 setbonus.config.equipment=Equipment
 setbonus.config.equipment.tooltip=FIXNEWLINES FILLSCREEN Each item you want to include in a set needs to be defined here first\n\nLayout is...\nEquipment id, domain:item:meta > nbtkey1 = nbtvalue1 & nbtkey2 = nbtvalue2...\nThe equipment id must be unique, and is only used to refer to the item in the equipment set config\nEach of the domain, name, and meta can be regex: .*:.*:.* will match all items, .* will match all vanilla items with 0 meta\n\neg...\n\nSSword, stone_sword\nDSword, diamond_sword\n\nDDagger, backstab:diamond_dagger\n\nTetraSickleSingle, tetra:duplex_tool_modular > duplex/sickle_left_material & duplex/butt_right_material\n\nWirtsLeggings, diamond_leggings > display:Name = \"Wirt's Leggings\" & ench: = minecraft:protection ; lvl:4s\n \n

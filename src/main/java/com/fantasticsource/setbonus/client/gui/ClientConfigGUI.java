@@ -6,8 +6,10 @@ import com.fantasticsource.mctools.gui.element.GUIElement;
 import com.fantasticsource.mctools.gui.element.other.GUIDarkenedBackground;
 import com.fantasticsource.mctools.gui.element.text.GUIBooleanToggle;
 import com.fantasticsource.mctools.gui.element.text.GUINavbar;
+import com.fantasticsource.mctools.gui.element.text.GUIStringPicker;
 import com.fantasticsource.mctools.gui.element.text.GUITextSpacer;
 import com.fantasticsource.setbonus.config.SetBonusConfig;
+import com.fantasticsource.tools.Tools;
 
 import static com.fantasticsource.setbonus.SetBonus.MODID;
 
@@ -26,8 +28,20 @@ public class ClientConfigGUI extends GUIScreen
         ((GUINavbar) element).maxParentsDisplayed = 1;
         root.add(element);
 
+
         root.add(new GUITextSpacer(this));
         root.add(new GUITextSpacer(this));
+
+
+        //Main
+        GUIStringPicker dynamicTooltipSearch = new GUIStringPicker(this, reformat(MODID + ".config.dynamicTooltipSearch"),
+                reformat(MODID + ".config.dynamicTooltipSearch.never"),
+                reformat(MODID + ".config.dynamicTooltipSearch.onBonusDiscovery"),
+                reformat(MODID + ".config.dynamicTooltipSearch.always")
+        );
+        dynamicTooltipSearch.set(dynamicTooltipSearch.possibleValues[SetBonusConfig.clientSettings.dynamicTooltipSearch]);
+        root.add(dynamicTooltipSearch.setTooltip(reformat(MODID + ".config.dynamicTooltipSearch.tooltip")));
+
 
         GUIBooleanToggle tooltips = new GUIBooleanToggle(this, reformat(MODID + ".config.enableTooltips")).set(SetBonusConfig.clientSettings.enableTooltips);
         root.add(tooltips.setTooltip(reformat(MODID + ".config.enableTooltips.tooltip")));
@@ -45,7 +59,15 @@ public class ClientConfigGUI extends GUIScreen
 
 
         //Actions
-        tooltips.addClickActions(() ->
+        dynamicTooltipSearch.addEditActions(() ->
+        {
+            SetBonusConfig.clientSettings.dynamicTooltipSearch = Tools.indexOf(dynamicTooltipSearch.possibleValues, dynamicTooltipSearch.value);
+            System.out.println(SetBonusConfig.clientSettings.dynamicTooltipSearch);
+            System.out.println(dynamicTooltipSearch.value);
+            MCTools.saveConfig(MODID);
+        });
+
+        tooltips.addEditActions(() ->
         {
             if (tooltips.value)
             {
@@ -64,19 +86,19 @@ public class ClientConfigGUI extends GUIScreen
             MCTools.saveConfig(MODID);
         });
 
-        attributeModTooltips.addClickActions(() ->
+        attributeModTooltips.addEditActions(() ->
         {
             SetBonusConfig.clientSettings.enableAttributeModifierTooltips = attributeModTooltips.value;
             MCTools.saveConfig(MODID);
         });
 
-        potionTooltips.addClickActions(() ->
+        potionTooltips.addEditActions(() ->
         {
             SetBonusConfig.clientSettings.enablePotionEffectTooltips = potionTooltips.value;
             MCTools.saveConfig(MODID);
         });
 
-        enchantmentTooltips.addClickActions(() ->
+        enchantmentTooltips.addEditActions(() ->
         {
             SetBonusConfig.clientSettings.enableEnchantmentTooltips = enchantmentTooltips.value;
             MCTools.saveConfig(MODID);
