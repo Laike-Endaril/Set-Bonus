@@ -3,7 +3,7 @@ package com.fantasticsource.setbonus;
 import com.fantasticsource.mctools.ClientTickTimer;
 import com.fantasticsource.mctools.MCTools;
 import com.fantasticsource.mctools.ServerTickTimer;
-import com.fantasticsource.setbonus.client.BonusGUI;
+import com.fantasticsource.setbonus.client.SetBonusGUI;
 import com.fantasticsource.setbonus.client.ClientBonus;
 import com.fantasticsource.setbonus.client.ClientData;
 import com.fantasticsource.setbonus.client.TooltipRenderer;
@@ -74,7 +74,7 @@ public class SetBonus
 
             MinecraftForge.EVENT_BUS.register(ClientTickTimer.class);
             MinecraftForge.EVENT_BUS.register(TooltipRenderer.class);
-            MinecraftForge.EVENT_BUS.register(BonusGUI.class);
+            MinecraftForge.EVENT_BUS.register(SetBonusGUI.class);
         }
     }
 

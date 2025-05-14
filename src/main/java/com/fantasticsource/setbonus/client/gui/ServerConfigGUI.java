@@ -1,12 +1,18 @@
 package com.fantasticsource.setbonus.client.gui;
 
 import com.fantasticsource.mctools.gui.GUIScreen;
+import com.fantasticsource.mctools.gui.element.GUIElement;
 import com.fantasticsource.mctools.gui.element.other.GUIDarkenedBackground;
 import com.fantasticsource.mctools.gui.element.other.GUIVerticalScrollbar;
 import com.fantasticsource.mctools.gui.element.text.GUINavbar;
 import com.fantasticsource.mctools.gui.element.text.GUITextLabel;
 import com.fantasticsource.mctools.gui.element.view.GUIScrollView;
 import com.fantasticsource.mctools.gui.element.view.GUIView;
+import com.fantasticsource.setbonus.client.gui.bonus.GUIBonus;
+import com.fantasticsource.setbonus.client.gui.set.GUISet;
+import com.fantasticsource.setbonus.common.Bonus;
+import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Set;
+import com.fantasticsource.setbonus.server.ServerData;
 import com.fantasticsource.tools.datastructures.Color;
 
 import static com.fantasticsource.setbonus.SetBonus.MODID;
@@ -98,6 +104,35 @@ public class ServerConfigGUI extends GUIScreen
             settings2.height = 1 - settings2Label.height;
             settingsScrollbar2.height = settings2.height;
         });
+
+
+        for (Set set : ServerData.sets.values())
+        {
+            GUISet guiSet = new GUISet(this, set, 1);
+            sets.add(guiSet.addClickActions(() ->
+            {
+                settingsLabel.setText(guiSet.internalText.getText());
+
+                for (GUIElement element : bonuses.children)
+                {
+                    if (element instanceof GUIBonus) ((GUIBonus) element).setColor(Color.AQUA);
+                }
+            }));
+        }
+
+        for (Bonus bonus : ServerData.bonuses.values())
+        {
+            GUIBonus guiBonus = new GUIBonus(this, bonus, 1);
+            bonuses.add(guiBonus.addClickActions(() ->
+            {
+                settingsLabel.setText(guiBonus.internalText.getText());
+
+                for (GUIElement element : sets.children)
+                {
+                    if (element instanceof GUISet) ((GUISet) element).setColor(Color.AQUA);
+                }
+            }));
+        }
     }
 
 
