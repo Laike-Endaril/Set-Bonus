@@ -62,8 +62,6 @@ public class ClientConfigGUI extends GUIScreen
         dynamicTooltipSearch.addEditActions(() ->
         {
             SetBonusConfig.clientSettings.dynamicTooltipSearch = Tools.indexOf(dynamicTooltipSearch.possibleValues, dynamicTooltipSearch.value);
-            System.out.println(SetBonusConfig.clientSettings.dynamicTooltipSearch);
-            System.out.println(dynamicTooltipSearch.value);
             MCTools.saveConfig(MODID);
         });
 
