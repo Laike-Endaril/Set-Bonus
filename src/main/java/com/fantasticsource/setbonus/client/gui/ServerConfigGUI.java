@@ -30,51 +30,62 @@ public class ServerConfigGUI extends GUIScreen
         root.add(navbar);
 
 
-        //Left column; bonuses and sets
-        GUIView left = new GUIView(this, 1d / 3, 1 - navbar.height);
-        root.add(left);
+        //Equips
+        GUIView equipsColumn = new GUIView(this, 0.25, 1 - navbar.height);
+        root.add(equipsColumn);
 
-        GUITextLabel bonusesLabel = new GUITextLabel(this, 1, Color.GREEN).setText(reformat("setbonus.config.bonuses"));
-        left.add(bonusesLabel);
+        GUITextLabel equipsLabel = new GUITextLabel(this, 1, Color.GREEN).setText(reformat(MODID + ".config.equipment"));
+        equipsColumn.add(equipsLabel);
+        GUIScrollView equips = new GUIScrollView(this, (1d / 3 - 0.02) * 3, 1 - equipsLabel.height);
+        GUIVerticalScrollbar equipsScrollbar = new GUIVerticalScrollbar(this, 1 - equips.width, equips.height, getHoverColor(Color.AQUA), Color.BLANK, Color.AQUA, Color.BLANK, equips);
+        equipsColumn.addAll(equips, equipsScrollbar);
+
+
+        //Bonuses and sets
+        GUIView bonusesAndSetsColumn = new GUIView(this, 0.25, 1 - navbar.height);
+        root.add(bonusesAndSetsColumn);
+
+        GUITextLabel bonusesLabel = new GUITextLabel(this, 1, Color.GREEN).setText(reformat(MODID + ".config.bonuses"));
+        bonusesAndSetsColumn.add(bonusesLabel);
         GUIScrollView bonuses = new GUIScrollView(this, (1d / 3 - 0.02) * 3, 0.5 - bonusesLabel.height);
         GUIVerticalScrollbar bonusesScrollbar = new GUIVerticalScrollbar(this, 1 - bonuses.width, bonuses.height, getHoverColor(Color.AQUA), Color.BLANK, Color.AQUA, Color.BLANK, bonuses);
-        left.addAll(bonuses, bonusesScrollbar);
+        bonusesAndSetsColumn.addAll(bonuses, bonusesScrollbar);
 
-        GUITextLabel setsLabel = new GUITextLabel(this, 1, Color.GREEN).setText(reformat("setbonus.config.sets"));
-        left.add(setsLabel);
+        GUITextLabel setsLabel = new GUITextLabel(this, 1, Color.GREEN).setText(reformat(MODID + ".config.sets"));
+        bonusesAndSetsColumn.add(setsLabel);
         GUIScrollView sets = new GUIScrollView(this, (1d / 3 - 0.02) * 3, 1 - setsLabel.y - setsLabel.height);
         GUIVerticalScrollbar setsScrollbar = new GUIVerticalScrollbar(this, 1 - sets.width, sets.height, getHoverColor(Color.AQUA), Color.BLANK, Color.AQUA, Color.BLANK, sets);
-        left.addAll(sets, setsScrollbar);
+        bonusesAndSetsColumn.addAll(sets, setsScrollbar);
 
 
-        //Center column
-        GUIView center = new GUIView(this, 1d / 3, 1 - navbar.height);
-        root.add(center);
+        //Settings
+        GUIView settingsColumn = new GUIView(this, 0.25, 1 - navbar.height);
+        root.add(settingsColumn);
 
-        GUITextLabel settingsLabel = new GUITextLabel(this, 1, Color.GREEN); //TODO change label text to currently selected bonus or set
-        center.add(settingsLabel);
+        GUITextLabel settingsLabel = new GUITextLabel(this, 1, Color.GREEN);
+        settingsColumn.add(settingsLabel);
         GUIScrollView settings = new GUIScrollView(this, (1d / 3 - 0.02) * 3, 1 - settingsLabel.height);
         GUIVerticalScrollbar settingsScrollbar = new GUIVerticalScrollbar(this, 1 - settings.width, settings.height, getHoverColor(Color.AQUA), Color.BLANK, Color.AQUA, Color.BLANK, settings);
-        center.addAll(settings, settingsScrollbar);
+        settingsColumn.addAll(settings, settingsScrollbar);
 
 
-        //Right column
-        GUIView right = new GUIView(this, 1d / 3, 1 - navbar.height);
-        root.add(right);
+        //Details
+        GUIView detailsColumn = new GUIView(this, 0.25, 1 - navbar.height);
+        root.add(detailsColumn);
 
-        GUITextLabel settings2Label = new GUITextLabel(this, 1, Color.GREEN); //TODO change label to entry selected from center column
-        right.add(settings2Label);
-        GUIScrollView settings2 = new GUIScrollView(this, (1d / 3 - 0.02) * 3, 1 - settings2Label.height);
-        GUIVerticalScrollbar settingsScrollbar2 = new GUIVerticalScrollbar(this, 1 - settings2.width, settings2.height, getHoverColor(Color.AQUA), Color.BLANK, Color.AQUA, Color.BLANK, settings2);
-        right.addAll(settings2, settingsScrollbar2);
+        GUITextLabel detailsLabel = new GUITextLabel(this, 1, Color.GREEN); //TODO change label to entry selected from center column
+        detailsColumn.add(detailsLabel);
+        GUIScrollView details = new GUIScrollView(this, (1d / 3 - 0.02) * 3, 1 - detailsLabel.height);
+        GUIVerticalScrollbar detailsScrollbar = new GUIVerticalScrollbar(this, 1 - details.width, details.height, getHoverColor(Color.AQUA), Color.BLANK, Color.AQUA, Color.BLANK, details);
+        detailsColumn.addAll(details, detailsScrollbar);
 
 
         //Main recalcs
         navbar.addRecalcActions(() ->
         {
-            left.height = 1 - navbar.height;
-            center.height = 1 - navbar.height;
-            right.height = 1 - navbar.height;
+            bonusesAndSetsColumn.height = 1 - navbar.height;
+            settingsColumn.height = 1 - navbar.height;
+            detailsColumn.height = 1 - navbar.height;
         });
 
         //Left column recalcs
@@ -99,16 +110,16 @@ public class ServerConfigGUI extends GUIScreen
         });
 
         //Right column recalcs
-        settings2Label.addRecalcActions(() ->
+        detailsLabel.addRecalcActions(() ->
         {
-            settings2.height = 1 - settings2Label.height;
-            settingsScrollbar2.height = settings2.height;
+            details.height = 1 - detailsLabel.height;
+            detailsScrollbar.height = details.height;
         });
 
 
         for (Set set : ServerData.sets.values())
         {
-            GUISet guiSet = new GUISet(this, set, 1);
+            GUISet guiSet = new GUISet(this, set, 1, 0.5);
             sets.add(guiSet.addClickActions(() ->
             {
                 settingsLabel.setText(guiSet.internalText.getText());
@@ -122,7 +133,7 @@ public class ServerConfigGUI extends GUIScreen
 
         for (Bonus bonus : ServerData.bonuses.values())
         {
-            GUIBonus guiBonus = new GUIBonus(this, bonus, 1);
+            GUIBonus guiBonus = new GUIBonus(this, bonus, 1, 0.5);
             bonuses.add(guiBonus.addClickActions(() ->
             {
                 settingsLabel.setText(guiBonus.internalText.getText());
