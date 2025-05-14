@@ -40,7 +40,7 @@ public class ClientData
         for (String equipString : packet.equipment)
         {
             Equip equip = Equip.getInstance(equipString);
-            if (equip != null) equipment.put(equip.id, equip);
+            if (equip != null) equipment.put(equip.name, equip);
         }
 
 
@@ -81,7 +81,7 @@ public class ClientData
         for (String equipString : packet.equipment)
         {
             Equip equip = Equip.getInstance(equipString);
-            if (equip != null) equipment.put(equip.id, equip);
+            if (equip != null) equipment.put(equip.name, equip);
         }
 
         //Initialize sets

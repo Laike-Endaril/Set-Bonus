@@ -6,7 +6,7 @@ import net.minecraft.util.text.translation.I18n;
 
 public class Equip
 {
-    public String parsedString, id;
+    public String parsedString, name;
     public RegistryRegexItemFilter filter;
 
     private Equip()
@@ -24,8 +24,8 @@ public class Equip
             return null;
         }
 
-        result.id = tokens[0].trim();
-        if (result.id.equals(""))
+        result.name = tokens[0].trim();
+        if (result.name.equals(""))
         {
             System.err.println(I18n.translateToLocalFormatted(SetBonus.MODID + ".error.noEquipID", parsableEquip));
             return null;

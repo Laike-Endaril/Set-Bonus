@@ -31,7 +31,7 @@ public class ServerData
         for (String equipString : serverSettings.getEquipment())
         {
             Equip equip = Equip.getInstance(equipString);
-            if (equip != null) equipment.put(equip.id, equip);
+            if (equip != null) equipment.put(equip.name, equip);
         }
 
 

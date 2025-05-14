@@ -14,8 +14,8 @@ public class ServerConfig
                     "FILLSCREEN Each item you want to include in a set needs to be defined here first",
                     "",
                     "Layout is...",
-                    "Equipment id, domain:item:meta > nbtkey1 = nbtvalue1 & nbtkey2 = nbtvalue2...",
-                    "The equipment id must be unique, and is only used to refer to the item in the equipment set config",
+                    "Equipment name, domain:item:meta > nbtkey1 = nbtvalue1 & nbtkey2 = nbtvalue2...",
+                    "The equipment name must be unique, and is only used to refer to the item in the equipment set config",
                     "Each of the domain, name, and meta can be regex: .*:.*:.* will match all items, .* will match all vanilla items with 0 meta",
                     "",
                     "eg...",
@@ -37,10 +37,10 @@ public class ServerConfig
     @Config.Comment(
             {
                     "FILLSCREEN Each equipment set is defined here",
-                    "Each equip id must be defined in the Equipment list first",
+                    "Each equip name must be defined in the Equipment list first",
                     "",
                     "Layout is...",
-                    "Set id, set name, slot | slot = equip id | equip id, slot | slot = equip id | equip id, etc.",
+                    "Set id, set name, slot | slot = equip name | equip name, slot | slot = equip name | equip name, etc.",
                     "",
                     "- Vanilla slots: mainhand, offhand, head, chest, legs, feet, hotbar, inventory",
                     "- Baubles slots: bauble_amulet, bauble_ring, bauble_belt, bauble_head, bauble_body, bauble_charm, bauble_trinket",

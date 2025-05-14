@@ -1,0 +1,47 @@
+package com.fantasticsource.setbonus.client.gui.equip;
+
+import com.fantasticsource.mctools.gui.GUIScreen;
+import com.fantasticsource.mctools.gui.element.GUIElement;
+import com.fantasticsource.mctools.gui.element.text.GUITextLabel;
+import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Equip;
+import com.fantasticsource.tools.datastructures.Color;
+
+public class GUIEquip extends GUITextLabel
+{
+    public Equip equip;
+
+    public GUIEquip(GUIScreen screen, Equip equip, double width)
+    {
+        this(screen, equip, width, 1);
+    }
+
+    public GUIEquip(GUIScreen screen, Equip equip, double width, double scale)
+    {
+        super(screen, width, Color.AQUA, Color.BLANK, scale);
+        set(equip);
+        setColor(Color.AQUA);
+
+        addClickActions(() ->
+        {
+            if (internalText.activeColor == Color.PURPLE) new EquipGUI(this);
+            else
+            {
+                setColor(Color.PURPLE);
+                if (parent != null)
+                {
+                    for (GUIElement element : parent.children)
+                    {
+                        if (element instanceof GUIEquip && element != this) ((GUIEquip) element).setColor(Color.AQUA);
+                    }
+                }
+            }
+        });
+    }
+
+
+    public void set(Equip equip)
+    {
+        this.equip = equip;
+        internalText.setText(reformat(equip.name));
+    }
+}

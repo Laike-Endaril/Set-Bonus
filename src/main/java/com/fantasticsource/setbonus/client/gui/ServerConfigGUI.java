@@ -9,8 +9,10 @@ import com.fantasticsource.mctools.gui.element.text.GUITextLabel;
 import com.fantasticsource.mctools.gui.element.view.GUIScrollView;
 import com.fantasticsource.mctools.gui.element.view.GUIView;
 import com.fantasticsource.setbonus.client.gui.bonus.GUIBonus;
+import com.fantasticsource.setbonus.client.gui.equip.GUIEquip;
 import com.fantasticsource.setbonus.client.gui.set.GUISet;
 import com.fantasticsource.setbonus.common.Bonus;
+import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Equip;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Set;
 import com.fantasticsource.setbonus.server.ServerData;
 import com.fantasticsource.tools.datastructures.Color;
@@ -117,6 +119,24 @@ public class ServerConfigGUI extends GUIScreen
         });
 
 
+        for (Equip equip : ServerData.equipment.values())
+        {
+            GUIEquip guiEquip = new GUIEquip(this, equip, 1, 0.5);
+            equips.add(guiEquip.addClickActions(() ->
+            {
+                settingsLabel.setText(guiEquip.internalText.getText());
+
+                for (GUIElement element : sets.children)
+                {
+                    if (element instanceof GUISet) ((GUISet) element).setColor(Color.AQUA);
+                }
+                for (GUIElement element : bonuses.children)
+                {
+                    if (element instanceof GUIBonus) ((GUIBonus) element).setColor(Color.AQUA);
+                }
+            }));
+        }
+
         for (Set set : ServerData.sets.values())
         {
             GUISet guiSet = new GUISet(this, set, 1, 0.5);
@@ -124,6 +144,10 @@ public class ServerConfigGUI extends GUIScreen
             {
                 settingsLabel.setText(guiSet.internalText.getText());
 
+                for (GUIElement element : equips.children)
+                {
+                    if (element instanceof GUIEquip) ((GUIEquip) element).setColor(Color.AQUA);
+                }
                 for (GUIElement element : bonuses.children)
                 {
                     if (element instanceof GUIBonus) ((GUIBonus) element).setColor(Color.AQUA);
@@ -138,6 +162,10 @@ public class ServerConfigGUI extends GUIScreen
             {
                 settingsLabel.setText(guiBonus.internalText.getText());
 
+                for (GUIElement element : equips.children)
+                {
+                    if (element instanceof GUIEquip) ((GUIEquip) element).setColor(Color.AQUA);
+                }
                 for (GUIElement element : sets.children)
                 {
                     if (element instanceof GUISet) ((GUISet) element).setColor(Color.AQUA);
