@@ -15,18 +15,21 @@ import com.fantasticsource.setbonus.client.gui.set.GUISet;
 import com.fantasticsource.setbonus.common.Bonus;
 import com.fantasticsource.setbonus.common.bonuselements.ABonusElement;
 import com.fantasticsource.setbonus.common.bonuselements.BonusElementEnchantment;
+import com.fantasticsource.setbonus.common.bonusrequirements.ABonusRequirement;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Equip;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Set;
+import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.SetRequirement;
 import com.fantasticsource.setbonus.server.ServerData;
 import com.fantasticsource.tools.datastructures.Color;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 import static com.fantasticsource.setbonus.SetBonus.MODID;
 
 public class ServerConfigGUI extends GUIScreen
 {
-    public static final Color LINE_COLOR = Color.YELLOW.copy().setAF(0.2f);
+    public static final Color[] LINE_COLORS = new Color[]{Color.WHITE.copy().setAF(0.3f), Color.PURPLE.copy().setAF(0.3f)};
     public static final double LINE_OFFSET = 0.125;
 
     public GUITextLabel equipsLabel, bonusesLabel, setsLabel, settingsLabel, detailsLabel;
@@ -185,19 +188,20 @@ public class ServerConfigGUI extends GUIScreen
         {
             GUIEquip guiEquip = (GUIEquip) selected;
 
+            LinkedHashMap<Set, GUISet> linkedSets = new LinkedHashMap<>();
             for (GUIElement element : sets.children)
             {
                 if (element instanceof GUISet)
                 {
+                    //Primary connections
                     GUISet other = (GUISet) element;
                     if (other.set.involvedEquips.containsKey(guiEquip.equip.name))
                     {
-                        GUILine line = new GUILine(this, selected.absoluteX() + selected.absoluteWidth() * (1 - LINE_OFFSET), selected.absoluteY() + selected.absoluteHeight() * 0.5, other.absoluteX() + other.absoluteWidth() * LINE_OFFSET, other.absoluteY() + other.absoluteHeight() * 0.5, LINE_COLOR, 3);
+                        GUILine line = new GUILine(this, selected.absoluteX() + selected.absoluteWidth() * (1 - LINE_OFFSET), selected.absoluteY() + selected.absoluteHeight() * 0.5, other.absoluteX() + other.absoluteWidth() * LINE_OFFSET, other.absoluteY() + other.absoluteHeight() * 0.5, LINE_COLORS[0], LINE_COLORS[1], 3);
                         line.addRecalcActions(() -> line.set(selected.absoluteX() + selected.absoluteWidth() * (1 - LINE_OFFSET), selected.absoluteY() + selected.absoluteHeight() * 0.5, other.absoluteX() + other.absoluteWidth() * LINE_OFFSET, other.absoluteY() + other.absoluteHeight() * 0.5));
                         lines.add(line);
                         root.add(line);
-
-                        //TODO secondary lines to bonuses
+                        linkedSets.put(other.set, other);
                     }
                 }
             }
@@ -206,6 +210,7 @@ public class ServerConfigGUI extends GUIScreen
             {
                 if (element instanceof GUIBonus)
                 {
+                    //Primary connections
                     GUIBonus other = (GUIBonus) element;
                     for (ABonusElement bonusElement : other.bonus.bonusElements)
                     {
@@ -213,7 +218,7 @@ public class ServerConfigGUI extends GUIScreen
                         {
                             if (((BonusElementEnchantment) bonusElement).slotDataToEnchant.involvedEquips.contains(guiEquip.equip))
                             {
-                                GUILine line = new GUILine(this, selected.absoluteX() + selected.absoluteWidth() * (1 - LINE_OFFSET), selected.absoluteY() + selected.absoluteHeight() * 0.5, other.absoluteX() + other.absoluteWidth() * LINE_OFFSET, other.absoluteY() + other.absoluteHeight() * 0.5, LINE_COLOR, 3);
+                                GUILine line = new GUILine(this, selected.absoluteX() + selected.absoluteWidth() * (1 - LINE_OFFSET), selected.absoluteY() + selected.absoluteHeight() * 0.5, other.absoluteX() + other.absoluteWidth() * LINE_OFFSET, other.absoluteY() + other.absoluteHeight() * 0.5, LINE_COLORS[0], LINE_COLORS[1], 3);
                                 line.addRecalcActions(() -> line.set(selected.absoluteX() + selected.absoluteWidth() * (1 - LINE_OFFSET), selected.absoluteY() + selected.absoluteHeight() * 0.5, other.absoluteX() + other.absoluteWidth() * LINE_OFFSET, other.absoluteY() + other.absoluteHeight() * 0.5));
                                 lines.add(line);
                                 root.add(line);
@@ -222,14 +227,21 @@ public class ServerConfigGUI extends GUIScreen
                         }
                     }
 
-//                    for (ABonusElement bonusElement : guiBonus.bonus.bonusElements)
-//                    {
-//                        if (bonusElement instanceof BonusElementEnchantment && linkedSets.contains(((SetRequirement) bonusElement).set))
-//                        {
-//                            add = true;
-//                            break;
-//                        }
-//                    }
+                    //Secondary connections
+                    for (ABonusRequirement requirement : other.bonus.bonusRequirements)
+                    {
+                        if (requirement instanceof SetRequirement)
+                        {
+                            GUISet guiSet = linkedSets.get(((SetRequirement) requirement).set);
+                            if (guiSet != null)
+                            {
+                                GUILine line = new GUILine(this, guiSet.absoluteX() + guiSet.absoluteWidth() * (1 - LINE_OFFSET), guiSet.absoluteY() + guiSet.absoluteHeight() * 0.5, other.absoluteX() + other.absoluteWidth() * LINE_OFFSET, other.absoluteY() + other.absoluteHeight() * 0.5, LINE_COLORS[0], LINE_COLORS[1], 3);
+                                line.addRecalcActions(() -> line.set(guiSet.absoluteX() + guiSet.absoluteWidth() * (1 - LINE_OFFSET), guiSet.absoluteY() + guiSet.absoluteHeight() * 0.5, other.absoluteX() + other.absoluteWidth() * LINE_OFFSET, other.absoluteY() + other.absoluteHeight() * 0.5));
+                                lines.add(line);
+                                root.add(line);
+                            }
+                        }
+                    }
                 }
             }
         }
