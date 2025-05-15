@@ -82,4 +82,13 @@ public abstract class Bonus
         bonus.parsedString = parsableBonus;
         return bonus;
     }
+
+
+    public void delete()
+    {
+        System.out.println("Delete bonus: " + name);
+        //TODO backup config file?
+        //TODO remove from config file
+        //TODO reload config file
+    }
 }

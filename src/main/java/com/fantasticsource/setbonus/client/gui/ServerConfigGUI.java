@@ -23,6 +23,7 @@ import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Set;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.SetRequirement;
 import com.fantasticsource.setbonus.server.ServerData;
 import com.fantasticsource.tools.datastructures.Color;
+import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -34,6 +35,7 @@ public class ServerConfigGUI extends GUIScreen
     public static double lineOffset = 0.125;
     public static Color[] lineColors = new Color[]{Color.WHITE.copy().setAF(0.25f), Color.PURPLE.copy().setAF(0.25f)};
 
+    public GUITextLabel selected = null;
     public GUITextLabel equipsLabel, bonusesLabel, setsLabel, settingsLabel, detailsLabel;
     public GUIScrollView equips, bonuses, sets, settings, details;
     public ArrayList<GUILine> lines = new ArrayList<>();
@@ -151,15 +153,15 @@ public class ServerConfigGUI extends GUIScreen
         for (Bonus bonus : ServerData.bonuses.values()) bonuses.add(new GUIBonus(this, bonus, 1, 0.5));
 
 
-        //Select first applicable entry
-        if (bonuses.size() > 0) select((GUITextLabel) bonuses.get(0));
-        else if (sets.size() > 0) select((GUITextLabel) sets.get(0));
-        else if (equips.size() > 0) select((GUITextLabel) equips.get(0));
+        //Deselection on root click
+        root.addClickActions(() -> select(null));
     }
 
 
     public void select(GUITextLabel selected)
     {
+        this.selected = selected;
+
         for (GUIElement element : equips.children)
         {
             if (element instanceof GUIEquip) ((GUIEquip) element).setColor(Color.AQUA);
@@ -173,10 +175,12 @@ public class ServerConfigGUI extends GUIScreen
             if (element instanceof GUISet) ((GUISet) element).setColor(Color.AQUA);
         }
 
-        selected.setColor(Color.PURPLE);
-
-
-        settingsLabel.setText(selected.internalText.getText());
+        if (selected != null)
+        {
+            selected.setColor(Color.PURPLE);
+            settingsLabel.setText(selected.internalText.getText());
+        }
+        else settingsLabel.setText("");
 
 
         settings.clear();
@@ -185,7 +189,7 @@ public class ServerConfigGUI extends GUIScreen
         else if (selected instanceof GUISet) populateSetSettings((GUISet) selected);
 
 
-        remakeLines(selected);
+        remakeLines();
     }
 
 
@@ -202,27 +206,72 @@ public class ServerConfigGUI extends GUIScreen
         settings.add(button);
         button.addClickActions(() ->
         {
-            YesNoGUI yesNoGUI = new YesNoGUI(reformat(guiEquip.internalText.getText()), reformat(MODID + ".config.deleteThingMaybe", guiEquip.internalText.getText()));
-            yesNoGUI.addOnClosedActions(() ->
+            if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
             {
-                if (yesNoGUI.pressedYes)
+                guiEquip.equip.delete();
+                //TODO update gui
+                System.out.println("update gui");
+                if (equips.size() > 0) select((GUITextLabel) equips.get(0));
+            }
+            else
+            {
+                YesNoGUI yesNoGUI = new YesNoGUI(reformat(guiEquip.internalText.getText()), reformat(MODID + ".config.deleteThingMaybe", guiEquip.internalText.getText()));
+                yesNoGUI.addOnClosedActions(() ->
                 {
-                    //TODO delete equip
-                }
-            });
+                    if (yesNoGUI.pressedYes)
+                    {
+                        guiEquip.equip.delete();
+                        //TODO update gui
+                        System.out.println("update gui");
+                    }
+                });
+            }
         });
     }
 
     public void populateBonusSettings(GUIBonus guiBonus)
     {
+        //TODO
     }
 
     public void populateSetSettings(GUISet guiSet)
     {
+        GUITextLabel button = new GUITextLabel(this, 1, Color.AQUA, 0.5);
+        button.setText(reformat(MODID + ".config.edit"));
+        settings.add(button.addClickActions(guiSet::click));
+
+        settings.add(new GUITextSpacer(this));
+
+        button = new GUITextLabel(this, 1, Color.RED, 0.5);
+        button.setText(reformat(MODID + ".config.delete"));
+        settings.add(button);
+        button.addClickActions(() ->
+        {
+            if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
+            {
+                guiSet.set.delete();
+                //TODO update gui
+                System.out.println("update gui");
+                if (sets.size() > 0) select((GUITextLabel) sets.get(0));
+            }
+            else
+            {
+                YesNoGUI yesNoGUI = new YesNoGUI(reformat(guiSet.internalText.getText()), reformat(MODID + ".config.deleteThingMaybe", guiSet.internalText.getText()));
+                yesNoGUI.addOnClosedActions(() ->
+                {
+                    if (yesNoGUI.pressedYes)
+                    {
+                        guiSet.set.delete();
+                        //TODO update gui
+                        System.out.println("update gui");
+                    }
+                });
+            }
+        });
     }
 
 
-    public void remakeLines(GUITextLabel selected)
+    public void remakeLines()
     {
         for (GUILine line : lines) root.remove(line);
         lines.clear();

@@ -15,8 +15,8 @@ public class Set
 {
     public String parsedString, id, name;
     public LinkedHashMap<String, RegistryRegexItemFilter> involvedEquips = new LinkedHashMap<>();
+    public ArrayList<SlotData> slotData = new ArrayList<>();
 
-    private ArrayList<SlotData> slotData = new ArrayList<>();
     private LinkedHashMap<EntityPlayer, Pair<Integer, Long>> numEquipped = new LinkedHashMap<>();
 
     private Set()
@@ -95,5 +95,14 @@ public class Set
     public int getMaxNumber()
     {
         return slotData.size();
+    }
+
+
+    public void delete()
+    {
+        System.out.println("Delete set: " + name);
+        //TODO backup config file?
+        //TODO remove from config file
+        //TODO reload config file
     }
 }
