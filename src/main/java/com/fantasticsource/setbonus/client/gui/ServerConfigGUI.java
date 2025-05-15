@@ -7,8 +7,10 @@ import com.fantasticsource.mctools.gui.element.other.GUILine;
 import com.fantasticsource.mctools.gui.element.other.GUIVerticalScrollbar;
 import com.fantasticsource.mctools.gui.element.text.GUINavbar;
 import com.fantasticsource.mctools.gui.element.text.GUITextLabel;
+import com.fantasticsource.mctools.gui.element.text.GUITextSpacer;
 import com.fantasticsource.mctools.gui.element.view.GUIScrollView;
 import com.fantasticsource.mctools.gui.element.view.GUIView;
+import com.fantasticsource.mctools.gui.screen.YesNoGUI;
 import com.fantasticsource.setbonus.client.gui.bonus.GUIBonus;
 import com.fantasticsource.setbonus.client.gui.equip.GUIEquip;
 import com.fantasticsource.setbonus.client.gui.set.GUISet;
@@ -192,6 +194,23 @@ public class ServerConfigGUI extends GUIScreen
         GUITextLabel button = new GUITextLabel(this, 1, Color.AQUA, 0.5);
         button.setText(reformat(MODID + ".config.edit"));
         settings.add(button.addClickActions(guiEquip::click));
+
+        settings.add(new GUITextSpacer(this));
+
+        button = new GUITextLabel(this, 1, Color.RED, 0.5);
+        button.setText(reformat(MODID + ".config.delete"));
+        settings.add(button);
+        button.addClickActions(() ->
+        {
+            YesNoGUI yesNoGUI = new YesNoGUI(reformat(guiEquip.internalText.getText()), reformat(MODID + ".config.deleteThingMaybe", guiEquip.internalText.getText()));
+            yesNoGUI.addOnClosedActions(() ->
+            {
+                if (yesNoGUI.pressedYes)
+                {
+                    //TODO delete equip
+                }
+            });
+        });
     }
 
     public void populateBonusSettings(GUIBonus guiBonus)

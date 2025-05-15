@@ -58,6 +58,8 @@ setbonus.config.bonuses=Bonuses
 setbonus.config.sets=Sets
 
 setbonus.config.edit=Edit...
+setbonus.config.delete=Delete
+setbonus.config.deleteThingMaybe=Delete %s?
 
 
 
