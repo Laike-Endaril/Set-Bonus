@@ -3,9 +3,9 @@ package com.fantasticsource.setbonus;
 import com.fantasticsource.mctools.ClientTickTimer;
 import com.fantasticsource.mctools.MCTools;
 import com.fantasticsource.mctools.ServerTickTimer;
-import com.fantasticsource.setbonus.client.SetBonusGUI;
 import com.fantasticsource.setbonus.client.ClientBonus;
 import com.fantasticsource.setbonus.client.ClientData;
+import com.fantasticsource.setbonus.client.SetBonusGUI;
 import com.fantasticsource.setbonus.client.TooltipRenderer;
 import com.fantasticsource.setbonus.client.gui.SetBonusConfigGUI;
 import com.fantasticsource.setbonus.common.Commands;
@@ -187,6 +187,7 @@ public class SetBonus
         Minecraft.getMinecraft().addScheduledTask(ClientData::clear);
     }
 
+    @SideOnly(Side.CLIENT)
     @SubscribeEvent
     public static void gui(GuiOpenEvent event)
     {
