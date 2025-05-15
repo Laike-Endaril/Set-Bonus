@@ -189,12 +189,12 @@ public class ServerConfigGUI extends GUIScreen
         {
             GUIEquip guiEquip = (GUIEquip) selected;
 
+            //Primary connections
             LinkedHashMap<Set, GUISet> linkedSets = new LinkedHashMap<>();
             for (GUIElement element : sets.children)
             {
                 if (element instanceof GUISet)
                 {
-                    //Primary connections
                     GUISet other = (GUISet) element;
                     if (other.set.involvedEquips.containsKey(guiEquip.equip.name))
                     {
@@ -207,11 +207,11 @@ public class ServerConfigGUI extends GUIScreen
                 }
             }
 
+            //Primary connections
             for (GUIElement element : bonuses.children)
             {
                 if (element instanceof GUIBonus)
                 {
-                    //Primary connections
                     GUIBonus other = (GUIBonus) element;
                     for (ABonusElement bonusElement : other.bonus.bonusElements)
                     {
@@ -250,36 +250,32 @@ public class ServerConfigGUI extends GUIScreen
         {
             GUIBonus guiBonus = (GUIBonus) selected;
 
+            //Primary connections
             for (ABonusElement bonusElement : guiBonus.bonus.bonusElements)
             {
                 if (bonusElement instanceof BonusElementEnchantment)
                 {
-                    for (GUIElement element2 : equips.children)
+                    for (GUIElement other : equips.children)
                     {
-                        if (element2 instanceof GUIEquip)
+                        if (other instanceof GUIEquip && ((BonusElementEnchantment) bonusElement).slotDataToEnchant.involvedEquips.contains(((GUIEquip) other).equip))
                         {
-                            GUIEquip other = (GUIEquip) element2;
-                            if (((BonusElementEnchantment) bonusElement).slotDataToEnchant.involvedEquips.contains(other.equip))
-                            {
-                                GUILine line2 = new GUILine(this, other.absoluteX() + other.absoluteWidth() * (1 - lineOffset), other.absoluteY() + other.absoluteHeight() * 0.5, selected.absoluteX() + selected.absoluteWidth() * lineOffset, selected.absoluteY() + selected.absoluteHeight() * 0.5, lineColors[0], lineColors[1], 3);
-                                line2.addRecalcActions(() -> line2.set(other.absoluteX() + other.absoluteWidth() * (1 - lineOffset), other.absoluteY() + other.absoluteHeight() * 0.5, selected.absoluteX() + selected.absoluteWidth() * lineOffset, selected.absoluteY() + selected.absoluteHeight() * 0.5));
-                                lines.add(line2);
-                                root.add(line2);
-                            }
+                            GUILine line2 = new GUILine(this, other.absoluteX() + other.absoluteWidth() * (1 - lineOffset), other.absoluteY() + other.absoluteHeight() * 0.5, selected.absoluteX() + selected.absoluteWidth() * lineOffset, selected.absoluteY() + selected.absoluteHeight() * 0.5, lineColors[0], lineColors[1], 3);
+                            line2.addRecalcActions(() -> line2.set(other.absoluteX() + other.absoluteWidth() * (1 - lineOffset), other.absoluteY() + other.absoluteHeight() * 0.5, selected.absoluteX() + selected.absoluteWidth() * lineOffset, selected.absoluteY() + selected.absoluteHeight() * 0.5));
+                            lines.add(line2);
+                            root.add(line2);
                         }
                     }
                 }
             }
 
-            for (GUIElement element : sets.children)
+            //Primary connections
+            for (GUIElement other : sets.children)
             {
-                if (element instanceof GUISet)
+                if (other instanceof GUISet)
                 {
-                    //Primary connections
-                    GUISet other = (GUISet) element;
                     for (ABonusRequirement requirement : guiBonus.bonus.bonusRequirements)
                     {
-                        if (requirement instanceof SetRequirement && ((SetRequirement) requirement).set == other.set)
+                        if (requirement instanceof SetRequirement && ((SetRequirement) requirement).set == ((GUISet) other).set)
                         {
                             GUILine line = new GUILine(this, other.absoluteX() + other.absoluteWidth() * (1 - lineOffset), other.absoluteY() + other.absoluteHeight() * 0.5, selected.absoluteX() + selected.absoluteWidth() * lineOffset, selected.absoluteY() + selected.absoluteHeight() * 0.5, lineColors[0], lineColors[1], 3);
                             line.addRecalcActions(() -> line.set(other.absoluteX() + other.absoluteWidth() * (1 - lineOffset), other.absoluteY() + other.absoluteHeight() * 0.5, selected.absoluteX() + selected.absoluteWidth() * lineOffset, selected.absoluteY() + selected.absoluteHeight() * 0.5));
@@ -288,18 +284,14 @@ public class ServerConfigGUI extends GUIScreen
 
 
                             //Secondary connections
-                            for (GUIElement element2 : equips.children)
+                            for (GUIElement other2 : equips.children)
                             {
-                                if (element2 instanceof GUIEquip)
+                                if (other2 instanceof GUIEquip && ((GUISet) other).set.involvedEquips.keySet().contains(((GUIEquip) other2).equip.name))
                                 {
-                                    GUIEquip other2 = (GUIEquip) element2;
-                                    if (other.set.involvedEquips.keySet().contains(other2.equip.name))
-                                    {
-                                        GUILine line2 = new GUILine(this, other2.absoluteX() + other2.absoluteWidth() * (1 - lineOffset), other2.absoluteY() + other2.absoluteHeight() * 0.5, other.absoluteX() + other.absoluteWidth() * lineOffset, other.absoluteY() + other.absoluteHeight() * 0.5, lineColors[0], lineColors[1], 3);
-                                        line2.addRecalcActions(() -> line2.set(other2.absoluteX() + other2.absoluteWidth() * (1 - lineOffset), other2.absoluteY() + other2.absoluteHeight() * 0.5, other.absoluteX() + other.absoluteWidth() * lineOffset, other.absoluteY() + other.absoluteHeight() * 0.5));
-                                        lines.add(line2);
-                                        root.add(line2);
-                                    }
+                                    GUILine line2 = new GUILine(this, other2.absoluteX() + other2.absoluteWidth() * (1 - lineOffset), other2.absoluteY() + other2.absoluteHeight() * 0.5, other.absoluteX() + other.absoluteWidth() * lineOffset, other.absoluteY() + other.absoluteHeight() * 0.5, lineColors[0], lineColors[1], 3);
+                                    line2.addRecalcActions(() -> line2.set(other2.absoluteX() + other2.absoluteWidth() * (1 - lineOffset), other2.absoluteY() + other2.absoluteHeight() * 0.5, other.absoluteX() + other.absoluteWidth() * lineOffset, other.absoluteY() + other.absoluteHeight() * 0.5));
+                                    lines.add(line2);
+                                    root.add(line2);
                                 }
                             }
                         }
@@ -310,7 +302,37 @@ public class ServerConfigGUI extends GUIScreen
         }
         else if (selected instanceof GUISet)
         {
+            GUISet guiSet = (GUISet) selected;
 
+            //Primary connections
+            for (GUIElement other : equips.children)
+            {
+                if (other instanceof GUIEquip && guiSet.set.involvedEquips.keySet().contains(((GUIEquip) other).equip.name))
+                {
+                    GUILine line = new GUILine(this, other.absoluteX() + other.absoluteWidth() * (1 - lineOffset), other.absoluteY() + other.absoluteHeight() * 0.5, selected.absoluteX() + selected.absoluteWidth() * lineOffset, selected.absoluteY() + selected.absoluteHeight() * 0.5, lineColors[0], lineColors[1], 3);
+                    line.addRecalcActions(() -> line.set(other.absoluteX() + other.absoluteWidth() * (1 - lineOffset), other.absoluteY() + other.absoluteHeight() * 0.5, selected.absoluteX() + selected.absoluteWidth() * lineOffset, selected.absoluteY() + selected.absoluteHeight() * 0.5));
+                    lines.add(line);
+                    root.add(line);
+                }
+            }
+
+            //Primary connections
+            for (GUIElement other : bonuses.children)
+            {
+                if (other instanceof GUIBonus)
+                {
+                    for (ABonusRequirement requirement : ((GUIBonus) other).bonus.bonusRequirements)
+                    {
+                        if (requirement instanceof SetRequirement && ((SetRequirement) requirement).set == guiSet.set)
+                        {
+                            GUILine line = new GUILine(this, selected.absoluteX() + selected.absoluteWidth() * (1 - lineOffset), selected.absoluteY() + selected.absoluteHeight() * 0.5, other.absoluteX() + other.absoluteWidth() * lineOffset, other.absoluteY() + other.absoluteHeight() * 0.5, lineColors[0], lineColors[1], 3);
+                            line.addRecalcActions(() -> line.set(selected.absoluteX() + selected.absoluteWidth() * (1 - lineOffset), selected.absoluteY() + selected.absoluteHeight() * 0.5, other.absoluteX() + other.absoluteWidth() * lineOffset, other.absoluteY() + other.absoluteHeight() * 0.5));
+                            lines.add(line);
+                            root.add(line);
+                        }
+                    }
+                }
+            }
         }
     }
 
