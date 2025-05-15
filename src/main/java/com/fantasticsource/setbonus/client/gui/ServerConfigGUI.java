@@ -29,8 +29,8 @@ import static com.fantasticsource.setbonus.SetBonus.MODID;
 
 public class ServerConfigGUI extends GUIScreen
 {
-    public static final Color[] LINE_COLORS = new Color[]{Color.WHITE.copy().setAF(0.3f), Color.PURPLE.copy().setAF(0.3f)};
-    public static final double LINE_OFFSET = 0.125;
+    public static double lineOffset = 0.125;
+    public static Color[] lineColors = new Color[]{Color.WHITE.copy().setAF(0.25f), Color.PURPLE.copy().setAF(0.25f)};
 
     public GUITextLabel equipsLabel, bonusesLabel, setsLabel, settingsLabel, detailsLabel;
     public GUIScrollView equips, bonuses, sets, settings, details;
@@ -198,8 +198,8 @@ public class ServerConfigGUI extends GUIScreen
                     GUISet other = (GUISet) element;
                     if (other.set.involvedEquips.containsKey(guiEquip.equip.name))
                     {
-                        GUILine line = new GUILine(this, selected.absoluteX() + selected.absoluteWidth() * (1 - LINE_OFFSET), selected.absoluteY() + selected.absoluteHeight() * 0.5, other.absoluteX() + other.absoluteWidth() * LINE_OFFSET, other.absoluteY() + other.absoluteHeight() * 0.5, LINE_COLORS[0], LINE_COLORS[1], 3);
-                        line.addRecalcActions(() -> line.set(selected.absoluteX() + selected.absoluteWidth() * (1 - LINE_OFFSET), selected.absoluteY() + selected.absoluteHeight() * 0.5, other.absoluteX() + other.absoluteWidth() * LINE_OFFSET, other.absoluteY() + other.absoluteHeight() * 0.5));
+                        GUILine line = new GUILine(this, selected.absoluteX() + selected.absoluteWidth() * (1 - lineOffset), selected.absoluteY() + selected.absoluteHeight() * 0.5, other.absoluteX() + other.absoluteWidth() * lineOffset, other.absoluteY() + other.absoluteHeight() * 0.5, lineColors[0], lineColors[1], 3);
+                        line.addRecalcActions(() -> line.set(selected.absoluteX() + selected.absoluteWidth() * (1 - lineOffset), selected.absoluteY() + selected.absoluteHeight() * 0.5, other.absoluteX() + other.absoluteWidth() * lineOffset, other.absoluteY() + other.absoluteHeight() * 0.5));
                         lines.add(line);
                         root.add(line);
                         linkedSets.put(other.set, other);
@@ -219,8 +219,8 @@ public class ServerConfigGUI extends GUIScreen
                         {
                             if (((BonusElementEnchantment) bonusElement).slotDataToEnchant.involvedEquips.contains(guiEquip.equip))
                             {
-                                GUILine line = new GUILine(this, selected.absoluteX() + selected.absoluteWidth() * (1 - LINE_OFFSET), selected.absoluteY() + selected.absoluteHeight() * 0.5, other.absoluteX() + other.absoluteWidth() * LINE_OFFSET, other.absoluteY() + other.absoluteHeight() * 0.5, LINE_COLORS[0], LINE_COLORS[1], 3);
-                                line.addRecalcActions(() -> line.set(selected.absoluteX() + selected.absoluteWidth() * (1 - LINE_OFFSET), selected.absoluteY() + selected.absoluteHeight() * 0.5, other.absoluteX() + other.absoluteWidth() * LINE_OFFSET, other.absoluteY() + other.absoluteHeight() * 0.5));
+                                GUILine line = new GUILine(this, selected.absoluteX() + selected.absoluteWidth() * (1 - lineOffset), selected.absoluteY() + selected.absoluteHeight() * 0.5, other.absoluteX() + other.absoluteWidth() * lineOffset, other.absoluteY() + other.absoluteHeight() * 0.5, lineColors[0], lineColors[1], 3);
+                                line.addRecalcActions(() -> line.set(selected.absoluteX() + selected.absoluteWidth() * (1 - lineOffset), selected.absoluteY() + selected.absoluteHeight() * 0.5, other.absoluteX() + other.absoluteWidth() * lineOffset, other.absoluteY() + other.absoluteHeight() * 0.5));
                                 lines.add(line);
                                 root.add(line);
                                 break;
@@ -236,8 +236,8 @@ public class ServerConfigGUI extends GUIScreen
                             GUISet guiSet = linkedSets.get(((SetRequirement) requirement).set);
                             if (guiSet != null)
                             {
-                                GUILine line = new GUILine(this, guiSet.absoluteX() + guiSet.absoluteWidth() * (1 - LINE_OFFSET), guiSet.absoluteY() + guiSet.absoluteHeight() * 0.5, other.absoluteX() + other.absoluteWidth() * LINE_OFFSET, other.absoluteY() + other.absoluteHeight() * 0.5, LINE_COLORS[0], LINE_COLORS[1], 3);
-                                line.addRecalcActions(() -> line.set(guiSet.absoluteX() + guiSet.absoluteWidth() * (1 - LINE_OFFSET), guiSet.absoluteY() + guiSet.absoluteHeight() * 0.5, other.absoluteX() + other.absoluteWidth() * LINE_OFFSET, other.absoluteY() + other.absoluteHeight() * 0.5));
+                                GUILine line = new GUILine(this, guiSet.absoluteX() + guiSet.absoluteWidth() * (1 - lineOffset), guiSet.absoluteY() + guiSet.absoluteHeight() * 0.5, other.absoluteX() + other.absoluteWidth() * lineOffset, other.absoluteY() + other.absoluteHeight() * 0.5, lineColors[0], lineColors[1], 3);
+                                line.addRecalcActions(() -> line.set(guiSet.absoluteX() + guiSet.absoluteWidth() * (1 - lineOffset), guiSet.absoluteY() + guiSet.absoluteHeight() * 0.5, other.absoluteX() + other.absoluteWidth() * lineOffset, other.absoluteY() + other.absoluteHeight() * 0.5));
                                 lines.add(line);
                                 root.add(line);
                             }
@@ -261,8 +261,8 @@ public class ServerConfigGUI extends GUIScreen
                             GUIEquip other = (GUIEquip) element2;
                             if (((BonusElementEnchantment) bonusElement).slotDataToEnchant.involvedEquips.contains(other.equip))
                             {
-                                GUILine line2 = new GUILine(this, other.absoluteX() + other.absoluteWidth() * (1 - LINE_OFFSET), other.absoluteY() + other.absoluteHeight() * 0.5, selected.absoluteX() + selected.absoluteWidth() * LINE_OFFSET, selected.absoluteY() + selected.absoluteHeight() * 0.5, LINE_COLORS[0], LINE_COLORS[1], 3);
-                                line2.addRecalcActions(() -> line2.set(other.absoluteX() + other.absoluteWidth() * (1 - LINE_OFFSET), other.absoluteY() + other.absoluteHeight() * 0.5, selected.absoluteX() + selected.absoluteWidth() * LINE_OFFSET, selected.absoluteY() + selected.absoluteHeight() * 0.5));
+                                GUILine line2 = new GUILine(this, other.absoluteX() + other.absoluteWidth() * (1 - lineOffset), other.absoluteY() + other.absoluteHeight() * 0.5, selected.absoluteX() + selected.absoluteWidth() * lineOffset, selected.absoluteY() + selected.absoluteHeight() * 0.5, lineColors[0], lineColors[1], 3);
+                                line2.addRecalcActions(() -> line2.set(other.absoluteX() + other.absoluteWidth() * (1 - lineOffset), other.absoluteY() + other.absoluteHeight() * 0.5, selected.absoluteX() + selected.absoluteWidth() * lineOffset, selected.absoluteY() + selected.absoluteHeight() * 0.5));
                                 lines.add(line2);
                                 root.add(line2);
                             }
@@ -281,8 +281,8 @@ public class ServerConfigGUI extends GUIScreen
                     {
                         if (requirement instanceof SetRequirement && ((SetRequirement) requirement).set == other.set)
                         {
-                            GUILine line = new GUILine(this, other.absoluteX() + other.absoluteWidth() * (1 - LINE_OFFSET), other.absoluteY() + other.absoluteHeight() * 0.5, selected.absoluteX() + selected.absoluteWidth() * LINE_OFFSET, selected.absoluteY() + selected.absoluteHeight() * 0.5, LINE_COLORS[0], LINE_COLORS[1], 3);
-                            line.addRecalcActions(() -> line.set(other.absoluteX() + other.absoluteWidth() * (1 - LINE_OFFSET), other.absoluteY() + other.absoluteHeight() * 0.5, selected.absoluteX() + selected.absoluteWidth() * LINE_OFFSET, selected.absoluteY() + selected.absoluteHeight() * 0.5));
+                            GUILine line = new GUILine(this, other.absoluteX() + other.absoluteWidth() * (1 - lineOffset), other.absoluteY() + other.absoluteHeight() * 0.5, selected.absoluteX() + selected.absoluteWidth() * lineOffset, selected.absoluteY() + selected.absoluteHeight() * 0.5, lineColors[0], lineColors[1], 3);
+                            line.addRecalcActions(() -> line.set(other.absoluteX() + other.absoluteWidth() * (1 - lineOffset), other.absoluteY() + other.absoluteHeight() * 0.5, selected.absoluteX() + selected.absoluteWidth() * lineOffset, selected.absoluteY() + selected.absoluteHeight() * 0.5));
                             lines.add(line);
                             root.add(line);
 
@@ -295,8 +295,8 @@ public class ServerConfigGUI extends GUIScreen
                                     GUIEquip other2 = (GUIEquip) element2;
                                     if (other.set.involvedEquips.keySet().contains(other2.equip.name))
                                     {
-                                        GUILine line2 = new GUILine(this, other2.absoluteX() + other2.absoluteWidth() * (1 - LINE_OFFSET), other2.absoluteY() + other2.absoluteHeight() * 0.5, other.absoluteX() + other.absoluteWidth() * LINE_OFFSET, other.absoluteY() + other.absoluteHeight() * 0.5, LINE_COLORS[0], LINE_COLORS[1], 3);
-                                        line2.addRecalcActions(() -> line2.set(other2.absoluteX() + other2.absoluteWidth() * (1 - LINE_OFFSET), other2.absoluteY() + other2.absoluteHeight() * 0.5, other.absoluteX() + other.absoluteWidth() * LINE_OFFSET, other.absoluteY() + other.absoluteHeight() * 0.5));
+                                        GUILine line2 = new GUILine(this, other2.absoluteX() + other2.absoluteWidth() * (1 - lineOffset), other2.absoluteY() + other2.absoluteHeight() * 0.5, other.absoluteX() + other.absoluteWidth() * lineOffset, other.absoluteY() + other.absoluteHeight() * 0.5, lineColors[0], lineColors[1], 3);
+                                        line2.addRecalcActions(() -> line2.set(other2.absoluteX() + other2.absoluteWidth() * (1 - lineOffset), other2.absoluteY() + other2.absoluteHeight() * 0.5, other.absoluteX() + other.absoluteWidth() * lineOffset, other.absoluteY() + other.absoluteHeight() * 0.5));
                                         lines.add(line2);
                                         root.add(line2);
                                     }
