@@ -20,22 +20,24 @@ public class SetBonusConfigGUI extends GUIScreen
 
 
         //Root
-        root.setSubElementAutoplaceMethod(GUIElement.AP_CENTERED_H_TOP_TO_BOTTOM);
-
         root.add(new GUIDarkenedBackground(this));
         GUIElement element = new GUINavbar(this);
+        element.autoplace = false;
         ((GUINavbar) element).maxParentsDisplayed = 0;
         root.add(element);
 
-        root.add(new GUITextSpacer(this));
-        root.add(new GUITextSpacer(this));
+
+        root.setSubElementAutoplaceMethod(GUIElement.AP_CENTER);
+
 
         element = new GUITextButton(this, reformat(MODID + ".config.clientSettings"));
         element.addClickActions(ClientConfigGUI::new);
         ((GUITextButton) element).setColor(Color.AQUA);
         root.add(element);
 
-        element = new GUITextButton(this, reformat(MODID + ".config.serverSettings"));
+        root.add(new GUITextSpacer(this));
+
+        element = new GUITextButton(this, reformat(MODID + ".config.localServerSettings"));
         element.addClickActions(ServerConfigGUI::new);
         ((GUITextButton) element).setColor(Color.AQUA);
         root.add(element);

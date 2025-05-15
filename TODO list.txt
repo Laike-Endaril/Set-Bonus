@@ -1,4 +1,6 @@
-Look into simplifying configs via my own GUI system (may want to do before adding a ton of new requirement / bonus types!)
+Add "revert all" button to server config gui
+Add way to open server config gui for remote server
+
 Change sorting for columns when clicking their labels in config gui
 
 

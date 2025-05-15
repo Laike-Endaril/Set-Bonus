@@ -6,7 +6,6 @@ import com.fantasticsource.mctools.gui.element.other.GUIDarkenedBackground;
 import com.fantasticsource.mctools.gui.element.other.GUILine;
 import com.fantasticsource.mctools.gui.element.other.GUIVerticalScrollbar;
 import com.fantasticsource.mctools.gui.element.text.GUINavbar;
-import com.fantasticsource.mctools.gui.element.text.GUITextButton;
 import com.fantasticsource.mctools.gui.element.text.GUITextLabel;
 import com.fantasticsource.mctools.gui.element.view.GUIScrollView;
 import com.fantasticsource.mctools.gui.element.view.GUIView;
@@ -192,7 +191,7 @@ public class ServerConfigGUI extends GUIScreen
     {
         GUITextLabel button = new GUITextLabel(this, 1, Color.AQUA, 0.5);
         button.setText(reformat(MODID + ".config.edit"));
-        settings.add(button);
+        settings.add(button.addClickActions(guiEquip::click));
     }
 
     public void populateBonusSettings(GUIBonus guiBonus)
