@@ -19,7 +19,6 @@ public class GUIEquip extends GUITextLabel
     {
         super(screen, width, Color.AQUA, Color.BLANK, scale);
         set(equip);
-        setColor(Color.AQUA);
 
         addClickActions(() ->
         {

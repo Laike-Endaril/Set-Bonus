@@ -57,6 +57,10 @@ setbonus.config.equipment=Equipment
 setbonus.config.bonuses=Bonuses
 setbonus.config.sets=Sets
 
+setbonus.config.edit=Edit...
+
+
+
 setbonus.config.bonusSettings=Bonus Settings
 setbonus.config.attributeModifiers=Attribute Modifiers
 setbonus.config.potionEffects=Potion Effects

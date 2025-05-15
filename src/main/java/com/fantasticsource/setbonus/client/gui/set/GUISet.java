@@ -17,9 +17,8 @@ public class GUISet extends GUITextLabel
 
     public GUISet(GUIScreen screen, Set set, double width, double scale)
     {
-        super(screen, width, Color.AQUA, Color.BLANK, scale);
+        super(screen, width, Color.AQUA, scale);
         set(set);
-        setColor(Color.AQUA);
 
         addClickActions(() ->
         {

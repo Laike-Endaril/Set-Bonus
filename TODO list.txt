@@ -1,9 +1,7 @@
-Apply bonuses to mobs?
-Could maybe limit triggers to item pickup event and 1 tick after entity joining world?
-
-
-
 Look into simplifying configs via my own GUI system (may want to do before adding a ton of new requirement / bonus types!)
+Change sorting for columns when clicking their labels in config gui
+
+
 
 More requirement types...
 ...Dimension
@@ -20,6 +18,11 @@ More requirement types...
 More bonus types...
 ...summoned items
 ...resistances to specific damage types (including modded types)
+
+
+
+Apply bonuses to mobs?
+Could maybe limit triggers to item pickup event and 1 tick after entity joining world?
 
 
 
