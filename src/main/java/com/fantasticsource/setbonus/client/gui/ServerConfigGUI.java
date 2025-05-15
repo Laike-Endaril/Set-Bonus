@@ -143,23 +143,16 @@ public class ServerConfigGUI extends GUIScreen
         });
 
 
-        for (Equip equip : ServerData.equipment.values())
-        {
-            GUIEquip guiEquip = new GUIEquip(this, equip, 1, 0.5);
-            equips.add(guiEquip.addClickActions(() -> settingsLabel.setText(guiEquip.internalText.getText())));
-        }
+        //Populate
+        for (Equip equip : ServerData.equipment.values()) equips.add(new GUIEquip(this, equip, 1, 0.5));
+        for (Set set : ServerData.sets.values()) sets.add(new GUISet(this, set, 1, 0.5));
+        for (Bonus bonus : ServerData.bonuses.values()) bonuses.add(new GUIBonus(this, bonus, 1, 0.5));
 
-        for (Set set : ServerData.sets.values())
-        {
-            GUISet guiSet = new GUISet(this, set, 1, 0.5);
-            sets.add(guiSet.addClickActions(() -> settingsLabel.setText(guiSet.internalText.getText())));
-        }
 
-        for (Bonus bonus : ServerData.bonuses.values())
-        {
-            GUIBonus guiBonus = new GUIBonus(this, bonus, 1, 0.5);
-            bonuses.add(guiBonus.addClickActions(() -> settingsLabel.setText(guiBonus.internalText.getText())));
-        }
+        //Select first applicable entry
+        if (bonuses.size() > 0) select((GUITextLabel) bonuses.get(0));
+        else if (sets.size() > 0) select((GUITextLabel) sets.get(0));
+        else if (equips.size() > 0) select((GUITextLabel) equips.get(0));
     }
 
 
@@ -180,6 +173,7 @@ public class ServerConfigGUI extends GUIScreen
 
         selected.setColor(Color.PURPLE);
 
+        settingsLabel.setText(selected.internalText.getText());
 
         remakeLines(selected);
     }
