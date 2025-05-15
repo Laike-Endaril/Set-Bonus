@@ -181,6 +181,12 @@ public class ServerConfigGUI extends GUIScreen
         selected.setColor(Color.PURPLE);
 
 
+        remakeLines(selected);
+    }
+
+
+    public void remakeLines(GUITextLabel selected)
+    {
         for (GUILine line : lines) root.remove(line);
         lines.clear();
 
@@ -246,6 +252,8 @@ public class ServerConfigGUI extends GUIScreen
                 }
             }
         }
+
+
         else if (selected instanceof GUIBonus)
         {
             GUIBonus guiBonus = (GUIBonus) selected;
@@ -298,8 +306,9 @@ public class ServerConfigGUI extends GUIScreen
                     }
                 }
             }
-
         }
+
+
         else if (selected instanceof GUISet)
         {
             GUISet guiSet = (GUISet) selected;
