@@ -119,11 +119,6 @@ public class ServerBonus extends Bonus
         }
     }
 
-    public static void updateBonuses(EntityPlayerMP player)
-    {
-        updateBonuses(player, false);
-    }
-
     public static void updateBonuses(EntityPlayerMP player, boolean forceNew)
     {
         changed = false;
@@ -132,7 +127,7 @@ public class ServerBonus extends Bonus
         while (changed)
         {
             changed = false;
-            for (ServerBonus bonus : ServerData.bonuses.values()) bonus.update(player);
+            for (ServerBonus bonus : ServerData.bonuses.values()) bonus.update(player, false);
         }
     }
 
@@ -141,11 +136,6 @@ public class ServerBonus extends Bonus
     public BonusInstance getBonusInstance(EntityPlayerMP player)
     {
         return instances.computeIfAbsent(player, k -> new BonusInstance(player, this));
-    }
-
-    public void update(EntityPlayerMP player)
-    {
-        update(player, false);
     }
 
     public void update(EntityPlayerMP player, boolean forceNew)

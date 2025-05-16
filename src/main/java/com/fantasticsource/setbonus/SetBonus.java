@@ -141,7 +141,7 @@ public class SetBonus
             if (event.side == Side.SERVER)
             {
                 //Server side
-                ServerBonus.updateBonuses((EntityPlayerMP) event.player);
+                ServerBonus.updateBonuses((EntityPlayerMP) event.player, false);
             }
             else
             {
