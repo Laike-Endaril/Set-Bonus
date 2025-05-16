@@ -2,9 +2,11 @@ package com.fantasticsource.setbonus.common;
 
 import com.fantasticsource.setbonus.SetBonus;
 import com.fantasticsource.setbonus.client.ClientBonus;
+import com.fantasticsource.setbonus.client.ClientData;
 import com.fantasticsource.setbonus.common.bonuselements.ABonusElement;
 import com.fantasticsource.setbonus.common.bonusrequirements.ABonusRequirement;
 import com.fantasticsource.setbonus.server.ServerBonus;
+import com.fantasticsource.setbonus.server.ServerData;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.relauncher.Side;
 
@@ -68,7 +70,7 @@ public abstract class Bonus
 
         for (String requirementString : Arrays.copyOfRange(tokens, 3, tokens.length))
         {
-            ABonusRequirement requirement = ABonusRequirement.parse(requirementString, side);
+            ABonusRequirement requirement = ABonusRequirement.parse(requirementString, side == Side.SERVER ? ServerData.sets : ClientData.sets);
 
             if (requirement == null)
             {
