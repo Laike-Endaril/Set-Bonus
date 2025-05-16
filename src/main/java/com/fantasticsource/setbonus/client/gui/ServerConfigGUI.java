@@ -273,6 +273,8 @@ public class ServerConfigGUI extends GUIScreen
 
     public void remakeLines()
     {
+        GUITextLabel selected = this.selected; //Necessary for runnables to work correctly
+
         for (GUILine line : lines) root.remove(line);
         lines.clear();
 
