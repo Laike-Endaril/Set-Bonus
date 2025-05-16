@@ -191,7 +191,7 @@ public class ServerBonus extends Bonus
                     {
                         discovered = true;
                         Network.WRAPPER.sendTo(new Network.DiscoverBonusPacket(bonus), player);
-
+                        save = true;
                     }
 
                     for (ABonusElement element : bonusElements) element.activate(player);
