@@ -19,12 +19,60 @@ import java.util.Map;
 public class ServerBonus extends Bonus
 {
     public static boolean changed, save;
+
     private LinkedHashMap<EntityPlayer, BonusInstance> instances = new LinkedHashMap<>();
+
 
     public static ServerBonus getInstance(String parsableBonus)
     {
         return (ServerBonus) Bonus.getInstance(parsableBonus, Side.SERVER);
     }
+
+
+    public static void dropAll()
+    {
+        //Needs to be done right before new configs are applied, to remove any eg. potion effects (because they might not be part of the bonus anymore)
+        //Also called when a server is stopping, to remove any bonuses on players before they get unloaded, in case said bonuses don't exist next time the server starts due to config changes
+        for (ServerBonus bonus : ServerData.bonuses.values())
+        {
+            for (BonusInstance data : bonus.instances.values()) data.update(false);
+        }
+        ServerData.bonuses.clear();
+    }
+
+    public static void updateBonuses(EntityPlayerMP player, boolean forceNew)
+    {
+        changed = false;
+        save = false;
+
+        for (ServerBonus bonus : ServerData.bonuses.values()) bonus.update(player, forceNew);
+
+        while (changed)
+        {
+            changed = false;
+            for (ServerBonus bonus : ServerData.bonuses.values()) bonus.update(player, false);
+        }
+
+        if (save) saveDiscoveries(player);
+    }
+
+    public void update(EntityPlayerMP player, boolean forceNew)
+    {
+        if (forceNew)
+        {
+            BonusInstance instance = new BonusInstance(player, this);
+            instances.put(player, instance);
+            instance.update();
+        }
+        else instances.computeIfAbsent(player, k -> new BonusInstance(player, this)).update();
+    }
+
+    @Nonnull
+    public BonusInstance getBonusInstance(EntityPlayerMP player)
+    {
+        return instances.computeIfAbsent(player, k -> new BonusInstance(player, this));
+    }
+
 
     public static void saveDiscoveries(EntityPlayerMP player)
     {
@@ -95,17 +143,6 @@ public class ServerBonus extends Bonus
         saveDiscoveries(player);
     }
 
-    public static void dropAll()
-    {
-        //Needs to be done right before new configs are applied, to remove any eg. potion effects (because they might not be part of the bonus anymore)
-        //Also called when a server is stopping, to remove any bonuses on players before they get unloaded, in case said bonuses don't exist next time the server starts due to config changes
-        for (ServerBonus bonus : ServerData.bonuses.values())
-        {
-            for (BonusInstance data : bonus.instances.values()) data.update(false);
-        }
-        ServerData.bonuses.clear();
-    }
-
     public static void clearMem(EntityPlayer player)
     {
         for (ServerBonus bonus : ServerData.bonuses.values())
@@ -117,40 +154,6 @@ public class ServerBonus extends Bonus
                 bonus.instances.remove(player);
             }
         }
-    }
-
-    public static void updateBonuses(EntityPlayerMP player, boolean forceNew)
-    {
-        changed = false;
-        save = false;
-
-        for (ServerBonus bonus : ServerData.bonuses.values()) bonus.update(player, forceNew);
-
-        while (changed)
-        {
-            changed = false;
-            for (ServerBonus bonus : ServerData.bonuses.values()) bonus.update(player, false);
-        }
-
-        if (save) saveDiscoveries(player);
-    }
-
-
-    @Nonnull
-    public BonusInstance getBonusInstance(EntityPlayerMP player)
-    {
-        return instances.computeIfAbsent(player, k -> new BonusInstance(player, this));
-    }
-
-    public void update(EntityPlayerMP player, boolean forceNew)
-    {
-        if (forceNew)
-        {
-            BonusInstance instance = new BonusInstance(player, this);
-            instances.put(player, instance);
-            instance.update();
-        }
-        else instances.computeIfAbsent(player, k -> new BonusInstance(player, this)).update();
     }
 
 

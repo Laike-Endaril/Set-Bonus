@@ -50,6 +50,11 @@ public class ClientBonus extends Bonus
         }
     }
 
+    public void update(EntityPlayer player)
+    {
+        instances.computeIfAbsent(player, k -> new BonusInstance()).update();
+    }
+
     @Nonnull
     public BonusInstance getBonusInstance(EntityPlayer player)
     {
@@ -61,11 +66,6 @@ public class ClientBonus extends Bonus
             instances.put(player, result);
         }
         return result;
-    }
-
-    public void update(EntityPlayer player)
-    {
-        instances.computeIfAbsent(player, k -> new BonusInstance()).update();
     }
 
 
