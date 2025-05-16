@@ -6,7 +6,6 @@ import com.fantasticsource.setbonus.common.bonusrequirements.ABonusRequirement;
 import com.fantasticsource.setbonus.config.SetBonusConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraftforge.fml.relauncher.Side;
 
 import javax.annotation.Nonnull;
 import java.util.LinkedHashMap;
@@ -16,12 +15,6 @@ public class ClientBonus extends Bonus
     public static boolean refreshJEI = false;
 
     private LinkedHashMap<EntityPlayer, BonusInstance> instances = new LinkedHashMap<>();
-
-
-    public static ClientBonus getInstance(String parsableBonus)
-    {
-        return (ClientBonus) Bonus.getInstance(parsableBonus, Side.CLIENT);
-    }
 
 
     public static void dropAll()

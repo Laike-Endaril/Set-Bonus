@@ -4,10 +4,9 @@ import com.fantasticsource.mctools.ServerTickTimer;
 import com.fantasticsource.mctools.potions.FantasticPotionEffect;
 import com.fantasticsource.mctools.potions.Potions;
 import com.fantasticsource.setbonus.SetBonus;
-import com.fantasticsource.setbonus.client.ClientData;
+import com.fantasticsource.setbonus.SetBonusData;
 import com.fantasticsource.setbonus.common.Bonus;
 import com.fantasticsource.setbonus.common.Network;
-import com.fantasticsource.setbonus.server.ServerData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.potion.PotionEffect;
@@ -31,7 +30,7 @@ public class BonusElementPotionEffect extends ABonusElement
         this.potions = potions;
     }
 
-    public static BonusElementPotionEffect getInstance(String parsablePotionBonus, Side side)
+    public static BonusElementPotionEffect getInstance(String parsablePotionBonus, SetBonusData data)
     {
         String[] tokens = parsablePotionBonus.split(",");
         if (tokens.length < 2)
@@ -40,7 +39,7 @@ public class BonusElementPotionEffect extends ABonusElement
             return null;
         }
 
-        Bonus bonus = side == Side.SERVER ? ServerData.SERVER_DATA.bonuses.get(tokens[0].trim()) : ClientData.CLIENT_DATA.bonuses.get(tokens[0].trim());
+        Bonus bonus = data.bonuses.get(tokens[0].trim());
         if (bonus == null)
         {
             System.err.println(I18n.translateToLocalFormatted(SetBonus.MODID + ".error.potionBonusIDNotFound", tokens[0].trim(), parsablePotionBonus));

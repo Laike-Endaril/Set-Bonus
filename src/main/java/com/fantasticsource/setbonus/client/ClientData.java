@@ -2,6 +2,7 @@ package com.fantasticsource.setbonus.client;
 
 import com.fantasticsource.setbonus.Compat;
 import com.fantasticsource.setbonus.SetBonusData;
+import com.fantasticsource.setbonus.common.Bonus;
 import com.fantasticsource.setbonus.common.Network;
 import com.fantasticsource.setbonus.common.bonuselements.BonusElementAttributeModifier;
 import com.fantasticsource.setbonus.common.bonuselements.BonusElementEnchantment;
@@ -9,7 +10,6 @@ import com.fantasticsource.setbonus.common.bonuselements.BonusElementPotionEffec
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Equip;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Set;
 import com.fantasticsource.setbonus.config.SetBonusConfig;
-import net.minecraftforge.fml.relauncher.Side;
 
 public class ClientData extends SetBonusData
 {
@@ -48,7 +48,7 @@ public class ClientData extends SetBonusData
         //Initialize sets
         for (String setString : packet.sets)
         {
-            Set set = Set.getInstance(setString, Side.CLIENT);
+            Set set = Set.getInstance(setString, this);
             if (set != null) sets.put(set.id, set);
         }
 
@@ -56,7 +56,7 @@ public class ClientData extends SetBonusData
         //Initialize bonuses
         for (String bonusString : packet.bonuses)
         {
-            ClientBonus bonus = ClientBonus.getInstance(bonusString);
+            ClientBonus bonus = (ClientBonus) Bonus.getInstance(bonusString, this);
             if (bonus != null) bonuses.put(bonus.id, bonus);
         }
 
@@ -64,14 +64,14 @@ public class ClientData extends SetBonusData
         //Initialize attribute modifiers
         for (String modifierString : packet.attributeMods)
         {
-            BonusElementAttributeModifier.getInstance(modifierString, Side.CLIENT);
+            BonusElementAttributeModifier.getInstance(modifierString, this);
         }
 
 
         //Initialize potions
         for (String potionString : packet.potions)
         {
-            BonusElementPotionEffect.getInstance(potionString, Side.CLIENT);
+            BonusElementPotionEffect.getInstance(potionString, this);
         }
     }
 
@@ -88,32 +88,32 @@ public class ClientData extends SetBonusData
         //Initialize sets
         for (String setString : packet.sets)
         {
-            Set set = Set.getInstance(setString, Side.CLIENT);
+            Set set = Set.getInstance(setString, this);
             if (set != null) sets.put(set.id, set);
         }
 
 
         //Initialize bonus
-        ClientBonus bonus = ClientBonus.getInstance(packet.bonusString);
+        ClientBonus bonus = (ClientBonus) Bonus.getInstance(packet.bonusString, this);
         if (bonus != null) bonuses.put(bonus.id, bonus);
 
 
         //Initialize attribute modifiers
         for (String modifierString : packet.attributeMods)
         {
-            BonusElementAttributeModifier.getInstance(modifierString, Side.CLIENT);
+            BonusElementAttributeModifier.getInstance(modifierString, this);
         }
 
         //Initialize potions
         for (String potionString : packet.potions)
         {
-            BonusElementPotionEffect.getInstance(potionString, Side.CLIENT);
+            BonusElementPotionEffect.getInstance(potionString, this);
         }
 
         //Initialize enchantments
         for (String enchantString : packet.enchants)
         {
-            BonusElementEnchantment.getInstance(enchantString, Side.CLIENT);
+            BonusElementEnchantment.getInstance(enchantString, this);
         }
 
 

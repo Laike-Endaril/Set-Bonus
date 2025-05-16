@@ -2,10 +2,10 @@ package com.fantasticsource.setbonus.common.bonusrequirements.setrequirement;
 
 import com.fantasticsource.mctools.items.RegistryRegexItemFilter;
 import com.fantasticsource.setbonus.SetBonus;
+import com.fantasticsource.setbonus.SetBonusData;
 import com.fantasticsource.tools.datastructures.Pair;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.text.translation.I18n;
-import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,7 +23,7 @@ public class Set
     {
     }
 
-    public static Set getInstance(String parsableSet, Side side)
+    public static Set getInstance(String parsableSet, SetBonusData data)
     {
         Set result = new Set();
 
@@ -45,10 +45,10 @@ public class Set
 
         for (String string : Arrays.copyOfRange(tokens, 2, tokens.length))
         {
-            SlotData data = SlotData.getInstance(string, result.involvedEquips, side);
-            if (data == null) return null;
+            SlotData slotData = SlotData.getInstance(string, result.involvedEquips, data);
+            if (slotData == null) return null;
 
-            result.slotData.add(data);
+            result.slotData.add(slotData);
         }
         if (result.slotData.size() == 0)
         {

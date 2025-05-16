@@ -4,14 +4,12 @@ import baubles.api.BaubleType;
 import baubles.api.BaublesApi;
 import com.fantasticsource.mctools.items.RegistryRegexItemFilter;
 import com.fantasticsource.setbonus.SetBonus;
-import com.fantasticsource.setbonus.client.ClientData;
-import com.fantasticsource.setbonus.server.ServerData;
+import com.fantasticsource.setbonus.SetBonusData;
 import com.fantasticsource.tools.ReflectionTool;
 import com.gildedgames.the_aether.api.AetherAPI;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.translation.I18n;
-import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
 import java.util.ArrayList;
@@ -33,7 +31,7 @@ public class SlotData
     {
     }
 
-    public static SlotData getInstance(String slotsAndEquipment, LinkedHashMap<String, RegistryRegexItemFilter> setdataEquipIDTracker, Side side)
+    public static SlotData getInstance(String slotsAndEquipment, LinkedHashMap<String, RegistryRegexItemFilter> setdataEquipIDTracker, SetBonusData data)
     {
         SlotData result = new SlotData();
 
@@ -55,11 +53,10 @@ public class SlotData
 
 
         //Equipment
-        LinkedHashMap<String, Equip> equipment = side == Side.SERVER ? ServerData.SERVER_DATA.equipment : ClientData.CLIENT_DATA.equipment;
         for (String equipID : tokens[1].split("[|]"))
         {
             equipID = equipID.trim();
-            Equip equip = equipment.get(equipID);
+            Equip equip = data.equipment.get(equipID);
             if (equip == null)
             {
                 System.err.println(I18n.translateToLocalFormatted(SetBonus.MODID + ".error.slotBadEquipID", equipID, slotsAndEquipment));

@@ -9,7 +9,6 @@ import com.fantasticsource.setbonus.common.bonusrequirements.ABonusRequirement;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
 
 import javax.annotation.Nonnull;
 import java.io.*;
@@ -21,12 +20,6 @@ public class ServerBonus extends Bonus
     public static boolean changed, save;
 
     private LinkedHashMap<EntityPlayer, BonusInstance> instances = new LinkedHashMap<>();
-
-
-    public static ServerBonus getInstance(String parsableBonus)
-    {
-        return (ServerBonus) Bonus.getInstance(parsableBonus, Side.SERVER);
-    }
 
 
     public static void dropAll()

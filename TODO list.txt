@@ -1,3 +1,5 @@
+Fix discoveries not saving / loading correctly in single player
+
 Fix deselection code triggering before other clicks (should trigger after other clicks if nothing was clicked)
 
 Make sure connection lines update correctly when scrolling and resizing window

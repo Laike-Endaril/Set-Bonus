@@ -5,6 +5,7 @@ import com.fantasticsource.mctools.MCTools;
 import com.fantasticsource.mctools.ServerTickTimer;
 import com.fantasticsource.mctools.enchantments.Enchantments;
 import com.fantasticsource.mctools.event.InventoryChangedEvent;
+import com.fantasticsource.setbonus.SetBonusData;
 import com.fantasticsource.setbonus.client.ClientBonus;
 import com.fantasticsource.setbonus.client.ClientData;
 import com.fantasticsource.setbonus.common.Bonus;
@@ -54,7 +55,7 @@ public class BonusElementEnchantment extends ABonusElement
         this.enchantments = enchantments;
     }
 
-    public static BonusElementEnchantment getInstance(String parsableEnchantmentBonus, Side side)
+    public static BonusElementEnchantment getInstance(String parsableEnchantmentBonus, SetBonusData data)
     {
         String[] tokens = parsableEnchantmentBonus.split(",");
         if (tokens.length < 3)
@@ -63,14 +64,14 @@ public class BonusElementEnchantment extends ABonusElement
             return null;
         }
 
-        Bonus bonus = side == Side.SERVER ? ServerData.SERVER_DATA.bonuses.get(tokens[0].trim()) : ClientData.CLIENT_DATA.bonuses.get(tokens[0].trim());
+        Bonus bonus = data.bonuses.get(tokens[0].trim());
         if (bonus == null)
         {
             System.err.println(I18n.translateToLocalFormatted(MODID + ".error.enchantmentBonusIDNotFound", tokens[0].trim(), parsableEnchantmentBonus));
             return null;
         }
 
-        SlotData slotDataToEnchant = SlotData.getInstance(tokens[1].trim(), null, side);
+        SlotData slotDataToEnchant = SlotData.getInstance(tokens[1].trim(), null, data);
 
         //Error messages handled in library
         HashMap<Pair<Enchantment, Integer>, Integer> enchantments = Enchantments.parseEnchantments(Arrays.copyOfRange(tokens, 2, tokens.length));

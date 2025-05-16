@@ -1,6 +1,7 @@
 package com.fantasticsource.setbonus.common;
 
 import com.fantasticsource.setbonus.SetBonus;
+import com.fantasticsource.setbonus.SetBonusData;
 import com.fantasticsource.setbonus.client.ClientBonus;
 import com.fantasticsource.setbonus.client.ClientData;
 import com.fantasticsource.setbonus.common.bonuselements.ABonusElement;
@@ -8,12 +9,11 @@ import com.fantasticsource.setbonus.common.bonusrequirements.ABonusRequirement;
 import com.fantasticsource.setbonus.server.ServerBonus;
 import com.fantasticsource.setbonus.server.ServerData;
 import net.minecraft.util.text.translation.I18n;
-import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public abstract class Bonus
+public class Bonus
 {
     public static final int
             MODE_DISCOVERABLE = 0,
@@ -33,9 +33,9 @@ public abstract class Bonus
     {
     }
 
-    public static Bonus getInstance(String parsableBonus, Side side)
+    public static Bonus getInstance(String parsableBonus, SetBonusData data)
     {
-        Bonus bonus = side == Side.SERVER ? new ServerBonus() : new ClientBonus();
+        Bonus bonus = data instanceof ServerData ? new ServerBonus() : data instanceof ClientData ? new ClientBonus() : new Bonus();
 
         String[] tokens = parsableBonus.split(",");
         if (tokens.length < 3)
@@ -70,7 +70,7 @@ public abstract class Bonus
 
         for (String requirementString : Arrays.copyOfRange(tokens, 3, tokens.length))
         {
-            ABonusRequirement requirement = ABonusRequirement.parse(requirementString, side == Side.SERVER ? ServerData.SERVER_DATA.sets : ClientData.CLIENT_DATA.sets);
+            ABonusRequirement requirement = ABonusRequirement.parse(requirementString, data.sets);
 
             if (requirement == null)
             {

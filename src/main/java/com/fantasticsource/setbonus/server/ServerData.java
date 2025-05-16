@@ -1,12 +1,12 @@
 package com.fantasticsource.setbonus.server;
 
 import com.fantasticsource.setbonus.SetBonusData;
+import com.fantasticsource.setbonus.common.Bonus;
 import com.fantasticsource.setbonus.common.bonuselements.BonusElementAttributeModifier;
 import com.fantasticsource.setbonus.common.bonuselements.BonusElementEnchantment;
 import com.fantasticsource.setbonus.common.bonuselements.BonusElementPotionEffect;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Equip;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Set;
-import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.LinkedHashMap;
 
@@ -41,7 +41,7 @@ public class ServerData extends SetBonusData
         //Initialize sets
         for (String setString : serverSettings.getSets())
         {
-            Set set = Set.getInstance(setString, Side.SERVER);
+            Set set = Set.getInstance(setString, this);
             if (set != null) sets.put(set.id, set);
         }
 
@@ -49,7 +49,7 @@ public class ServerData extends SetBonusData
         //Initialize bonuses
         for (String bonusString : serverSettings.getBonuses())
         {
-            ServerBonus bonus = ServerBonus.getInstance(bonusString);
+            ServerBonus bonus = (ServerBonus) Bonus.getInstance(bonusString, this);
             if (bonus != null) bonuses.put(bonus.id, bonus);
         }
 
@@ -57,21 +57,21 @@ public class ServerData extends SetBonusData
         //Initialize attribute modifiers
         for (String modifierString : serverSettings.getAttributeMods())
         {
-            BonusElementAttributeModifier.getInstance(modifierString, Side.SERVER);
+            BonusElementAttributeModifier.getInstance(modifierString, this);
         }
 
 
         //Initialize potions
         for (String potionString : serverSettings.getPotions())
         {
-            BonusElementPotionEffect.getInstance(potionString, Side.SERVER);
+            BonusElementPotionEffect.getInstance(potionString, this);
         }
 
 
         //Initialize enchantments
         for (String enchantString : serverSettings.getEnchantments())
         {
-            BonusElementEnchantment.getInstance(enchantString, Side.SERVER);
+            BonusElementEnchantment.getInstance(enchantString, this);
         }
     }
 }

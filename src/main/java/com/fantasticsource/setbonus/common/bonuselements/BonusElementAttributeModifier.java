@@ -3,15 +3,13 @@ package com.fantasticsource.setbonus.common.bonuselements;
 import com.fantasticsource.mctools.MCTools;
 import com.fantasticsource.mctools.attributes.AttributeMods;
 import com.fantasticsource.setbonus.SetBonus;
-import com.fantasticsource.setbonus.client.ClientData;
+import com.fantasticsource.setbonus.SetBonusData;
 import com.fantasticsource.setbonus.common.Bonus;
-import com.fantasticsource.setbonus.server.ServerData;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.text.translation.I18n;
-import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,7 +29,7 @@ public class BonusElementAttributeModifier extends ABonusElement
         }
     }
 
-    public static BonusElementAttributeModifier getInstance(String parsableModifierBonus, Side side)
+    public static BonusElementAttributeModifier getInstance(String parsableModifierBonus, SetBonusData data)
     {
         String[] tokens = parsableModifierBonus.split(",");
         if (tokens.length < 2)
@@ -40,7 +38,7 @@ public class BonusElementAttributeModifier extends ABonusElement
             return null;
         }
 
-        Bonus bonus = side == Side.SERVER ? ServerData.SERVER_DATA.bonuses.get(tokens[0].trim()) : ClientData.CLIENT_DATA.bonuses.get(tokens[0].trim());
+        Bonus bonus = data.bonuses.get(tokens[0].trim());
         if (bonus == null)
         {
             System.err.println(I18n.translateToLocalFormatted(SetBonus.MODID + ".error.attribBonusIDNotFound", tokens[0].trim(), parsableModifierBonus));
