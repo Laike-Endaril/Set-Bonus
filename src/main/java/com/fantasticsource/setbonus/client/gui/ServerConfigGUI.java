@@ -208,7 +208,8 @@ public class ServerConfigGUI extends GUIScreen
         {
             if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
             {
-                guiEquip.equip.delete();
+                //TODO delete equip
+                System.out.println("delete equip");
                 //TODO update gui
                 System.out.println("update gui");
                 if (equips.size() > 0) select((GUITextLabel) equips.get(0));
@@ -220,7 +221,8 @@ public class ServerConfigGUI extends GUIScreen
                 {
                     if (yesNoGUI.pressedYes)
                     {
-                        guiEquip.equip.delete();
+                        //TODO delete equip
+                        System.out.println("delete equip");
                         //TODO update gui
                         System.out.println("update gui");
                     }
@@ -249,7 +251,8 @@ public class ServerConfigGUI extends GUIScreen
         {
             if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
             {
-                guiSet.set.delete();
+                //TODO delete set
+                System.out.println("delete set");
                 //TODO update gui
                 System.out.println("update gui");
                 if (sets.size() > 0) select((GUITextLabel) sets.get(0));
@@ -261,7 +264,8 @@ public class ServerConfigGUI extends GUIScreen
                 {
                     if (yesNoGUI.pressedYes)
                     {
-                        guiSet.set.delete();
+                        //TODO delete set
+                        System.out.println("delete set");
                         //TODO update gui
                         System.out.println("update gui");
                     }

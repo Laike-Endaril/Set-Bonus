@@ -96,13 +96,4 @@ public class Set
     {
         return slotData.size();
     }
-
-
-    public void delete()
-    {
-        System.out.println("Delete set: " + name);
-        //TODO backup config file?
-        //TODO remove from config file
-        //TODO reload config file
-    }
 }

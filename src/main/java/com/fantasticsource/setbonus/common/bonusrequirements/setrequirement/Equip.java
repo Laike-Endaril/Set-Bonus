@@ -37,13 +37,4 @@ public class Equip
         result.parsedString = parsableEquip;
         return result;
     }
-
-
-    public void delete()
-    {
-        System.out.println("Delete equip: " + name);
-        //TODO backup config file?
-        //TODO remove from config file
-        //TODO reload config file
-    }
 }

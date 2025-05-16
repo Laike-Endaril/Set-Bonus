@@ -13,7 +13,7 @@ import java.util.Arrays;
 
 public abstract class Bonus
 {
-    public static int
+    public static final int
             MODE_DISCOVERABLE = 0,
             MODE_GLOBALLY_KNOWN = 1,
             MODE_GLOBALLY_HIDDEN = 2;
@@ -81,14 +81,5 @@ public abstract class Bonus
 
         bonus.parsedString = parsableBonus;
         return bonus;
-    }
-
-
-    public void delete()
-    {
-        System.out.println("Delete bonus: " + name);
-        //TODO backup config file?
-        //TODO remove from config file
-        //TODO reload config file
     }
 }
