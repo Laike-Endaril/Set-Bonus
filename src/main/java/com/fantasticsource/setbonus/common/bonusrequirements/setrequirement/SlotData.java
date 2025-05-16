@@ -55,7 +55,7 @@ public class SlotData
 
 
         //Equipment
-        LinkedHashMap<String, Equip> equipment = side == Side.SERVER ? ServerData.equipment : ClientData.equipment;
+        LinkedHashMap<String, Equip> equipment = side == Side.SERVER ? ServerData.SERVER_DATA.equipment : ClientData.CLIENT_DATA.equipment;
         for (String equipID : tokens[1].split("[|]"))
         {
             equipID = equipID.trim();

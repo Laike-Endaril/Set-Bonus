@@ -1,9 +1,10 @@
 package com.fantasticsource.setbonus.client;
 
 import com.fantasticsource.mctools.items.RegistryRegexItemFilter;
+import com.fantasticsource.setbonus.common.Bonus;
 import com.fantasticsource.setbonus.common.bonuselements.ABonusElement;
-import com.fantasticsource.setbonus.common.bonuselements.BonusElementEnchantment;
 import com.fantasticsource.setbonus.common.bonuselements.BonusElementAttributeModifier;
+import com.fantasticsource.setbonus.common.bonuselements.BonusElementEnchantment;
 import com.fantasticsource.setbonus.common.bonuselements.BonusElementPotionEffect;
 import com.fantasticsource.setbonus.common.bonusrequirements.ABonusRequirement;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Set;
@@ -36,7 +37,7 @@ public class TooltipRenderer
         List<String> tooltip = event.getToolTip();
 
         boolean edited = false;
-        for (Set set : ClientData.sets.values())
+        for (Set set : ClientData.CLIENT_DATA.sets.values())
         {
             for (RegistryRegexItemFilter filter : set.involvedEquips.values())
             {
@@ -54,7 +55,7 @@ public class TooltipRenderer
                     int max = set.getMaxNumber();
                     String color = "" + (count == 0 ? RED : count == max ? GREEN : YELLOW);
                     tooltip.add(color + BOLD + "=== " + I18n.translateToLocal(set.name) + " (" + count + "/" + max + ") ===");
-                    for (ClientBonus bonus : ClientData.bonuses.values())
+                    for (Bonus bonus : ClientData.CLIENT_DATA.bonuses.values())
                     {
                         int req = 0;
                         boolean otherReqs = false;
@@ -77,7 +78,7 @@ public class TooltipRenderer
                         if (req > 0)
                         {
                             //This item fills a requirement for the particular bonus we're looking at, so add bonus tooltip(s) for the set bonus we're currently looking at
-                            ClientBonus.BonusInstance bonusInstance = bonus.getBonusInstance(player);
+                            ClientBonus.BonusInstance bonusInstance = ((ClientBonus) bonus).getBonusInstance(player);
 
                             color = "";
                             int active = set.getNumberEquipped(player);

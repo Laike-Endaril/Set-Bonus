@@ -1,26 +1,27 @@
 package com.fantasticsource.setbonus.client;
 
 import com.fantasticsource.setbonus.Compat;
+import com.fantasticsource.setbonus.SetBonusData;
 import com.fantasticsource.setbonus.common.Network;
-import com.fantasticsource.setbonus.common.bonuselements.BonusElementEnchantment;
 import com.fantasticsource.setbonus.common.bonuselements.BonusElementAttributeModifier;
+import com.fantasticsource.setbonus.common.bonuselements.BonusElementEnchantment;
 import com.fantasticsource.setbonus.common.bonuselements.BonusElementPotionEffect;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Equip;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Set;
 import com.fantasticsource.setbonus.config.SetBonusConfig;
 import net.minecraftforge.fml.relauncher.Side;
 
-import java.util.LinkedHashMap;
-
-public class ClientData
+public class ClientData extends SetBonusData
 {
-    public static LinkedHashMap<String, Equip> equipment = new LinkedHashMap<>();
-    public static LinkedHashMap<String, Set> sets = new LinkedHashMap<>();
-
-    public static LinkedHashMap<String, ClientBonus> bonuses = new LinkedHashMap<>();
+    public static final ClientData CLIENT_DATA = new ClientData();
 
 
-    public static void clear()
+    protected ClientData()
+    {
+    }
+
+
+    public void clear()
     {
         ClientBonus.dropAll();
         equipment.clear();
@@ -28,7 +29,7 @@ public class ClientData
     }
 
 
-    public static void update(Network.ConfigPacket packet)
+    public void update(Network.ConfigPacket packet)
     {
         //Clear any existing data
         ClientBonus.dropAll();
@@ -75,7 +76,7 @@ public class ClientData
     }
 
 
-    public static void update(Network.DiscoverBonusPacket packet)
+    public void update(Network.DiscoverBonusPacket packet)
     {
         //Initialize equipment
         for (String equipString : packet.equipment)

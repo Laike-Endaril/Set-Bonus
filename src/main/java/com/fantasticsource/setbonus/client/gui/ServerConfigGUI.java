@@ -148,9 +148,9 @@ public class ServerConfigGUI extends GUIScreen
 
 
         //Populate
-        for (Equip equip : ServerData.equipment.values()) equips.add(new GUIEquip(this, equip, 1, 0.5));
-        for (Set set : ServerData.sets.values()) sets.add(new GUISet(this, set, 1, 0.5));
-        for (Bonus bonus : ServerData.bonuses.values()) bonuses.add(new GUIBonus(this, bonus, 1, 0.5));
+        for (Equip equip : ServerData.SERVER_DATA.equipment.values()) equips.add(new GUIEquip(this, equip, 1, 0.5));
+        for (Set set : ServerData.SERVER_DATA.sets.values()) sets.add(new GUISet(this, set, 1, 0.5));
+        for (Bonus bonus : ServerData.SERVER_DATA.bonuses.values()) bonuses.add(new GUIBonus(this, bonus, 1, 0.5));
 
 
         //Deselection on root click

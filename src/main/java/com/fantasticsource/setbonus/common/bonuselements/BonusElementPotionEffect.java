@@ -40,7 +40,7 @@ public class BonusElementPotionEffect extends ABonusElement
             return null;
         }
 
-        Bonus bonus = side == Side.SERVER ? ServerData.bonuses.get(tokens[0].trim()) : ClientData.bonuses.get(tokens[0].trim());
+        Bonus bonus = side == Side.SERVER ? ServerData.SERVER_DATA.bonuses.get(tokens[0].trim()) : ClientData.CLIENT_DATA.bonuses.get(tokens[0].trim());
         if (bonus == null)
         {
             System.err.println(I18n.translateToLocalFormatted(SetBonus.MODID + ".error.potionBonusIDNotFound", tokens[0].trim(), parsablePotionBonus));

@@ -90,7 +90,7 @@ public class Network
                     Set set = ((SetRequirement) bonusRequirement).set;
                     sets.add(set.parsedString);
 
-                    for (String equipName : set.involvedEquips.keySet()) equipment.add(ServerData.equipment.get(equipName).parsedString);
+                    for (String equipName : set.involvedEquips.keySet()) equipment.add(ServerData.SERVER_DATA.equipment.get(equipName).parsedString);
                 }
             }
 
@@ -171,7 +171,7 @@ public class Network
         @Override
         public IMessage onMessage(DiscoverBonusPacket packet, MessageContext ctx)
         {
-            Minecraft.getMinecraft().addScheduledTask(() -> ClientData.update(packet));
+            Minecraft.getMinecraft().addScheduledTask(() -> ClientData.CLIENT_DATA.update(packet));
             return null;
         }
     }
@@ -203,9 +203,9 @@ public class Network
         @Override
         public void toBytes(ByteBuf buf)
         {
-            for (ServerBonus bonus : ServerData.bonuses.values())
+            for (Bonus bonus : ServerData.SERVER_DATA.bonuses.values())
             {
-                if (bonus.discoveryMode == Bonus.MODE_GLOBALLY_KNOWN || (bonus.discoveryMode == Bonus.MODE_DISCOVERABLE && bonus.getBonusInstance(player).discovered))
+                if (bonus.discoveryMode == Bonus.MODE_GLOBALLY_KNOWN || (bonus.discoveryMode == Bonus.MODE_DISCOVERABLE && ((ServerBonus) bonus).getBonusInstance(player).discovered))
                 {
                     bonuses.add(bonus.parsedString);
 
@@ -216,7 +216,7 @@ public class Network
                             Set set = ((SetRequirement) bonusRequirement).set;
                             sets.add(set.parsedString);
 
-                            for (String equipName : set.involvedEquips.keySet()) equipment.add(ServerData.equipment.get(equipName).parsedString);
+                            for (String equipName : set.involvedEquips.keySet()) equipment.add(ServerData.SERVER_DATA.equipment.get(equipName).parsedString);
                         }
                     }
 
@@ -289,7 +289,7 @@ public class Network
         @Override
         public IMessage onMessage(ConfigPacket packet, MessageContext ctx)
         {
-            Minecraft.getMinecraft().addScheduledTask(() -> ClientData.update(packet));
+            Minecraft.getMinecraft().addScheduledTask(() -> ClientData.CLIENT_DATA.update(packet));
             return null;
         }
     }

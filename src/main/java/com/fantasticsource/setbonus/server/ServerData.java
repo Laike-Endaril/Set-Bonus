@@ -1,7 +1,8 @@
 package com.fantasticsource.setbonus.server;
 
-import com.fantasticsource.setbonus.common.bonuselements.BonusElementEnchantment;
+import com.fantasticsource.setbonus.SetBonusData;
 import com.fantasticsource.setbonus.common.bonuselements.BonusElementAttributeModifier;
+import com.fantasticsource.setbonus.common.bonuselements.BonusElementEnchantment;
 import com.fantasticsource.setbonus.common.bonuselements.BonusElementPotionEffect;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Equip;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Set;
@@ -11,15 +12,17 @@ import java.util.LinkedHashMap;
 
 import static com.fantasticsource.setbonus.config.SetBonusConfig.serverSettings;
 
-public class ServerData
+public class ServerData extends SetBonusData
 {
-    public static LinkedHashMap<String, Equip> equipment = null;
-    public static LinkedHashMap<String, Set> sets;
-
-    public static LinkedHashMap<String, ServerBonus> bonuses = new LinkedHashMap<>();
+    public static final ServerData SERVER_DATA = new ServerData();
 
 
-    public static void update()
+    protected ServerData()
+    {
+    }
+
+
+    public void update()
     {
         //Clear any existing data
         ServerBonus.dropAll();

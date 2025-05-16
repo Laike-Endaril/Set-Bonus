@@ -63,7 +63,7 @@ public class BonusElementEnchantment extends ABonusElement
             return null;
         }
 
-        Bonus bonus = side == Side.SERVER ? ServerData.bonuses.get(tokens[0].trim()) : ClientData.bonuses.get(tokens[0].trim());
+        Bonus bonus = side == Side.SERVER ? ServerData.SERVER_DATA.bonuses.get(tokens[0].trim()) : ClientData.CLIENT_DATA.bonuses.get(tokens[0].trim());
         if (bonus == null)
         {
             System.err.println(I18n.translateToLocalFormatted(MODID + ".error.enchantmentBonusIDNotFound", tokens[0].trim(), parsableEnchantmentBonus));
@@ -258,9 +258,9 @@ public class BonusElementEnchantment extends ABonusElement
         if (FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER)
         {
             ServerBonus.BonusInstance bonusInstance;
-            for (ServerBonus bonus : ServerData.bonuses.values())
+            for (Bonus bonus : ServerData.SERVER_DATA.bonuses.values())
             {
-                bonusInstance = bonus.getBonusInstance((EntityPlayerMP) player);
+                bonusInstance = ((ServerBonus) bonus).getBonusInstance((EntityPlayerMP) player);
                 if (!bonusInstance.active) continue;
 
                 for (ABonusElement bonusElement : bonus.bonusElements)
@@ -276,9 +276,9 @@ public class BonusElementEnchantment extends ABonusElement
         else
         {
             ClientBonus.BonusInstance bonusInstance;
-            for (ClientBonus bonus : ClientData.bonuses.values())
+            for (Bonus bonus : ClientData.CLIENT_DATA.bonuses.values())
             {
-                bonusInstance = bonus.getBonusInstance(player);
+                bonusInstance = ((ClientBonus) bonus).getBonusInstance(player);
                 if (!bonusInstance.active) continue;
 
                 for (ABonusElement bonusElement : bonus.bonusElements)

@@ -70,7 +70,7 @@ public abstract class Bonus
 
         for (String requirementString : Arrays.copyOfRange(tokens, 3, tokens.length))
         {
-            ABonusRequirement requirement = ABonusRequirement.parse(requirementString, side == Side.SERVER ? ServerData.sets : ClientData.sets);
+            ABonusRequirement requirement = ABonusRequirement.parse(requirementString, side == Side.SERVER ? ServerData.SERVER_DATA.sets : ClientData.CLIENT_DATA.sets);
 
             if (requirement == null)
             {
