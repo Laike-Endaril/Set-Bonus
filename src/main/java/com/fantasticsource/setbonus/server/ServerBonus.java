@@ -18,7 +18,7 @@ import java.util.Map;
 
 public class ServerBonus extends Bonus
 {
-    public static boolean changed;
+    public static boolean changed, save;
     private LinkedHashMap<EntityPlayer, BonusInstance> instances = new LinkedHashMap<>();
 
     public static ServerBonus getInstance(String parsableBonus)
@@ -122,6 +122,8 @@ public class ServerBonus extends Bonus
     public static void updateBonuses(EntityPlayerMP player, boolean forceNew)
     {
         changed = false;
+        save = false;
+
         for (ServerBonus bonus : ServerData.bonuses.values()) bonus.update(player, forceNew);
 
         while (changed)
@@ -129,6 +131,8 @@ public class ServerBonus extends Bonus
             changed = false;
             for (ServerBonus bonus : ServerData.bonuses.values()) bonus.update(player, false);
         }
+
+        if (save) saveDiscoveries(player);
     }
 
 
@@ -191,7 +195,7 @@ public class ServerBonus extends Bonus
                     {
                         discovered = true;
                         Network.WRAPPER.sendTo(new Network.DiscoverBonusPacket(bonus), player);
-                        saveDiscoveries(player);
+
                     }
 
                     for (ABonusElement element : bonusElements) element.activate(player);
