@@ -1,9 +1,13 @@
-Fix deselection code triggering before other clicks (should trigger after other clicks if nothing was clicked)
+Add buttons:
+* Show/hide lines
+* Load local template
+* Load remote template
+* Save local template
+* Save remote template
+* Apply to local
+* Apply to remote
 
 Make sure connection lines update correctly when scrolling and resizing window
-
-Add "revert all" button to server config gui
-Add way to open server config gui for remote server
 
 Change sorting for columns when clicking their labels in config gui
 

@@ -32,10 +32,10 @@ import static com.fantasticsource.setbonus.SetBonus.MODID;
 
 public class ServerConfigGUI extends GUIScreen
 {
-    public SetBonusData data;
     public static double lineOffset = 0.125;
     public static Color[] lineColors = new Color[]{Color.WHITE.copy().setAF(0.25f), Color.PURPLE.copy().setAF(0.25f)};
 
+    public SetBonusData data;
     public GUITextLabel selected = null;
     public GUITextLabel equipsLabel, bonusesLabel, setsLabel, settingsLabel, detailsLabel;
     public GUIScrollView equips, bonuses, sets, settings, details;
@@ -153,10 +153,6 @@ public class ServerConfigGUI extends GUIScreen
         for (Equip equip : data.equipment.values()) equips.add(new GUIEquip(this, equip, 1, 0.5));
         for (Set set : data.sets.values()) sets.add(new GUISet(this, set, 1, 0.5));
         for (Bonus bonus : data.bonuses.values()) bonuses.add(new GUIBonus(this, bonus, 1, 0.5));
-
-
-        //Deselection on root click
-        root.addClickActions(() -> select(null));
     }
 
 

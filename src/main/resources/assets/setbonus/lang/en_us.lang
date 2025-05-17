@@ -52,7 +52,7 @@ setbonus.config.enableEnchantmentTooltips=Enable Enchantment Tooltips
 setbonus.config.enableEnchantmentTooltips.tooltip=Whether or not to show enchantment information in discovered set item tooltips
 
 
-setbonus.config.localServerSettings=Local Server Settings
+setbonus.config.serverSettings=Server Settings
 setbonus.config.equipment=Equipment
 setbonus.config.bonuses=Bonuses
 setbonus.config.sets=Sets
@@ -63,7 +63,6 @@ setbonus.config.deleteThingMaybe=Delete %s?
 
 
 
-setbonus.config.serverSettings=Server Settings
 setbonus.config.bonusSettings=Bonus Settings
 setbonus.config.attributeModifiers=Attribute Modifiers
 setbonus.config.potionEffects=Potion Effects

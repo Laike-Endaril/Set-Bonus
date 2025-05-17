@@ -36,7 +36,7 @@ public class SetBonusConfigGUI extends GUIScreen
 
         root.add(new GUITextSpacer(this));
 
-        element = new GUITextButton(this, reformat(MODID + ".config.localServerSettings"));
+        element = new GUITextButton(this, reformat(MODID + ".config.serverSettings"));
         element.addClickActions(() ->
         {
             SetBonusData.setServerFromConfig();
