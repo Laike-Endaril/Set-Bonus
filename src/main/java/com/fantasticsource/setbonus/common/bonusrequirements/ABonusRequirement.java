@@ -1,6 +1,7 @@
 package com.fantasticsource.setbonus.common.bonusrequirements;
 
 import com.fantasticsource.setbonus.SetBonus;
+import com.fantasticsource.setbonus.SetBonusData;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Set;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.SetRequirement;
 import net.minecraft.entity.player.EntityPlayer;
@@ -51,4 +52,6 @@ public abstract class ABonusRequirement
     public abstract int active(EntityPlayer player);
 
     public abstract int required();
+
+    public abstract ABonusRequirement clone(SetBonusData data);
 }

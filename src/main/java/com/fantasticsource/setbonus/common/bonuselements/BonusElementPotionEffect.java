@@ -111,4 +111,10 @@ public class BonusElementPotionEffect extends ABonusElement
         for (FantasticPotionEffect potion : potions) result[i++] = potion.toString(false);
         return result;
     }
+
+
+    public BonusElementPotionEffect clone(SetBonusData data)
+    {
+        return getInstance(parsedString, data);
+    }
 }

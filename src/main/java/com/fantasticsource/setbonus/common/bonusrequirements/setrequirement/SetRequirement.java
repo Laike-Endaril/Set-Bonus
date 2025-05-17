@@ -1,5 +1,6 @@
 package com.fantasticsource.setbonus.common.bonusrequirements.setrequirement;
 
+import com.fantasticsource.setbonus.SetBonusData;
 import com.fantasticsource.setbonus.common.bonusrequirements.ABonusRequirement;
 import net.minecraft.entity.player.EntityPlayer;
 
@@ -44,5 +45,11 @@ public class SetRequirement extends ABonusRequirement
     public int required()
     {
         return num;
+    }
+
+
+    public SetRequirement clone(SetBonusData data)
+    {
+        return new SetRequirement(data.sets.get(set.id), num);
     }
 }

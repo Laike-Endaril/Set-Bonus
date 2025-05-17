@@ -1,6 +1,7 @@
 package com.fantasticsource.setbonus.common.bonusrequirements;
 
 import com.fantasticsource.mctools.DoubleRequirement;
+import com.fantasticsource.setbonus.SetBonusData;
 import com.fantasticsource.tools.datastructures.Pair;
 import net.minecraft.entity.player.EntityPlayer;
 
@@ -38,5 +39,11 @@ public class AttributeRequirement extends ABonusRequirement
     public int required()
     {
         return 1;
+    }
+
+
+    public AttributeRequirement clone(SetBonusData data)
+    {
+        return new AttributeRequirement(new Pair<>(attributeName, requirement.clone()));
     }
 }

@@ -82,4 +82,22 @@ public class Bonus
         bonus.parsedString = parsableBonus;
         return bonus;
     }
+
+
+    public Bonus clone(SetBonusData data)
+    {
+        Bonus other = new Bonus();
+
+        other.parsedString = parsedString;
+        other.id = id;
+        other.name = name;
+
+        other.discoveryMode = discoveryMode;
+
+        for (ABonusRequirement requirement : bonusRequirements) other.bonusRequirements.add(requirement.clone(data));
+
+        for (ABonusElement element : bonusElements) other.bonusElements.add(element.clone(data));
+
+        return other;
+    }
 }

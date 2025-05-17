@@ -7,11 +7,9 @@ import com.fantasticsource.mctools.enchantments.Enchantments;
 import com.fantasticsource.mctools.event.InventoryChangedEvent;
 import com.fantasticsource.setbonus.SetBonusData;
 import com.fantasticsource.setbonus.client.ClientBonus;
-import com.fantasticsource.setbonus.client.ClientData;
 import com.fantasticsource.setbonus.common.Bonus;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.SlotData;
 import com.fantasticsource.setbonus.server.ServerBonus;
-import com.fantasticsource.setbonus.server.ServerData;
 import com.fantasticsource.tools.Tools;
 import com.fantasticsource.tools.datastructures.Pair;
 import net.minecraft.enchantment.Enchantment;
@@ -389,5 +387,11 @@ public class BonusElementEnchantment extends ABonusElement
             result[i++] = (enchantment.isCurse() ? TextFormatting.RED : TextFormatting.GREEN) + "" + enchantment.getTranslatedName(level) + " (" + I18n.translateToLocal(MODID + ".enchantmode." + mode) + ")";
         }
         return result;
+    }
+
+
+    public BonusElementEnchantment clone(SetBonusData data)
+    {
+        return getInstance(parsedString, data);
     }
 }

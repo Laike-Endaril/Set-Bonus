@@ -94,4 +94,10 @@ public class BonusElementAttributeModifier extends ABonusElement
         for (AttributeModifier modifier : modifiers.values()) result[i++] = MCTools.getAttributeModString(modifier);
         return result;
     }
+
+
+    public BonusElementAttributeModifier clone(SetBonusData data)
+    {
+        return getInstance(parsedString, data);
+    }
 }
