@@ -139,7 +139,6 @@ public class BonusElementEnchantment extends ABonusElement
 
         compound.setUniqueId("SBOwner", player.getUniqueID());
         compound.setInteger("SBSlot", slot);
-        compound.setInteger("SBRandom", Tools.random(Integer.MAX_VALUE));
 
 
         HashMap<Integer, Integer> data = new HashMap<>();
@@ -298,7 +297,6 @@ public class BonusElementEnchantment extends ABonusElement
             compound.removeTag("SBOwnerMost");
             compound.removeTag("SBOwnerLeast");
             compound.removeTag("SBSlot");
-            compound.removeTag("SBRandom");
             if (compound.getSize() == 0) stack.setTagCompound(null);
         }
     }
@@ -327,7 +325,6 @@ public class BonusElementEnchantment extends ABonusElement
                     compound.removeTag("SBOwnerMost");
                     compound.removeTag("SBOwnerLeast");
                     compound.removeTag("SBSlot");
-                    compound.removeTag("SBRandom");
                     if (compound.getSize() == 0) stack.setTagCompound(null);
                 }
             }
@@ -359,7 +356,6 @@ public class BonusElementEnchantment extends ABonusElement
                         compound.removeTag("SBOwnerMost");
                         compound.removeTag("SBOwnerLeast");
                         compound.removeTag("SBSlot");
-                        compound.removeTag("SBRandom");
                         if (compound.getSize() == 0) stack.setTagCompound(null);
 
                         if (player != null) MCTools.syncInventory(player);
@@ -373,7 +369,6 @@ public class BonusElementEnchantment extends ABonusElement
     @Override
     public String[] tooltips()
     {
-//        HashMap<Pair<Enchantment, Integer>, Integer> enchantments;
         //Enchant, behavior/mode, level
         String[] result = new String[enchantments.size()];
         int i = 0;
