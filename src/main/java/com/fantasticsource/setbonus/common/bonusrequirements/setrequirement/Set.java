@@ -10,6 +10,7 @@ import net.minecraft.util.text.translation.I18n;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class Set
 {
@@ -95,5 +96,21 @@ public class Set
     public int getMaxNumber()
     {
         return slotData.size();
+    }
+
+
+    public Set clone()
+    {
+        Set other = new Set();
+
+        other.parsedString = parsedString;
+        other.id = id;
+        other.name = name;
+
+        for (Map.Entry<String, RegistryRegexItemFilter> entry : involvedEquips.entrySet()) other.involvedEquips.put(entry.getKey(), entry.getValue().clone());
+
+        for (SlotData data : slotData) other.slotData.add(data.clone());
+
+        return other;
     }
 }

@@ -23,6 +23,7 @@ public class SlotData
             AETHER_OFFSET = BAUBLES_THRESHOLD, AETHER_THRESHOLD = AETHER_OFFSET + 8,
             TRINKETS_OFFSET = AETHER_THRESHOLD, TRINKETS_THRESHOLD = TRINKETS_OFFSET + 32;
 
+
     public ArrayList<Integer> slots = new ArrayList<>(); //Because multiple slot options can be defined
     public LinkedHashSet<Equip> involvedEquips = new LinkedHashSet<>();
 
@@ -237,5 +238,16 @@ public class SlotData
         }
 
         return result;
+    }
+
+
+    public SlotData clone()
+    {
+        SlotData other = new SlotData();
+
+        other.slots.addAll(slots);
+        for (Equip equip : involvedEquips) other.involvedEquips.add(equip.clone());
+
+        return other;
     }
 }
