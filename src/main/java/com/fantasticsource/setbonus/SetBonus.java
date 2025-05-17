@@ -4,7 +4,6 @@ import com.fantasticsource.mctools.ClientTickTimer;
 import com.fantasticsource.mctools.MCTools;
 import com.fantasticsource.mctools.ServerTickTimer;
 import com.fantasticsource.setbonus.client.ClientBonus;
-import com.fantasticsource.setbonus.client.ClientData;
 import com.fantasticsource.setbonus.client.SetBonusGUI;
 import com.fantasticsource.setbonus.client.TooltipRenderer;
 import com.fantasticsource.setbonus.client.gui.SetBonusConfigGUI;
@@ -12,8 +11,8 @@ import com.fantasticsource.setbonus.common.Commands;
 import com.fantasticsource.setbonus.common.Network;
 import com.fantasticsource.setbonus.common.bonuselements.BonusElementPotionEffect;
 import com.fantasticsource.setbonus.config.ConfigHandler;
+import com.fantasticsource.setbonus.config.SetBonusConfig;
 import com.fantasticsource.setbonus.server.ServerBonus;
-import com.fantasticsource.setbonus.server.ServerData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.Entity;
@@ -86,7 +85,7 @@ public class SetBonus
         //It works for both dedicated and integrated as well
 
         event.registerServerCommand(new Commands());
-        ServerData.update();
+        SetBonusData.setServerFromConfig();
     }
 
     @EventHandler
@@ -112,7 +111,7 @@ public class SetBonus
             if (MCTools.hosting())
             {
                 //Changed config while in-game (hosting)
-                ServerData.update();
+                SetBonusData.setServerFromConfig();
 
                 EntityPlayer localPlayer = Minecraft.getMinecraft().player;
                 World world = localPlayer.world;
@@ -129,7 +128,7 @@ public class SetBonus
         else
         {
             //Changed config from title screen
-            ServerData.update();
+            SetBonusData.setServerFromConfig();
         }
     }
 
@@ -184,7 +183,12 @@ public class SetBonus
     @SubscribeEvent
     public static void disconnectFromServer(FMLNetworkEvent.ClientDisconnectionFromServerEvent event)
     {
-        Minecraft.getMinecraft().addScheduledTask(ClientData::clear);
+        Minecraft.getMinecraft().addScheduledTask(() ->
+        {
+            ClientBonus.dropAll();
+            SetBonusData.CLIENT_DATA.clear();
+            if (SetBonusConfig.clientSettings.dynamicTooltipSearch > 0) Compat.refreshTooltips();
+        });
     }
 
     @SideOnly(Side.CLIENT)

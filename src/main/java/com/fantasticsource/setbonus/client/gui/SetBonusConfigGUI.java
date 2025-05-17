@@ -6,7 +6,7 @@ import com.fantasticsource.mctools.gui.element.other.GUIDarkenedBackground;
 import com.fantasticsource.mctools.gui.element.text.GUINavbar;
 import com.fantasticsource.mctools.gui.element.text.GUITextButton;
 import com.fantasticsource.mctools.gui.element.text.GUITextSpacer;
-import com.fantasticsource.setbonus.server.ServerData;
+import com.fantasticsource.setbonus.SetBonusData;
 import com.fantasticsource.tools.datastructures.Color;
 
 import static com.fantasticsource.setbonus.SetBonus.MODID;
@@ -15,7 +15,7 @@ public class SetBonusConfigGUI extends GUIScreen
 {
     public SetBonusConfigGUI()
     {
-        ServerData.update();
+        SetBonusData.setServerFromConfig();
         show();
 
 

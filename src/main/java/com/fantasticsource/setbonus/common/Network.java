@@ -1,9 +1,9 @@
 package com.fantasticsource.setbonus.common;
 
 import com.fantasticsource.mctools.potions.FantasticPotionEffect;
+import com.fantasticsource.setbonus.Compat;
 import com.fantasticsource.setbonus.SetBonus;
 import com.fantasticsource.setbonus.SetBonusData;
-import com.fantasticsource.setbonus.client.ClientData;
 import com.fantasticsource.setbonus.common.bonuselements.ABonusElement;
 import com.fantasticsource.setbonus.common.bonuselements.BonusElementAttributeModifier;
 import com.fantasticsource.setbonus.common.bonuselements.BonusElementEnchantment;
@@ -12,6 +12,7 @@ import com.fantasticsource.setbonus.common.bonusrequirements.ABonusRequirement;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Equip;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Set;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.SetRequirement;
+import com.fantasticsource.setbonus.config.SetBonusConfig;
 import com.fantasticsource.setbonus.server.ServerBonus;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
@@ -40,7 +41,7 @@ public class Network
 
     public static void init()
     {
-        WRAPPER.registerMessage(ConfigPacketHandler.class, ConfigPacket.class, discriminator++, Side.CLIENT);
+        WRAPPER.registerMessage(AllDiscoveredBonusesPacketHandler.class, AllDiscoveredBonusesPacket.class, discriminator++, Side.CLIENT);
         WRAPPER.registerMessage(DiscoverBonusPacketHandler.class, DiscoverBonusPacket.class, discriminator++, Side.CLIENT);
         WRAPPER.registerMessage(HPFixPacketHandler.class, HPFixPacket.class, discriminator++, Side.CLIENT);
         WRAPPER.registerMessage(PotionFixPacketHandler.class, PotionFixPacket.class, discriminator++, Side.CLIENT);
@@ -48,7 +49,7 @@ public class Network
 
     public static void updateConfig(EntityPlayerMP player)
     {
-        Network.WRAPPER.sendTo(new Network.ConfigPacket(player), player);
+        Network.WRAPPER.sendTo(new AllDiscoveredBonusesPacket(player), player);
         ServerBonus.updateBonuses(player, true);
     }
 
@@ -171,13 +172,17 @@ public class Network
         @Override
         public IMessage onMessage(DiscoverBonusPacket packet, MessageContext ctx)
         {
-            Minecraft.getMinecraft().addScheduledTask(() -> ClientData.update(packet));
+            Minecraft.getMinecraft().addScheduledTask(() ->
+            {
+                SetBonusData.CLIENT_DATA.addFromPacket(packet);
+                if (SetBonusConfig.clientSettings.dynamicTooltipSearch > 0) Compat.refreshTooltips();
+            });
             return null;
         }
     }
 
 
-    public static class ConfigPacket implements IMessage
+    public static class AllDiscoveredBonusesPacket implements IMessage
     {
         public HashSet<String> equipment = new HashSet<>();
         public HashSet<String> sets = new HashSet<>();
@@ -186,16 +191,17 @@ public class Network
 
         public HashSet<String> attributeMods = new HashSet<>();
         public HashSet<String> potions = new HashSet<>();
+        public HashSet<String> enchantments = new HashSet<>();
 
 
         private EntityPlayerMP player;
 
 
-        public ConfigPacket() //Required; probably for when the packet is received
+        public AllDiscoveredBonusesPacket() //Required; probably for when the packet is received
         {
         }
 
-        private ConfigPacket(EntityPlayerMP player)
+        private AllDiscoveredBonusesPacket(EntityPlayerMP player)
         {
             this.player = player;
         }
@@ -230,6 +236,10 @@ public class Network
                         {
                             potions.add(element.parsedString);
                         }
+                        else if (element instanceof BonusElementEnchantment)
+                        {
+                            enchantments.add(element.parsedString);
+                        }
                     }
                 }
             }
@@ -249,6 +259,9 @@ public class Network
 
             buf.writeInt(potions.size());
             for (String string : potions) ByteBufUtils.writeUTF8String(buf, string);
+
+            buf.writeInt(enchantments.size());
+            for (String string : enchantments) ByteBufUtils.writeUTF8String(buf, string);
         }
 
         @Override
@@ -280,16 +293,21 @@ public class Network
             {
                 potions.add(ByteBufUtils.readUTF8String(buf));
             }
+
+            for (int i = buf.readInt(); i > 0; i--)
+            {
+                enchantments.add(ByteBufUtils.readUTF8String(buf));
+            }
         }
     }
 
-    public static class ConfigPacketHandler implements IMessageHandler<ConfigPacket, IMessage>
+    public static class AllDiscoveredBonusesPacketHandler implements IMessageHandler<AllDiscoveredBonusesPacket, IMessage>
     {
         @SideOnly(Side.CLIENT)
         @Override
-        public IMessage onMessage(ConfigPacket packet, MessageContext ctx)
+        public IMessage onMessage(AllDiscoveredBonusesPacket packet, MessageContext ctx)
         {
-            Minecraft.getMinecraft().addScheduledTask(() -> ClientData.update(packet));
+            Minecraft.getMinecraft().addScheduledTask(() -> SetBonusData.setClientFromPacket(packet));
             return null;
         }
     }

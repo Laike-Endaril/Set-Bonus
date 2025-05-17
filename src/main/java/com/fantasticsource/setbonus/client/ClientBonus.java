@@ -27,7 +27,6 @@ public class ClientBonus extends Bonus
             for (BonusInstance data : ((ClientBonus) bonus).instances.values()) data.update(false);
         }
         SetBonusData.CLIENT_DATA.bonuses.clear();
-        if (SetBonusConfig.clientSettings.dynamicTooltipSearch > 0) Compat.refreshTooltips();
     }
 
     public static void updateBonuses(EntityPlayer player)
