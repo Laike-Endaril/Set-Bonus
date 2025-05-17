@@ -37,8 +37,8 @@ public class ServerConfigGUI extends GUIScreen
 
     public SetBonusData data;
     public GUITextLabel selected = null;
-    public GUITextLabel equipsLabel, bonusesLabel, setsLabel, settingsLabel, detailsLabel;
-    public GUIScrollView equips, bonuses, sets, settings, details;
+    public GUITextLabel mainLabel, equipsLabel, bonusesLabel, setsLabel, settingsLabel;
+    public GUIScrollView main, equips, bonuses, sets, settings;
     public ArrayList<GUILine> lines = new ArrayList<>();
 
 
@@ -52,6 +52,17 @@ public class ServerConfigGUI extends GUIScreen
         root.add(new GUIDarkenedBackground(this));
         GUINavbar navbar = new GUINavbar(this);
         root.add(navbar);
+
+
+        //Main
+        GUIView mainColumn = new GUIView(this, 0.25, 1 - navbar.height);
+        root.add(mainColumn);
+
+        mainLabel = new GUITextLabel(this, 1, Color.GREEN).setText(reformat(MODID + ".config.main"));
+        mainColumn.add(mainLabel);
+        main = new GUIScrollView(this, (1d / 3 - 0.02) * 3, 1 - mainLabel.height);
+        GUIVerticalScrollbar mainScrollbar = new GUIVerticalScrollbar(this, 1 - main.width, main.height, getHoverColor(Color.AQUA), Color.BLANK, Color.AQUA, Color.BLANK, main);
+        mainColumn.addAll(main, mainScrollbar);
 
 
         //Equips
@@ -93,24 +104,20 @@ public class ServerConfigGUI extends GUIScreen
         settingsColumn.addAll(settings, settingsScrollbar);
 
 
-        //Details
-        GUIView detailsColumn = new GUIView(this, 0.25, 1 - navbar.height);
-        root.add(detailsColumn);
-
-        detailsLabel = new GUITextLabel(this, 1, Color.GREEN); //TODO change label to entry selected from center column
-        detailsColumn.add(detailsLabel);
-        details = new GUIScrollView(this, (1d / 3 - 0.02) * 3, 1 - detailsLabel.height);
-        GUIVerticalScrollbar detailsScrollbar = new GUIVerticalScrollbar(this, 1 - details.width, details.height, getHoverColor(Color.AQUA), Color.BLANK, Color.AQUA, Color.BLANK, details);
-        detailsColumn.addAll(details, detailsScrollbar);
-
-
-        //Main recalcs
+        //Root recalcs
         navbar.addRecalcActions(() ->
         {
+            mainColumn.height = 1 - navbar.height;
             equipsColumn.height = 1 - navbar.height;
             bonusesAndSetsColumn.height = 1 - navbar.height;
             settingsColumn.height = 1 - navbar.height;
-            detailsColumn.height = 1 - navbar.height;
+        });
+
+        //Main recalcs
+        mainLabel.addRecalcActions(() ->
+        {
+            main.height = 1 - mainLabel.height;
+            mainScrollbar.height = main.height;
         });
 
         //Equips recalcs
@@ -139,13 +146,6 @@ public class ServerConfigGUI extends GUIScreen
         {
             settings.height = 1 - settingsLabel.height;
             settingsScrollbar.height = settings.height;
-        });
-
-        //Details recalcs
-        detailsLabel.addRecalcActions(() ->
-        {
-            details.height = 1 - detailsLabel.height;
-            detailsScrollbar.height = details.height;
         });
 
 

@@ -53,6 +53,7 @@ setbonus.config.enableEnchantmentTooltips.tooltip=Whether or not to show enchant
 
 
 setbonus.config.serverSettings=Server Settings
+setbonus.config.main=Main
 setbonus.config.equipment=Equipment
 setbonus.config.bonuses=Bonuses
 setbonus.config.sets=Sets
