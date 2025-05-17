@@ -19,9 +19,6 @@ import java.util.Arrays;
 
 public class BonusElementPotionEffect extends ABonusElement
 {
-    public static EntityPlayerMP lastUpdatingPlayer = null;
-
-
     public ArrayList<FantasticPotionEffect> potions;
 
     protected BonusElementPotionEffect(String parsableBonusElement, Bonus bonus, ArrayList<FantasticPotionEffect> potions)
