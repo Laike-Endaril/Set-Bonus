@@ -18,6 +18,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
@@ -137,6 +138,20 @@ public class BonusElementEnchantment extends ABonusElement
         }
 
 
+        NBTTagCompound ids;
+        if (compound.hasKey("SBIDs")) ids = compound.getCompoundTag("SBIDs");
+        else
+        {
+            ids = new NBTTagCompound();
+            compound.setTag("SBIDs", ids);
+        }
+
+
+        String bonusHash = "" + bonus.hashCode();
+        if (ids.hasKey(bonusHash)) return;
+
+
+        ids.setTag(bonusHash, new NBTTagInt(0));
         compound.setUniqueId("SBOwner", player.getUniqueID());
         compound.setInteger("SBSlot", slot);
 
@@ -297,6 +312,7 @@ public class BonusElementEnchantment extends ABonusElement
             compound.removeTag("SBOwnerMost");
             compound.removeTag("SBOwnerLeast");
             compound.removeTag("SBSlot");
+            compound.removeTag("SBIDs");
             if (compound.getSize() == 0) stack.setTagCompound(null);
         }
     }
@@ -308,7 +324,7 @@ public class BonusElementEnchantment extends ABonusElement
         if (!(event.getEntity() instanceof EntityPlayer)) return;
 
 
-        //Just reset enchantments is the itemstack gets messed with; if it should have any enchantment bonuses re-applied, the bonuses will detect so automatically in updateActive()
+        //Just reset enchantments if the itemstack gets messed with; if it should have any enchantment bonuses re-applied, the bonuses will detect so automatically in updateActive()
         EntityPlayer player = (EntityPlayer) event.getEntity();
         NBTTagCompound compound;
         for (ItemStack stack : GlobalInventory.getAllNonSkinItems(player))
@@ -325,6 +341,7 @@ public class BonusElementEnchantment extends ABonusElement
                     compound.removeTag("SBOwnerMost");
                     compound.removeTag("SBOwnerLeast");
                     compound.removeTag("SBSlot");
+                    compound.removeTag("SBIDs");
                     if (compound.getSize() == 0) stack.setTagCompound(null);
                 }
             }
@@ -344,21 +361,29 @@ public class BonusElementEnchantment extends ABonusElement
             {
                 ItemStack stack = event.getObject();
                 NBTTagCompound compound = stack.getTagCompound();
-                if (compound != null && compound.hasKey("SBSlot"))
+                if (compound != null)
                 {
-                    EntityPlayerMP player = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayerByUUID(compound.getUniqueId("SBOwner"));
-                    if (player == null || !stack.isItemEqual(SlotData.getStackInSlot(player, compound.getInteger("SBSlot"))))
+                    compound.removeTag("SBRandom"); //Purge outdated tag if it exists
+
+                    if (compound.hasKey("SBSlot"))
                     {
-                        if (compound.getTagList("OldEnchants", 10).tagCount() == 0) compound.removeTag("ench");
-                        else compound.setTag("ench", compound.getTag("OldEnchants"));
+                        EntityPlayerMP player = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayerByUUID(compound.getUniqueId("SBOwner"));
+                        if (player == null || !stack.isItemEqual(SlotData.getStackInSlot(player, compound.getInteger("SBSlot"))))
+                        {
+                            //The player is not online, OR this is not in the slot it was in before it got replicated
 
-                        compound.removeTag("OldEnchants");
-                        compound.removeTag("SBOwnerMost");
-                        compound.removeTag("SBOwnerLeast");
-                        compound.removeTag("SBSlot");
-                        if (compound.getSize() == 0) stack.setTagCompound(null);
+                            if (compound.getTagList("OldEnchants", 10).tagCount() == 0) compound.removeTag("ench");
+                            else compound.setTag("ench", compound.getTag("OldEnchants"));
 
-                        if (player != null) MCTools.syncInventory(player);
+                            compound.removeTag("OldEnchants");
+                            compound.removeTag("SBOwnerMost");
+                            compound.removeTag("SBOwnerLeast");
+                            compound.removeTag("SBSlot");
+                            compound.removeTag("SBIDs");
+                            if (compound.getSize() == 0) stack.setTagCompound(null);
+
+                            if (player != null) MCTools.syncInventory(player);
+                        }
                     }
                 }
             });
