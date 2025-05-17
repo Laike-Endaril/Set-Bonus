@@ -1,11 +1,4 @@
-Add buttons:
-* Show/hide lines
-* Load local template
-* Load remote template
-* Save local template
-* Save remote template
-* Apply to local
-* Apply to remote
+Create all buttons for main column (see not-yet-used GUITextLabel vars in ServerConfigGUI)
 
 Make sure connection lines update correctly when scrolling and resizing window
 

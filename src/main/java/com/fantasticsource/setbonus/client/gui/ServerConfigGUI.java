@@ -31,15 +31,17 @@ import static com.fantasticsource.setbonus.SetBonus.MODID;
 public class ServerConfigGUI extends GUIScreen
 {
     public static final int COLUMN_COUNT = 5;
-    public static final double COLUMN_WIDTH = 1d / COLUMN_COUNT, SCROLLBAR_WIDTH = 0.015;
+    public static final double COLUMN_WIDTH = 1d / COLUMN_COUNT, SCROLLBAR_WIDTH = 0.015, ELEMENT_SCALE = 0.5;
 
     public static double lineOffset = 0.125;
     public static Color[] lineColors = new Color[]{Color.YELLOW.copy().setAF(0.3f), Color.YELLOW.copy().setAF(0.3f)};
 
     public SetBonusData data;
-    public GUITextLabel selected = null;
-    public GUITextLabel mainLabel, equipsLabel, bonusesLabel, setsLabel, settingsLabel;
+    public GUITextLabel selected = null,
+            mainLabel, equipsLabel, bonusesLabel, setsLabel, settingsLabel,
+            linesLabel, loadLocalLabel, saveLocalLabel, loadRemoteLabel, saveRemoteLabel, loadLocalTemplateLabel, saveLocalTemplateLabel, loadRemoteTemplateLabel, saveRemoteTemplateLabel;
     public GUIScrollView main, equips, bonuses, sets, settings;
+    public boolean showLines = true;
     public ArrayList<GUILine> lines = new ArrayList<>();
 
 
@@ -156,10 +158,22 @@ public class ServerConfigGUI extends GUIScreen
         });
 
 
-        //Populate
-        for (Equip equip : data.equipment.values()) equips.add(new GUIEquip(this, equip, 1, 0.5));
-        for (Set set : data.sets.values()) sets.add(new GUISet(this, set, 1, 0.5));
-        for (Bonus bonus : data.bonuses.values()) bonuses.add(new GUIBonus(this, bonus, 1, 0.5));
+        //Populate main column
+        linesLabel = new GUITextLabel(this, 1, ELEMENT_SCALE).setText(reformat(MODID + ".config.toggleLines"));
+        main.addAll(linesLabel);
+
+        //Populate other columns
+        for (Equip equip : data.equipment.values()) equips.add(new GUIEquip(this, equip, 1, ELEMENT_SCALE));
+        for (Set set : data.sets.values()) sets.add(new GUISet(this, set, 1, ELEMENT_SCALE));
+        for (Bonus bonus : data.bonuses.values()) bonuses.add(new GUIBonus(this, bonus, 1, ELEMENT_SCALE));
+
+
+        //Main column clicks
+        linesLabel.addClickActions(() ->
+        {
+            showLines = !showLines;
+            remakeLines();
+        });
     }
 
 
@@ -198,13 +212,13 @@ public class ServerConfigGUI extends GUIScreen
 
     public void populateSettings(GUITextLabel label)
     {
-        GUITextLabel button = new GUITextLabel(this, 1, Color.AQUA, 0.5);
+        GUITextLabel button = new GUITextLabel(this, 1, Color.AQUA, ELEMENT_SCALE);
         button.setText(reformat(MODID + ".config.edit"));
         settings.add(button.addClickActions(label::click));
 
         settings.add(new GUITextSpacer(this));
 
-        button = new GUITextLabel(this, 1, Color.RED, 0.5);
+        button = new GUITextLabel(this, 1, Color.RED, ELEMENT_SCALE);
         button.setText(reformat(MODID + ".config.delete"));
         settings.add(button);
         button.addClickActions(() ->
@@ -237,12 +251,12 @@ public class ServerConfigGUI extends GUIScreen
 
     public void remakeLines()
     {
-        GUITextLabel selected = this.selected; //Necessary for runnables to work correctly
-
         for (GUILine line : lines) root.remove(line);
         lines.clear();
+        if (!showLines) return;
 
 
+        GUITextLabel selected = this.selected; //Necessary for runnables to work correctly
         if (selected instanceof GUIEquip)
         {
             GUIEquip guiEquip = (GUIEquip) selected;
