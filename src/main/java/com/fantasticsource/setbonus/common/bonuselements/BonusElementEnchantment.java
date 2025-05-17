@@ -147,7 +147,7 @@ public class BonusElementEnchantment extends ABonusElement
         }
 
 
-        String bonusHash = "" + bonus.hashCode();
+        String bonusHash = "" + hashCode();
         if (ids.hasKey(bonusHash)) return;
 
 
