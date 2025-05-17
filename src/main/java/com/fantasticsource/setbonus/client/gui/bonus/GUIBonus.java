@@ -17,7 +17,7 @@ public class GUIBonus extends GUITextLabel
 
     public GUIBonus(GUIScreen screen, Bonus bonus, double width, double scale)
     {
-        super(screen, width, Color.AQUA, Color.BLANK, scale);
+        super(screen, width, Color.AQUA, scale);
         set(bonus);
 
         addClickActions(() ->

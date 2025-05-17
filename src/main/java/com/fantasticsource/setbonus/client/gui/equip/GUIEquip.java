@@ -17,7 +17,7 @@ public class GUIEquip extends GUITextLabel
 
     public GUIEquip(GUIScreen screen, Equip equip, double width, double scale)
     {
-        super(screen, width, Color.AQUA, Color.BLANK, scale);
+        super(screen, width, Color.AQUA, scale);
         set(equip);
 
         addClickActions(() ->
@@ -32,12 +32,5 @@ public class GUIEquip extends GUITextLabel
     {
         this.equip = equip;
         internalText.setText(reformat(equip.name));
-    }
-
-
-    @Override
-    public void draw()
-    {
-        super.draw();
     }
 }
