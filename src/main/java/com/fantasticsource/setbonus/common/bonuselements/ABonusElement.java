@@ -6,12 +6,10 @@ import net.minecraft.entity.player.EntityPlayer;
 
 public abstract class ABonusElement
 {
-    public String parsedString;
     public Bonus bonus;
 
-    protected ABonusElement(String parsableBonusElement, Bonus bonus)
+    protected ABonusElement(Bonus bonus)
     {
-        parsedString = parsableBonusElement;
         this.bonus = bonus;
         bonus.bonusElements.add(this);
     }
@@ -25,4 +23,6 @@ public abstract class ABonusElement
     public abstract String[] tooltips();
 
     public abstract ABonusElement clone(SetBonusData data);
+
+    public abstract String toString();
 }

@@ -81,7 +81,7 @@ public class Network
         @Override
         public void toBytes(ByteBuf buf)
         {
-            ByteBufUtils.writeUTF8String(buf, bonus.parsedString);
+            ByteBufUtils.writeUTF8String(buf, bonus.toString());
 
 
             for (ABonusRequirement bonusRequirement : bonus.bonusRequirements)
@@ -89,9 +89,9 @@ public class Network
                 if (bonusRequirement instanceof SetRequirement)
                 {
                     Set set = ((SetRequirement) bonusRequirement).set;
-                    sets.add(set.parsedString);
+                    sets.add(set.toString());
 
-                    for (String equipName : set.involvedEquips.keySet()) equipment.add(SetBonusData.SERVER_DATA.equipment.get(equipName).parsedString);
+                    for (String equipName : set.involvedEquips.keySet()) equipment.add(SetBonusData.SERVER_DATA.equipment.get(equipName).toString());
                 }
             }
 
@@ -99,18 +99,18 @@ public class Network
             {
                 if (element instanceof BonusElementAttributeModifier)
                 {
-                    attributeMods.add(element.parsedString);
+                    attributeMods.add(element.toString());
                 }
                 else if (element instanceof BonusElementPotionEffect)
                 {
-                    potions.add(element.parsedString);
+                    potions.add(element.toString());
                 }
                 else if (element instanceof BonusElementEnchantment)
                 {
-                    enchants.add(element.parsedString);
+                    enchants.add(element.toString());
                     for (Equip equip : ((BonusElementEnchantment) element).slotDataToEnchant.involvedEquips)
                     {
-                        equipment.add(equip.parsedString);
+                        equipment.add(equip.toString());
                     }
                 }
             }
@@ -213,16 +213,16 @@ public class Network
             {
                 if (bonus.discoveryMode == Bonus.MODE_GLOBALLY_KNOWN || (bonus.discoveryMode == Bonus.MODE_DISCOVERABLE && ((ServerBonus) bonus).getBonusInstance(player).discovered))
                 {
-                    bonuses.add(bonus.parsedString);
+                    bonuses.add(bonus.toString());
 
                     for (ABonusRequirement bonusRequirement : bonus.bonusRequirements)
                     {
                         if (bonusRequirement instanceof SetRequirement)
                         {
                             Set set = ((SetRequirement) bonusRequirement).set;
-                            sets.add(set.parsedString);
+                            sets.add(set.toString());
 
-                            for (String equipName : set.involvedEquips.keySet()) equipment.add(SetBonusData.SERVER_DATA.equipment.get(equipName).parsedString);
+                            for (String equipName : set.involvedEquips.keySet()) equipment.add(SetBonusData.SERVER_DATA.equipment.get(equipName).toString());
                         }
                     }
 
@@ -230,15 +230,14 @@ public class Network
                     {
                         if (element instanceof BonusElementAttributeModifier)
                         {
-                            attributeMods.add(element.parsedString);
+                            attributeMods.add(element.toString());
                         }
                         else if (element instanceof BonusElementPotionEffect)
                         {
-                            potions.add(element.parsedString);
+                            potions.add(element.toString());
                         }
                         else if (element instanceof BonusElementEnchantment)
                         {
-                            enchantments.add(element.parsedString);
                         }
                     }
                 }

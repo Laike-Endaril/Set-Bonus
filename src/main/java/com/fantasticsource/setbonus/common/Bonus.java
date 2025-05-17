@@ -19,7 +19,7 @@ public class Bonus
             MODE_GLOBALLY_HIDDEN = 2;
 
 
-    public String parsedString, id, name;
+    public String id, name;
     public int discoveryMode;
 
 
@@ -79,7 +79,6 @@ public class Bonus
             bonus.bonusRequirements.add(requirement);
         }
 
-        bonus.parsedString = parsableBonus;
         return bonus;
     }
 
@@ -88,7 +87,6 @@ public class Bonus
     {
         Bonus other = new Bonus();
 
-        other.parsedString = parsedString;
         other.id = id;
         other.name = name;
 
@@ -104,5 +102,11 @@ public class Bonus
         for (ABonusElement element : bonusElements) other.bonusElements.add(element.clone(data));
 
         return other;
+    }
+
+    @Override
+    public String toString()
+    {
+        throw new IllegalStateException("WIP");
     }
 }

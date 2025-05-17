@@ -14,7 +14,7 @@ import java.util.Map;
 
 public class Set
 {
-    public String parsedString, id, name;
+    public String id, name;
     public LinkedHashMap<String, RegistryRegexItemFilter> involvedEquips = new LinkedHashMap<>();
     public ArrayList<SlotData> slotData = new ArrayList<>();
 
@@ -57,7 +57,6 @@ public class Set
             return null;
         }
 
-        result.parsedString = parsableSet;
         return result;
     }
 
@@ -103,7 +102,6 @@ public class Set
     {
         Set other = new Set();
 
-        other.parsedString = parsedString;
         other.id = id;
         other.name = name;
 
@@ -112,5 +110,11 @@ public class Set
         for (SlotData data : slotData) other.slotData.add(data.clone());
 
         return other;
+    }
+
+    @Override
+    public String toString()
+    {
+        throw new IllegalStateException("WIP");
     }
 }

@@ -6,7 +6,7 @@ import net.minecraft.util.text.translation.I18n;
 
 public class Equip
 {
-    public String parsedString, id;
+    public String id;
     public RegistryRegexItemFilter filter;
 
     private Equip()
@@ -34,7 +34,6 @@ public class Equip
         result.filter = RegistryRegexItemFilter.getInstance(tokens[1]);
         if (result.filter == null) return null;
 
-        result.parsedString = parsableEquip;
         return result;
     }
 
@@ -43,10 +42,15 @@ public class Equip
     {
         Equip other = new Equip();
 
-        other.parsedString = parsedString;
         other.id = id;
         other.filter = filter.clone();
 
         return other;
+    }
+
+    @Override
+    public String toString()
+    {
+        throw new IllegalStateException("WIP");
     }
 }

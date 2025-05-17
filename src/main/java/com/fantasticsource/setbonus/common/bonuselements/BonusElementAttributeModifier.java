@@ -19,9 +19,9 @@ public class BonusElementAttributeModifier extends ABonusElement
     private Multimap<String, AttributeModifier> modifiers = ArrayListMultimap.create();
 
 
-    private BonusElementAttributeModifier(String parsableBonusElement, Bonus bonus, ArrayList<AttributeModifier> modifiers)
+    private BonusElementAttributeModifier(Bonus bonus, ArrayList<AttributeModifier> modifiers)
     {
-        super(parsableBonusElement, bonus);
+        super(bonus);
 
         for (AttributeModifier modifier : modifiers)
         {
@@ -49,7 +49,7 @@ public class BonusElementAttributeModifier extends ABonusElement
         ArrayList<AttributeModifier> modifiers = AttributeMods.parseMods(Arrays.copyOfRange(tokens, 1, tokens.length));
         if (modifiers == null) return null;
 
-        return new BonusElementAttributeModifier(parsableModifierBonus, bonus, modifiers);
+        return new BonusElementAttributeModifier(bonus, modifiers);
     }
 
     @Override
@@ -98,6 +98,12 @@ public class BonusElementAttributeModifier extends ABonusElement
 
     public BonusElementAttributeModifier clone(SetBonusData data)
     {
-        return getInstance(parsedString, data);
+        return getInstance(toString(), data);
+    }
+
+    @Override
+    public String toString()
+    {
+        throw new IllegalStateException("WIP");
     }
 }

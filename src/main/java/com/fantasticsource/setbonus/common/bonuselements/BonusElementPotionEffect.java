@@ -21,9 +21,9 @@ public class BonusElementPotionEffect extends ABonusElement
 {
     public ArrayList<FantasticPotionEffect> potions;
 
-    protected BonusElementPotionEffect(String parsableBonusElement, Bonus bonus, ArrayList<FantasticPotionEffect> potions)
+    protected BonusElementPotionEffect(Bonus bonus, ArrayList<FantasticPotionEffect> potions)
     {
-        super(parsableBonusElement, bonus);
+        super(bonus);
         this.potions = potions;
     }
 
@@ -47,7 +47,7 @@ public class BonusElementPotionEffect extends ABonusElement
         ArrayList<FantasticPotionEffect> potions = Potions.parsePotions(Arrays.copyOfRange(tokens, 1, tokens.length), true);
         if (potions.size() == 0) return null;
 
-        return new BonusElementPotionEffect(parsablePotionBonus, bonus, potions);
+        return new BonusElementPotionEffect(bonus, potions);
     }
 
     @Override
@@ -115,6 +115,12 @@ public class BonusElementPotionEffect extends ABonusElement
 
     public BonusElementPotionEffect clone(SetBonusData data)
     {
-        return getInstance(parsedString, data);
+        return getInstance(toString(), data);
+    }
+
+    @Override
+    public String toString()
+    {
+        throw new IllegalStateException("WIP");
     }
 }

@@ -47,9 +47,9 @@ public class BonusElementEnchantment extends ABonusElement
     public HashMap<Pair<Enchantment, Integer>, Integer> enchantments;
     public HashMap<EntityPlayer, ItemStack> affectedItemStacks = new HashMap<>(); //NOT static; if it were static, there could be bad overwrites from OTHER ENCHANTMENT BONUSES
 
-    protected BonusElementEnchantment(String parsableEnchantmentBonus, Bonus bonus, SlotData slotDataToEnchant, HashMap<Pair<Enchantment, Integer>, Integer> enchantments)
+    protected BonusElementEnchantment(Bonus bonus, SlotData slotDataToEnchant, HashMap<Pair<Enchantment, Integer>, Integer> enchantments)
     {
-        super(parsableEnchantmentBonus, bonus);
+        super(bonus);
         this.slotDataToEnchant = slotDataToEnchant;
         this.enchantments = enchantments;
     }
@@ -76,7 +76,7 @@ public class BonusElementEnchantment extends ABonusElement
         HashMap<Pair<Enchantment, Integer>, Integer> enchantments = Enchantments.parseEnchantments(Arrays.copyOfRange(tokens, 2, tokens.length));
         if (enchantments.size() == 0) return null;
 
-        return new BonusElementEnchantment(parsableEnchantmentBonus, bonus, slotDataToEnchant, enchantments);
+        return new BonusElementEnchantment(bonus, slotDataToEnchant, enchantments);
     }
 
     @Override
@@ -412,6 +412,12 @@ public class BonusElementEnchantment extends ABonusElement
 
     public BonusElementEnchantment clone(SetBonusData data)
     {
-        return getInstance(parsedString, data);
+        return getInstance(toString(), data);
+    }
+
+    @Override
+    public String toString()
+    {
+        throw new IllegalStateException("WIP");
     }
 }
