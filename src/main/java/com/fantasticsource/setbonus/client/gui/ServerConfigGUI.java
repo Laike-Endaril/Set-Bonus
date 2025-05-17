@@ -182,20 +182,18 @@ public class ServerConfigGUI extends GUIScreen
 
 
         settings.clear();
-        if (selected instanceof GUIEquip) populateEquipSettings((GUIEquip) selected);
-        else if (selected instanceof GUIBonus) populateBonusSettings((GUIBonus) selected);
-        else if (selected instanceof GUISet) populateSetSettings((GUISet) selected);
+        populateSettings(selected);
 
 
         remakeLines();
     }
 
 
-    public void populateEquipSettings(GUIEquip guiEquip)
+    public void populateSettings(GUITextLabel label)
     {
         GUITextLabel button = new GUITextLabel(this, 1, Color.AQUA, 0.5);
         button.setText(reformat(MODID + ".config.edit"));
-        settings.add(button.addClickActions(guiEquip::click));
+        settings.add(button.addClickActions(label::click));
 
         settings.add(new GUITextSpacer(this));
 
@@ -206,64 +204,21 @@ public class ServerConfigGUI extends GUIScreen
         {
             if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
             {
-                //TODO delete equip
-                System.out.println("delete equip");
-                //TODO update gui
-                System.out.println("update gui");
-                if (equips.size() > 0) select((GUITextLabel) equips.get(0));
-            }
-            else
-            {
-                YesNoGUI yesNoGUI = new YesNoGUI(reformat(guiEquip.internalText.getText()), reformat(MODID + ".config.deleteThingMaybe", guiEquip.internalText.getText()));
-                yesNoGUI.addOnClosedActions(() ->
-                {
-                    if (yesNoGUI.pressedYes)
-                    {
-                        //TODO delete equip
-                        System.out.println("delete equip");
-                        //TODO update gui
-                        System.out.println("update gui");
-                    }
-                });
-            }
-        });
-    }
-
-    public void populateBonusSettings(GUIBonus guiBonus)
-    {
-        //TODO
-    }
-
-    public void populateSetSettings(GUISet guiSet)
-    {
-        GUITextLabel button = new GUITextLabel(this, 1, Color.AQUA, 0.5);
-        button.setText(reformat(MODID + ".config.edit"));
-        settings.add(button.addClickActions(guiSet::click));
-
-        settings.add(new GUITextSpacer(this));
-
-        button = new GUITextLabel(this, 1, Color.RED, 0.5);
-        button.setText(reformat(MODID + ".config.delete"));
-        settings.add(button);
-        button.addClickActions(() ->
-        {
-            if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
-            {
-                //TODO delete set
-                System.out.println("delete set");
+                //TODO delete
+                System.out.println("delete");
                 //TODO update gui
                 System.out.println("update gui");
                 if (sets.size() > 0) select((GUITextLabel) sets.get(0));
             }
             else
             {
-                YesNoGUI yesNoGUI = new YesNoGUI(reformat(guiSet.internalText.getText()), reformat(MODID + ".config.deleteThingMaybe", guiSet.internalText.getText()));
+                YesNoGUI yesNoGUI = new YesNoGUI(reformat(label.internalText.getText()), reformat(MODID + ".config.deleteThingMaybe", label.internalText.getText()));
                 yesNoGUI.addOnClosedActions(() ->
                 {
                     if (yesNoGUI.pressedYes)
                     {
-                        //TODO delete set
-                        System.out.println("delete set");
+                        //TODO delete
+                        System.out.println("delete");
                         //TODO update gui
                         System.out.println("update gui");
                     }
