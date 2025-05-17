@@ -37,4 +37,16 @@ public class Equip
         result.parsedString = parsableEquip;
         return result;
     }
+
+
+    public Equip clone()
+    {
+        Equip other = new Equip();
+
+        other.parsedString = parsedString;
+        other.name = name;
+        other.filter = filter.clone();
+
+        return other;
+    }
 }
