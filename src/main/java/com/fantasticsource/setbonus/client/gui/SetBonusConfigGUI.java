@@ -15,7 +15,6 @@ public class SetBonusConfigGUI extends GUIScreen
 {
     public SetBonusConfigGUI()
     {
-        SetBonusData.setServerFromConfig();
         show();
 
 
@@ -38,7 +37,11 @@ public class SetBonusConfigGUI extends GUIScreen
         root.add(new GUITextSpacer(this));
 
         element = new GUITextButton(this, reformat(MODID + ".config.localServerSettings"));
-        element.addClickActions(ServerConfigGUI::new);
+        element.addClickActions(() ->
+        {
+            SetBonusData.setServerFromConfig();
+            new ServerConfigGUI(SetBonusData.SERVER_DATA.clone());
+        });
         ((GUITextButton) element).setColor(Color.AQUA);
         root.add(element);
     }

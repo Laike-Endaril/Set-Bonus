@@ -155,7 +155,7 @@ public class SetBonusData
         for (Map.Entry<String, Equip> entry : equipment.entrySet()) other.equipment.put(entry.getKey(), entry.getValue().clone());
         for (Map.Entry<String, Set> entry : sets.entrySet()) other.sets.put(entry.getKey(), entry.getValue().clone());
 
-        for (Map.Entry<String, Bonus> entry : bonuses.entrySet()) other.bonuses.put(entry.getKey(), entry.getValue().clone(other));
+        for (Map.Entry<String, Bonus> entry : bonuses.entrySet()) entry.getValue().clone(other);
 
         return other;
     }

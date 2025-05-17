@@ -94,6 +94,11 @@ public class Bonus
 
         other.discoveryMode = discoveryMode;
 
+
+        //Need to do this here or it will throw false errors
+        data.bonuses.put(other.id, other);
+
+
         for (ABonusRequirement requirement : bonusRequirements) other.bonusRequirements.add(requirement.clone(data));
 
         for (ABonusElement element : bonusElements) other.bonusElements.add(element.clone(data));
