@@ -250,4 +250,10 @@ public class SlotData
 
         return other;
     }
+
+    @Override
+    public String toString()
+    {
+        throw new IllegalStateException("WIP");
+    }
 }

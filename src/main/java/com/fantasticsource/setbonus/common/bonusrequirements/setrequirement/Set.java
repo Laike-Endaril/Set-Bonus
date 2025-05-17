@@ -115,6 +115,8 @@ public class Set
     @Override
     public String toString()
     {
-        throw new IllegalStateException("WIP");
+        String result = id + ", " + name;
+        for (SlotData slotData : slotData) result += ", " + slotData;
+        return result;
     }
 }
