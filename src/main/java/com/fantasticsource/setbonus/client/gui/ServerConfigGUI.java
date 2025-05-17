@@ -32,6 +32,9 @@ import static com.fantasticsource.setbonus.SetBonus.MODID;
 
 public class ServerConfigGUI extends GUIScreen
 {
+    public static final int COLUMN_COUNT = 5;
+    public static final double COLUMN_WIDTH = 1d / COLUMN_COUNT;
+
     public static double lineOffset = 0.125;
     public static Color[] lineColors = new Color[]{Color.WHITE.copy().setAF(0.25f), Color.PURPLE.copy().setAF(0.25f)};
 
@@ -55,51 +58,51 @@ public class ServerConfigGUI extends GUIScreen
 
 
         //Main
-        GUIView mainColumn = new GUIView(this, 0.25, 1 - navbar.height);
+        GUIView mainColumn = new GUIView(this, COLUMN_WIDTH, 1 - navbar.height);
         root.add(mainColumn);
 
         mainLabel = new GUITextLabel(this, 1, Color.GREEN).setText(reformat(MODID + ".config.main"));
         mainColumn.add(mainLabel);
-        main = new GUIScrollView(this, (1d / 3 - 0.02) * 3, 1 - mainLabel.height);
+        main = new GUIScrollView(this, (COLUMN_WIDTH - 0.02) * COLUMN_COUNT, 1 - mainLabel.height);
         GUIVerticalScrollbar mainScrollbar = new GUIVerticalScrollbar(this, 1 - main.width, main.height, getHoverColor(Color.AQUA), Color.BLANK, Color.AQUA, Color.BLANK, main);
         mainColumn.addAll(main, mainScrollbar);
 
 
         //Equips
-        GUIView equipsColumn = new GUIView(this, 0.25, 1 - navbar.height);
+        GUIView equipsColumn = new GUIView(this, COLUMN_WIDTH, 1 - navbar.height);
         root.add(equipsColumn);
 
         equipsLabel = new GUITextLabel(this, 1, Color.GREEN).setText(reformat(MODID + ".config.equipment"));
         equipsColumn.add(equipsLabel);
-        equips = new GUIScrollView(this, (1d / 3 - 0.02) * 3, 1 - equipsLabel.height);
+        equips = new GUIScrollView(this, (COLUMN_WIDTH - 0.02) * COLUMN_COUNT, 1 - equipsLabel.height);
         GUIVerticalScrollbar equipsScrollbar = new GUIVerticalScrollbar(this, 1 - equips.width, equips.height, getHoverColor(Color.AQUA), Color.BLANK, Color.AQUA, Color.BLANK, equips);
         equipsColumn.addAll(equips, equipsScrollbar);
 
 
         //Bonuses and sets
-        GUIView bonusesAndSetsColumn = new GUIView(this, 0.25, 1 - navbar.height);
+        GUIView bonusesAndSetsColumn = new GUIView(this, COLUMN_WIDTH, 1 - navbar.height);
         root.add(bonusesAndSetsColumn);
 
         bonusesLabel = new GUITextLabel(this, 1, Color.GREEN).setText(reformat(MODID + ".config.bonuses"));
         bonusesAndSetsColumn.add(bonusesLabel);
-        bonuses = new GUIScrollView(this, (1d / 3 - 0.02) * 3, 0.5 - bonusesLabel.height);
+        bonuses = new GUIScrollView(this, (COLUMN_WIDTH - 0.02) * COLUMN_COUNT, 0.5 - bonusesLabel.height);
         GUIVerticalScrollbar bonusesScrollbar = new GUIVerticalScrollbar(this, 1 - bonuses.width, bonuses.height, getHoverColor(Color.AQUA), Color.BLANK, Color.AQUA, Color.BLANK, bonuses);
         bonusesAndSetsColumn.addAll(bonuses, bonusesScrollbar);
 
         setsLabel = new GUITextLabel(this, 1, Color.GREEN).setText(reformat(MODID + ".config.sets"));
         bonusesAndSetsColumn.add(setsLabel);
-        sets = new GUIScrollView(this, (1d / 3 - 0.02) * 3, 1 - setsLabel.y - setsLabel.height);
+        sets = new GUIScrollView(this, (COLUMN_WIDTH - 0.02) * COLUMN_COUNT, 1 - setsLabel.y - setsLabel.height);
         GUIVerticalScrollbar setsScrollbar = new GUIVerticalScrollbar(this, 1 - sets.width, sets.height, getHoverColor(Color.AQUA), Color.BLANK, Color.AQUA, Color.BLANK, sets);
         bonusesAndSetsColumn.addAll(sets, setsScrollbar);
 
 
         //Settings
-        GUIView settingsColumn = new GUIView(this, 0.25, 1 - navbar.height);
+        GUIView settingsColumn = new GUIView(this, COLUMN_WIDTH, 1 - navbar.height);
         root.add(settingsColumn);
 
         settingsLabel = new GUITextLabel(this, 1, Color.GREEN);
         settingsColumn.add(settingsLabel);
-        settings = new GUIScrollView(this, (1d / 3 - 0.02) * 3, 1 - settingsLabel.height);
+        settings = new GUIScrollView(this, (COLUMN_WIDTH - 0.02) * COLUMN_COUNT, 1 - settingsLabel.height);
         GUIVerticalScrollbar settingsScrollbar = new GUIVerticalScrollbar(this, 1 - settings.width, settings.height, getHoverColor(Color.AQUA), Color.BLANK, Color.AQUA, Color.BLANK, settings);
         settingsColumn.addAll(settings, settingsScrollbar);
 
