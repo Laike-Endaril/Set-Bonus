@@ -1,6 +1,3 @@
-Fix incorrect enchantment level from enchantment bonus
-This is due to a bug in the addition / removal triggers; the code is applying the correct level, but TWICE (or more), which results in it combining up to 1 level higher in "normal" mode
-
 Fix deselection code triggering before other clicks (should trigger after other clicks if nothing was clicked)
 
 Make sure connection lines update correctly when scrolling and resizing window
