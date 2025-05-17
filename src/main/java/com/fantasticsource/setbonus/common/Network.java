@@ -238,6 +238,11 @@ public class Network
                         }
                         else if (element instanceof BonusElementEnchantment)
                         {
+                            enchantments.add(element.toString());
+                            for (Equip equip : ((BonusElementEnchantment) element).slotDataToEnchant.involvedEquips)
+                            {
+                                equipment.add(equip.toString());
+                            }
                         }
                     }
                 }
