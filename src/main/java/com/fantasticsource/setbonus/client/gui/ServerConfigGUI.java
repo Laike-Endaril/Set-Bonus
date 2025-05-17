@@ -31,7 +31,7 @@ import static com.fantasticsource.setbonus.SetBonus.MODID;
 public class ServerConfigGUI extends GUIScreen
 {
     public static final int COLUMN_COUNT = 5;
-    public static final double COLUMN_WIDTH = 1d / COLUMN_COUNT, SCROLLBAR_WIDTH = 0.015, ELEMENT_SCALE = 0.5;
+    public static final double COLUMN_WIDTH = 1d / COLUMN_COUNT, SCROLLBAR_WIDTH = 0.015, HEADER_SCALE = 0.75, ELEMENT_SCALE = 0.5;
 
     public static double lineOffset = 0.125;
     public static Color[] lineColors = new Color[]{Color.YELLOW.copy().setAF(0.3f), Color.YELLOW.copy().setAF(0.3f)};
@@ -61,7 +61,7 @@ public class ServerConfigGUI extends GUIScreen
         GUIView mainColumn = new GUIView(this, COLUMN_WIDTH, 1 - navbar.height);
         root.add(mainColumn);
 
-        mainLabel = new GUITextLabel(this, 1, Color.GREEN).setText(reformat(MODID + ".config.main"));
+        mainLabel = new GUITextLabel(this, 1, Color.GREEN, HEADER_SCALE).setText(reformat(MODID + ".config.main"));
         mainColumn.add(mainLabel);
         main = new GUIScrollView(this, (COLUMN_WIDTH - SCROLLBAR_WIDTH) * COLUMN_COUNT, 1 - mainLabel.height);
         GUIVerticalScrollbar mainScrollbar = new GUIVerticalScrollbar(this, 1 - main.width, main.height, getHoverColor(Color.AQUA), Color.BLANK, Color.AQUA, Color.BLANK, main);
@@ -72,7 +72,7 @@ public class ServerConfigGUI extends GUIScreen
         GUIView equipsColumn = new GUIView(this, COLUMN_WIDTH, 1 - navbar.height);
         root.add(equipsColumn);
 
-        equipsLabel = new GUITextLabel(this, 1, Color.GREEN).setText(reformat(MODID + ".config.equipment"));
+        equipsLabel = new GUITextLabel(this, 1, Color.GREEN, HEADER_SCALE).setText(reformat(MODID + ".config.equipment"));
         equipsColumn.add(equipsLabel);
         equips = new GUIScrollView(this, (COLUMN_WIDTH - SCROLLBAR_WIDTH) * COLUMN_COUNT, 1 - equipsLabel.height);
         GUIVerticalScrollbar equipsScrollbar = new GUIVerticalScrollbar(this, 1 - equips.width, equips.height, getHoverColor(Color.AQUA), Color.BLANK, Color.AQUA, Color.BLANK, equips);
@@ -83,7 +83,7 @@ public class ServerConfigGUI extends GUIScreen
         GUIView setsColumn = new GUIView(this, COLUMN_WIDTH, 1 - navbar.height);
         root.add(setsColumn);
 
-        setsLabel = new GUITextLabel(this, 1, Color.GREEN).setText(reformat(MODID + ".config.sets"));
+        setsLabel = new GUITextLabel(this, 1, Color.GREEN, HEADER_SCALE).setText(reformat(MODID + ".config.sets"));
         setsColumn.add(setsLabel);
         sets = new GUIScrollView(this, (COLUMN_WIDTH - SCROLLBAR_WIDTH) * COLUMN_COUNT, 1 - setsLabel.height);
         GUIVerticalScrollbar setsScrollbar = new GUIVerticalScrollbar(this, 1 - sets.width, sets.height, getHoverColor(Color.AQUA), Color.BLANK, Color.AQUA, Color.BLANK, sets);
@@ -94,7 +94,7 @@ public class ServerConfigGUI extends GUIScreen
         GUIView bonusesColumn = new GUIView(this, COLUMN_WIDTH, 1 - navbar.height);
         root.add(bonusesColumn);
 
-        bonusesLabel = new GUITextLabel(this, 1, Color.GREEN).setText(reformat(MODID + ".config.bonuses"));
+        bonusesLabel = new GUITextLabel(this, 1, Color.GREEN, HEADER_SCALE).setText(reformat(MODID + ".config.bonuses"));
         bonusesColumn.add(bonusesLabel);
         bonuses = new GUIScrollView(this, (COLUMN_WIDTH - SCROLLBAR_WIDTH) * COLUMN_COUNT, 1 - bonusesLabel.height);
         GUIVerticalScrollbar bonusesScrollbar = new GUIVerticalScrollbar(this, 1 - bonuses.width, bonuses.height, getHoverColor(Color.AQUA), Color.BLANK, Color.AQUA, Color.BLANK, bonuses);
@@ -105,7 +105,7 @@ public class ServerConfigGUI extends GUIScreen
         GUIView settingsColumn = new GUIView(this, COLUMN_WIDTH, 1 - navbar.height);
         root.add(settingsColumn);
 
-        settingsLabel = new GUITextLabel(this, 1, Color.GREEN);
+        settingsLabel = new GUITextLabel(this, 1, Color.GREEN, HEADER_SCALE).setText(reformat(MODID + ".config.settings"));
         settingsColumn.add(settingsLabel);
         settings = new GUIScrollView(this, (COLUMN_WIDTH - SCROLLBAR_WIDTH) * COLUMN_COUNT, 1 - settingsLabel.height);
         GUIVerticalScrollbar settingsScrollbar = new GUIVerticalScrollbar(this, 1 - settings.width, settings.height, getHoverColor(Color.AQUA), Color.BLANK, Color.AQUA, Color.BLANK, settings);
@@ -160,7 +160,15 @@ public class ServerConfigGUI extends GUIScreen
 
         //Populate main column
         linesLabel = new GUITextLabel(this, 1, ELEMENT_SCALE).setText(reformat(MODID + ".config.toggleLines"));
-        main.addAll(linesLabel);
+        loadLocalLabel = new GUITextLabel(this, 1, ELEMENT_SCALE).setText(reformat(MODID + ".config.loadLocal"));
+        saveLocalLabel = new GUITextLabel(this, 1, ELEMENT_SCALE).setText(reformat(MODID + ".config.saveLocal"));
+        loadRemoteLabel = new GUITextLabel(this, 1, ELEMENT_SCALE).setText(reformat(MODID + ".config.loadRemote"));
+        saveRemoteLabel = new GUITextLabel(this, 1, ELEMENT_SCALE).setText(reformat(MODID + ".config.saveRemote"));
+        loadLocalTemplateLabel = new GUITextLabel(this, 1, ELEMENT_SCALE).setText(reformat(MODID + ".config.loadLocalTemplate"));
+        saveLocalTemplateLabel = new GUITextLabel(this, 1, ELEMENT_SCALE).setText(reformat(MODID + ".config.saveLocalTemplate"));
+        loadRemoteTemplateLabel = new GUITextLabel(this, 1, ELEMENT_SCALE).setText(reformat(MODID + ".config.loadRemoteTemplate"));
+        saveRemoteTemplateLabel = new GUITextLabel(this, 1, ELEMENT_SCALE).setText(reformat(MODID + ".config.saveRemoteTemplate"));
+        main.addAll(linesLabel, loadLocalLabel, saveLocalLabel, loadRemoteLabel, saveRemoteLabel, loadLocalTemplateLabel, saveLocalTemplateLabel, loadRemoteTemplateLabel, saveRemoteTemplateLabel);
 
         //Populate other columns
         for (Equip equip : data.equipment.values()) equips.add(new GUIEquip(this, equip, 1, ELEMENT_SCALE));
@@ -194,12 +202,7 @@ public class ServerConfigGUI extends GUIScreen
             if (element instanceof GUISet) ((GUISet) element).setColor(Color.AQUA);
         }
 
-        if (selected != null)
-        {
-            selected.setColor(Color.PURPLE);
-            settingsLabel.setText(selected.internalText.getText());
-        }
-        else settingsLabel.setText("");
+        if (selected != null) selected.setColor(Color.PURPLE);
 
 
         settings.clear();

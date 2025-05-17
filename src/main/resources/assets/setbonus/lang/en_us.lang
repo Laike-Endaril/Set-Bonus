@@ -55,10 +55,19 @@ setbonus.config.enableEnchantmentTooltips.tooltip=Whether or not to show enchant
 setbonus.config.serverSettings=Server Settings
 setbonus.config.main=Main
 setbonus.config.equipment=Equipment
-setbonus.config.bonuses=Bonuses
 setbonus.config.sets=Sets
+setbonus.config.bonuses=Bonuses
+setbonus.config.settings=Settings
 
 setbonus.config.toggleLines=Toggle Lines
+setbonus.config.loadLocal=Load Local
+setbonus.config.saveLocal=Save Local
+setbonus.config.loadRemote=Load Remote
+setbonus.config.saveRemote=Save Remote
+setbonus.config.loadLocalTemplate=Load Local Template
+setbonus.config.saveLocalTemplate=Save Local Template
+setbonus.config.loadRemoteTemplate=Load Remote Template
+setbonus.config.saveRemoteTemplate=Save Remote Template
 
 setbonus.config.edit=Edit...
 setbonus.config.delete=Delete
