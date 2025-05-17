@@ -51,6 +51,6 @@ public class Equip
     @Override
     public String toString()
     {
-        throw new IllegalStateException("WIP");
+        return id + ", " + filter;
     }
 }
