@@ -3,11 +3,14 @@ package com.fantasticsource.setbonus;
 import com.fantasticsource.setbonus.client.ClientBonus;
 import com.fantasticsource.setbonus.common.Bonus;
 import com.fantasticsource.setbonus.common.Network;
+import com.fantasticsource.setbonus.common.bonuselements.ABonusElement;
 import com.fantasticsource.setbonus.common.bonuselements.BonusElementAttributeModifier;
 import com.fantasticsource.setbonus.common.bonuselements.BonusElementEnchantment;
 import com.fantasticsource.setbonus.common.bonuselements.BonusElementPotionEffect;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Equip;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Set;
+import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.SetRequirement;
+import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.SlotData;
 import com.fantasticsource.setbonus.config.SetBonusConfig;
 import com.fantasticsource.setbonus.server.ServerBonus;
 
@@ -57,7 +60,7 @@ public class SetBonusData
         for (String equipString : serverSettings.getEquipment())
         {
             Equip equip = Equip.getInstance(equipString);
-            if (equip != null) equipment.put(equip.name, equip);
+            if (equip != null) equipment.put(equip.id, equip);
         }
 
         for (String setString : serverSettings.getSets())
@@ -86,7 +89,7 @@ public class SetBonusData
         for (String equipString : packet.equipment)
         {
             Equip equip = Equip.getInstance(equipString);
-            if (equip != null) equipment.put(equip.name, equip);
+            if (equip != null) equipment.put(equip.id, equip);
         }
 
         for (String setString : packet.sets)
@@ -112,7 +115,7 @@ public class SetBonusData
         for (String equipString : packet.equipment)
         {
             Equip equip = Equip.getInstance(equipString);
-            if (equip != null) equipment.put(equip.name, equip);
+            if (equip != null) equipment.put(equip.id, equip);
         }
 
         //Initialize sets
@@ -150,17 +153,37 @@ public class SetBonusData
 
     public void delete(Equip equip)
     {
-        //TODO
+        for (Set set : sets.values().toArray(new Set[0]))
+        {
+            for (SlotData slotData : set.slotData) slotData.involvedEquips.remove(equip);
+            set.involvedEquips.remove(equip.id);
+        }
+        for (Bonus bonus : bonuses.values())
+        {
+            for (ABonusElement element : bonus.bonusElements)
+            {
+                if (element instanceof BonusElementEnchantment)
+                {
+                    BonusElementEnchantment bEE = (BonusElementEnchantment) element;
+                    bEE.slotDataToEnchant.involvedEquips.remove(equip);
+                }
+            }
+        }
+        equipment.remove(equip.id);
     }
 
     public void delete(Set set)
     {
-        //TODO
+        for (Bonus bonus : bonuses.values())
+        {
+            bonus.bonusRequirements.removeIf(requirement -> requirement instanceof SetRequirement && ((SetRequirement) requirement).set == set);
+        }
+        sets.remove(set.id);
     }
 
     public void delete(Bonus bonus)
     {
-        //TODO
+        bonuses.remove(bonus.id);
     }
 
 

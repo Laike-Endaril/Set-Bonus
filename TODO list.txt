@@ -1,3 +1,6 @@
+Remove all storage of parsed strings
+Add toString() for all parseables
+
 Make sure connection lines update correctly when scrolling and resizing window
 
 Change sorting for columns when clicking their labels in config gui

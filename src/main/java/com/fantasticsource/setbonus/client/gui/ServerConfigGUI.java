@@ -279,7 +279,7 @@ public class ServerConfigGUI extends GUIScreen
                 if (element instanceof GUISet)
                 {
                     GUISet other = (GUISet) element;
-                    if (other.set.involvedEquips.containsKey(guiEquip.equip.name))
+                    if (other.set.involvedEquips.containsKey(guiEquip.equip.id))
                     {
                         GUILine line = new GUILine(this, selected.absoluteX() + selected.absoluteWidth() * (1 - lineOffset), selected.absoluteY() + selected.absoluteHeight() * 0.5, other.absoluteX() + other.absoluteWidth() * lineOffset, other.absoluteY() + other.absoluteHeight() * 0.5, lineColors[0], lineColors[1], 3);
                         line.addRecalcActions(() -> line.set(selected.absoluteX() + selected.absoluteWidth() * (1 - lineOffset), selected.absoluteY() + selected.absoluteHeight() * 0.5, other.absoluteX() + other.absoluteWidth() * lineOffset, other.absoluteY() + other.absoluteHeight() * 0.5));
@@ -336,7 +336,7 @@ public class ServerConfigGUI extends GUIScreen
                             //Equips to sets
                             for (GUIElement other2 : equips.children)
                             {
-                                if (other2 instanceof GUIEquip && ((GUISet) other).set.involvedEquips.keySet().contains(((GUIEquip) other2).equip.name))
+                                if (other2 instanceof GUIEquip && ((GUISet) other).set.involvedEquips.keySet().contains(((GUIEquip) other2).equip.id))
                                 {
                                     GUILine line2 = new GUILine(this, other2.absoluteX() + other2.absoluteWidth() * (1 - lineOffset), other2.absoluteY() + other2.absoluteHeight() * 0.5, other.absoluteX() + other.absoluteWidth() * lineOffset, other.absoluteY() + other.absoluteHeight() * 0.5, lineColors[0], lineColors[1], 3);
                                     line2.addRecalcActions(() -> line2.set(other2.absoluteX() + other2.absoluteWidth() * (1 - lineOffset), other2.absoluteY() + other2.absoluteHeight() * 0.5, other.absoluteX() + other.absoluteWidth() * lineOffset, other.absoluteY() + other.absoluteHeight() * 0.5));
@@ -358,7 +358,7 @@ public class ServerConfigGUI extends GUIScreen
             //Equips to sets
             for (GUIElement other : equips.children)
             {
-                if (other instanceof GUIEquip && guiSet.set.involvedEquips.keySet().contains(((GUIEquip) other).equip.name))
+                if (other instanceof GUIEquip && guiSet.set.involvedEquips.keySet().contains(((GUIEquip) other).equip.id))
                 {
                     GUILine line = new GUILine(this, other.absoluteX() + other.absoluteWidth() * (1 - lineOffset), other.absoluteY() + other.absoluteHeight() * 0.5, selected.absoluteX() + selected.absoluteWidth() * lineOffset, selected.absoluteY() + selected.absoluteHeight() * 0.5, lineColors[0], lineColors[1], 3);
                     line.addRecalcActions(() -> line.set(other.absoluteX() + other.absoluteWidth() * (1 - lineOffset), other.absoluteY() + other.absoluteHeight() * 0.5, selected.absoluteX() + selected.absoluteWidth() * lineOffset, selected.absoluteY() + selected.absoluteHeight() * 0.5));

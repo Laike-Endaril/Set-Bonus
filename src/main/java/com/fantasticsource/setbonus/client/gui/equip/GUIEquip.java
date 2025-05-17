@@ -31,6 +31,6 @@ public class GUIEquip extends GUITextLabel
     public void set(Equip equip)
     {
         this.equip = equip;
-        internalText.setText(reformat(equip.name));
+        internalText.setText(reformat(equip.id));
     }
 }
