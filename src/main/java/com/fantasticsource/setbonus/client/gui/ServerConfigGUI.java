@@ -182,6 +182,8 @@ public class ServerConfigGUI extends GUIScreen
             showLines = !showLines;
             remakeLines();
         });
+
+        //TODO add other button functionality
     }
 
 
@@ -206,7 +208,7 @@ public class ServerConfigGUI extends GUIScreen
 
 
         settings.clear();
-        populateSettings(selected);
+        if (selected != null) populateSettings(selected);
 
 
         remakeLines();
@@ -226,29 +228,35 @@ public class ServerConfigGUI extends GUIScreen
         settings.add(button);
         button.addClickActions(() ->
         {
-            if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
-            {
-                //TODO delete
-                System.out.println("delete");
-                //TODO update gui
-                System.out.println("update gui");
-                if (sets.size() > 0) select((GUITextLabel) sets.get(0));
-            }
+            if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) delete(label);
             else
             {
                 YesNoGUI yesNoGUI = new YesNoGUI(reformat(label.internalText.getText()), reformat(MODID + ".config.deleteThingMaybe", label.internalText.getText()));
                 yesNoGUI.addOnClosedActions(() ->
                 {
-                    if (yesNoGUI.pressedYes)
-                    {
-                        //TODO delete
-                        System.out.println("delete");
-                        //TODO update gui
-                        System.out.println("update gui");
-                    }
+                    if (yesNoGUI.pressedYes) delete(label);
                 });
             }
         });
+    }
+
+
+    public void delete(GUITextLabel label)
+    {
+        select(null);
+
+        if (label instanceof GUIEquip) data.delete(((GUIEquip) label).equip);
+        else if (label instanceof GUISet) data.delete(((GUISet) label).set);
+        else if (label instanceof GUIBonus) data.delete(((GUIBonus) label).bonus);
+
+
+        GUIElement parent = label.parent;
+        int index = parent.indexOf(label);
+        parent.remove(index);
+
+
+        if (parent.children.size() > index) select((GUITextLabel) parent.children.get(index));
+        else if (parent.children.size() > 0) select((GUITextLabel) parent.children.get(index - 1));
     }
 
 

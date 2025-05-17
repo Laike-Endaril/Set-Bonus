@@ -148,6 +148,22 @@ public class SetBonusData
     }
 
 
+    public void delete(Equip equip)
+    {
+        //TODO
+    }
+
+    public void delete(Set set)
+    {
+        //TODO
+    }
+
+    public void delete(Bonus bonus)
+    {
+        //TODO
+    }
+
+
     public SetBonusData clone()
     {
         SetBonusData other = new SetBonusData();
