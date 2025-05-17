@@ -2,6 +2,7 @@ package com.fantasticsource.setbonus.common;
 
 import com.fantasticsource.mctools.potions.FantasticPotionEffect;
 import com.fantasticsource.setbonus.SetBonus;
+import com.fantasticsource.setbonus.SetBonusData;
 import com.fantasticsource.setbonus.client.ClientData;
 import com.fantasticsource.setbonus.common.bonuselements.ABonusElement;
 import com.fantasticsource.setbonus.common.bonuselements.BonusElementAttributeModifier;
@@ -12,7 +13,6 @@ import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Equi
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Set;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.SetRequirement;
 import com.fantasticsource.setbonus.server.ServerBonus;
-import com.fantasticsource.setbonus.server.ServerData;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
@@ -90,7 +90,7 @@ public class Network
                     Set set = ((SetRequirement) bonusRequirement).set;
                     sets.add(set.parsedString);
 
-                    for (String equipName : set.involvedEquips.keySet()) equipment.add(ServerData.SERVER_DATA.equipment.get(equipName).parsedString);
+                    for (String equipName : set.involvedEquips.keySet()) equipment.add(SetBonusData.SERVER_DATA.equipment.get(equipName).parsedString);
                 }
             }
 
@@ -171,7 +171,7 @@ public class Network
         @Override
         public IMessage onMessage(DiscoverBonusPacket packet, MessageContext ctx)
         {
-            Minecraft.getMinecraft().addScheduledTask(() -> ClientData.CLIENT_DATA.update(packet));
+            Minecraft.getMinecraft().addScheduledTask(() -> ClientData.update(packet));
             return null;
         }
     }
@@ -203,7 +203,7 @@ public class Network
         @Override
         public void toBytes(ByteBuf buf)
         {
-            for (Bonus bonus : ServerData.SERVER_DATA.bonuses.values())
+            for (Bonus bonus : SetBonusData.SERVER_DATA.bonuses.values())
             {
                 if (bonus.discoveryMode == Bonus.MODE_GLOBALLY_KNOWN || (bonus.discoveryMode == Bonus.MODE_DISCOVERABLE && ((ServerBonus) bonus).getBonusInstance(player).discovered))
                 {
@@ -216,7 +216,7 @@ public class Network
                             Set set = ((SetRequirement) bonusRequirement).set;
                             sets.add(set.parsedString);
 
-                            for (String equipName : set.involvedEquips.keySet()) equipment.add(ServerData.SERVER_DATA.equipment.get(equipName).parsedString);
+                            for (String equipName : set.involvedEquips.keySet()) equipment.add(SetBonusData.SERVER_DATA.equipment.get(equipName).parsedString);
                         }
                     }
 
@@ -289,7 +289,7 @@ public class Network
         @Override
         public IMessage onMessage(ConfigPacket packet, MessageContext ctx)
         {
-            Minecraft.getMinecraft().addScheduledTask(() -> ClientData.CLIENT_DATA.update(packet));
+            Minecraft.getMinecraft().addScheduledTask(() -> ClientData.update(packet));
             return null;
         }
     }

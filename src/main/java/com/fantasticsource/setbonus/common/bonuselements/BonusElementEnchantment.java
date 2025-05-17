@@ -259,7 +259,7 @@ public class BonusElementEnchantment extends ABonusElement
         if (FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER)
         {
             ServerBonus.BonusInstance bonusInstance;
-            for (Bonus bonus : ServerData.SERVER_DATA.bonuses.values())
+            for (Bonus bonus : SetBonusData.SERVER_DATA.bonuses.values())
             {
                 bonusInstance = ((ServerBonus) bonus).getBonusInstance((EntityPlayerMP) player);
                 if (!bonusInstance.active) continue;
@@ -277,7 +277,7 @@ public class BonusElementEnchantment extends ABonusElement
         else
         {
             ClientBonus.BonusInstance bonusInstance;
-            for (Bonus bonus : ClientData.CLIENT_DATA.bonuses.values())
+            for (Bonus bonus : SetBonusData.CLIENT_DATA.bonuses.values())
             {
                 bonusInstance = ((ClientBonus) bonus).getBonusInstance(player);
                 if (!bonusInstance.active) continue;

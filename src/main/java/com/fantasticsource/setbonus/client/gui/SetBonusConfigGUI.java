@@ -15,7 +15,7 @@ public class SetBonusConfigGUI extends GUIScreen
 {
     public SetBonusConfigGUI()
     {
-        ServerData.SERVER_DATA.update();
+        ServerData.update();
         show();
 
 

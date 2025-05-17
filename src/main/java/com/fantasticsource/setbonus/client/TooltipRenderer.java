@@ -1,6 +1,7 @@
 package com.fantasticsource.setbonus.client;
 
 import com.fantasticsource.mctools.items.RegistryRegexItemFilter;
+import com.fantasticsource.setbonus.SetBonusData;
 import com.fantasticsource.setbonus.common.Bonus;
 import com.fantasticsource.setbonus.common.bonuselements.ABonusElement;
 import com.fantasticsource.setbonus.common.bonuselements.BonusElementAttributeModifier;
@@ -37,7 +38,7 @@ public class TooltipRenderer
         List<String> tooltip = event.getToolTip();
 
         boolean edited = false;
-        for (Set set : ClientData.CLIENT_DATA.sets.values())
+        for (Set set : SetBonusData.CLIENT_DATA.sets.values())
         {
             for (RegistryRegexItemFilter filter : set.involvedEquips.values())
             {
@@ -55,7 +56,7 @@ public class TooltipRenderer
                     int max = set.getMaxNumber();
                     String color = "" + (count == 0 ? RED : count == max ? GREEN : YELLOW);
                     tooltip.add(color + BOLD + "=== " + I18n.translateToLocal(set.name) + " (" + count + "/" + max + ") ===");
-                    for (Bonus bonus : ClientData.CLIENT_DATA.bonuses.values())
+                    for (Bonus bonus : SetBonusData.CLIENT_DATA.bonuses.values())
                     {
                         int req = 0;
                         boolean otherReqs = false;

@@ -11,109 +11,107 @@ import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Equi
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Set;
 import com.fantasticsource.setbonus.config.SetBonusConfig;
 
-public class ClientData extends SetBonusData
+public class ClientData
 {
-    public static final ClientData CLIENT_DATA = new ClientData();
-
-
-    protected ClientData()
-    {
-    }
-
-
-    public void clear()
+    public static void clear()
     {
         ClientBonus.dropAll();
-        equipment.clear();
-        sets.clear();
+        SetBonusData.CLIENT_DATA.equipment.clear();
+        SetBonusData.CLIENT_DATA.sets.clear();
     }
 
 
-    public void update(Network.ConfigPacket packet)
+    public static void update(Network.ConfigPacket packet)
     {
+        SetBonusData data = SetBonusData.CLIENT_DATA;
+
+
         //Clear any existing data
         ClientBonus.dropAll();
-        equipment.clear();
-        sets.clear();
+        data.equipment.clear();
+        data.sets.clear();
 
 
         //Initialize equipment
         for (String equipString : packet.equipment)
         {
             Equip equip = Equip.getInstance(equipString);
-            if (equip != null) equipment.put(equip.name, equip);
+            if (equip != null) data.equipment.put(equip.name, equip);
         }
 
 
         //Initialize sets
         for (String setString : packet.sets)
         {
-            Set set = Set.getInstance(setString, this);
-            if (set != null) sets.put(set.id, set);
+            Set set = Set.getInstance(setString, data);
+            if (set != null) data.sets.put(set.id, set);
         }
 
 
         //Initialize bonuses
         for (String bonusString : packet.bonuses)
         {
-            ClientBonus bonus = (ClientBonus) Bonus.getInstance(bonusString, this);
-            if (bonus != null) bonuses.put(bonus.id, bonus);
+            ClientBonus bonus = (ClientBonus) Bonus.getInstance(bonusString, data);
+            if (bonus != null) data.bonuses.put(bonus.id, bonus);
         }
 
 
         //Initialize attribute modifiers
         for (String modifierString : packet.attributeMods)
         {
-            BonusElementAttributeModifier.getInstance(modifierString, this);
+            BonusElementAttributeModifier.getInstance(modifierString, data);
         }
 
 
         //Initialize potions
         for (String potionString : packet.potions)
         {
-            BonusElementPotionEffect.getInstance(potionString, this);
+            BonusElementPotionEffect.getInstance(potionString, data);
         }
     }
 
 
-    public void update(Network.DiscoverBonusPacket packet)
+    public static void update(Network.DiscoverBonusPacket packet)
     {
+        SetBonusData data = SetBonusData.CLIENT_DATA;
+
+
         //Initialize equipment
         for (String equipString : packet.equipment)
         {
             Equip equip = Equip.getInstance(equipString);
-            if (equip != null) equipment.put(equip.name, equip);
+            if (equip != null) data.equipment.put(equip.name, equip);
         }
 
         //Initialize sets
         for (String setString : packet.sets)
         {
-            Set set = Set.getInstance(setString, this);
-            if (set != null) sets.put(set.id, set);
+            Set set = Set.getInstance(setString, data);
+            if (set != null) data.sets.put(set.id, set);
         }
 
 
         //Initialize bonus
-        ClientBonus bonus = (ClientBonus) Bonus.getInstance(packet.bonusString, this);
-        if (bonus != null) bonuses.put(bonus.id, bonus);
+        ClientBonus bonus = (ClientBonus) Bonus.getInstance(packet.bonusString, data);
+        if (bonus != null) data.bonuses.put(bonus.id, bonus);
 
 
         //Initialize attribute modifiers
         for (String modifierString : packet.attributeMods)
         {
-            BonusElementAttributeModifier.getInstance(modifierString, this);
+            BonusElementAttributeModifier.getInstance(modifierString, data);
         }
 
         //Initialize potions
         for (String potionString : packet.potions)
         {
-            BonusElementPotionEffect.getInstance(potionString, this);
+            BonusElementPotionEffect.getInstance(potionString, data);
         }
 
         //Initialize enchantments
         for (String enchantString : packet.enchants)
         {
-            BonusElementEnchantment.getInstance(enchantString, this);
+            BonusElementEnchantment.getInstance(enchantString, data);
         }
 
 

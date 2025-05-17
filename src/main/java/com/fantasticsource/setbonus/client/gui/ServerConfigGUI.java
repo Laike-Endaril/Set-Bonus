@@ -11,6 +11,7 @@ import com.fantasticsource.mctools.gui.element.text.GUITextSpacer;
 import com.fantasticsource.mctools.gui.element.view.GUIScrollView;
 import com.fantasticsource.mctools.gui.element.view.GUIView;
 import com.fantasticsource.mctools.gui.screen.YesNoGUI;
+import com.fantasticsource.setbonus.SetBonusData;
 import com.fantasticsource.setbonus.client.gui.bonus.GUIBonus;
 import com.fantasticsource.setbonus.client.gui.equip.GUIEquip;
 import com.fantasticsource.setbonus.client.gui.set.GUISet;
@@ -21,7 +22,6 @@ import com.fantasticsource.setbonus.common.bonusrequirements.ABonusRequirement;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Equip;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Set;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.SetRequirement;
-import com.fantasticsource.setbonus.server.ServerData;
 import com.fantasticsource.tools.datastructures.Color;
 import org.lwjgl.input.Keyboard;
 
@@ -148,9 +148,9 @@ public class ServerConfigGUI extends GUIScreen
 
 
         //Populate
-        for (Equip equip : ServerData.SERVER_DATA.equipment.values()) equips.add(new GUIEquip(this, equip, 1, 0.5));
-        for (Set set : ServerData.SERVER_DATA.sets.values()) sets.add(new GUISet(this, set, 1, 0.5));
-        for (Bonus bonus : ServerData.SERVER_DATA.bonuses.values()) bonuses.add(new GUIBonus(this, bonus, 1, 0.5));
+        for (Equip equip : SetBonusData.SERVER_DATA.equipment.values()) equips.add(new GUIEquip(this, equip, 1, 0.5));
+        for (Set set : SetBonusData.SERVER_DATA.sets.values()) sets.add(new GUISet(this, set, 1, 0.5));
+        for (Bonus bonus : SetBonusData.SERVER_DATA.bonuses.values()) bonuses.add(new GUIBonus(this, bonus, 1, 0.5));
 
 
         //Deselection on root click

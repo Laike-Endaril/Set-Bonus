@@ -8,6 +8,8 @@ import java.util.LinkedHashMap;
 
 public class SetBonusData
 {
+    public static final SetBonusData SERVER_DATA = new SetBonusData(), CLIENT_DATA = new SetBonusData();
+
     public LinkedHashMap<String, Equip> equipment = new LinkedHashMap<>();
     public LinkedHashMap<String, Set> sets = new LinkedHashMap<>();
 

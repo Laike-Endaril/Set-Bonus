@@ -86,7 +86,7 @@ public class SetBonus
         //It works for both dedicated and integrated as well
 
         event.registerServerCommand(new Commands());
-        ServerData.SERVER_DATA.update();
+        ServerData.update();
     }
 
     @EventHandler
@@ -112,7 +112,7 @@ public class SetBonus
             if (MCTools.hosting())
             {
                 //Changed config while in-game (hosting)
-                ServerData.SERVER_DATA.update();
+                ServerData.update();
 
                 EntityPlayer localPlayer = Minecraft.getMinecraft().player;
                 World world = localPlayer.world;
@@ -129,7 +129,7 @@ public class SetBonus
         else
         {
             //Changed config from title screen
-            ServerData.SERVER_DATA.update();
+            ServerData.update();
         }
     }
 
@@ -184,7 +184,7 @@ public class SetBonus
     @SubscribeEvent
     public static void disconnectFromServer(FMLNetworkEvent.ClientDisconnectionFromServerEvent event)
     {
-        Minecraft.getMinecraft().addScheduledTask(ClientData.CLIENT_DATA::clear);
+        Minecraft.getMinecraft().addScheduledTask(ClientData::clear);
     }
 
     @SideOnly(Side.CLIENT)

@@ -62,7 +62,7 @@ public class Commands extends CommandBase
             try
             {
                 MCTools.reloadConfig(ConfigHandler.FULL_CONFIG_NAME + ".cfg", SetBonus.MODID);
-                ServerData.SERVER_DATA.update();
+                ServerData.update();
 
                 for (EntityPlayerMP player : FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayers())
                 {

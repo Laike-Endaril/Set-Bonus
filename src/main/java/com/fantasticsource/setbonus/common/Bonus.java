@@ -3,11 +3,9 @@ package com.fantasticsource.setbonus.common;
 import com.fantasticsource.setbonus.SetBonus;
 import com.fantasticsource.setbonus.SetBonusData;
 import com.fantasticsource.setbonus.client.ClientBonus;
-import com.fantasticsource.setbonus.client.ClientData;
 import com.fantasticsource.setbonus.common.bonuselements.ABonusElement;
 import com.fantasticsource.setbonus.common.bonusrequirements.ABonusRequirement;
 import com.fantasticsource.setbonus.server.ServerBonus;
-import com.fantasticsource.setbonus.server.ServerData;
 import net.minecraft.util.text.translation.I18n;
 
 import java.util.ArrayList;
@@ -35,7 +33,7 @@ public class Bonus
 
     public static Bonus getInstance(String parsableBonus, SetBonusData data)
     {
-        Bonus bonus = data instanceof ServerData ? new ServerBonus() : data instanceof ClientData ? new ClientBonus() : new Bonus();
+        Bonus bonus = data == SetBonusData.SERVER_DATA ? new ServerBonus() : data == SetBonusData.CLIENT_DATA ? new ClientBonus() : new Bonus();
 
         String[] tokens = parsableBonus.split(",");
         if (tokens.length < 3)
