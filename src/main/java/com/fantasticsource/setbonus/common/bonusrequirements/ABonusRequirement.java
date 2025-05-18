@@ -54,4 +54,6 @@ public abstract class ABonusRequirement
     public abstract int required();
 
     public abstract ABonusRequirement clone(SetBonusData data);
+
+    public abstract String toString();
 }

@@ -107,6 +107,10 @@ public class Bonus
     @Override
     public String toString()
     {
-        throw new IllegalStateException("WIP");
+        String result = id + ", " + name + ", " + discoveryMode;
+
+        for (ABonusRequirement requirement : bonusRequirements) result += ", " + requirement;
+
+        return result;
     }
 }
