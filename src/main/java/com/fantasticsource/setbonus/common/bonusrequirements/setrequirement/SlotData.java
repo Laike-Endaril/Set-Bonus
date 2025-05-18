@@ -251,6 +251,7 @@ public class SlotData
     {
         SlotData other = new SlotData();
 
+        other.slotNames.addAll(slotNames);
         other.slots.addAll(slots);
         for (Equip equip : involvedEquips) other.involvedEquips.add(equip.clone());
 
