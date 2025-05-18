@@ -60,6 +60,7 @@ setbonus.config.bonuses=Bonuses
 setbonus.config.settings=Settings
 
 setbonus.config.toggleLines=Toggle Lines
+setbonus.config.entryDisplayMode=Entry Display Mode
 setbonus.config.loadLocal=Load Local
 setbonus.config.saveLocal=Save Local
 setbonus.config.loadRemote=Load Remote

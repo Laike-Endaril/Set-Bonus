@@ -39,10 +39,11 @@ public class ServerConfigGUI extends GUIScreen
     public SetBonusData data;
     public GUITextLabel selected = null,
             mainLabel, equipsLabel, bonusesLabel, setsLabel, settingsLabel,
-            linesLabel, loadLocalLabel, saveLocalLabel, loadRemoteLabel, saveRemoteLabel, loadLocalTemplateLabel, saveLocalTemplateLabel, loadRemoteTemplateLabel, saveRemoteTemplateLabel;
+            linesLabel, entryDisplayModeLabel, loadLocalLabel, saveLocalLabel, loadRemoteLabel, saveRemoteLabel, loadLocalTemplateLabel, saveLocalTemplateLabel, loadRemoteTemplateLabel, saveRemoteTemplateLabel;
     public GUIScrollView main, equips, bonuses, sets, settings;
     public boolean showLines = true;
     public ArrayList<GUILine> lines = new ArrayList<>();
+    public int entryDisplayMode = 0;
 
 
     public ServerConfigGUI(SetBonusData data)
@@ -160,6 +161,7 @@ public class ServerConfigGUI extends GUIScreen
 
         //Populate main column
         linesLabel = new GUITextLabel(this, 1, ELEMENT_SCALE).setText(reformat(MODID + ".config.toggleLines"));
+        entryDisplayModeLabel = new GUITextLabel(this, 1, ELEMENT_SCALE).setText(reformat(MODID + ".config.entryDisplayMode"));
         loadLocalLabel = new GUITextLabel(this, 1, ELEMENT_SCALE).setText(reformat(MODID + ".config.loadLocal"));
         saveLocalLabel = new GUITextLabel(this, 1, ELEMENT_SCALE).setText(reformat(MODID + ".config.saveLocal"));
         loadRemoteLabel = new GUITextLabel(this, 1, ELEMENT_SCALE).setText(reformat(MODID + ".config.loadRemote"));
@@ -168,7 +170,16 @@ public class ServerConfigGUI extends GUIScreen
         saveLocalTemplateLabel = new GUITextLabel(this, 1, ELEMENT_SCALE).setText(reformat(MODID + ".config.saveLocalTemplate"));
         loadRemoteTemplateLabel = new GUITextLabel(this, 1, ELEMENT_SCALE).setText(reformat(MODID + ".config.loadRemoteTemplate"));
         saveRemoteTemplateLabel = new GUITextLabel(this, 1, ELEMENT_SCALE).setText(reformat(MODID + ".config.saveRemoteTemplate"));
-        main.addAll(linesLabel, loadLocalLabel, saveLocalLabel, loadRemoteLabel, saveRemoteLabel, loadLocalTemplateLabel, saveLocalTemplateLabel, loadRemoteTemplateLabel, saveRemoteTemplateLabel);
+        main.addAll(
+                linesLabel, entryDisplayModeLabel,
+                new GUITextSpacer(this),
+                loadLocalLabel, saveLocalLabel,
+                new GUITextSpacer(this),
+                loadRemoteLabel, saveRemoteLabel,
+                new GUITextSpacer(this),
+                loadLocalTemplateLabel, saveLocalTemplateLabel,
+                new GUITextSpacer(this),
+                loadRemoteTemplateLabel, saveRemoteTemplateLabel);
 
         //Populate other columns
         for (Equip equip : data.equipment.values()) equips.add(new GUIEquip(this, equip, 1, ELEMENT_SCALE));
@@ -182,6 +193,8 @@ public class ServerConfigGUI extends GUIScreen
             showLines = !showLines;
             remakeLines();
         });
+
+        entryDisplayModeLabel.addClickActions(this::changeEntryDisplayMode);
 
         loadLocalLabel.addClickActions(() ->
         {
@@ -265,6 +278,46 @@ public class ServerConfigGUI extends GUIScreen
 
         if (parent.children.size() > index) select((GUITextLabel) parent.children.get(index));
         else if (parent.children.size() > 0) select((GUITextLabel) parent.children.get(index - 1));
+    }
+
+
+    public void changeEntryDisplayMode()
+    {
+        if (++entryDisplayMode >= 3) entryDisplayMode = 0;
+
+        if (entryDisplayMode == 0)
+        {
+            for (GUIElement element : sets.children)
+            {
+                if (element instanceof GUISet) ((GUISet) element).setText(((GUISet) element).set.id);
+            }
+            for (GUIElement element : bonuses.children)
+            {
+                if (element instanceof GUIBonus) ((GUIBonus) element).setText(((GUIBonus) element).bonus.id);
+            }
+        }
+        else if (entryDisplayMode == 1)
+        {
+            for (GUIElement element : sets.children)
+            {
+                if (element instanceof GUISet) ((GUISet) element).setText(((GUISet) element).set.name);
+            }
+            for (GUIElement element : bonuses.children)
+            {
+                if (element instanceof GUIBonus) ((GUIBonus) element).setText(((GUIBonus) element).bonus.name);
+            }
+        }
+        else if (entryDisplayMode == 2)
+        {
+            for (GUIElement element : sets.children)
+            {
+                if (element instanceof GUISet) ((GUISet) element).setText(((GUISet) element).set.id + " (" + ((GUISet) element).set.name + ")");
+            }
+            for (GUIElement element : bonuses.children)
+            {
+                if (element instanceof GUIBonus) ((GUIBonus) element).setText(((GUIBonus) element).bonus.id + " (" + ((GUIBonus) element).bonus.name + ")");
+            }
+        }
     }
 
 

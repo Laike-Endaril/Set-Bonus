@@ -25,6 +25,11 @@ Could maybe limit triggers to item pickup event and 1 tick after entity joining 
 
 
 
+Add equipment names?
+(Option to) display equipment names directly underneath item names in tooltips?
+
+
+
 "Reactive" system; indicates when another item is part of a set for which you already have at least 1 item equipped
 0 means non-reactive
 1 means reactive within the player's inventory (an opened chest is not part of the player's inventory) (render effect between the 2+ items)

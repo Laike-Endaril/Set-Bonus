@@ -31,6 +31,6 @@ public class GUISet extends GUITextLabel
     public void set(Set set)
     {
         this.set = set;
-        internalText.setText(reformat(set.name));
+        internalText.setText(reformat(set.id));
     }
 }
