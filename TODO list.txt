@@ -1,4 +1,4 @@
-Change sorting for columns when clicking their labels in config gui
+Finish ServerConfigGUI functionality
 
 
 

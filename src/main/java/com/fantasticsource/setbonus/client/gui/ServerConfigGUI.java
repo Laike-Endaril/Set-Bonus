@@ -43,7 +43,7 @@ public class ServerConfigGUI extends GUIScreen
     public GUIScrollView main, equips, bonuses, sets, settings;
     public boolean showLines = true;
     public ArrayList<GUILine> lines = new ArrayList<>();
-    public int entryDisplayMode = 0;
+    public int entryDisplayMode = 0, equipsSorting = 0, setsSorting = 0, bonusesSorting = 0;
 
 
     public ServerConfigGUI(SetBonusData data)
@@ -183,8 +183,29 @@ public class ServerConfigGUI extends GUIScreen
 
         //Populate other columns
         for (Equip equip : data.equipment.values()) equips.add(new GUIEquip(this, equip, 1, ELEMENT_SCALE));
+        sort(equips, equipsSorting);
         for (Set set : data.sets.values()) sets.add(new GUISet(this, set, 1, ELEMENT_SCALE));
+        sort(sets, setsSorting);
         for (Bonus bonus : data.bonuses.values()) bonuses.add(new GUIBonus(this, bonus, 1, ELEMENT_SCALE));
+        sort(bonuses, bonusesSorting);
+
+
+        //Column label clicks
+        equipsLabel.addClickActions(() ->
+        {
+            equipsSorting = ++equipsSorting % 2;
+            sort(equips, equipsSorting);
+        });
+        setsLabel.addClickActions(() ->
+        {
+            setsSorting = ++setsSorting % 2;
+            sort(sets, setsSorting);
+        });
+        bonusesLabel.addClickActions(() ->
+        {
+            bonusesSorting = ++bonusesSorting % 2;
+            sort(bonuses, bonusesSorting);
+        });
 
 
         //Main column clicks
@@ -318,6 +339,18 @@ public class ServerConfigGUI extends GUIScreen
                 if (element instanceof GUIBonus) ((GUIBonus) element).setText(((GUIBonus) element).bonus.id + " (" + ((GUIBonus) element).bonus.name + ")");
             }
         }
+    }
+
+
+    public void sort(GUIScrollView parent, int mode)
+    {
+        parent.children.sort((c1, c2) ->
+        {
+            if (!(c1 instanceof GUITextLabel && c2 instanceof GUITextLabel)) return 0;
+            if (mode == 0) return ((GUITextLabel) c1).internalText.getText().compareTo(((GUITextLabel) c2).internalText.getText());
+            return ((GUITextLabel) c2).internalText.getText().compareTo(((GUITextLabel) c1).internalText.getText());
+        });
+        parent.recalc(0);
     }
 
 
