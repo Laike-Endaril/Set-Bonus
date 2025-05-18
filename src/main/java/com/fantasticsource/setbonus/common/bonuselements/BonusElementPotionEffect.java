@@ -125,7 +125,7 @@ public class BonusElementPotionEffect extends ABonusElement
         int argCount, amp, duration, interval;
         for (FantasticPotionEffect potionEffect : potions)
         {
-            result += ", " + potionEffect.getEffectName();
+            result += ", " + potionEffect.getPotion().getRegistryName();
 
             amp = potionEffect.getAmplifier();
             duration = potionEffect.getDuration();
