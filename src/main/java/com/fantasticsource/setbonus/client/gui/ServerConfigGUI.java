@@ -310,33 +310,33 @@ public class ServerConfigGUI extends GUIScreen
         {
             for (GUIElement element : sets.children)
             {
-                if (element instanceof GUISet) ((GUISet) element).setText(((GUISet) element).set.id);
+                if (element instanceof GUISet) ((GUISet) element).setText(reformat(((GUISet) element).set.id));
             }
             for (GUIElement element : bonuses.children)
             {
-                if (element instanceof GUIBonus) ((GUIBonus) element).setText(((GUIBonus) element).bonus.id);
+                if (element instanceof GUIBonus) ((GUIBonus) element).setText(reformat(((GUIBonus) element).bonus.id));
             }
         }
         else if (entryDisplayMode == 1)
         {
             for (GUIElement element : sets.children)
             {
-                if (element instanceof GUISet) ((GUISet) element).setText(((GUISet) element).set.name);
+                if (element instanceof GUISet) ((GUISet) element).setText(reformat(((GUISet) element).set.name));
             }
             for (GUIElement element : bonuses.children)
             {
-                if (element instanceof GUIBonus) ((GUIBonus) element).setText(((GUIBonus) element).bonus.name);
+                if (element instanceof GUIBonus) ((GUIBonus) element).setText(reformat(((GUIBonus) element).bonus.name));
             }
         }
         else if (entryDisplayMode == 2)
         {
             for (GUIElement element : sets.children)
             {
-                if (element instanceof GUISet) ((GUISet) element).setText(((GUISet) element).set.id + " (" + ((GUISet) element).set.name + ")");
+                if (element instanceof GUISet) ((GUISet) element).setText(reformat(((GUISet) element).set.id) + " (" + reformat(((GUISet) element).set.name) + ")");
             }
             for (GUIElement element : bonuses.children)
             {
-                if (element instanceof GUIBonus) ((GUIBonus) element).setText(((GUIBonus) element).bonus.id + " (" + ((GUIBonus) element).bonus.name + ")");
+                if (element instanceof GUIBonus) ((GUIBonus) element).setText(reformat(((GUIBonus) element).bonus.id) + " (" + reformat(((GUIBonus) element).bonus.name) + ")");
             }
         }
     }
