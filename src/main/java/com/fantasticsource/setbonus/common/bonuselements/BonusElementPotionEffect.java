@@ -121,6 +121,30 @@ public class BonusElementPotionEffect extends ABonusElement
     @Override
     public String toString()
     {
-        throw new IllegalStateException("WIP");
+        String result = bonus.id;
+        int argCount, amp, duration, interval;
+        for (FantasticPotionEffect potionEffect : potions)
+        {
+            result += ", " + potionEffect.getEffectName();
+
+            amp = potionEffect.getAmplifier();
+            duration = potionEffect.getDuration();
+            interval = potionEffect.interval;
+            argCount = 3;
+            if (interval == 0)
+            {
+                argCount--;
+                if (duration == Integer.MAX_VALUE)
+                {
+                    argCount--;
+                    if (amp == 0) argCount--;
+                }
+            }
+
+            if (argCount == 3) result += "." + amp + "." + duration + "." + interval;
+            else if (argCount == 2) result += "." + amp + "." + duration;
+            else if (argCount == 1) result += "." + amp;
+        }
+        return result;
     }
 }
