@@ -13,6 +13,7 @@ import net.minecraft.util.text.translation.I18n;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Map;
 
 public class BonusElementAttributeModifier extends ABonusElement
 {
@@ -104,6 +105,16 @@ public class BonusElementAttributeModifier extends ABonusElement
     @Override
     public String toString()
     {
-        throw new IllegalStateException("WIP");
+        String result = bonus.id;
+
+        int mode;
+        for (Map.Entry<String, AttributeModifier> entry : modifiers.entries())
+        {
+            result += ", " + entry.getValue().getName() + " = " + entry.getValue().getAmount();
+            mode = entry.getValue().getOperation();
+            if (mode != 0) result += " @ " + mode;
+        }
+
+        return result;
     }
 }
