@@ -46,4 +46,10 @@ public class AttributeRequirement extends ABonusRequirement
     {
         return new AttributeRequirement(new Pair<>(attributeName, requirement.clone()));
     }
+
+    @Override
+    public String toString()
+    {
+        return attributeName + " " + requirement;
+    }
 }
