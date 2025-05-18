@@ -8,6 +8,7 @@ import com.fantasticsource.mctools.event.InventoryChangedEvent;
 import com.fantasticsource.setbonus.SetBonusData;
 import com.fantasticsource.setbonus.client.ClientBonus;
 import com.fantasticsource.setbonus.common.Bonus;
+import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Equip;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.SlotData;
 import com.fantasticsource.setbonus.server.ServerBonus;
 import com.fantasticsource.tools.Tools;
@@ -30,6 +31,7 @@ import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import static com.fantasticsource.setbonus.SetBonus.MODID;
@@ -418,6 +420,28 @@ public class BonusElementEnchantment extends ABonusElement
     @Override
     public String toString()
     {
-        throw new IllegalStateException("WIP");
+        String result = bonus.id + ", ";
+
+        Iterator<String> iterator = slotDataToEnchant.slotNames.iterator();
+        result += iterator.next();
+        while (iterator.hasNext()) result += " | " + iterator.next();
+
+        result += " = ";
+
+        Iterator<Equip> iterator2 = slotDataToEnchant.involvedEquips.iterator();
+        result += iterator2.next().id;
+        while (iterator2.hasNext()) result += " | " + iterator2.next().id;
+
+        int level, mode;
+        for (Map.Entry<Pair<Enchantment, Integer>, Integer> entry : enchantments.entrySet())
+        {
+            level = entry.getKey().getValue();
+            mode = entry.getValue();
+            if (level != 1 && mode != 0) result += ", " + entry.getKey().getKey().getRegistryName() + "." + level + "." + mode;
+            else if (level != 1) result += ", " + entry.getKey().getKey().getRegistryName() + "." + level;
+            else result += ", " + entry.getKey().getKey().getRegistryName();
+        }
+
+        return result;
     }
 }
