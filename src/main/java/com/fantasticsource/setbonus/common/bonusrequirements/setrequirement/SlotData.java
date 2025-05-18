@@ -144,7 +144,7 @@ public class SlotData
             if (slotIDs == null) errors.add(slotString.trim().toLowerCase());
             else
             {
-                slotData.slotNames.add(slots);
+                slotData.slotNames.add(slotString.trim());
                 slotData.slots.addAll(slotIDs);
             }
         }
