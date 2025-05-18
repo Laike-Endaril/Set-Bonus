@@ -1,5 +1,3 @@
-Make sure connection lines update correctly when scrolling and resizing window
-
 Change sorting for columns when clicking their labels in config gui
 
 

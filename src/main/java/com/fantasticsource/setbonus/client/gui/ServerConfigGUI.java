@@ -65,7 +65,7 @@ public class ServerConfigGUI extends GUIScreen
         mainColumn.add(mainLabel);
         main = new GUIScrollView(this, (COLUMN_WIDTH - SCROLLBAR_WIDTH) * COLUMN_COUNT, 1 - mainLabel.height);
         GUIVerticalScrollbar mainScrollbar = new GUIVerticalScrollbar(this, 1 - main.width, main.height, getHoverColor(Color.AQUA), Color.BLANK, Color.AQUA, Color.BLANK, main);
-        mainColumn.addAll(main, mainScrollbar);
+        mainColumn.addAll(main, mainScrollbar.addEditActions(this::recalcLines));
 
 
         //Equips
@@ -76,7 +76,7 @@ public class ServerConfigGUI extends GUIScreen
         equipsColumn.add(equipsLabel);
         equips = new GUIScrollView(this, (COLUMN_WIDTH - SCROLLBAR_WIDTH) * COLUMN_COUNT, 1 - equipsLabel.height);
         GUIVerticalScrollbar equipsScrollbar = new GUIVerticalScrollbar(this, 1 - equips.width, equips.height, getHoverColor(Color.AQUA), Color.BLANK, Color.AQUA, Color.BLANK, equips);
-        equipsColumn.addAll(equips, equipsScrollbar);
+        equipsColumn.addAll(equips, equipsScrollbar.addEditActions(this::recalcLines));
 
 
         //Sets
@@ -87,7 +87,7 @@ public class ServerConfigGUI extends GUIScreen
         setsColumn.add(setsLabel);
         sets = new GUIScrollView(this, (COLUMN_WIDTH - SCROLLBAR_WIDTH) * COLUMN_COUNT, 1 - setsLabel.height);
         GUIVerticalScrollbar setsScrollbar = new GUIVerticalScrollbar(this, 1 - sets.width, sets.height, getHoverColor(Color.AQUA), Color.BLANK, Color.AQUA, Color.BLANK, sets);
-        setsColumn.addAll(sets, setsScrollbar);
+        setsColumn.addAll(sets, setsScrollbar.addEditActions(this::recalcLines));
 
 
         //Bonuses
@@ -98,7 +98,7 @@ public class ServerConfigGUI extends GUIScreen
         bonusesColumn.add(bonusesLabel);
         bonuses = new GUIScrollView(this, (COLUMN_WIDTH - SCROLLBAR_WIDTH) * COLUMN_COUNT, 1 - bonusesLabel.height);
         GUIVerticalScrollbar bonusesScrollbar = new GUIVerticalScrollbar(this, 1 - bonuses.width, bonuses.height, getHoverColor(Color.AQUA), Color.BLANK, Color.AQUA, Color.BLANK, bonuses);
-        bonusesColumn.addAll(bonuses, bonusesScrollbar);
+        bonusesColumn.addAll(bonuses, bonusesScrollbar.addEditActions(this::recalcLines));
 
 
         //Settings
@@ -109,7 +109,7 @@ public class ServerConfigGUI extends GUIScreen
         settingsColumn.add(settingsLabel);
         settings = new GUIScrollView(this, (COLUMN_WIDTH - SCROLLBAR_WIDTH) * COLUMN_COUNT, 1 - settingsLabel.height);
         GUIVerticalScrollbar settingsScrollbar = new GUIVerticalScrollbar(this, 1 - settings.width, settings.height, getHoverColor(Color.AQUA), Color.BLANK, Color.AQUA, Color.BLANK, settings);
-        settingsColumn.addAll(settings, settingsScrollbar);
+        settingsColumn.addAll(settings, settingsScrollbar.addEditActions(this::recalcLines));
 
 
         //Root recalcs
@@ -267,6 +267,11 @@ public class ServerConfigGUI extends GUIScreen
         else if (parent.children.size() > 0) select((GUITextLabel) parent.children.get(index - 1));
     }
 
+
+    public void recalcLines()
+    {
+        for (GUILine line : lines) line.recalc(0);
+    }
 
     public void remakeLines()
     {
