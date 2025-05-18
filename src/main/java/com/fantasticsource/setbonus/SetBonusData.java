@@ -13,15 +13,19 @@ import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.SetR
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.SlotData;
 import com.fantasticsource.setbonus.config.SetBonusConfig;
 import com.fantasticsource.setbonus.server.ServerBonus;
+import net.minecraftforge.common.config.Config;
+import net.minecraftforge.common.config.ConfigManager;
 
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
 
+import static com.fantasticsource.setbonus.SetBonus.MODID;
 import static com.fantasticsource.setbonus.config.SetBonusConfig.serverSettings;
 
 public class SetBonusData
 {
-    public static final SetBonusData SERVER_DATA = new SetBonusData(), CLIENT_DATA = new SetBonusData();
+    public static SetBonusData SERVER_DATA = new SetBonusData(), CLIENT_DATA = new SetBonusData();
 
     public LinkedHashMap<String, Equip> equipment = new LinkedHashMap<>();
     public LinkedHashMap<String, Set> sets = new LinkedHashMap<>();
@@ -78,6 +82,45 @@ public class SetBonusData
         for (String modifierString : serverSettings.getAttributeMods()) BonusElementAttributeModifier.getInstance(modifierString, this);
         for (String potionString : serverSettings.getPotions()) BonusElementPotionEffect.getInstance(potionString, this);
         for (String enchantString : serverSettings.getEnchantments()) BonusElementEnchantment.getInstance(enchantString, this);
+    }
+
+
+    public void applyToConfig()
+    {
+        LinkedHashSet<String>
+                equips = new LinkedHashSet<>(),
+                sets = new LinkedHashSet<>(),
+                bonuses = new LinkedHashSet<>(),
+                attributeModifiers = new LinkedHashSet<>(),
+                potions = new LinkedHashSet<>(),
+                enchantments = new LinkedHashSet<>();
+
+        for (Equip equip : equipment.values()) equips.add(equip.toString());
+        for (Set set : this.sets.values()) sets.add(set.toString());
+        for (Bonus bonus : this.bonuses.values())
+        {
+            bonuses.add(bonus.toString());
+
+            for (ABonusElement bonusElement : bonus.bonusElements)
+            {
+                if (bonusElement instanceof BonusElementAttributeModifier) attributeModifiers.add(bonusElement.toString());
+                else if (bonusElement instanceof BonusElementPotionEffect) potions.add(bonusElement.toString());
+                else if (bonusElement instanceof BonusElementEnchantment) enchantments.add(bonusElement.toString());
+            }
+        }
+
+
+        serverSettings.equipment = equips.toArray(new String[0]);
+        serverSettings.sets = sets.toArray(new String[0]);
+        serverSettings.bonuses = bonuses.toArray(new String[0]);
+        serverSettings.attributeMods = attributeModifiers.toArray(new String[0]);
+        serverSettings.potions = potions.toArray(new String[0]);
+        serverSettings.enchantments = enchantments.toArray(new String[0]);
+
+        SERVER_DATA = this;
+
+
+        ConfigManager.sync(MODID, Config.Type.INSTANCE);
     }
 
 
