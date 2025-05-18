@@ -25,7 +25,7 @@ public class SetRequirement extends ABonusRequirement
         if (set == null) return null;
 
         //Full set?
-        if (tokens2.length == 1) return new SetRequirement(set, set.getMaxNumber());
+        if (tokens2.length == 1) return new SetRequirement(set, -1);
 
         //Partial set?
         int num = Integer.parseInt(tokens2[1].trim());
@@ -51,5 +51,11 @@ public class SetRequirement extends ABonusRequirement
     public SetRequirement clone(SetBonusData data)
     {
         return new SetRequirement(data.sets.get(set.id), num);
+    }
+
+    @Override
+    public String toString()
+    {
+        return set.id + (num == -1 ? "" : "." + num);
     }
 }
