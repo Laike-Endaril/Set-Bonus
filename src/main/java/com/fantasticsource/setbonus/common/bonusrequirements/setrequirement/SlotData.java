@@ -26,7 +26,7 @@ public class SlotData
 
 
     public ArrayList<String> slotNames = new ArrayList<>();
-    public ArrayList<Integer> slots = new ArrayList<>(); //Because multiple slot options can be defined
+    public ArrayList<Integer> slots = new ArrayList<>(); //Be sure to keep this synchronized with the results that it should get from slotNames
     public LinkedHashSet<Equip> involvedEquips = new LinkedHashSet<>();
 
 
