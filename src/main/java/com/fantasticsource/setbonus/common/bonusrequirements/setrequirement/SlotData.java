@@ -13,6 +13,7 @@ import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 
@@ -24,6 +25,7 @@ public class SlotData
             TRINKETS_OFFSET = AETHER_THRESHOLD, TRINKETS_THRESHOLD = TRINKETS_OFFSET + 32;
 
 
+    public ArrayList<String> slotNames = new ArrayList<>();
     public ArrayList<Integer> slots = new ArrayList<>(); //Because multiple slot options can be defined
     public LinkedHashSet<Equip> involvedEquips = new LinkedHashSet<>();
 
@@ -45,7 +47,7 @@ public class SlotData
 
 
         //Slots
-        ArrayList<String> errors = addSlotsFromString(tokens[0], result.slots);
+        ArrayList<String> errors = addSlotsFromString(tokens[0], result);
         if (errors.size() > 0)
         {
             for (String error : errors) System.err.println(I18n.translateToLocalFormatted(SetBonus.MODID + ".error.unknownSlot", error, slotsAndEquipment));
@@ -131,7 +133,7 @@ public class SlotData
 
 
     //Returns the error-causing part of the string, or null if successful
-    public static ArrayList<String> addSlotsFromString(String slots, ArrayList<Integer> arrayList)
+    public static ArrayList<String> addSlotsFromString(String slots, SlotData slotData)
     {
         ArrayList<String> errors = new ArrayList<>();
         ArrayList<Integer> slotIDs;
@@ -140,7 +142,11 @@ public class SlotData
         {
             slotIDs = getSlotIDs(slotString);
             if (slotIDs == null) errors.add(slotString.trim().toLowerCase());
-            else arrayList.addAll(slotIDs);
+            else
+            {
+                slotData.slotNames.add(slots);
+                slotData.slots.addAll(slotIDs);
+            }
         }
 
         return errors;
@@ -254,6 +260,14 @@ public class SlotData
     @Override
     public String toString()
     {
-        throw new IllegalStateException("WIP");
+        Iterator<String> iterator = slotNames.iterator();
+        String result = iterator.next();
+        while (iterator.hasNext()) result += " | " + iterator.next();
+
+        Iterator<Equip> iterator2 = involvedEquips.iterator();
+        result += " = " + iterator2.next().id;
+        while (iterator2.hasNext()) result += " | " + iterator2.next().id;
+
+        return result;
     }
 }
