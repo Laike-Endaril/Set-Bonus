@@ -183,6 +183,14 @@ public class ServerConfigGUI extends GUIScreen
             remakeLines();
         });
 
+        loadLocalLabel.addClickActions(() ->
+        {
+            addPostClosedActions(() -> new ServerConfigGUI(SetBonusData.SERVER_DATA.clone()));
+            close();
+        });
+
+        saveLocalLabel.addClickActions(() -> data.clone().applyToConfig());
+
         //TODO add other button functionality
     }
 
