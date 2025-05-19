@@ -75,6 +75,9 @@ setbonus.config.delete=Delete
 setbonus.config.deleteThingMaybe=Delete %s?
 
 setbonus.config.id=ID
+setbonus.config.domain=Domain
+setbonus.config.item=Item
+setbonus.config.meta=Meta
 
 
 
