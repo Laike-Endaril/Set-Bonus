@@ -435,8 +435,8 @@ public class BonusElementEnchantment extends ABonusElement
         int level, mode;
         for (Map.Entry<Pair<Enchantment, Integer>, Integer> entry : enchantments.entrySet())
         {
-            level = entry.getKey().getValue();
-            mode = entry.getValue();
+            level = entry.getValue();
+            mode = entry.getKey().getValue();
             if (level != 1 && mode != 0) result += ", " + entry.getKey().getKey().getRegistryName() + "." + level + "." + mode;
             else if (level != 1) result += ", " + entry.getKey().getKey().getRegistryName() + "." + level;
             else result += ", " + entry.getKey().getKey().getRegistryName();
