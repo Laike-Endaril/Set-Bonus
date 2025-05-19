@@ -99,7 +99,7 @@ public class Bonus
 
         for (ABonusRequirement requirement : bonusRequirements) other.bonusRequirements.add(requirement.clone(data));
 
-        for (ABonusElement element : bonusElements) other.bonusElements.add(element.clone(data));
+        for (ABonusElement element : bonusElements) element.clone(data);
 
         return other;
     }
