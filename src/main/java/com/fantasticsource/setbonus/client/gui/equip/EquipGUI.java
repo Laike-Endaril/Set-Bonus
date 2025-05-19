@@ -5,6 +5,7 @@ import com.fantasticsource.mctools.gui.element.GUIElement;
 import com.fantasticsource.mctools.gui.element.other.GUIDarkenedBackground;
 import com.fantasticsource.mctools.gui.element.text.GUILabeledTextInput;
 import com.fantasticsource.mctools.gui.element.text.GUINavbar;
+import com.fantasticsource.mctools.gui.element.text.GUITextButton;
 import com.fantasticsource.mctools.gui.element.text.filter.FilterBlacklist;
 import com.fantasticsource.mctools.gui.element.text.filter.FilterNone;
 import com.fantasticsource.mctools.gui.element.text.filter.FilterNotEmpty;
@@ -12,6 +13,7 @@ import com.fantasticsource.mctools.items.RegistryRegexItemFilter;
 import com.fantasticsource.setbonus.SetBonusData;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Equip;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Set;
+import com.fantasticsource.tools.datastructures.Color;
 
 import java.util.ArrayList;
 
@@ -68,41 +70,54 @@ public class EquipGUI extends GUIScreen
 
         //NBT
         //TODO
-    }
 
-    @Override
-    public void onClosed()
-    {
-        super.onClosed();
-        if (id.valid() && item.valid())
+
+        root.add(new GUITextButton(this, reformat(MODID + ".config.save"), Color.GREEN).addClickActions(() ->
         {
-            //ID
-            String oldID = equip.id;
-            equip.id = id.getText();
+            if (!id.valid())
+            {
+                id.setText(equip.id);
+                id.label.click();
+            }
+            else if (!item.valid())
+            {
+                item.setText(equip.filter.itemRegex);
+                item.label.click();
+            }
+            else
+            {
+                //ID
+                String oldID = equip.id;
+                equip.id = id.getText();
 
-            //Domain, item, meta
-            equip.filter.domainRegex = domain.getText().trim();
-            if (equip.filter.domainRegex.isEmpty()) equip.filter.domainRegex = ".*";
-            equip.filter.itemRegex = item.getText().trim();
-            equip.filter.metaRegex = meta.getText().trim();
-            if (equip.filter.metaRegex.isEmpty()) equip.filter.metaRegex = ".*";
+                //Domain, item, meta
+                equip.filter.domainRegex = domain.getText().trim();
+                if (equip.filter.domainRegex.isEmpty()) equip.filter.domainRegex = ".*";
+                equip.filter.itemRegex = item.getText().trim();
+                equip.filter.metaRegex = meta.getText().trim();
+                if (equip.filter.metaRegex.isEmpty()) equip.filter.metaRegex = ".*";
 
-            //NBT
-            //TODO
+                //NBT
+                //TODO
 //            equip.filter.tagsRequired.clear();
 //            equip.filter.tagsDisallowed.clear();
 
 
-            data.equipment.put(equip.id, data.equipment.remove(oldID));
+                data.equipment.put(equip.id, data.equipment.remove(oldID));
 
-            for (Set set : data.sets.values())
-            {
-                RegistryRegexItemFilter filter = set.involvedEquips.remove(oldID);
-                if (filter != null) set.involvedEquips.put(equip.id, filter);
+                for (Set set : data.sets.values())
+                {
+                    RegistryRegexItemFilter filter = set.involvedEquips.remove(oldID);
+                    if (filter != null) set.involvedEquips.put(equip.id, filter);
+                }
+
+
+                clickedElement.set(equip);
+                close();
             }
-        }
+        }));
 
-        clickedElement.set(equip);
+        root.add(new GUITextButton(this, reformat(MODID + ".config.cancel"), Color.RED).addClickActions(this::close));
     }
 
     @Override
