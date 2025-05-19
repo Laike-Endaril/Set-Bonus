@@ -74,6 +74,8 @@ setbonus.config.edit=Edit...
 setbonus.config.delete=Delete
 setbonus.config.deleteThingMaybe=Delete %s?
 
+setbonus.config.id=ID
+
 
 
 setbonus.config.bonusSettings=Bonus Settings

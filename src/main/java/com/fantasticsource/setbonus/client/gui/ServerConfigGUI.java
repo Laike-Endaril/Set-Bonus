@@ -182,7 +182,7 @@ public class ServerConfigGUI extends GUIScreen
                 loadRemoteTemplateLabel, saveRemoteTemplateLabel);
 
         //Populate other columns
-        for (Equip equip : data.equipment.values()) equips.add(new GUIEquip(this, equip, 1, ELEMENT_SCALE));
+        for (Equip equip : data.equipment.values()) equips.add(new GUIEquip(this, data, equip, 1, ELEMENT_SCALE));
         sort(equips, equipsSorting);
         for (Set set : data.sets.values()) sets.add(new GUISet(this, set, 1, ELEMENT_SCALE));
         sort(sets, setsSorting);
