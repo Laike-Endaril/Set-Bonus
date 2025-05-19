@@ -247,13 +247,13 @@ public class SlotData
     }
 
 
-    public SlotData clone()
+    public SlotData clone(SetBonusData data)
     {
         SlotData other = new SlotData();
 
         other.slotNames.addAll(slotNames);
         other.slots.addAll(slots);
-        for (Equip equip : involvedEquips) other.involvedEquips.add(equip.clone());
+        for (Equip equip : involvedEquips) other.involvedEquips.add(data.equipment.get(equip.id));
 
         return other;
     }

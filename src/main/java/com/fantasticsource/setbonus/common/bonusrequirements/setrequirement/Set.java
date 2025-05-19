@@ -98,7 +98,7 @@ public class Set
     }
 
 
-    public Set clone()
+    public Set clone(SetBonusData data)
     {
         Set other = new Set();
 
@@ -107,7 +107,7 @@ public class Set
 
         for (Map.Entry<String, RegistryRegexItemFilter> entry : involvedEquips.entrySet()) other.involvedEquips.put(entry.getKey(), entry.getValue().clone());
 
-        for (SlotData data : slotData) other.slotData.add(data.clone());
+        for (SlotData slotData : slotData) other.slotData.add(slotData.clone(data));
 
         return other;
     }
