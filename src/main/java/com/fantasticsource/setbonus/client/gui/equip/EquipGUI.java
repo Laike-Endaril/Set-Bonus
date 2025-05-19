@@ -3,14 +3,19 @@ package com.fantasticsource.setbonus.client.gui.equip;
 import com.fantasticsource.mctools.gui.GUIScreen;
 import com.fantasticsource.mctools.gui.element.GUIElement;
 import com.fantasticsource.mctools.gui.element.other.GUIDarkenedBackground;
+import com.fantasticsource.mctools.gui.element.other.GUIVerticalScrollbar;
 import com.fantasticsource.mctools.gui.element.text.GUILabeledTextInput;
 import com.fantasticsource.mctools.gui.element.text.GUINavbar;
 import com.fantasticsource.mctools.gui.element.text.GUITextButton;
+import com.fantasticsource.mctools.gui.element.text.GUITextLabel;
 import com.fantasticsource.mctools.gui.element.text.filter.FilterBlacklist;
 import com.fantasticsource.mctools.gui.element.text.filter.FilterNone;
 import com.fantasticsource.mctools.gui.element.text.filter.FilterNotEmpty;
+import com.fantasticsource.mctools.gui.element.view.GUIScrollView;
+import com.fantasticsource.mctools.gui.element.view.GUIView;
 import com.fantasticsource.mctools.items.RegistryRegexItemFilter;
 import com.fantasticsource.setbonus.SetBonusData;
+import com.fantasticsource.setbonus.client.gui.ServerConfigGUI;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Equip;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Set;
 import com.fantasticsource.tools.datastructures.Color;
@@ -25,6 +30,10 @@ public class EquipGUI extends GUIScreen
     public GUIEquip clickedElement;
     public Equip equip;
     public GUILabeledTextInput id, domain, item, meta;
+    public GUITextLabel requiredNBTLabel, disallowedNBTLabel;
+    public GUIView requiredNBTView, disallowedNBTView;
+    public GUIScrollView requiredNBT, disallowedNBT;
+    public GUIVerticalScrollbar requiredNBTScrollbar, disallowedNBTScrollbar;
 
 
     public EquipGUI(SetBonusData data, GUIEquip clickedElement)
@@ -66,10 +75,6 @@ public class EquipGUI extends GUIScreen
         //Meta
         meta = new GUILabeledTextInput(this, reformat(MODID + ".config.meta") + ": ", equip.filter.metaRegex, FilterNone.INSTANCE);
         root.addAll(meta, new GUIElement(this, 1, 0));
-
-
-        //NBT
-        //TODO
 
 
         root.add(new GUITextButton(this, reformat(MODID + ".config.save"), Color.GREEN).addClickActions(() ->
@@ -118,6 +123,33 @@ public class EquipGUI extends GUIScreen
         }));
 
         root.add(new GUITextButton(this, reformat(MODID + ".config.cancel"), Color.RED).addClickActions(this::close));
+
+
+        //NBT
+        requiredNBTLabel = new GUITextLabel(this, 1, Color.GREEN);
+        requiredNBTLabel.setText(reformat(MODID + ".config.requiredNBT"));
+        root.add(requiredNBTLabel);
+
+        requiredNBTView = new GUIView(this, 1, 1 - requiredNBTLabel.y - requiredNBTLabel.height * 2);
+        requiredNBTLabel.addRecalcActions(() -> requiredNBTView.height = (1 - requiredNBTLabel.y - requiredNBTLabel.height * 2) * 0.5);
+        root.add(requiredNBTView);
+
+        requiredNBT = new GUIScrollView(this, 1 - ServerConfigGUI.SCROLLBAR_WIDTH, 1);
+        requiredNBTScrollbar = new GUIVerticalScrollbar(this, ServerConfigGUI.SCROLLBAR_WIDTH, 1, Color.AQUA, Color.BLANK, Color.AQUA, Color.BLANK, requiredNBT);
+        requiredNBTView.addAll(requiredNBT, requiredNBTScrollbar);
+
+
+        disallowedNBTLabel = new GUITextLabel(this, 1, Color.RED);
+        disallowedNBTLabel.setText(reformat(MODID + ".config.disallowedNBT"));
+        root.add(disallowedNBTLabel);
+
+        disallowedNBTView = new GUIView(this, 1, 1 - disallowedNBTLabel.y - disallowedNBTLabel.height);
+        disallowedNBTView.addRecalcActions(() -> disallowedNBTView.height = 1 - disallowedNBTLabel.y - disallowedNBTLabel.height);
+        root.add(disallowedNBTView);
+
+        disallowedNBT = new GUIScrollView(this, 1 - ServerConfigGUI.SCROLLBAR_WIDTH, 1);
+        disallowedNBTScrollbar = new GUIVerticalScrollbar(this, ServerConfigGUI.SCROLLBAR_WIDTH, 1, Color.AQUA, Color.BLANK, Color.AQUA, Color.BLANK, disallowedNBT);
+        disallowedNBTView.addAll(disallowedNBT, disallowedNBTScrollbar);
     }
 
     @Override

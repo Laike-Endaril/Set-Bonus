@@ -81,6 +81,8 @@ setbonus.config.id=ID
 setbonus.config.domain=Domain
 setbonus.config.item=Item
 setbonus.config.meta=Meta
+setbonus.config.requiredNBT=Required NBT
+setbonus.config.disallowedNBT=Disallowed NBT
 
 
 
