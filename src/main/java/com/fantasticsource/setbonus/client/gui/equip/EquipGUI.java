@@ -142,6 +142,12 @@ public class EquipGUI extends GUIScreen
         disallowedNBT.add(view);
 
 
+        //Remove empty NBT entries in middle of list, add empty at end of list
+        root.addClickActions(this::updateNBTLists);
+        requiredNBT.addRecalcActions(this::updateNBTLists);
+        disallowedNBT.addRecalcActions(this::updateNBTLists);
+
+
         //Save actions
         save.addClickActions(() ->
         {
@@ -228,6 +234,60 @@ public class EquipGUI extends GUIScreen
             }
         });
     }
+
+
+    protected void updateNBTLists()
+    {
+        GUIAutocroppedView entry;
+        GUILabeledTextInput key, value;
+        for (int i = 0; i < requiredNBT.size() - 1; i++)
+        {
+            entry = (GUIAutocroppedView) requiredNBT.get(i);
+            key = (GUILabeledTextInput) entry.get(1);
+            value = (GUILabeledTextInput) entry.get(2);
+            if (!key.input.isActive() && !value.input.isActive() && key.getText().equals("") && value.getText().equals(""))
+            {
+                requiredNBT.remove(entry);
+                i--;
+            }
+        }
+        entry = (GUIAutocroppedView) requiredNBT.get(requiredNBT.size() - 1);
+        key = (GUILabeledTextInput) entry.get(1);
+        value = (GUILabeledTextInput) entry.get(2);
+        if (!key.getText().equals("") || !value.getText().equals(""))
+        {
+            GUIAutocroppedView view2 = new GUIAutocroppedView(this);
+            view2.add(new GUIElement(this, 1, 0));
+            view2.add(new GUILabeledTextInput(this, reformat(MODID + ".config.nbt"), "", FilterNotEmpty.INSTANCE));
+            view2.add(new GUILabeledTextInput(this, 0.5, 0, reformat(MODID + ".config.is"), "", FilterNotEmpty.INSTANCE));
+            requiredNBT.add(view2);
+        }
+
+
+        for (int i = 0; i < disallowedNBT.size() - 1; i++)
+        {
+            entry = (GUIAutocroppedView) disallowedNBT.get(i);
+            key = (GUILabeledTextInput) entry.get(1);
+            value = (GUILabeledTextInput) entry.get(2);
+            if (!key.input.isActive() && !value.input.isActive() && key.getText().equals("") && value.getText().equals(""))
+            {
+                disallowedNBT.remove(entry);
+                i--;
+            }
+        }
+        entry = (GUIAutocroppedView) disallowedNBT.get(disallowedNBT.size() - 1);
+        key = (GUILabeledTextInput) entry.get(1);
+        value = (GUILabeledTextInput) entry.get(2);
+        if (!key.getText().equals("") || !value.getText().equals(""))
+        {
+            GUIAutocroppedView view2 = new GUIAutocroppedView(this);
+            view2.add(new GUIElement(this, 1, 0));
+            view2.add(new GUILabeledTextInput(this, reformat(MODID + ".config.nbt"), "", FilterNotEmpty.INSTANCE));
+            view2.add(new GUILabeledTextInput(this, 0.5, 0, reformat(MODID + ".config.is"), "", FilterNotEmpty.INSTANCE));
+            disallowedNBT.add(view2);
+        }
+    }
+
 
     @Override
     public String title()
