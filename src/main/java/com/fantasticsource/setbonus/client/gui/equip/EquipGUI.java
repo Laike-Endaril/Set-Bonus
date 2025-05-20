@@ -11,6 +11,7 @@ import com.fantasticsource.mctools.gui.element.text.GUITextLabel;
 import com.fantasticsource.mctools.gui.element.text.filter.FilterBlacklist;
 import com.fantasticsource.mctools.gui.element.text.filter.FilterNone;
 import com.fantasticsource.mctools.gui.element.text.filter.FilterNotEmpty;
+import com.fantasticsource.mctools.gui.element.view.GUIAutocroppedView;
 import com.fantasticsource.mctools.gui.element.view.GUIScrollView;
 import com.fantasticsource.mctools.gui.element.view.GUIView;
 import com.fantasticsource.mctools.items.RegistryRegexItemFilter;
@@ -21,6 +22,8 @@ import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Set;
 import com.fantasticsource.tools.datastructures.Color;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import static com.fantasticsource.setbonus.SetBonus.MODID;
 
@@ -77,7 +80,70 @@ public class EquipGUI extends GUIScreen
         root.addAll(meta, new GUIElement(this, 1, 0));
 
 
-        root.add(new GUITextButton(this, reformat(MODID + ".config.save"), Color.GREEN).addClickActions(() ->
+        GUITextButton save = new GUITextButton(this, reformat(MODID + ".config.save"), Color.GREEN);
+        root.add(save);
+        root.add(new GUITextButton(this, reformat(MODID + ".config.cancel"), Color.RED).addClickActions(this::close));
+
+
+        //Required NBT
+        requiredNBTLabel = new GUITextLabel(this, 1, Color.GREEN);
+        requiredNBTLabel.setText(reformat(MODID + ".config.requiredNBT"));
+        root.add(requiredNBTLabel);
+
+        requiredNBTView = new GUIView(this, 1, 1 - requiredNBTLabel.y - requiredNBTLabel.height * 2);
+        requiredNBTLabel.addRecalcActions(() -> requiredNBTView.height = (1 - requiredNBTLabel.y - requiredNBTLabel.height * 2) * 0.5);
+        root.add(requiredNBTView);
+
+        requiredNBT = new GUIScrollView(this, 1 - ServerConfigGUI.SCROLLBAR_WIDTH, 1);
+        requiredNBTScrollbar = new GUIVerticalScrollbar(this, ServerConfigGUI.SCROLLBAR_WIDTH, 1, Color.AQUA, Color.BLANK, Color.AQUA, Color.BLANK, requiredNBT);
+        requiredNBTView.addAll(requiredNBT, requiredNBTScrollbar);
+
+        GUIAutocroppedView view;
+        for (Map.Entry<String, String> entry : equip.filter.tagsRequired.entrySet())
+        {
+            view = new GUIAutocroppedView(this);
+            view.add(new GUIElement(this, 1, 0));
+            view.add(new GUILabeledTextInput(this, reformat(MODID + ".config.nbt"), entry.getKey(), FilterNotEmpty.INSTANCE));
+            view.add(new GUILabeledTextInput(this, 0.5, 0, reformat(MODID + ".config.is"), entry.getValue(), FilterNotEmpty.INSTANCE));
+            requiredNBT.add(view);
+        }
+        view = new GUIAutocroppedView(this);
+        view.add(new GUIElement(this, 1, 0));
+        view.add(new GUILabeledTextInput(this, reformat(MODID + ".config.nbt"), "", FilterNotEmpty.INSTANCE));
+        view.add(new GUILabeledTextInput(this, 0.5, 0, reformat(MODID + ".config.is"), "", FilterNotEmpty.INSTANCE));
+        requiredNBT.add(view);
+
+
+        //Disallowed NBT
+        disallowedNBTLabel = new GUITextLabel(this, 1, Color.RED);
+        disallowedNBTLabel.setText(reformat(MODID + ".config.disallowedNBT"));
+        root.add(disallowedNBTLabel);
+
+        disallowedNBTView = new GUIView(this, 1, 1 - disallowedNBTLabel.y - disallowedNBTLabel.height);
+        disallowedNBTView.addRecalcActions(() -> disallowedNBTView.height = 1 - disallowedNBTLabel.y - disallowedNBTLabel.height);
+        root.add(disallowedNBTView);
+
+        disallowedNBT = new GUIScrollView(this, 1 - ServerConfigGUI.SCROLLBAR_WIDTH, 1);
+        disallowedNBTScrollbar = new GUIVerticalScrollbar(this, ServerConfigGUI.SCROLLBAR_WIDTH, 1, Color.AQUA, Color.BLANK, Color.AQUA, Color.BLANK, disallowedNBT);
+        disallowedNBTView.addAll(disallowedNBT, disallowedNBTScrollbar);
+
+        for (Map.Entry<String, String> entry : equip.filter.tagsDisallowed.entrySet())
+        {
+            view = new GUIAutocroppedView(this);
+            view.add(new GUIElement(this, 1, 0));
+            view.add(new GUILabeledTextInput(this, reformat(MODID + ".config.nbt"), entry.getKey(), FilterNotEmpty.INSTANCE));
+            view.add(new GUILabeledTextInput(this, 0.5, 0, reformat(MODID + ".config.not"), entry.getValue(), FilterNotEmpty.INSTANCE));
+            disallowedNBT.add(view);
+        }
+        view = new GUIAutocroppedView(this);
+        view.add(new GUIElement(this, 1, 0));
+        view.add(new GUILabeledTextInput(this, reformat(MODID + ".config.nbt"), "", FilterNotEmpty.INSTANCE));
+        view.add(new GUILabeledTextInput(this, 0.5, 0, reformat(MODID + ".config.not"), "", FilterNotEmpty.INSTANCE));
+        disallowedNBT.add(view);
+
+
+        //Save actions
+        save.addClickActions(() ->
         {
             if (!id.valid())
             {
@@ -91,6 +157,47 @@ public class EquipGUI extends GUIScreen
             }
             else
             {
+                GUILabeledTextInput nbtKey, nbtValue;
+
+                LinkedHashMap<String, String> requiredNBTStrings = new LinkedHashMap<>();
+                for (GUIElement element : requiredNBT.children)
+                {
+                    nbtKey = (GUILabeledTextInput) element.children.get(1);
+                    nbtValue = (GUILabeledTextInput) element.children.get(2);
+                    if (nbtKey.getText().equals("") && nbtValue.getText().equals("")) continue;
+                    if (!nbtKey.valid())
+                    {
+                        nbtKey.label.click();
+                        return;
+                    }
+                    if (!nbtValue.valid())
+                    {
+                        nbtValue.label.click();
+                        return;
+                    }
+                    requiredNBTStrings.put(nbtKey.getText(), nbtValue.getText());
+                }
+
+                LinkedHashMap<String, String> disallowedNBTStrings = new LinkedHashMap<>();
+                for (GUIElement element : disallowedNBT.children)
+                {
+                    nbtKey = (GUILabeledTextInput) element.children.get(1);
+                    nbtValue = (GUILabeledTextInput) element.children.get(2);
+                    if (nbtKey.getText().equals("") && nbtValue.getText().equals("")) continue;
+                    if (!nbtKey.valid())
+                    {
+                        nbtKey.label.click();
+                        return;
+                    }
+                    if (!nbtValue.valid())
+                    {
+                        nbtValue.label.click();
+                        return;
+                    }
+                    disallowedNBTStrings.put(nbtKey.getText(), nbtValue.getText());
+                }
+
+
                 //ID
                 String oldID = equip.id;
                 equip.id = id.getText();
@@ -103,9 +210,8 @@ public class EquipGUI extends GUIScreen
                 if (equip.filter.metaRegex.isEmpty()) equip.filter.metaRegex = ".*";
 
                 //NBT
-                //TODO
-//            equip.filter.tagsRequired.clear();
-//            equip.filter.tagsDisallowed.clear();
+                equip.filter.tagsRequired = requiredNBTStrings;
+                equip.filter.tagsDisallowed = disallowedNBTStrings;
 
 
                 data.equipment.put(equip.id, data.equipment.remove(oldID));
@@ -120,36 +226,7 @@ public class EquipGUI extends GUIScreen
                 clickedElement.set(equip);
                 close();
             }
-        }));
-
-        root.add(new GUITextButton(this, reformat(MODID + ".config.cancel"), Color.RED).addClickActions(this::close));
-
-
-        //NBT
-        requiredNBTLabel = new GUITextLabel(this, 1, Color.GREEN);
-        requiredNBTLabel.setText(reformat(MODID + ".config.requiredNBT"));
-        root.add(requiredNBTLabel);
-
-        requiredNBTView = new GUIView(this, 1, 1 - requiredNBTLabel.y - requiredNBTLabel.height * 2);
-        requiredNBTLabel.addRecalcActions(() -> requiredNBTView.height = (1 - requiredNBTLabel.y - requiredNBTLabel.height * 2) * 0.5);
-        root.add(requiredNBTView);
-
-        requiredNBT = new GUIScrollView(this, 1 - ServerConfigGUI.SCROLLBAR_WIDTH, 1);
-        requiredNBTScrollbar = new GUIVerticalScrollbar(this, ServerConfigGUI.SCROLLBAR_WIDTH, 1, Color.AQUA, Color.BLANK, Color.AQUA, Color.BLANK, requiredNBT);
-        requiredNBTView.addAll(requiredNBT, requiredNBTScrollbar);
-
-
-        disallowedNBTLabel = new GUITextLabel(this, 1, Color.RED);
-        disallowedNBTLabel.setText(reformat(MODID + ".config.disallowedNBT"));
-        root.add(disallowedNBTLabel);
-
-        disallowedNBTView = new GUIView(this, 1, 1 - disallowedNBTLabel.y - disallowedNBTLabel.height);
-        disallowedNBTView.addRecalcActions(() -> disallowedNBTView.height = 1 - disallowedNBTLabel.y - disallowedNBTLabel.height);
-        root.add(disallowedNBTView);
-
-        disallowedNBT = new GUIScrollView(this, 1 - ServerConfigGUI.SCROLLBAR_WIDTH, 1);
-        disallowedNBTScrollbar = new GUIVerticalScrollbar(this, ServerConfigGUI.SCROLLBAR_WIDTH, 1, Color.AQUA, Color.BLANK, Color.AQUA, Color.BLANK, disallowedNBT);
-        disallowedNBTView.addAll(disallowedNBT, disallowedNBTScrollbar);
+        });
     }
 
     @Override

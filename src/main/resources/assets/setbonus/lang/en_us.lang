@@ -83,6 +83,9 @@ setbonus.config.item=Item
 setbonus.config.meta=Meta
 setbonus.config.requiredNBT=Required NBT
 setbonus.config.disallowedNBT=Disallowed NBT
+setbonus.config.nbt=NBT
+setbonus.config.is=Is
+setbonus.config.not=Not
 
 
 
