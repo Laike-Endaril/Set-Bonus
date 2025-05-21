@@ -109,7 +109,6 @@ public class SetGUI extends GUIScreen
             else
             {
                 //ID and name
-                String oldID = set.id;
                 set.id = id.getText();
                 set.name = name.getText();
 

@@ -11,7 +11,6 @@ import com.fantasticsource.mctools.gui.element.view.GUIScrollView;
 import com.fantasticsource.mctools.gui.element.view.GUIView;
 import com.fantasticsource.setbonus.SetBonusData;
 import com.fantasticsource.setbonus.client.gui.ServerConfigGUI;
-import com.fantasticsource.setbonus.client.gui.equip.GUIEquip;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Equip;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.SlotData;
 import com.fantasticsource.tools.datastructures.Color;
@@ -109,12 +108,22 @@ public class SlotDataGUI extends GUIScreen
 
             //Valid equips
             slotData.involvedEquips.clear();
+            String equipID;
             Equip equip;
             for (GUIElement element : validEquips.children)
             {
-                if (element instanceof GUIEquip)
+                if (element instanceof GUITextLabel)
                 {
-                    equip = ((GUIEquip) element).equip;
+                    equip = null;
+                    equipID = ((GUITextLabel) element).internalText.getText();
+                    for (Equip equip2 : data.equipment)
+                    {
+                        if (equip2.id.equals(equipID))
+                        {
+                            equip = equip2;
+                            break;
+                        }
+                    }
                     if (equip != null) slotData.involvedEquips.add(equip);
                 }
             }
