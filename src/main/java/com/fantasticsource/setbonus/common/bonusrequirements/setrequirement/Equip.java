@@ -9,6 +9,7 @@ public class Equip
     public String id;
     public RegistryRegexItemFilter filter;
 
+
     private Equip()
     {
     }

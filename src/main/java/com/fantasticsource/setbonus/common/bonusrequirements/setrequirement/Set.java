@@ -15,10 +15,13 @@ import java.util.Map;
 public class Set
 {
     public String id, name;
-    public LinkedHashMap<String, RegistryRegexItemFilter> involvedEquips = new LinkedHashMap<>();
     public ArrayList<SlotData> slotData = new ArrayList<>();
 
-    private LinkedHashMap<EntityPlayer, Pair<Integer, Long>> numEquipped = new LinkedHashMap<>();
+
+    public LinkedHashMap<String, RegistryRegexItemFilter> involvedEquips = new LinkedHashMap<>();
+
+    protected LinkedHashMap<EntityPlayer, Pair<Integer, Long>> numEquipped = new LinkedHashMap<>();
+
 
     private Set()
     {

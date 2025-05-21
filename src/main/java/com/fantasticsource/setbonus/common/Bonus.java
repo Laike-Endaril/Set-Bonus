@@ -22,7 +22,6 @@ public class Bonus
     public String id, name;
     public int discoveryMode;
 
-
     public ArrayList<ABonusRequirement> bonusRequirements = new ArrayList<>();
     public ArrayList<ABonusElement> bonusElements = new ArrayList<>();
 
