@@ -25,9 +25,11 @@ public class SlotData
             TRINKETS_OFFSET = AETHER_THRESHOLD, TRINKETS_THRESHOLD = TRINKETS_OFFSET + 32;
 
 
-    public ArrayList<String> slotNames = new ArrayList<>();
-    public ArrayList<Integer> slots = new ArrayList<>(); //Be sure to keep this synchronized with the results that it should get from slotNames
+    public LinkedHashSet<String> slotNames = new LinkedHashSet<>();
     public LinkedHashSet<Equip> involvedEquips = new LinkedHashSet<>();
+
+
+    public ArrayList<Integer> slots = new ArrayList<>(); //Be sure to keep this synchronized with the results that it should get from slotNames
 
 
     private SlotData()

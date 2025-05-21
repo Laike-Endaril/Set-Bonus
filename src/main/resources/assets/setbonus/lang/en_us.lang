@@ -87,6 +87,11 @@ setbonus.config.nbt=NBT
 setbonus.config.is=Is
 setbonus.config.not=Not
 
+setbonus.config.name=Name
+setbonus.config.slotData=Slot Data
+setbonus.config.validSlots=Valid Slots
+setbonus.config.validEquips=Valid Equips
+
 
 
 setbonus.config.bonusSettings=Bonus Settings

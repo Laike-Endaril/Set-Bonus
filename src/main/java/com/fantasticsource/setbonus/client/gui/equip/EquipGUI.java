@@ -80,6 +80,7 @@ public class EquipGUI extends GUIScreen
         root.addAll(meta, new GUIElement(this, 1, 0));
 
 
+        //Save, load, etc
         GUITextButton save = new GUITextButton(this, reformat(MODID + ".config.save"), Color.GREEN);
         root.add(save);
         root.add(new GUITextButton(this, reformat(MODID + ".config.cancel"), Color.RED).addClickActions(this::close));
@@ -90,7 +91,7 @@ public class EquipGUI extends GUIScreen
         requiredNBTLabel.setText(reformat(MODID + ".config.requiredNBT"));
         root.add(requiredNBTLabel);
 
-        requiredNBTView = new GUIView(this, 1, 1 - requiredNBTLabel.y - requiredNBTLabel.height * 2);
+        requiredNBTView = new GUIView(this, 1, (1 - requiredNBTLabel.y - requiredNBTLabel.height * 2) * 0.5);
         requiredNBTLabel.addRecalcActions(() -> requiredNBTView.height = (1 - requiredNBTLabel.y - requiredNBTLabel.height * 2) * 0.5);
         root.add(requiredNBTView);
 
@@ -220,6 +221,7 @@ public class EquipGUI extends GUIScreen
                 equip.filter.tagsDisallowed = disallowedNBTStrings;
 
 
+                //Update internal references
                 data.equipment.put(equip.id, data.equipment.remove(oldID));
 
                 for (Set set : data.sets.values())
@@ -229,6 +231,7 @@ public class EquipGUI extends GUIScreen
                 }
 
 
+                //Update GUI
                 clickedElement.set(equip);
                 close();
             }
