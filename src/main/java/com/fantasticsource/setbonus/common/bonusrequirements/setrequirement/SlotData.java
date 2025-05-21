@@ -2,7 +2,6 @@ package com.fantasticsource.setbonus.common.bonusrequirements.setrequirement;
 
 import baubles.api.BaubleType;
 import baubles.api.BaublesApi;
-import com.fantasticsource.setbonus.SetBonus;
 import com.fantasticsource.setbonus.SetBonusData;
 import com.fantasticsource.tools.ReflectionTool;
 import com.gildedgames.the_aether.api.AetherAPI;
@@ -14,6 +13,8 @@ import net.minecraftforge.items.IItemHandlerModifiable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
+
+import static com.fantasticsource.setbonus.SetBonus.MODID;
 
 public class SlotData
 {
@@ -31,6 +32,11 @@ public class SlotData
     {
     }
 
+    public static SlotData getEmpty()
+    {
+        return new SlotData();
+    }
+
     public static SlotData getInstance(String slotsAndEquipment, SetBonusData data)
     {
         SlotData result = new SlotData();
@@ -38,7 +44,7 @@ public class SlotData
         String[] tokens = slotsAndEquipment.split("=");
         if (tokens.length != 2)
         {
-            System.err.println(I18n.translateToLocalFormatted(SetBonus.MODID + ".error.wrongSlotArgCount", slotsAndEquipment));
+            System.err.println(I18n.translateToLocalFormatted(MODID + ".error.wrongSlotArgCount", slotsAndEquipment));
             return null;
         }
 
@@ -47,7 +53,7 @@ public class SlotData
         ArrayList<String> errors = addSlotsFromString(tokens[0], result);
         if (errors.size() > 0)
         {
-            for (String error : errors) System.err.println(I18n.translateToLocalFormatted(SetBonus.MODID + ".error.unknownSlot", error, slotsAndEquipment));
+            for (String error : errors) System.err.println(I18n.translateToLocalFormatted(MODID + ".error.unknownSlot", error, slotsAndEquipment));
             return null;
         }
 
@@ -67,7 +73,7 @@ public class SlotData
             }
             if (equip == null)
             {
-                System.err.println(I18n.translateToLocalFormatted(SetBonus.MODID + ".error.slotBadEquipID", equipID, slotsAndEquipment));
+                System.err.println(I18n.translateToLocalFormatted(MODID + ".error.slotBadEquipID", equipID, slotsAndEquipment));
                 return null;
             }
 
@@ -273,6 +279,9 @@ public class SlotData
     @Override
     public String toString()
     {
+        if (slotNames.size() == 0 || involvedEquips.size() == 0) return "";
+
+
         Iterator<String> iterator = slotNames.iterator();
         String result = iterator.next();
         while (iterator.hasNext()) result += " | " + iterator.next();
