@@ -72,7 +72,7 @@ public class BonusElementEnchantment extends ABonusElement
             return null;
         }
 
-        SlotData slotDataToEnchant = SlotData.getInstance(tokens[1].trim(), null, data);
+        SlotData slotDataToEnchant = SlotData.getInstance(tokens[1].trim(), data);
 
         //Error messages handled in library
         HashMap<Pair<Enchantment, Integer>, Integer> enchantments = Enchantments.parseEnchantments(Arrays.copyOfRange(tokens, 2, tokens.length));

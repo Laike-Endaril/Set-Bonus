@@ -199,7 +199,6 @@ public class SetBonusData
         for (Set set : sets.values().toArray(new Set[0]))
         {
             for (SlotData slotData : set.slotData) slotData.involvedEquips.remove(equip);
-            set.involvedEquips.remove(equip.id);
         }
         for (Bonus bonus : bonuses.values())
         {

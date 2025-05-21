@@ -14,11 +14,9 @@ import com.fantasticsource.mctools.gui.element.text.filter.FilterNotEmpty;
 import com.fantasticsource.mctools.gui.element.view.GUIAutocroppedView;
 import com.fantasticsource.mctools.gui.element.view.GUIScrollView;
 import com.fantasticsource.mctools.gui.element.view.GUIView;
-import com.fantasticsource.mctools.items.RegistryRegexItemFilter;
 import com.fantasticsource.setbonus.SetBonusData;
 import com.fantasticsource.setbonus.client.gui.ServerConfigGUI;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Equip;
-import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Set;
 import com.fantasticsource.tools.datastructures.Color;
 
 import java.util.ArrayList;
@@ -223,12 +221,6 @@ public class EquipGUI extends GUIScreen
 
                 //Update internal references
                 data.equipment.put(equip.id, data.equipment.remove(oldID));
-
-                for (Set set : data.sets.values())
-                {
-                    RegistryRegexItemFilter filter = set.involvedEquips.remove(oldID);
-                    if (filter != null) set.involvedEquips.put(equip.id, filter);
-                }
 
 
                 //Update GUI

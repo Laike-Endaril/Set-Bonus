@@ -20,6 +20,7 @@ import com.fantasticsource.setbonus.common.bonusrequirements.ABonusRequirement;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Equip;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Set;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.SetRequirement;
+import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.SlotData;
 import com.fantasticsource.tools.datastructures.Color;
 import org.lwjgl.input.Keyboard;
 
@@ -378,13 +379,16 @@ public class ServerConfigGUI extends GUIScreen
                 if (element instanceof GUISet)
                 {
                     GUISet other = (GUISet) element;
-                    if (other.set.involvedEquips.containsKey(guiEquip.equip.id))
+                    for (SlotData slotData : other.set.slotData)
                     {
-                        GUILine line = new GUILine(this, selected.absoluteX() + selected.absoluteWidth() * (1 - lineOffset), selected.absoluteY() + selected.absoluteHeight() * 0.5, other.absoluteX() + other.absoluteWidth() * lineOffset, other.absoluteY() + other.absoluteHeight() * 0.5, lineColors[0], lineColors[1], 3);
-                        line.addRecalcActions(() -> line.set(selected.absoluteX() + selected.absoluteWidth() * (1 - lineOffset), selected.absoluteY() + selected.absoluteHeight() * 0.5, other.absoluteX() + other.absoluteWidth() * lineOffset, other.absoluteY() + other.absoluteHeight() * 0.5));
-                        lines.add(line);
-                        root.add(line);
-                        linkedSets.put(other.set, other);
+                        if (slotData.involvedEquips.contains(guiEquip.equip))
+                        {
+                            GUILine line = new GUILine(this, selected.absoluteX() + selected.absoluteWidth() * (1 - lineOffset), selected.absoluteY() + selected.absoluteHeight() * 0.5, other.absoluteX() + other.absoluteWidth() * lineOffset, other.absoluteY() + other.absoluteHeight() * 0.5, lineColors[0], lineColors[1], 3);
+                            line.addRecalcActions(() -> line.set(selected.absoluteX() + selected.absoluteWidth() * (1 - lineOffset), selected.absoluteY() + selected.absoluteHeight() * 0.5, other.absoluteX() + other.absoluteWidth() * lineOffset, other.absoluteY() + other.absoluteHeight() * 0.5));
+                            lines.add(line);
+                            root.add(line);
+                            linkedSets.put(other.set, other);
+                        }
                     }
                 }
             }
@@ -435,12 +439,18 @@ public class ServerConfigGUI extends GUIScreen
                             //Equips to sets
                             for (GUIElement other2 : equips.children)
                             {
-                                if (other2 instanceof GUIEquip && ((GUISet) other).set.involvedEquips.keySet().contains(((GUIEquip) other2).equip.id))
+                                if (other2 instanceof GUIEquip)
                                 {
-                                    GUILine line2 = new GUILine(this, other2.absoluteX() + other2.absoluteWidth() * (1 - lineOffset), other2.absoluteY() + other2.absoluteHeight() * 0.5, other.absoluteX() + other.absoluteWidth() * lineOffset, other.absoluteY() + other.absoluteHeight() * 0.5, lineColors[0], lineColors[1], 3);
-                                    line2.addRecalcActions(() -> line2.set(other2.absoluteX() + other2.absoluteWidth() * (1 - lineOffset), other2.absoluteY() + other2.absoluteHeight() * 0.5, other.absoluteX() + other.absoluteWidth() * lineOffset, other.absoluteY() + other.absoluteHeight() * 0.5));
-                                    lines.add(line2);
-                                    root.add(line2);
+                                    for (SlotData slotData : ((GUISet) other).set.slotData)
+                                    {
+                                        if (slotData.involvedEquips.contains(((GUIEquip) other2).equip))
+                                        {
+                                            GUILine line2 = new GUILine(this, other2.absoluteX() + other2.absoluteWidth() * (1 - lineOffset), other2.absoluteY() + other2.absoluteHeight() * 0.5, other.absoluteX() + other.absoluteWidth() * lineOffset, other.absoluteY() + other.absoluteHeight() * 0.5, lineColors[0], lineColors[1], 3);
+                                            line2.addRecalcActions(() -> line2.set(other2.absoluteX() + other2.absoluteWidth() * (1 - lineOffset), other2.absoluteY() + other2.absoluteHeight() * 0.5, other.absoluteX() + other.absoluteWidth() * lineOffset, other.absoluteY() + other.absoluteHeight() * 0.5));
+                                            lines.add(line2);
+                                            root.add(line2);
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -457,12 +467,18 @@ public class ServerConfigGUI extends GUIScreen
             //Equips to sets
             for (GUIElement other : equips.children)
             {
-                if (other instanceof GUIEquip && guiSet.set.involvedEquips.keySet().contains(((GUIEquip) other).equip.id))
+                if (other instanceof GUIEquip)
                 {
-                    GUILine line = new GUILine(this, other.absoluteX() + other.absoluteWidth() * (1 - lineOffset), other.absoluteY() + other.absoluteHeight() * 0.5, selected.absoluteX() + selected.absoluteWidth() * lineOffset, selected.absoluteY() + selected.absoluteHeight() * 0.5, lineColors[0], lineColors[1], 3);
-                    line.addRecalcActions(() -> line.set(other.absoluteX() + other.absoluteWidth() * (1 - lineOffset), other.absoluteY() + other.absoluteHeight() * 0.5, selected.absoluteX() + selected.absoluteWidth() * lineOffset, selected.absoluteY() + selected.absoluteHeight() * 0.5));
-                    lines.add(line);
-                    root.add(line);
+                    for (SlotData slotData : guiSet.set.slotData)
+                    {
+                        if (slotData.involvedEquips.contains(((GUIEquip) other).equip))
+                        {
+                            GUILine line = new GUILine(this, other.absoluteX() + other.absoluteWidth() * (1 - lineOffset), other.absoluteY() + other.absoluteHeight() * 0.5, selected.absoluteX() + selected.absoluteWidth() * lineOffset, selected.absoluteY() + selected.absoluteHeight() * 0.5, lineColors[0], lineColors[1], 3);
+                            line.addRecalcActions(() -> line.set(other.absoluteX() + other.absoluteWidth() * (1 - lineOffset), other.absoluteY() + other.absoluteHeight() * 0.5, selected.absoluteX() + selected.absoluteWidth() * lineOffset, selected.absoluteY() + selected.absoluteHeight() * 0.5));
+                            lines.add(line);
+                            root.add(line);
+                        }
+                    }
                 }
             }
 

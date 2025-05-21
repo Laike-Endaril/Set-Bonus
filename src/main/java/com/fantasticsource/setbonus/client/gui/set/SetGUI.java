@@ -116,7 +116,6 @@ public class SetGUI extends GUIScreen
 
                 //Slot data
                 set.slotData.clear();
-                set.involvedEquips.clear();
                 SlotData slotData2;
                 for (GUIElement element : slotData.children)
                 {

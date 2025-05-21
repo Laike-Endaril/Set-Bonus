@@ -12,6 +12,7 @@ import com.fantasticsource.setbonus.common.bonusrequirements.ABonusRequirement;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Equip;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Set;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.SetRequirement;
+import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.SlotData;
 import com.fantasticsource.setbonus.config.SetBonusConfig;
 import com.fantasticsource.setbonus.server.ServerBonus;
 import io.netty.buffer.ByteBuf;
@@ -91,7 +92,13 @@ public class Network
                     Set set = ((SetRequirement) bonusRequirement).set;
                     sets.add(set.toString());
 
-                    for (String equipName : set.involvedEquips.keySet()) equipment.add(SetBonusData.SERVER_DATA.equipment.get(equipName).toString());
+                    for (SlotData slotData : set.slotData)
+                    {
+                        for (Equip equip : slotData.involvedEquips)
+                        {
+                            equipment.add(SetBonusData.SERVER_DATA.equipment.get(equip.id).toString());
+                        }
+                    }
                 }
             }
 
@@ -222,7 +229,13 @@ public class Network
                             Set set = ((SetRequirement) bonusRequirement).set;
                             sets.add(set.toString());
 
-                            for (String equipName : set.involvedEquips.keySet()) equipment.add(SetBonusData.SERVER_DATA.equipment.get(equipName).toString());
+                            for (SlotData slotData : set.slotData)
+                            {
+                                for (Equip equip : slotData.involvedEquips)
+                                {
+                                    equipment.add(SetBonusData.SERVER_DATA.equipment.get(equip.id).toString());
+                                }
+                            }
                         }
                     }
 

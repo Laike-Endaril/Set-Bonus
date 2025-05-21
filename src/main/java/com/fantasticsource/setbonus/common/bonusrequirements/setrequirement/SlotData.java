@@ -2,7 +2,6 @@ package com.fantasticsource.setbonus.common.bonusrequirements.setrequirement;
 
 import baubles.api.BaubleType;
 import baubles.api.BaublesApi;
-import com.fantasticsource.mctools.items.RegistryRegexItemFilter;
 import com.fantasticsource.setbonus.SetBonus;
 import com.fantasticsource.setbonus.SetBonusData;
 import com.fantasticsource.tools.ReflectionTool;
@@ -14,7 +13,6 @@ import net.minecraftforge.items.IItemHandlerModifiable;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 
 public class SlotData
@@ -36,7 +34,7 @@ public class SlotData
     {
     }
 
-    public static SlotData getInstance(String slotsAndEquipment, LinkedHashMap<String, RegistryRegexItemFilter> setdataEquipIDTracker, SetBonusData data)
+    public static SlotData getInstance(String slotsAndEquipment, SetBonusData data)
     {
         SlotData result = new SlotData();
 
@@ -69,7 +67,6 @@ public class SlotData
             }
 
             result.involvedEquips.add(equip);
-            if (setdataEquipIDTracker != null) setdataEquipIDTracker.put(equipID, equip.filter);
         }
 
 
