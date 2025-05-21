@@ -27,9 +27,6 @@ public class SlotData
     public LinkedHashSet<Equip> involvedEquips = new LinkedHashSet<>();
 
 
-    public ArrayList<Integer> slots = new ArrayList<>(); //Be sure to keep this synchronized with the results that it should get from slotNames
-
-
     private SlotData()
     {
     }
@@ -105,25 +102,28 @@ public class SlotData
 
     public int equipped(EntityPlayer player, ArrayList<Integer> blocked, boolean allowEmptyStackIfMatching, boolean allowStackableItems)
     {
-        for (int slot : slots)
+        for (String slotName : slotNames)
         {
-            if (slot == -1)
+            for (int slot : getSlotIDs(slotName))
             {
-                //Mainhand
-                slot = player.inventory.currentItem;
-            }
+                if (slot == -1)
+                {
+                    //Mainhand
+                    slot = player.inventory.currentItem;
+                }
 
 
-            if (blocked != null && blocked.contains(slot)) continue;
+                if (blocked != null && blocked.contains(slot)) continue;
 
-            ItemStack stack = getStackInSlot(player, slot);
-            if (!allowEmptyStackIfMatching && stack == ItemStack.EMPTY) continue;
-            if (!allowStackableItems && stack.getMaxStackSize() != 1) continue;
+                ItemStack stack = getStackInSlot(player, slot);
+                if (!allowEmptyStackIfMatching && stack == ItemStack.EMPTY) continue;
+                if (!allowStackableItems && stack.getMaxStackSize() != 1) continue;
 
 
-            for (Equip equip : involvedEquips)
-            {
-                if (equip.filter.matches(stack)) return slot;
+                for (Equip equip : involvedEquips)
+                {
+                    if (equip.filter.matches(stack)) return slot;
+                }
             }
         }
 
@@ -141,11 +141,7 @@ public class SlotData
         {
             slotIDs = getSlotIDs(slotString);
             if (slotIDs == null) errors.add(slotString.trim().toLowerCase());
-            else
-            {
-                slotData.slotNames.add(slotString.trim());
-                slotData.slots.addAll(slotIDs);
-            }
+            else slotData.slotNames.add(slotString.trim());
         }
 
         return errors;
@@ -251,7 +247,6 @@ public class SlotData
         SlotData other = new SlotData();
 
         other.slotNames.addAll(slotNames);
-        other.slots.addAll(slots);
         for (Equip equip : involvedEquips) other.involvedEquips.add(data.equipment.get(equip.id));
 
         return other;

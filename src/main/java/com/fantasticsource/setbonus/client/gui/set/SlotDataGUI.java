@@ -96,7 +96,6 @@ public class SlotDataGUI extends GUIScreen
         {
             //Valid slots
             slotData.slotNames.clear();
-            slotData.slots.clear();
             String slotName;
             for (GUIElement element : validSlots.children)
             {

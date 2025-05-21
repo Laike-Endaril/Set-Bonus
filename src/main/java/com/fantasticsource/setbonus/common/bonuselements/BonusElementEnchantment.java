@@ -103,13 +103,16 @@ public class BonusElementEnchantment extends ABonusElement
         if (stack != null)
         {
             boolean found = false;
-            for (int slot : slotDataToEnchant.slots)
+            for (String slotName : slotDataToEnchant.slotNames)
             {
-                if (SlotData.getStackInSlot(player, slot) == stack)
+                for (int slot : SlotData.getSlotIDs(slotName))
                 {
-                    found = true;
-                    stack.getTagCompound().setInteger("SBSlot", slot);
-                    break;
+                    if (SlotData.getStackInSlot(player, slot) == stack)
+                    {
+                        found = true;
+                        stack.getTagCompound().setInteger("SBSlot", slot);
+                        break;
+                    }
                 }
             }
             if (found) return;

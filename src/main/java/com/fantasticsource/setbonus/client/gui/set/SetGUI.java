@@ -120,7 +120,7 @@ public class SetGUI extends GUIScreen
                 for (GUIElement element : slotData.children)
                 {
                     slotData2 = ((GUISlotData) element).slotData;
-                    if (slotData2 != null && slotData2.slots.size() > 0 && slotData2.involvedEquips.size() > 0) set.slotData.add(slotData2);
+                    if (slotData2 != null && slotData2.slotNames.size() > 0 && slotData2.involvedEquips.size() > 0) set.slotData.add(slotData2);
                 }
 
 
