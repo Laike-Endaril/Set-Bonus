@@ -56,7 +56,15 @@ public class SlotData
         for (String equipID : tokens[1].split("[|]"))
         {
             equipID = equipID.trim();
-            Equip equip = data.equipment.get(equipID);
+            Equip equip = null;
+            for (Equip equip2 : data.equipment)
+            {
+                if (equip2.id.equals(equipID))
+                {
+                    equip = equip2;
+                    break;
+                }
+            }
             if (equip == null)
             {
                 System.err.println(I18n.translateToLocalFormatted(SetBonus.MODID + ".error.slotBadEquipID", equipID, slotsAndEquipment));
@@ -247,7 +255,17 @@ public class SlotData
         SlotData other = new SlotData();
 
         other.slotNames.addAll(slotNames);
-        for (Equip equip : involvedEquips) other.involvedEquips.add(data.equipment.get(equip.id));
+        for (Equip equip : involvedEquips)
+        {
+            for (Equip equip2 : data.equipment)
+            {
+                if (equip2.id.equals(equip.id))
+                {
+                    other.involvedEquips.add(equip2);
+                    break;
+                }
+            }
+        }
 
         return other;
     }

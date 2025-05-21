@@ -39,7 +39,7 @@ public class TooltipRenderer
         List<String> tooltip = event.getToolTip();
 
         boolean edited = false;
-        for (Set set : SetBonusData.CLIENT_DATA.sets.values())
+        for (Set set : SetBonusData.CLIENT_DATA.sets)
         {
             for (SlotData slotData : set.slotData)
             {
@@ -59,7 +59,7 @@ public class TooltipRenderer
                         int max = set.getMaxNumber();
                         String color = "" + (count == 0 ? RED : count == max ? GREEN : YELLOW);
                         tooltip.add(color + BOLD + "=== " + I18n.translateToLocal(set.name) + " (" + count + "/" + max + ") ===");
-                        for (Bonus bonus : SetBonusData.CLIENT_DATA.bonuses.values())
+                        for (Bonus bonus : SetBonusData.CLIENT_DATA.bonuses)
                         {
                             int req = 0;
                             boolean otherReqs = false;

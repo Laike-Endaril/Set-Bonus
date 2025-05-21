@@ -219,10 +219,6 @@ public class EquipGUI extends GUIScreen
                 equip.filter.tagsDisallowed = disallowedNBTStrings;
 
 
-                //Update internal references
-                data.equipment.put(equip.id, data.equipment.remove(oldID));
-
-
                 //Update GUI
                 clickedElement.set(equip);
                 close();

@@ -16,9 +16,7 @@ import com.fantasticsource.setbonus.server.ServerBonus;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
 
-import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
-import java.util.Map;
 
 import static com.fantasticsource.setbonus.SetBonus.MODID;
 import static com.fantasticsource.setbonus.config.SetBonusConfig.serverSettings;
@@ -27,10 +25,11 @@ public class SetBonusData
 {
     public static SetBonusData SERVER_DATA = new SetBonusData(), CLIENT_DATA = new SetBonusData();
 
-    public LinkedHashMap<String, Equip> equipment = new LinkedHashMap<>();
-    public LinkedHashMap<String, Set> sets = new LinkedHashMap<>();
 
-    public LinkedHashMap<String, Bonus> bonuses = new LinkedHashMap<>();
+    public LinkedHashSet<Equip> equipment = new LinkedHashSet<>();
+    public LinkedHashSet<Set> sets = new LinkedHashSet<>();
+
+    public LinkedHashSet<Bonus> bonuses = new LinkedHashSet<>();
 
 
     public void clear()
@@ -64,19 +63,19 @@ public class SetBonusData
         for (String equipString : serverSettings.getEquipment())
         {
             Equip equip = Equip.getInstance(equipString);
-            if (equip != null) equipment.put(equip.id, equip);
+            if (equip != null) equipment.add(equip);
         }
 
         for (String setString : serverSettings.getSets())
         {
             Set set = Set.getInstance(setString, this);
-            if (set != null) sets.put(set.id, set);
+            if (set != null) sets.add(set);
         }
 
         for (String bonusString : serverSettings.getBonuses())
         {
             ServerBonus bonus = (ServerBonus) Bonus.getInstance(bonusString, this);
-            if (bonus != null) bonuses.put(bonus.id, bonus);
+            if (bonus != null) bonuses.add(bonus);
         }
 
         for (String modifierString : serverSettings.getAttributeMods()) BonusElementAttributeModifier.getInstance(modifierString, this);
@@ -95,9 +94,9 @@ public class SetBonusData
                 potions = new LinkedHashSet<>(),
                 enchantments = new LinkedHashSet<>();
 
-        for (Equip equip : equipment.values()) equips.add(equip.toString());
-        for (Set set : this.sets.values()) sets.add(set.toString());
-        for (Bonus bonus : this.bonuses.values())
+        for (Equip equip : equipment) equips.add(equip.toString());
+        for (Set set : this.sets) sets.add(set.toString());
+        for (Bonus bonus : this.bonuses)
         {
             bonuses.add(bonus.toString());
 
@@ -132,19 +131,19 @@ public class SetBonusData
         for (String equipString : packet.equipment)
         {
             Equip equip = Equip.getInstance(equipString);
-            if (equip != null) equipment.put(equip.id, equip);
+            if (equip != null) equipment.add(equip);
         }
 
         for (String setString : packet.sets)
         {
             Set set = Set.getInstance(setString, this);
-            if (set != null) sets.put(set.id, set);
+            if (set != null) sets.add(set);
         }
 
         for (String bonusString : packet.bonuses)
         {
             ClientBonus bonus = (ClientBonus) Bonus.getInstance(bonusString, this);
-            if (bonus != null) bonuses.put(bonus.id, bonus);
+            if (bonus != null) bonuses.add(bonus);
         }
 
         for (String modifierString : packet.attributeMods) BonusElementAttributeModifier.getInstance(modifierString, this);
@@ -158,20 +157,20 @@ public class SetBonusData
         for (String equipString : packet.equipment)
         {
             Equip equip = Equip.getInstance(equipString);
-            if (equip != null) equipment.put(equip.id, equip);
+            if (equip != null) equipment.add(equip);
         }
 
         //Initialize sets
         for (String setString : packet.sets)
         {
             Set set = Set.getInstance(setString, this);
-            if (set != null) sets.put(set.id, set);
+            if (set != null) sets.add(set);
         }
 
 
         //Initialize bonus
         ClientBonus bonus = (ClientBonus) Bonus.getInstance(packet.bonusString, this);
-        if (bonus != null) bonuses.put(bonus.id, bonus);
+        if (bonus != null) bonuses.add(bonus);
 
 
         //Initialize attribute modifiers
@@ -196,11 +195,11 @@ public class SetBonusData
 
     public void delete(Equip equip)
     {
-        for (Set set : sets.values().toArray(new Set[0]))
+        for (Set set : sets.toArray(new Set[0]))
         {
             for (SlotData slotData : set.slotData) slotData.involvedEquips.remove(equip);
         }
-        for (Bonus bonus : bonuses.values())
+        for (Bonus bonus : bonuses)
         {
             for (ABonusElement element : bonus.bonusElements)
             {
@@ -216,7 +215,7 @@ public class SetBonusData
 
     public void delete(Set set)
     {
-        for (Bonus bonus : bonuses.values())
+        for (Bonus bonus : bonuses)
         {
             bonus.bonusRequirements.removeIf(requirement -> requirement instanceof SetRequirement && ((SetRequirement) requirement).set == set);
         }
@@ -233,10 +232,11 @@ public class SetBonusData
     {
         SetBonusData other = new SetBonusData();
 
-        for (Map.Entry<String, Equip> entry : equipment.entrySet()) other.equipment.put(entry.getKey(), entry.getValue().clone());
-        for (Map.Entry<String, Set> entry : sets.entrySet()) other.sets.put(entry.getKey(), entry.getValue().clone(other));
+        for (Equip equip : equipment) other.equipment.add(equip.clone());
 
-        for (Map.Entry<String, Bonus> entry : bonuses.entrySet()) entry.getValue().clone(other);
+        for (Set set : sets) other.sets.add(set.clone(other));
+
+        for (Bonus bonus : bonuses) other.bonuses.add(bonus.clone(other));
 
         return other;
     }

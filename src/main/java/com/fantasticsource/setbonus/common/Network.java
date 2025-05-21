@@ -96,7 +96,7 @@ public class Network
                     {
                         for (Equip equip : slotData.involvedEquips)
                         {
-                            equipment.add(SetBonusData.SERVER_DATA.equipment.get(equip.id).toString());
+                            equipment.add(equip.toString());
                         }
                     }
                 }
@@ -216,7 +216,7 @@ public class Network
         @Override
         public void toBytes(ByteBuf buf)
         {
-            for (Bonus bonus : SetBonusData.SERVER_DATA.bonuses.values())
+            for (Bonus bonus : SetBonusData.SERVER_DATA.bonuses)
             {
                 if (bonus.discoveryMode == Bonus.MODE_GLOBALLY_KNOWN || (bonus.discoveryMode == Bonus.MODE_DISCOVERABLE && ((ServerBonus) bonus).getBonusInstance(player).discovered))
                 {
@@ -233,7 +233,7 @@ public class Network
                             {
                                 for (Equip equip : slotData.involvedEquips)
                                 {
-                                    equipment.add(SetBonusData.SERVER_DATA.equipment.get(equip.id).toString());
+                                    equipment.add(equip.toString());
                                 }
                             }
                         }

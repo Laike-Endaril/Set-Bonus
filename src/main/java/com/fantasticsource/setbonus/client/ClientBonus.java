@@ -22,7 +22,7 @@ public class ClientBonus extends Bonus
     {
         //Needs to be done right before new configs are applied, to remove any eg. potion effects (because they might not be part of the bonus anymore)
         //Also called when a server is stopping, to remove any bonuses on players before they get unloaded, in case said bonuses don't exist next time the server starts due to config changes
-        for (Bonus bonus : SetBonusData.CLIENT_DATA.bonuses.values())
+        for (Bonus bonus : SetBonusData.CLIENT_DATA.bonuses)
         {
             for (BonusInstance data : ((ClientBonus) bonus).instances.values()) data.update(false);
         }
@@ -32,7 +32,7 @@ public class ClientBonus extends Bonus
     public static void updateBonuses(EntityPlayer player)
     {
         //Happens once per second on player tick event
-        for (Bonus bonus : SetBonusData.CLIENT_DATA.bonuses.values()) ((ClientBonus) bonus).update(player);
+        for (Bonus bonus : SetBonusData.CLIENT_DATA.bonuses) ((ClientBonus) bonus).update(player);
         if (refreshJEI)
         {
             if (SetBonusConfig.clientSettings.dynamicTooltipSearch > 1)

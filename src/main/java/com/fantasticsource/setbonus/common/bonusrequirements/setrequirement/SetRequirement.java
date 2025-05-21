@@ -4,7 +4,7 @@ import com.fantasticsource.setbonus.SetBonusData;
 import com.fantasticsource.setbonus.common.bonusrequirements.ABonusRequirement;
 import net.minecraft.entity.player.EntityPlayer;
 
-import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 
 public class SetRequirement extends ABonusRequirement
 {
@@ -18,10 +18,19 @@ public class SetRequirement extends ABonusRequirement
         this.num = num;
     }
 
-    public static SetRequirement getInstance(String parseableSetRequirement, LinkedHashMap<String, Set> sets) throws Exception
+    public static SetRequirement getInstance(String parseableSetRequirement, LinkedHashSet<Set> sets) throws Exception
     {
         String[] tokens2 = parseableSetRequirement.split("\\.");
-        Set set = sets.get(tokens2[0].trim());
+        Set set = null;
+        String id = tokens2[0].trim();
+        for (Set set2 : sets)
+        {
+            if (set2.id.equals(id))
+            {
+                set = set2;
+                break;
+            }
+        }
         if (set == null) return null;
 
         //Full set?
@@ -50,7 +59,11 @@ public class SetRequirement extends ABonusRequirement
 
     public SetRequirement clone(SetBonusData data)
     {
-        return new SetRequirement(data.sets.get(set.id), num);
+        for (Set set2 : data.sets)
+        {
+            if (set2.id.equals(set.id)) return new SetRequirement(set2, num);
+        }
+        throw new IllegalStateException("Failed to clone SetRequirement");
     }
 
     @Override

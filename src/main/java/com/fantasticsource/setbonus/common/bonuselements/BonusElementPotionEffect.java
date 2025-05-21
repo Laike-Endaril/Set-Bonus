@@ -36,7 +36,16 @@ public class BonusElementPotionEffect extends ABonusElement
             return null;
         }
 
-        Bonus bonus = data.bonuses.get(tokens[0].trim());
+        String id = tokens[0].trim();
+        Bonus bonus = null;
+        for (Bonus bonus2 : data.bonuses)
+        {
+            if (bonus2.id.equals(id))
+            {
+                bonus = bonus2;
+                break;
+            }
+        }
         if (bonus == null)
         {
             System.err.println(I18n.translateToLocalFormatted(SetBonus.MODID + ".error.potionBonusIDNotFound", tokens[0].trim(), parsablePotionBonus));

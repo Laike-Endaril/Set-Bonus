@@ -124,11 +124,6 @@ public class SetGUI extends GUIScreen
                 }
 
 
-                //Update internal references
-                data.sets.remove(oldID);
-                data.sets.put(set.id, set);
-
-
                 //Update GUI
                 clickedElement.set(set);
                 close();

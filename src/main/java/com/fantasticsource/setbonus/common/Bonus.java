@@ -92,8 +92,8 @@ public class Bonus
         other.discoveryMode = discoveryMode;
 
 
-        //Need to do this here or it will throw false errors
-        data.bonuses.put(other.id, other);
+        //Need to do this here or it will throw getInstance() errors from other classes
+        data.bonuses.add(other);
 
 
         for (ABonusRequirement requirement : bonusRequirements) other.bonusRequirements.add(requirement.clone(data));

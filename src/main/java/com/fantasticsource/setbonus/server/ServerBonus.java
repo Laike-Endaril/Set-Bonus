@@ -14,7 +14,6 @@ import net.minecraft.world.World;
 import javax.annotation.Nonnull;
 import java.io.*;
 import java.util.LinkedHashMap;
-import java.util.Map;
 
 public class ServerBonus extends Bonus
 {
@@ -27,7 +26,7 @@ public class ServerBonus extends Bonus
     {
         //Needs to be done right before new configs are applied, to remove any eg. potion effects (because they might not be part of the bonus anymore)
         //Also called when a server is stopping, to remove any bonuses on players before they get unloaded, in case said bonuses don't exist next time the server starts due to config changes
-        for (Bonus bonus : SetBonusData.SERVER_DATA.bonuses.values())
+        for (Bonus bonus : SetBonusData.SERVER_DATA.bonuses)
         {
             for (BonusInstance data : ((ServerBonus) bonus).instances.values()) data.update(false);
         }
@@ -39,12 +38,12 @@ public class ServerBonus extends Bonus
         changed = false;
         save = false;
 
-        for (Bonus bonus : SetBonusData.SERVER_DATA.bonuses.values()) ((ServerBonus) bonus).update(player, forceNew);
+        for (Bonus bonus : SetBonusData.SERVER_DATA.bonuses) ((ServerBonus) bonus).update(player, forceNew);
 
         while (changed)
         {
             changed = false;
-            for (Bonus bonus : SetBonusData.SERVER_DATA.bonuses.values()) ((ServerBonus) bonus).update(player, false);
+            for (Bonus bonus : SetBonusData.SERVER_DATA.bonuses) ((ServerBonus) bonus).update(player, false);
         }
 
         if (save) saveDiscoveries(player);
@@ -85,10 +84,10 @@ public class ServerBonus extends Bonus
             file = new File(string);
             BufferedWriter writer = new BufferedWriter(new FileWriter(file));
 
-            for (Map.Entry<String, Bonus> entry : SetBonusData.SERVER_DATA.bonuses.entrySet())
+            for (Bonus bonus : SetBonusData.SERVER_DATA.bonuses)
             {
-                BonusInstance data = ((ServerBonus) entry.getValue()).instances.get(player);
-                if (data != null && data.discovered) writer.write(entry.getKey() + "\r\n");
+                BonusInstance data = ((ServerBonus) bonus).instances.get(player);
+                if (data != null && data.discovered) writer.write(bonus.id + "\r\n");
             }
 
             writer.close();
@@ -121,7 +120,15 @@ public class ServerBonus extends Bonus
             string = reader.readLine();
             while (string != null && !string.equals(""))
             {
-                Bonus bonus = SetBonusData.SERVER_DATA.bonuses.get(string);
+                Bonus bonus = null;
+                for (Bonus bonus2 : SetBonusData.SERVER_DATA.bonuses)
+                {
+                    if (bonus2.id.equals(string))
+                    {
+                        bonus = bonus2;
+                        break;
+                    }
+                }
                 if (bonus != null && bonus.discoveryMode != MODE_GLOBALLY_HIDDEN) ((ServerBonus) bonus).getBonusInstance(player).discovered = true;
                 string = reader.readLine();
             }
@@ -139,7 +146,7 @@ public class ServerBonus extends Bonus
 
     public static void clearMem(EntityPlayer player)
     {
-        for (Bonus bonus : SetBonusData.SERVER_DATA.bonuses.values())
+        for (Bonus bonus : SetBonusData.SERVER_DATA.bonuses)
         {
             BonusInstance data = ((ServerBonus) bonus).instances.get(player);
             if (data != null)

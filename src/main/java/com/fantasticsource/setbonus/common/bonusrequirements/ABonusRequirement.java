@@ -8,6 +8,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.text.translation.I18n;
 
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 
 public abstract class ABonusRequirement
 {
@@ -20,7 +21,7 @@ public abstract class ABonusRequirement
         throw new IllegalAccessException("This method should not be called directly!  Please call the matching method of a subclass instead!");
     }
 
-    public static ABonusRequirement parse(String parseableBonusRequirement, LinkedHashMap<String, Set> sets)
+    public static ABonusRequirement parse(String parseableBonusRequirement, LinkedHashSet<Set> sets)
     {
         ABonusRequirement result;
 
