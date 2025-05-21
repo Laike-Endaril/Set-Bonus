@@ -65,13 +65,13 @@ public class SlotDataGUI extends GUIScreen
 
         for (String slotName : slotData.slotNames)
         {
-            validSlots.add(new GUITextLabel(this, 1, Color.GREEN).setText(slotName));
+            validSlots.add(new GUITextLabel(this, 1, Color.AQUA).setText(slotName));
         }
-        validSlots.add(new GUITextLabel(this, 1, Color.GREEN));
+        validSlots.add(new GUITextLabel(this, 1, Color.AQUA));
 
 
         //Valid Equips
-        validEquipsLabel = new GUITextLabel(this, 1, Color.RED);
+        validEquipsLabel = new GUITextLabel(this, 1, Color.GREEN);
         validEquipsLabel.setText(reformat(MODID + ".config.validEquips"));
         root.add(validEquipsLabel);
 
@@ -85,9 +85,9 @@ public class SlotDataGUI extends GUIScreen
 
         for (Equip equip : slotData.involvedEquips)
         {
-            validEquips.add(new GUITextLabel(this, 1, Color.GREEN).setText(reformat(equip.id)));
+            validEquips.add(new GUITextLabel(this, 1, Color.AQUA).setText(reformat(equip.id)));
         }
-        validEquips.add(new GUITextLabel(this, 1, Color.GREEN));
+        validEquips.add(new GUITextLabel(this, 1, Color.AQUA));
 
 
         //Save actions
