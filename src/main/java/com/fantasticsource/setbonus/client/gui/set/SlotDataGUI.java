@@ -82,7 +82,7 @@ public class SlotDataGUI extends GUIScreen
         emptyDummySlot.addClickActions(() ->
         {
             GUITextLabel label = new GUITextLabel(this, 1);
-            TextSelectionGUI gui = new TextSelectionGUI(label.internalText, "title", SlotData.VALID_SLOT_NAMES);
+            TextSelectionGUI gui = new TextSelectionGUI(label.internalText, reformat(MODID + ".config.selectSlot"), SlotData.VALID_SLOT_NAMES);
             gui.addPostClosedActions(() ->
             {
                 if (!label.internalText.getText().equals(""))
@@ -125,44 +125,50 @@ public class SlotDataGUI extends GUIScreen
         //Save actions
         save.addClickActions(() ->
         {
-            //Valid slots
-            slotData.slotNames.clear();
-            String slotName;
-            for (GUIElement element : validSlots.children)
+            //Because one slot of each is always an empty dummy for adding more
+            if (validSlots.size() < 2) validSlots.get(0).click();
+            else if (validEquips.size() < 2) validEquips.get(0).click();
+            else
             {
-                if (element instanceof GUITextLabel)
+                //Valid slots
+                slotData.slotNames.clear();
+                String slotName;
+                for (GUIElement element : validSlots.children)
                 {
-                    slotName = ((GUITextLabel) element).internalText.getText().trim();
-                    if (!slotName.equals("")) SlotData.addSlotsFromString(slotName, slotData);
-                }
-            }
-
-
-            //Valid equips
-            slotData.involvedEquips.clear();
-            String equipID;
-            Equip equip;
-            for (GUIElement element : validEquips.children)
-            {
-                if (element instanceof GUITextLabel)
-                {
-                    equip = null;
-                    equipID = ((GUITextLabel) element).internalText.getText();
-                    for (Equip equip2 : data.equipment)
+                    if (element instanceof GUITextLabel)
                     {
-                        if (equip2.id.equals(equipID))
-                        {
-                            equip = equip2;
-                            break;
-                        }
+                        slotName = ((GUITextLabel) element).internalText.getText().trim();
+                        if (!slotName.equals("")) SlotData.addSlotsFromString(slotName, slotData);
                     }
-                    if (equip != null) slotData.involvedEquips.add(equip);
                 }
+
+
+                //Valid equips
+                slotData.involvedEquips.clear();
+                String equipID;
+                Equip equip;
+                for (GUIElement element : validEquips.children)
+                {
+                    if (element instanceof GUITextLabel)
+                    {
+                        equip = null;
+                        equipID = ((GUITextLabel) element).internalText.getText();
+                        for (Equip equip2 : data.equipment)
+                        {
+                            if (equip2.id.equals(equipID))
+                            {
+                                equip = equip2;
+                                break;
+                            }
+                        }
+                        if (equip != null) slotData.involvedEquips.add(equip);
+                    }
+                }
+
+
+                clickedElement.set(slotData);
+                close();
             }
-
-
-            clickedElement.set(slotData);
-            close();
         });
     }
 

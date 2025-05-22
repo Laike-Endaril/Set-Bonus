@@ -91,6 +91,7 @@ setbonus.config.name=Name
 setbonus.config.slotData=Slot Data
 setbonus.config.validSlots=Valid Slots
 setbonus.config.validEquips=Valid Equips
+setbonus.config.selectSlot=Select Slot
 
 
 
