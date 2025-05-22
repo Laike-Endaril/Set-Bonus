@@ -17,6 +17,8 @@ import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Equi
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.SlotData;
 import com.fantasticsource.tools.datastructures.Color;
 
+import java.util.Iterator;
+
 import static com.fantasticsource.setbonus.SetBonus.MODID;
 
 public class SlotDataGUI extends GUIScreen
@@ -117,9 +119,46 @@ public class SlotDataGUI extends GUIScreen
 
         for (Equip equip : slotData.involvedEquips)
         {
-            validEquips.add(new GUITextLabel(this, 1).setText(reformat(equip.id)));
+            GUITextLabel label = new GUITextLabel(this, 1).setText(reformat(equip.id));
+            label.addClickActions(() ->
+            {
+                YesNoGUI yesNoGUI = new YesNoGUI("", reformat(MODID + ".config.deleteThingMaybe", label.internalText.getText()));
+                yesNoGUI.addOnClosedActions(() ->
+                {
+                    if (yesNoGUI.pressedYes) validEquips.remove(label);
+                });
+            });
+            validEquips.add(label);
         }
-        validEquips.add(new GUITextLabel(this, 1));
+        GUITextLabel emptyDummyEquip = new GUITextLabel(this, 1);
+        emptyDummyEquip.addClickActions(() ->
+        {
+            GUITextLabel label = new GUITextLabel(this, 1);
+            String[] equipIDs = new String[data.equipment.size()];
+            int i = 0;
+            Iterator<Equip> iterator = data.equipment.iterator();
+            while (iterator.hasNext())
+            {
+                equipIDs[i++] = iterator.next().id;
+            }
+            TextSelectionGUI gui = new TextSelectionGUI(label.internalText, reformat(MODID + ".config.selectEquip"), equipIDs);
+            gui.addPostClosedActions(() ->
+            {
+                if (!label.internalText.getText().equals(""))
+                {
+                    label.addClickActions(() ->
+                    {
+                        YesNoGUI yesNoGUI = new YesNoGUI("", reformat(MODID + ".config.deleteThingMaybe", label.internalText.getText()));
+                        yesNoGUI.addOnClosedActions(() ->
+                        {
+                            if (yesNoGUI.pressedYes) validEquips.remove(label);
+                        });
+                    });
+                    validEquips.add(validEquips.size() - 1, label);
+                }
+            });
+        });
+        validEquips.add(emptyDummyEquip);
 
 
         //Save actions
