@@ -1,4 +1,4 @@
-package com.fantasticsource.setbonus.client.gui.set;
+package com.fantasticsource.setbonus.client.gui.slotdata;
 
 import com.fantasticsource.mctools.gui.GUIScreen;
 import com.fantasticsource.mctools.gui.element.text.GUITextLabel;
