@@ -51,7 +51,19 @@ public class SlotDataGUI extends GUIScreen
         //Save, load, etc
         GUITextButton save = new GUITextButton(this, reformat(MODID + ".config.save"), Color.GREEN);
         root.add(save);
-        root.add(new GUITextButton(this, reformat(MODID + ".config.cancel"), Color.RED).addClickActions(this::close));
+        root.add(new GUITextButton(this, reformat(MODID + ".config.cancel"), Color.ORANGE).addClickActions(this::close));
+        root.add(new GUITextButton(this, reformat(MODID + ".config.delete"), Color.RED).addClickActions(() ->
+        {
+            YesNoGUI yesNoGUI = new YesNoGUI("", reformat(MODID + ".config.deleteThingMaybe", clickedElement.internalText.getText()));
+            yesNoGUI.addPostClosedActions(() ->
+            {
+                if (yesNoGUI.pressedYes)
+                {
+                    clickedElement.parent.remove(clickedElement);
+                    close();
+                }
+            });
+        }));
 
 
         //Valid Slots
@@ -73,7 +85,7 @@ public class SlotDataGUI extends GUIScreen
             label.addClickActions(() ->
             {
                 YesNoGUI yesNoGUI = new YesNoGUI("", reformat(MODID + ".config.deleteThingMaybe", label.internalText.getText()));
-                yesNoGUI.addOnClosedActions(() ->
+                yesNoGUI.addPostClosedActions(() ->
                 {
                     if (yesNoGUI.pressedYes) validSlots.remove(label);
                 });
@@ -92,7 +104,7 @@ public class SlotDataGUI extends GUIScreen
                     label.addClickActions(() ->
                     {
                         YesNoGUI yesNoGUI = new YesNoGUI("", reformat(MODID + ".config.deleteThingMaybe", label.internalText.getText()));
-                        yesNoGUI.addOnClosedActions(() ->
+                        yesNoGUI.addPostClosedActions(() ->
                         {
                             if (yesNoGUI.pressedYes) validSlots.remove(label);
                         });
@@ -123,7 +135,7 @@ public class SlotDataGUI extends GUIScreen
             label.addClickActions(() ->
             {
                 YesNoGUI yesNoGUI = new YesNoGUI("", reformat(MODID + ".config.deleteThingMaybe", label.internalText.getText()));
-                yesNoGUI.addOnClosedActions(() ->
+                yesNoGUI.addPostClosedActions(() ->
                 {
                     if (yesNoGUI.pressedYes) validEquips.remove(label);
                 });
@@ -149,7 +161,7 @@ public class SlotDataGUI extends GUIScreen
                     label.addClickActions(() ->
                     {
                         YesNoGUI yesNoGUI = new YesNoGUI("", reformat(MODID + ".config.deleteThingMaybe", label.internalText.getText()));
-                        yesNoGUI.addOnClosedActions(() ->
+                        yesNoGUI.addPostClosedActions(() ->
                         {
                             if (yesNoGUI.pressedYes) validEquips.remove(label);
                         });

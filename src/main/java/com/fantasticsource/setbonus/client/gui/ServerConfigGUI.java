@@ -275,7 +275,7 @@ public class ServerConfigGUI extends GUIScreen
             else
             {
                 YesNoGUI yesNoGUI = new YesNoGUI(reformat(label.internalText.getText()), reformat(MODID + ".config.deleteThingMaybe", label.internalText.getText()));
-                yesNoGUI.addOnClosedActions(() ->
+                yesNoGUI.addPostClosedActions(() ->
                 {
                     if (yesNoGUI.pressedYes) delete(label);
                 });

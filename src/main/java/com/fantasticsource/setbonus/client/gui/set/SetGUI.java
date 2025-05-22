@@ -70,7 +70,7 @@ public class SetGUI extends GUIScreen
         //Save, load, etc
         GUITextButton save = new GUITextButton(this, reformat(MODID + ".config.save"), Color.GREEN);
         root.add(save);
-        root.add(new GUITextButton(this, reformat(MODID + ".config.cancel"), Color.RED).addClickActions(this::close));
+        root.add(new GUITextButton(this, reformat(MODID + ".config.cancel"), Color.ORANGE).addClickActions(this::close));
 
 
         //SlotData
