@@ -9,6 +9,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.items.IItemHandlerModifiable;
+import scala.actors.threadpool.Arrays;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -22,6 +23,19 @@ public class SlotData
             BAUBLES_OFFSET = Integer.MIN_VALUE + 1, BAUBLES_THRESHOLD = BAUBLES_OFFSET + 300,
             AETHER_OFFSET = BAUBLES_THRESHOLD, AETHER_THRESHOLD = AETHER_OFFSET + 8,
             TRINKETS_OFFSET = AETHER_THRESHOLD, TRINKETS_THRESHOLD = TRINKETS_OFFSET + 32;
+
+    public static final String[] VALID_SLOT_NAMES;
+
+    static
+    {
+        ArrayList<String> list = new ArrayList<>();
+        list.addAll(Arrays.asList(new String[]{"mainhand", "offhand", "head", "chest", "legs", "feet", "hotbar", "inventory",
+                "bauble_amulet", "bauble_ring", "bauble_belt", "bauble_head", "bauble_body", "bauble_charm", "bauble_trinket",
+                "aether_pendant", "aether_cape", "aether_shield", "aether_ring", "aether_glove", "aether_gloves", "aether_other",
+                "trinket"}));
+        for (int i = 0; i <= 100; i++) list.add("" + i);
+        VALID_SLOT_NAMES = list.toArray(new String[0]);
+    }
 
 
     public LinkedHashSet<String> slotNames = new LinkedHashSet<>();

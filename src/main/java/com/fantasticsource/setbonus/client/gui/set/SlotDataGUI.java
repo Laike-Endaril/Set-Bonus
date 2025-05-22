@@ -9,6 +9,8 @@ import com.fantasticsource.mctools.gui.element.text.GUITextButton;
 import com.fantasticsource.mctools.gui.element.text.GUITextLabel;
 import com.fantasticsource.mctools.gui.element.view.GUIScrollView;
 import com.fantasticsource.mctools.gui.element.view.GUIView;
+import com.fantasticsource.mctools.gui.screen.TextSelectionGUI;
+import com.fantasticsource.mctools.gui.screen.YesNoGUI;
 import com.fantasticsource.setbonus.SetBonusData;
 import com.fantasticsource.setbonus.client.gui.ServerConfigGUI;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Equip;
@@ -65,9 +67,39 @@ public class SlotDataGUI extends GUIScreen
 
         for (String slotName : slotData.slotNames)
         {
-            validSlots.add(new GUITextLabel(this, 1, Color.AQUA).setText(slotName));
+            GUITextLabel label = new GUITextLabel(this, 1).setText(slotName);
+            label.addClickActions(() ->
+            {
+                YesNoGUI yesNoGUI = new YesNoGUI("", reformat(MODID + ".config.deleteThingMaybe", label.internalText.getText()));
+                yesNoGUI.addOnClosedActions(() ->
+                {
+                    if (yesNoGUI.pressedYes) validSlots.remove(label);
+                });
+            });
+            validSlots.add(label);
         }
-        validSlots.add(new GUITextLabel(this, 1, Color.AQUA));
+        GUITextLabel emptyDummySlot = new GUITextLabel(this, 1);
+        emptyDummySlot.addClickActions(() ->
+        {
+            GUITextLabel label = new GUITextLabel(this, 1);
+            TextSelectionGUI gui = new TextSelectionGUI(label.internalText, "title", SlotData.VALID_SLOT_NAMES);
+            gui.addPostClosedActions(() ->
+            {
+                if (!label.internalText.getText().equals(""))
+                {
+                    label.addClickActions(() ->
+                    {
+                        YesNoGUI yesNoGUI = new YesNoGUI("", reformat(MODID + ".config.deleteThingMaybe", label.internalText.getText()));
+                        yesNoGUI.addOnClosedActions(() ->
+                        {
+                            if (yesNoGUI.pressedYes) validSlots.remove(label);
+                        });
+                    });
+                    validSlots.add(validSlots.size() - 1, label);
+                }
+            });
+        });
+        validSlots.add(emptyDummySlot);
 
 
         //Valid Equips
@@ -85,9 +117,9 @@ public class SlotDataGUI extends GUIScreen
 
         for (Equip equip : slotData.involvedEquips)
         {
-            validEquips.add(new GUITextLabel(this, 1, Color.AQUA).setText(reformat(equip.id)));
+            validEquips.add(new GUITextLabel(this, 1).setText(reformat(equip.id)));
         }
-        validEquips.add(new GUITextLabel(this, 1, Color.AQUA));
+        validEquips.add(new GUITextLabel(this, 1));
 
 
         //Save actions
