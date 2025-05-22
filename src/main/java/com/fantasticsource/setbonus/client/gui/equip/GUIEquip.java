@@ -35,5 +35,6 @@ public class GUIEquip extends GUITextLabel
     {
         this.equip = equip;
         internalText.setText(reformat(equip.id));
+        runEditActions();
     }
 }

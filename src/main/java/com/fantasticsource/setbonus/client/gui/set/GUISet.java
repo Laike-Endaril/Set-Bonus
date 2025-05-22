@@ -33,5 +33,6 @@ public class GUISet extends GUITextLabel
     {
         this.set = set;
         internalText.setText(reformat(set.id));
+        runEditActions();
     }
 }

@@ -28,5 +28,6 @@ public class GUISlotData extends GUITextLabel
     {
         this.slotData = slotData;
         if (slotData != null) setText(slotData.toString());
+        runEditActions();
     }
 }

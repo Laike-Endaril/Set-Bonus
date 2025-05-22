@@ -90,7 +90,13 @@ public class SetGUI extends GUIScreen
         {
             slotData.add(new GUISlotData(this, data, slotData2, 1));
         }
-        slotData.add(new GUISlotData(this, data, SlotData.getEmpty(), 1));
+        GUISlotData emptyDummySlotData = new GUISlotData(this, data, SlotData.getEmpty(), 1);
+        emptyDummySlotData.addEditActions(() ->
+        {
+            slotData.add(slotData.size() - 1, new GUISlotData(this, data, emptyDummySlotData.slotData, 1));
+            emptyDummySlotData.set(SlotData.getEmpty());
+        });
+        slotData.add(emptyDummySlotData);
 
 
         //Save actions

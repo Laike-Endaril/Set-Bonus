@@ -32,5 +32,6 @@ public class GUIBonus extends GUITextLabel
     {
         this.bonus = bonus;
         internalText.setText(reformat(bonus.id));
+        runEditActions();
     }
 }
