@@ -99,6 +99,9 @@ setbonus.config.discoveryMode.onActivation=On Activation
 setbonus.config.discoveryMode.alwaysVisible=Always Visible
 setbonus.config.discoveryMode.alwaysHidden=Always Hidden
 
+setbonus.config.requirements=Requirements
+setbonus.config.requirement=Requirement
+
 
 
 setbonus.config.bonusSettings=Bonus Settings

@@ -3,14 +3,16 @@ package com.fantasticsource.setbonus.client.gui.bonus;
 import com.fantasticsource.mctools.gui.GUIScreen;
 import com.fantasticsource.mctools.gui.element.GUIElement;
 import com.fantasticsource.mctools.gui.element.other.GUIDarkenedBackground;
-import com.fantasticsource.mctools.gui.element.text.GUILabeledTextInput;
-import com.fantasticsource.mctools.gui.element.text.GUINavbar;
-import com.fantasticsource.mctools.gui.element.text.GUIStringPicker;
-import com.fantasticsource.mctools.gui.element.text.GUITextButton;
+import com.fantasticsource.mctools.gui.element.other.GUIVerticalScrollbar;
+import com.fantasticsource.mctools.gui.element.text.*;
 import com.fantasticsource.mctools.gui.element.text.filter.FilterBlacklist;
 import com.fantasticsource.mctools.gui.element.text.filter.FilterNotEmpty;
+import com.fantasticsource.mctools.gui.element.view.GUIScrollView;
+import com.fantasticsource.mctools.gui.element.view.GUIView;
 import com.fantasticsource.setbonus.SetBonusData;
+import com.fantasticsource.setbonus.client.gui.ServerConfigGUI;
 import com.fantasticsource.setbonus.common.Bonus;
+import com.fantasticsource.setbonus.common.bonusrequirements.ABonusRequirement;
 import com.fantasticsource.tools.Tools;
 import com.fantasticsource.tools.datastructures.Color;
 
@@ -25,6 +27,10 @@ public class BonusGUI extends GUIScreen
     public Bonus bonus;
     public GUILabeledTextInput id, name;
     GUIStringPicker discoveryMode;
+    GUITextLabel requirementsLabel;
+    GUIView requirementsView;
+    GUIScrollView requirements;
+    GUIVerticalScrollbar requirementsScrollbar;
 
     public BonusGUI(SetBonusData data, GUIBonus clickedElement)
     {
@@ -73,6 +79,32 @@ public class BonusGUI extends GUIScreen
         GUITextButton save = new GUITextButton(this, reformat(MODID + ".config.save"), Color.GREEN);
         root.add(save);
         root.add(new GUITextButton(this, reformat(MODID + ".config.cancel"), Color.ORANGE).addClickActions(this::close));
+
+
+        //Requirements
+        requirementsLabel = new GUITextLabel(this, 1, Color.GREEN);
+        requirementsLabel.setText(reformat(MODID + ".config.requirements"));
+        root.add(requirementsLabel);
+
+        requirementsView = new GUIView(this, 1, (1 - requirementsLabel.y - requirementsLabel.height * 2) * 0.5);
+        requirementsLabel.addRecalcActions(() -> requirementsView.height = (1 - requirementsLabel.y - requirementsLabel.height * 2) * 0.5);
+        root.add(requirementsView);
+
+        requirements = new GUIScrollView(this, 1 - ServerConfigGUI.SCROLLBAR_WIDTH, 1);
+        requirementsScrollbar = new GUIVerticalScrollbar(this, ServerConfigGUI.SCROLLBAR_WIDTH, 1, Color.AQUA, Color.BLANK, Color.AQUA, Color.BLANK, requirements);
+        requirementsView.addAll(requirements, requirementsScrollbar);
+
+        for (ABonusRequirement requirement : bonus.bonusRequirements)
+        {
+            requirements.add(new GUIBonusReq(this, data, requirement, 1));
+        }
+        GUIBonusReq emptyDummyBonusReq = new GUIBonusReq(this, data, null, 1);
+        emptyDummyBonusReq.addEditActions(() ->
+        {
+            requirements.add(requirements.size() - 1, new GUIBonusReq(this, data, emptyDummyBonusReq.requirement, 1));
+            emptyDummyBonusReq.set(null);
+        });
+        requirements.add(emptyDummyBonusReq);
 
 
         //Save actions
