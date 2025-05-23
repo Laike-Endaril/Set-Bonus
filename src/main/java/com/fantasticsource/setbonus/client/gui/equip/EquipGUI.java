@@ -4,10 +4,7 @@ import com.fantasticsource.mctools.gui.GUIScreen;
 import com.fantasticsource.mctools.gui.element.GUIElement;
 import com.fantasticsource.mctools.gui.element.other.GUIDarkenedBackground;
 import com.fantasticsource.mctools.gui.element.other.GUIVerticalScrollbar;
-import com.fantasticsource.mctools.gui.element.text.GUILabeledTextInput;
-import com.fantasticsource.mctools.gui.element.text.GUINavbar;
-import com.fantasticsource.mctools.gui.element.text.GUITextButton;
-import com.fantasticsource.mctools.gui.element.text.GUITextLabel;
+import com.fantasticsource.mctools.gui.element.text.*;
 import com.fantasticsource.mctools.gui.element.text.filter.FilterBlacklist;
 import com.fantasticsource.mctools.gui.element.text.filter.FilterNone;
 import com.fantasticsource.mctools.gui.element.text.filter.FilterNotEmpty;
@@ -53,6 +50,13 @@ public class EquipGUI extends GUIScreen
         root.add(navbar);
 
 
+        //Save, load, etc
+        GUITextButton save = new GUITextButton(this, reformat(MODID + ".config.save"), Color.GREEN);
+        root.add(save);
+        root.add(new GUITextButton(this, reformat(MODID + ".config.cancel"), Color.ORANGE).addClickActions(this::close));
+        root.add(new GUITextSpacer(this));
+
+
         //ID
         ArrayList<String> idBlacklist = new ArrayList<>();
         idBlacklist.add("");
@@ -78,10 +82,8 @@ public class EquipGUI extends GUIScreen
         root.addAll(meta, new GUIElement(this, 1, 0));
 
 
-        //Save, load, etc
-        GUITextButton save = new GUITextButton(this, reformat(MODID + ".config.save"), Color.GREEN);
-        root.add(save);
-        root.add(new GUITextButton(this, reformat(MODID + ".config.cancel"), Color.ORANGE).addClickActions(this::close));
+        //Section Separator
+        root.add(new GUITextSpacer(this));
 
 
         //Required NBT
@@ -102,14 +104,14 @@ public class EquipGUI extends GUIScreen
         {
             view = new GUIAutocroppedView(this);
             view.add(new GUIElement(this, 1, 0));
-            view.add(new GUILabeledTextInput(this, reformat(MODID + ".config.nbt"), entry.getKey(), FilterNotEmpty.INSTANCE));
-            view.add(new GUILabeledTextInput(this, 0.5, 0, reformat(MODID + ".config.is"), entry.getValue(), FilterNotEmpty.INSTANCE));
+            view.add(new GUILabeledTextInput(this, reformat(MODID + ".config.nbt") + ": ", entry.getKey(), FilterNotEmpty.INSTANCE));
+            view.add(new GUILabeledTextInput(this, 0.5, 0, reformat(MODID + ".config.is") + ": ", entry.getValue(), FilterNotEmpty.INSTANCE));
             requiredNBT.add(view);
         }
         view = new GUIAutocroppedView(this);
         view.add(new GUIElement(this, 1, 0));
-        view.add(new GUILabeledTextInput(this, reformat(MODID + ".config.nbt"), "", FilterNotEmpty.INSTANCE));
-        view.add(new GUILabeledTextInput(this, 0.5, 0, reformat(MODID + ".config.is"), "", FilterNotEmpty.INSTANCE));
+        view.add(new GUILabeledTextInput(this, reformat(MODID + ".config.nbt") + ": ", "", FilterNotEmpty.INSTANCE));
+        view.add(new GUILabeledTextInput(this, 0.5, 0, reformat(MODID + ".config.is") + ": ", "", FilterNotEmpty.INSTANCE));
         requiredNBT.add(view);
 
 
@@ -130,14 +132,14 @@ public class EquipGUI extends GUIScreen
         {
             view = new GUIAutocroppedView(this);
             view.add(new GUIElement(this, 1, 0));
-            view.add(new GUILabeledTextInput(this, reformat(MODID + ".config.nbt"), entry.getKey(), FilterNotEmpty.INSTANCE));
-            view.add(new GUILabeledTextInput(this, 0.5, 0, reformat(MODID + ".config.not"), entry.getValue(), FilterNotEmpty.INSTANCE));
+            view.add(new GUILabeledTextInput(this, reformat(MODID + ".config.nbt") + ": ", entry.getKey(), FilterNotEmpty.INSTANCE));
+            view.add(new GUILabeledTextInput(this, 0.5, 0, reformat(MODID + ".config.not") + ": ", entry.getValue(), FilterNotEmpty.INSTANCE));
             disallowedNBT.add(view);
         }
         view = new GUIAutocroppedView(this);
         view.add(new GUIElement(this, 1, 0));
-        view.add(new GUILabeledTextInput(this, reformat(MODID + ".config.nbt"), "", FilterNotEmpty.INSTANCE));
-        view.add(new GUILabeledTextInput(this, 0.5, 0, reformat(MODID + ".config.not"), "", FilterNotEmpty.INSTANCE));
+        view.add(new GUILabeledTextInput(this, reformat(MODID + ".config.nbt") + ": ", "", FilterNotEmpty.INSTANCE));
+        view.add(new GUILabeledTextInput(this, 0.5, 0, reformat(MODID + ".config.not") + ": ", "", FilterNotEmpty.INSTANCE));
         disallowedNBT.add(view);
 
 

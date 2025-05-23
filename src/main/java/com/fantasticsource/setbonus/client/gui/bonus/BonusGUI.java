@@ -51,6 +51,13 @@ public class BonusGUI extends GUIScreen
         root.add(navbar);
 
 
+        //Save, load, etc
+        GUITextButton save = new GUITextButton(this, reformat(MODID + ".config.save"), Color.GREEN);
+        root.add(save);
+        root.add(new GUITextButton(this, reformat(MODID + ".config.cancel"), Color.ORANGE).addClickActions(this::close));
+        root.add(new GUITextSpacer(this));
+
+
         //ID
         ArrayList<String> idBlacklist = new ArrayList<>();
         idBlacklist.add("");
@@ -78,10 +85,8 @@ public class BonusGUI extends GUIScreen
         root.addAll(discoveryMode, new GUIElement(this, 1, 0));
 
 
-        //Save, load, etc
-        GUITextButton save = new GUITextButton(this, reformat(MODID + ".config.save"), Color.GREEN);
-        root.add(save);
-        root.add(new GUITextButton(this, reformat(MODID + ".config.cancel"), Color.ORANGE).addClickActions(this::close));
+        //Section Separator
+        root.add(new GUITextSpacer(this));
 
 
         //Requirements
