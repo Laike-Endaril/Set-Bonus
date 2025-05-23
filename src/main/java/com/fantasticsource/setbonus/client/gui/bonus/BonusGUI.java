@@ -12,6 +12,7 @@ import com.fantasticsource.mctools.gui.element.view.GUIView;
 import com.fantasticsource.setbonus.SetBonusData;
 import com.fantasticsource.setbonus.client.gui.ServerConfigGUI;
 import com.fantasticsource.setbonus.common.Bonus;
+import com.fantasticsource.setbonus.common.bonuselements.ABonusElement;
 import com.fantasticsource.setbonus.common.bonusrequirements.ABonusRequirement;
 import com.fantasticsource.tools.Tools;
 import com.fantasticsource.tools.datastructures.Color;
@@ -27,10 +28,10 @@ public class BonusGUI extends GUIScreen
     public Bonus bonus;
     public GUILabeledTextInput id, name;
     GUIStringPicker discoveryMode;
-    GUITextLabel requirementsLabel;
-    GUIView requirementsView;
-    GUIScrollView requirements;
-    GUIVerticalScrollbar requirementsScrollbar;
+    GUITextLabel requirementsLabel, bonusElementsLabel;
+    GUIView requirementsView, bonusElementsView;
+    GUIScrollView requirements, bonusElements;
+    GUIVerticalScrollbar requirementsScrollbar, bonusElementsScrollbar;
 
     public BonusGUI(SetBonusData data, GUIBonus clickedElement)
     {
@@ -105,6 +106,32 @@ public class BonusGUI extends GUIScreen
             emptyDummyBonusReq.set(null);
         });
         requirements.add(emptyDummyBonusReq);
+
+
+        //Bonus Elements
+        bonusElementsLabel = new GUITextLabel(this, 1, Color.GREEN);
+        bonusElementsLabel.setText(reformat(MODID + ".config.bonusElements"));
+        root.add(bonusElementsLabel);
+
+        bonusElementsView = new GUIView(this, 1, 1 - bonusElementsLabel.y - bonusElementsLabel.height);
+        bonusElementsLabel.addRecalcActions(() -> bonusElementsView.height = 1 - bonusElementsLabel.y - bonusElementsLabel.height);
+        root.add(bonusElementsView);
+
+        bonusElements = new GUIScrollView(this, 1 - ServerConfigGUI.SCROLLBAR_WIDTH, 1);
+        bonusElementsScrollbar = new GUIVerticalScrollbar(this, ServerConfigGUI.SCROLLBAR_WIDTH, 1, Color.AQUA, Color.BLANK, Color.AQUA, Color.BLANK, bonusElements);
+        bonusElementsView.addAll(bonusElements, bonusElementsScrollbar);
+
+        for (ABonusElement element : bonus.bonusElements)
+        {
+            bonusElements.add(new GUIBonusElement(this, data, element, 1));
+        }
+        GUIBonusElement emptyDummyBonusElement = new GUIBonusElement(this, data, null, 1);
+        emptyDummyBonusElement.addEditActions(() ->
+        {
+            bonusElements.add(bonusElements.size() - 1, new GUIBonusElement(this, data, emptyDummyBonusElement.element, 1));
+            emptyDummyBonusElement.set(null);
+        });
+        bonusElements.add(emptyDummyBonusElement);
 
 
         //Save actions

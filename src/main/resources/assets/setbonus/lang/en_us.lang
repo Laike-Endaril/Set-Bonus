@@ -102,6 +102,9 @@ setbonus.config.discoveryMode.alwaysHidden=Always Hidden
 setbonus.config.requirements=Requirements
 setbonus.config.requirement=Requirement
 
+setbonus.config.bonusElements=Bonus Elements
+setbonus.config.bonusElement=Bonus Element
+
 
 
 setbonus.config.bonusSettings=Bonus Settings
