@@ -1,5 +1,8 @@
 Finish ServerConfigGUI functionality
 
+Add blacklist item filter in client settings for which specific items NOT to show tooltips for (unless another solution is thought of)
+https://github.com/Laike-Endaril/Set-Bonus/issues/33
+
 
 
 More requirement types...
