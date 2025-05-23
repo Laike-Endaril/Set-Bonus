@@ -138,26 +138,6 @@ public class SetGUI extends GUIScreen
     }
 
 
-    protected void updateSlotDataList()
-    {
-        GUISlotData guiSlotData;
-        for (int i = 0; i < slotData.size() - 1; i++)
-        {
-            guiSlotData = (GUISlotData) slotData.get(i);
-            if (guiSlotData.slotData.slotNames.size() == 0 || guiSlotData.slotData.involvedEquips.size() == 0)
-            {
-                slotData.remove(guiSlotData);
-                i--;
-            }
-        }
-        guiSlotData = (GUISlotData) slotData.get(slotData.size() - 1);
-        if (guiSlotData.slotData.slotNames.size() != 0 || guiSlotData.slotData.involvedEquips.size() != 0)
-        {
-            slotData.add(new GUISlotData(this, data, SlotData.getEmpty(), 1));
-        }
-    }
-
-
     @Override
     public String title()
     {

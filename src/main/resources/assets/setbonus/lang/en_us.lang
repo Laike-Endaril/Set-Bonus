@@ -94,6 +94,11 @@ setbonus.config.validEquips=Valid Equips
 setbonus.config.selectSlot=Select Slot
 setbonus.config.selectEquip=Select Equip
 
+setbonus.config.discoveryMode=Discovery Mode
+setbonus.config.discoveryMode.onActivation=On Activation
+setbonus.config.discoveryMode.alwaysVisible=Always Visible
+setbonus.config.discoveryMode.alwaysHidden=Always Hidden
+
 
 
 setbonus.config.bonusSettings=Bonus Settings

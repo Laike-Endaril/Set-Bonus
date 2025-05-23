@@ -187,7 +187,7 @@ public class ServerConfigGUI extends GUIScreen
         sort(equips, equipsSorting);
         for (Set set : data.sets) sets.add(new GUISet(this, data, set, 1, ELEMENT_SCALE));
         sort(sets, setsSorting);
-        for (Bonus bonus : data.bonuses) bonuses.add(new GUIBonus(this, bonus, 1, ELEMENT_SCALE));
+        for (Bonus bonus : data.bonuses) bonuses.add(new GUIBonus(this, data, bonus, 1, ELEMENT_SCALE));
         sort(bonuses, bonusesSorting);
 
 
