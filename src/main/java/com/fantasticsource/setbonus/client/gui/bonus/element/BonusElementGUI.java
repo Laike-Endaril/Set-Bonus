@@ -1,26 +1,26 @@
-package com.fantasticsource.setbonus.client.gui.bonus;
+package com.fantasticsource.setbonus.client.gui.bonus.element;
 
 import com.fantasticsource.mctools.gui.GUIScreen;
 import com.fantasticsource.mctools.gui.element.other.GUIDarkenedBackground;
 import com.fantasticsource.mctools.gui.element.text.GUINavbar;
 import com.fantasticsource.mctools.gui.element.text.GUITextButton;
 import com.fantasticsource.setbonus.SetBonusData;
-import com.fantasticsource.setbonus.common.bonusrequirements.ABonusRequirement;
+import com.fantasticsource.setbonus.common.bonuselements.ABonusElement;
 import com.fantasticsource.tools.datastructures.Color;
 
 import static com.fantasticsource.setbonus.SetBonus.MODID;
 
-public class BonusReqGUI extends GUIScreen
+public class BonusElementGUI extends GUIScreen
 {
     SetBonusData data;
-    public GUIBonusReq clickedElement;
-    public ABonusRequirement requirement;
+    public GUIBonusElement clickedElement;
+    public ABonusElement element;
 
-    public BonusReqGUI(SetBonusData data, GUIBonusReq clickedElement)
+    public BonusElementGUI(SetBonusData data, GUIBonusElement clickedElement)
     {
         this.data = data;
         this.clickedElement = clickedElement;
-        requirement = clickedElement.requirement;
+        element = clickedElement.element;
 
 
         show();
@@ -47,6 +47,6 @@ public class BonusReqGUI extends GUIScreen
     @Override
     public String title()
     {
-        return reformat(MODID + ".config.requirement");
+        return reformat(MODID + ".config.bonusElement");
     }
 }

@@ -1,4 +1,4 @@
-package com.fantasticsource.setbonus.client.gui.bonus;
+package com.fantasticsource.setbonus.client.gui.bonus.requirement;
 
 import com.fantasticsource.mctools.gui.GUIScreen;
 import com.fantasticsource.mctools.gui.element.text.GUITextLabel;
