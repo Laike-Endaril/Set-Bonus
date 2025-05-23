@@ -32,7 +32,17 @@ public class GUIBonusElement extends GUITextLabel
     public void set(ABonusElement element)
     {
         this.element = element;
-        internalText.setText(element == null ? "" : element.toString());
+        if (element == null) internalText.setText("");
+        else
+        {
+            String result = "";
+            for (String tooltip : element.tooltips())
+            {
+                if (result.isEmpty()) result += tooltip;
+                else result += ", " + tooltip;
+            }
+            internalText.setText(result);
+        }
         runEditActions();
     }
 }
