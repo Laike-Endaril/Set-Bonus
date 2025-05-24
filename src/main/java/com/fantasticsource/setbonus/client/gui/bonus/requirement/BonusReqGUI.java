@@ -99,7 +99,7 @@ public class BonusReqGUI extends GUIScreen
 
 
         //Populate
-        if (requirement != null) type.set(validTypes.get(requirement.getClass()));
+        type.runEditActions();
 
 
         //Save actions
