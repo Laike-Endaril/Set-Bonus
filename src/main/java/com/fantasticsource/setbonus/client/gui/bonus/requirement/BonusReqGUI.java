@@ -13,7 +13,7 @@ import static com.fantasticsource.setbonus.SetBonus.MODID;
 
 public class BonusReqGUI extends GUIScreen
 {
-    SetBonusData data;
+    public SetBonusData data;
     public GUIBonusReq clickedElement;
     public ABonusRequirement requirement;
 

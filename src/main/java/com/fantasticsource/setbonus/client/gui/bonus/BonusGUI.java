@@ -25,15 +25,15 @@ import static com.fantasticsource.setbonus.SetBonus.MODID;
 
 public class BonusGUI extends GUIScreen
 {
-    SetBonusData data;
+    public SetBonusData data;
     public GUIBonus clickedElement;
     public Bonus bonus;
     public GUILabeledTextInput id, name;
-    GUIStringPicker discoveryMode;
-    GUITextLabel requirementsLabel, bonusElementsLabel;
-    GUIView requirementsView, bonusElementsView;
-    GUIScrollView requirements, bonusElements;
-    GUIVerticalScrollbar requirementsScrollbar, bonusElementsScrollbar;
+    public GUIStringPicker discoveryMode;
+    public GUITextLabel requirementsLabel, bonusElementsLabel;
+    public GUIView requirementsView, bonusElementsView;
+    public GUIScrollView requirements, bonusElements;
+    public GUIVerticalScrollbar requirementsScrollbar, bonusElementsScrollbar;
 
     public BonusGUI(SetBonusData data, GUIBonus clickedElement)
     {
