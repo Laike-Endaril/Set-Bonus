@@ -113,6 +113,14 @@ public class BonusElementGUI extends GUIScreen
                 });
                 modifiers.add(emptyDummyAttributeModifier);
             }
+            else if (type.value.equals(reformat(MODID + ".config.potionEffect")))
+            {
+                //TODO
+            }
+            else if (type.value.equals(reformat(MODID + ".config.enchantment")))
+            {
+                //TODO
+            }
         });
 
 
@@ -138,6 +146,14 @@ public class BonusElementGUI extends GUIScreen
                     clickedElement.set(element);
                     close();
                 }
+            }
+            else if (element instanceof BonusElementPotionEffect)
+            {
+                //TODO
+            }
+            else if (element instanceof BonusElementEnchantment)
+            {
+                //TODO
             }
         });
     }
