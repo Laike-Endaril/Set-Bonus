@@ -43,6 +43,11 @@ public class BonusReqGUI extends GUIScreen
         GUITextButton save = new GUITextButton(this, reformat(MODID + ".config.save"), Color.GREEN);
         root.add(save);
         root.add(new GUITextButton(this, reformat(MODID + ".config.cancel"), Color.ORANGE).addClickActions(this::close));
+        root.add(new GUITextButton(this, reformat(MODID + ".config.delete"), Color.RED).addClickActions(() ->
+        {
+            clickedElement.set(null);
+            close();
+        }));
         root.add(new GUITextSpacer(this));
 
 

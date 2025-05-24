@@ -104,12 +104,22 @@ public class BonusGUI extends GUIScreen
 
         for (ABonusRequirement requirement : bonus.requirements)
         {
-            requirements.add(new GUIBonusReq(this, data, requirement, 1));
+            GUIBonusReq guiBonusReq = new GUIBonusReq(this, data, requirement, 1);
+            guiBonusReq.addEditActions(() ->
+            {
+                if (guiBonusReq.requirement == null) requirements.remove(guiBonusReq);
+            });
+            requirements.add(guiBonusReq);
         }
         GUIBonusReq emptyDummyBonusReq = new GUIBonusReq(this, data, null, 1);
         emptyDummyBonusReq.addEditActions(() ->
         {
-            requirements.add(requirements.size() - 1, new GUIBonusReq(this, data, emptyDummyBonusReq.requirement, 1));
+            GUIBonusReq guiBonusReq = new GUIBonusReq(this, data, emptyDummyBonusReq.requirement, 1);
+            guiBonusReq.addEditActions(() ->
+            {
+                if (guiBonusReq.requirement == null) requirements.remove(guiBonusReq);
+            });
+            requirements.add(requirements.size() - 1, guiBonusReq);
             emptyDummyBonusReq.set(null);
         });
         requirements.add(emptyDummyBonusReq);
