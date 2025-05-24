@@ -85,7 +85,7 @@ public class Network
             ByteBufUtils.writeUTF8String(buf, bonus.toString());
 
 
-            for (ABonusRequirement bonusRequirement : bonus.bonusRequirements)
+            for (ABonusRequirement bonusRequirement : bonus.requirements)
             {
                 if (bonusRequirement instanceof SetRequirement)
                 {
@@ -222,7 +222,7 @@ public class Network
                 {
                     bonuses.add(bonus.toString());
 
-                    for (ABonusRequirement bonusRequirement : bonus.bonusRequirements)
+                    for (ABonusRequirement bonusRequirement : bonus.requirements)
                     {
                         if (bonusRequirement instanceof SetRequirement)
                         {

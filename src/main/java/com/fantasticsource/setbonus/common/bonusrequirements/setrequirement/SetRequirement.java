@@ -11,7 +11,7 @@ public class SetRequirement extends ABonusRequirement
     public Set set;
     public int num;
 
-    protected SetRequirement(Set set, int num)
+    public SetRequirement(Set set, int num)
     {
         super();
         this.set = set;

@@ -3,7 +3,6 @@ package com.fantasticsource.setbonus.client.gui.bonus.requirement;
 import com.fantasticsource.mctools.gui.GUIScreen;
 import com.fantasticsource.mctools.gui.element.text.GUITextLabel;
 import com.fantasticsource.setbonus.SetBonusData;
-import com.fantasticsource.setbonus.client.gui.ServerConfigGUI;
 import com.fantasticsource.setbonus.common.bonusrequirements.ABonusRequirement;
 import com.fantasticsource.tools.datastructures.Color;
 
@@ -21,11 +20,7 @@ public class GUIBonusReq extends GUITextLabel
         super(screen, width, Color.AQUA, scale);
         set(requirement);
 
-        addClickActions(() ->
-        {
-            if (internalText.activeColor == Color.PURPLE) new BonusReqGUI(data, this);
-            else if (screen instanceof ServerConfigGUI) ((ServerConfigGUI) screen).select(this);
-        });
+        addClickActions(() -> new BonusReqGUI(data, this));
     }
 
 

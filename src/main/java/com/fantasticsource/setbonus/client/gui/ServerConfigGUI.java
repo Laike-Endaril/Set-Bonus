@@ -398,7 +398,7 @@ public class ServerConfigGUI extends GUIScreen
             {
                 if (element instanceof GUIBonus)
                 {
-                    for (ABonusRequirement requirement : ((GUIBonus) element).bonus.bonusRequirements)
+                    for (ABonusRequirement requirement : ((GUIBonus) element).bonus.requirements)
                     {
                         if (requirement instanceof SetRequirement)
                         {
@@ -426,7 +426,7 @@ public class ServerConfigGUI extends GUIScreen
             {
                 if (other instanceof GUISet)
                 {
-                    for (ABonusRequirement requirement : guiBonus.bonus.bonusRequirements)
+                    for (ABonusRequirement requirement : guiBonus.bonus.requirements)
                     {
                         if (requirement instanceof SetRequirement && ((SetRequirement) requirement).set == ((GUISet) other).set)
                         {
@@ -487,7 +487,7 @@ public class ServerConfigGUI extends GUIScreen
             {
                 if (other instanceof GUIBonus)
                 {
-                    for (ABonusRequirement requirement : ((GUIBonus) other).bonus.bonusRequirements)
+                    for (ABonusRequirement requirement : ((GUIBonus) other).bonus.requirements)
                     {
                         if (requirement instanceof SetRequirement && ((SetRequirement) requirement).set == guiSet.set)
                         {

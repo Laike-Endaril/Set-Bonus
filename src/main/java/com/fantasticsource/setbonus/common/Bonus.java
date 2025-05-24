@@ -22,7 +22,7 @@ public class Bonus
     public String id, name;
     public int discoveryMode;
 
-    public ArrayList<ABonusRequirement> bonusRequirements = new ArrayList<>();
+    public ArrayList<ABonusRequirement> requirements = new ArrayList<>();
     public ArrayList<ABonusElement> bonusElements = new ArrayList<>();
 
 
@@ -75,7 +75,7 @@ public class Bonus
                 return null;
             }
 
-            bonus.bonusRequirements.add(requirement);
+            bonus.requirements.add(requirement);
         }
 
         return bonus;
@@ -96,7 +96,7 @@ public class Bonus
         data.bonuses.add(other);
 
 
-        for (ABonusRequirement requirement : bonusRequirements) other.bonusRequirements.add(requirement.clone(data));
+        for (ABonusRequirement requirement : requirements) other.requirements.add(requirement.clone(data));
 
         for (ABonusElement element : bonusElements) element.clone(data);
 
@@ -108,7 +108,7 @@ public class Bonus
     {
         String result = id + ", " + name + ", " + discoveryMode;
 
-        for (ABonusRequirement requirement : bonusRequirements) result += ", " + requirement;
+        for (ABonusRequirement requirement : requirements) result += ", " + requirement;
 
         return result;
     }

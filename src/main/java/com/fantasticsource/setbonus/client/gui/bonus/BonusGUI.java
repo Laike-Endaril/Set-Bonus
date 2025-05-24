@@ -102,7 +102,7 @@ public class BonusGUI extends GUIScreen
         requirementsScrollbar = new GUIVerticalScrollbar(this, ServerConfigGUI.SCROLLBAR_WIDTH, 1, Color.AQUA, Color.BLANK, Color.AQUA, Color.BLANK, requirements);
         requirementsView.addAll(requirements, requirementsScrollbar);
 
-        for (ABonusRequirement requirement : bonus.bonusRequirements)
+        for (ABonusRequirement requirement : bonus.requirements)
         {
             requirements.add(new GUIBonusReq(this, data, requirement, 1));
         }
@@ -135,7 +135,7 @@ public class BonusGUI extends GUIScreen
         GUIBonusElement emptyDummyBonusElement = new GUIBonusElement(this, data, null, 1);
         emptyDummyBonusElement.addEditActions(() ->
         {
-            bonusElements.add(bonusElements.size() - 1, new GUIBonusElement(this, data, emptyDummyBonusElement.element, 1));
+            bonusElements.add(bonusElements.size() - 1, new GUIBonusElement(this, data, emptyDummyBonusElement.bonusElement, 1));
             emptyDummyBonusElement.set(null);
         });
         bonusElements.add(emptyDummyBonusElement);
@@ -160,6 +160,26 @@ public class BonusGUI extends GUIScreen
                 bonus.id = id.getText();
                 bonus.name = name.getText();
                 bonus.discoveryMode = Tools.indexOf(discoveryMode.possibleValues, discoveryMode.value);
+
+                //Requirements
+                bonus.requirements.clear();
+                for (GUIElement element : requirements.children)
+                {
+                    if (element instanceof GUIBonusReq && ((GUIBonusReq) element).requirement != null)
+                    {
+                        bonus.requirements.add(((GUIBonusReq) element).requirement);
+                    }
+                }
+
+                //Bonus Elements
+                bonus.bonusElements.clear();
+                for (GUIElement element : bonusElements.children)
+                {
+                    if (element instanceof GUIBonusElement && ((GUIBonusElement) element).bonusElement != null)
+                    {
+                        bonus.bonusElements.add(((GUIBonusElement) element).bonusElement);
+                    }
+                }
 
 
                 //Update GUI

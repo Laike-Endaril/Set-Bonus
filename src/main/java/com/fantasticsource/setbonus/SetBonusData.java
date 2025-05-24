@@ -217,7 +217,7 @@ public class SetBonusData
     {
         for (Bonus bonus : bonuses)
         {
-            bonus.bonusRequirements.removeIf(requirement -> requirement instanceof SetRequirement && ((SetRequirement) requirement).set == set);
+            bonus.requirements.removeIf(requirement -> requirement instanceof SetRequirement && ((SetRequirement) requirement).set == set);
         }
         sets.remove(set.id);
     }

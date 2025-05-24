@@ -74,9 +74,9 @@ public class ClientBonus extends Bonus
         public void update()
         {
             boolean activate = true;
-            int[] reqStatus = new int[bonusRequirements.size() << 1];
+            int[] reqStatus = new int[requirements.size() << 1];
             int i = 0;
-            for (ABonusRequirement requirement : bonusRequirements)
+            for (ABonusRequirement requirement : requirements)
             {
                 reqStatus[i++] = requirement.active(Minecraft.getMinecraft().player);
                 reqStatus[i++] = requirement.required();

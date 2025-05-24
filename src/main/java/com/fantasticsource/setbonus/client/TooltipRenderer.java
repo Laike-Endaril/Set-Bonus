@@ -64,7 +64,7 @@ public class TooltipRenderer
                             int req = 0;
                             boolean otherReqs = false;
 
-                            for (ABonusRequirement requirement : bonus.bonusRequirements)
+                            for (ABonusRequirement requirement : bonus.requirements)
                             {
                                 if (requirement instanceof SetRequirement)
                                 {

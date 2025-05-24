@@ -172,7 +172,7 @@ public class ServerBonus extends Bonus
 
         public BonusInstance update()
         {
-            for (ABonusRequirement requirement : bonusRequirements)
+            for (ABonusRequirement requirement : requirements)
             {
                 if (requirement.active(player) < requirement.required())
                 {

@@ -21,7 +21,7 @@ public class BonusElementGUI extends GUIScreen
     {
         this.data = data;
         this.clickedElement = clickedElement;
-        element = clickedElement.element;
+        element = clickedElement.bonusElement;
 
 
         show();

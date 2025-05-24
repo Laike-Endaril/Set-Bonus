@@ -1,13 +1,19 @@
 package com.fantasticsource.setbonus.client.gui.bonus.requirement;
 
 import com.fantasticsource.mctools.gui.GUIScreen;
+import com.fantasticsource.mctools.gui.element.GUIElement;
 import com.fantasticsource.mctools.gui.element.other.GUIDarkenedBackground;
-import com.fantasticsource.mctools.gui.element.text.GUINavbar;
-import com.fantasticsource.mctools.gui.element.text.GUITextButton;
-import com.fantasticsource.mctools.gui.element.text.GUITextSpacer;
+import com.fantasticsource.mctools.gui.element.text.*;
+import com.fantasticsource.mctools.gui.element.text.filter.FilterInt;
+import com.fantasticsource.mctools.gui.element.view.GUIView;
 import com.fantasticsource.setbonus.SetBonusData;
 import com.fantasticsource.setbonus.common.bonusrequirements.ABonusRequirement;
+import com.fantasticsource.setbonus.common.bonusrequirements.AttributeRequirement;
+import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Set;
+import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.SetRequirement;
 import com.fantasticsource.tools.datastructures.Color;
+
+import java.util.LinkedHashMap;
 
 import static com.fantasticsource.setbonus.SetBonus.MODID;
 
@@ -40,12 +46,80 @@ public class BonusReqGUI extends GUIScreen
         root.add(new GUITextSpacer(this));
 
 
-        //TODO
+        //Type
+        LinkedHashMap<Class<? extends ABonusRequirement>, String> validTypes = new LinkedHashMap<>();
+        validTypes.put(SetRequirement.class, reformat(MODID + ".config.set"));
+        validTypes.put(AttributeRequirement.class, reformat(MODID + ".config.attribute"));
+        GUIStringPicker type = new GUIStringPicker(this, reformat(MODID + ".config.type"), validTypes.values().toArray(new String[0]));
+        root.add(type);
+        GUITextSpacer spacer = new GUITextSpacer(this);
+        root.add(spacer);
+
+
+        //Type-Specific Settings
+        GUIView typeSettings = new GUIView(this, 1, 1 - spacer.y - spacer.height);
+        spacer.addRecalcActions(() -> typeSettings.height = 1 - spacer.y - spacer.height);
+        root.add(typeSettings);
+
+
+        //Type selection actions
+        type.addEditActions(() ->
+        {
+            if (type.value.equals(reformat(MODID + ".config.set")))
+            {
+                if (data.sets.size() > 0)
+                {
+                    typeSettings.clear();
+
+                    SetRequirement setRequirement = requirement instanceof SetRequirement ? ((SetRequirement) requirement).clone(data) : new SetRequirement(data.sets.iterator().next(), -1);
+                    requirement = setRequirement;
+
+                    String[] setIDs = new String[data.sets.size()];
+                    int i = 0;
+                    for (Set set : data.sets) setIDs[i++] = set.id;
+                    GUIStringPicker setPicker = new GUIStringPicker(this, reformat(MODID + ".config.set"), setIDs);
+                    setPicker.addEditActions(() ->
+                    {
+                        for (Set set : data.sets)
+                        {
+                            if (set.id.equals(setPicker.value))
+                            {
+                                setRequirement.set = set;
+                                break;
+                            }
+                        }
+                    });
+                    typeSettings.add(setPicker);
+                    typeSettings.add(new GUIElement(this, 1, 0));
+
+                    typeSettings.add(new GUILabeledTextInput(this, reformat(MODID + ".config.numberOfSetEquips") + ": ", "" + setRequirement.num, FilterInt.INSTANCE));
+                }
+            }
+        });
+
+
+        //Populate
+        if (requirement != null) type.set(validTypes.get(requirement.getClass()));
 
 
         //Save actions
         save.addClickActions(() ->
         {
+            if (requirement instanceof SetRequirement)
+            {
+                GUILabeledTextInput number = (GUILabeledTextInput) typeSettings.get(2);
+                if (!number.valid())
+                {
+                    number.setText("-1");
+                    number.label.click();
+                }
+                else
+                {
+                    ((SetRequirement) requirement).num = FilterInt.INSTANCE.parse(number.getText());
+                    clickedElement.set(requirement);
+                    close();
+                }
+            }
         });
     }
 
