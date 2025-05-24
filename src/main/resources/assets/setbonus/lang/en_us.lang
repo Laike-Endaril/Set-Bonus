@@ -105,9 +105,14 @@ setbonus.config.requirement=Requirement
 setbonus.config.bonusElements=Bonus Elements
 setbonus.config.bonusElement=Bonus Element
 setbonus.config.type=Type
+
 setbonus.config.set=Set
 setbonus.config.numberOfSetEquips=Equips required (-1 means full set)
+
 setbonus.config.attribute=Attribute
+setbonus.config.attributeName=Attribute Name
+setbonus.config.comparator=Comparator
+setbonus.config.amount=Amount
 
 
 

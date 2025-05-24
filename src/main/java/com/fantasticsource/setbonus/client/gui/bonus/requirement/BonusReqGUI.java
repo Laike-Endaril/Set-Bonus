@@ -1,10 +1,13 @@
 package com.fantasticsource.setbonus.client.gui.bonus.requirement;
 
+import com.fantasticsource.mctools.DoubleRequirement;
 import com.fantasticsource.mctools.gui.GUIScreen;
 import com.fantasticsource.mctools.gui.element.GUIElement;
 import com.fantasticsource.mctools.gui.element.other.GUIDarkenedBackground;
 import com.fantasticsource.mctools.gui.element.text.*;
+import com.fantasticsource.mctools.gui.element.text.filter.FilterFloat;
 import com.fantasticsource.mctools.gui.element.text.filter.FilterInt;
+import com.fantasticsource.mctools.gui.element.text.filter.FilterNotEmpty;
 import com.fantasticsource.mctools.gui.element.view.GUIView;
 import com.fantasticsource.setbonus.SetBonusData;
 import com.fantasticsource.setbonus.common.bonusrequirements.ABonusRequirement;
@@ -12,6 +15,7 @@ import com.fantasticsource.setbonus.common.bonusrequirements.AttributeRequiremen
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Set;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.SetRequirement;
 import com.fantasticsource.tools.datastructures.Color;
+import com.fantasticsource.tools.datastructures.Pair;
 
 import java.util.LinkedHashMap;
 
@@ -100,11 +104,34 @@ public class BonusReqGUI extends GUIScreen
                     typeSettings.add(new GUILabeledTextInput(this, reformat(MODID + ".config.numberOfSetEquips") + ": ", "" + setRequirement.num, FilterInt.INSTANCE));
                 }
             }
+            else if (type.value.equals(reformat(MODID + ".config.attribute")))
+            {
+                typeSettings.clear();
+
+                AttributeRequirement attributeRequirement = requirement instanceof AttributeRequirement ? ((AttributeRequirement) requirement).clone(data) : new AttributeRequirement(new Pair<>("generic.armorToughness", new DoubleRequirement(2)));
+                requirement = attributeRequirement;
+
+                typeSettings.add(new GUILabeledTextInput(this, reformat(MODID + ".config.attributeName") + ": ", attributeRequirement.attributeName, FilterNotEmpty.INSTANCE));
+                typeSettings.add(new GUIElement(this, 1, 0));
+
+                GUIStringPicker modePicker = new GUIStringPicker(this, reformat(MODID + ".config.comparator"), DoubleRequirement.VALID_MODE_STRINGS.toArray(new String[0]));
+                modePicker.addEditActions(() ->
+                {
+                    int index = DoubleRequirement.VALID_MODE_STRINGS.indexOf(modePicker.value);
+                    if (index != -1) attributeRequirement.requirement.mode = index;
+                });
+                modePicker.set(attributeRequirement.requirement.getModeString());
+                typeSettings.add(modePicker);
+                typeSettings.add(new GUIElement(this, 1, 0));
+
+                typeSettings.add(new GUILabeledTextInput(this, reformat(MODID + ".config.amount") + ": ", "" + attributeRequirement.requirement.amount, FilterFloat.INSTANCE));
+            }
         });
 
 
         //Populate
-        type.runEditActions();
+        if (requirement instanceof AttributeRequirement) type.set(reformat(MODID + ".config.attribute"));
+        else type.runEditActions();
 
 
         //Save actions
@@ -121,6 +148,30 @@ public class BonusReqGUI extends GUIScreen
                 else
                 {
                     ((SetRequirement) requirement).num = FilterInt.INSTANCE.parse(number.getText());
+                    clickedElement.set(requirement);
+                    close();
+                }
+            }
+            else if (requirement instanceof AttributeRequirement)
+            {
+                GUILabeledTextInput
+                        attributeName = (GUILabeledTextInput) typeSettings.get(0),
+                        amount = (GUILabeledTextInput) typeSettings.get(4);
+                if (!attributeName.valid())
+                {
+                    attributeName.setText("generic.armorToughness");
+                    attributeName.label.click();
+                }
+                else if (!amount.valid())
+                {
+                    amount.setText("2");
+                    amount.label.click();
+                }
+                else
+                {
+                    AttributeRequirement req = (AttributeRequirement) requirement;
+                    req.attributeName = attributeName.getText();
+                    req.requirement.amount = FilterFloat.INSTANCE.parse(amount.getText());
                     clickedElement.set(requirement);
                     close();
                 }

@@ -10,7 +10,7 @@ public class AttributeRequirement extends ABonusRequirement
     public String attributeName;
     public DoubleRequirement requirement;
 
-    protected AttributeRequirement(Pair<String, DoubleRequirement> pair)
+    public AttributeRequirement(Pair<String, DoubleRequirement> pair)
     {
         attributeName = pair.getKey();
         requirement = pair.getValue();
