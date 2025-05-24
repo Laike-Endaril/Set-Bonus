@@ -1,6 +1,7 @@
 package com.fantasticsource.setbonus.client.gui.bonus.element;
 
 import com.fantasticsource.mctools.gui.GUIScreen;
+import com.fantasticsource.mctools.gui.element.GUIElement;
 import com.fantasticsource.mctools.gui.element.other.GUIDarkenedBackground;
 import com.fantasticsource.mctools.gui.element.other.GUIVerticalScrollbar;
 import com.fantasticsource.mctools.gui.element.text.GUINavbar;
@@ -49,11 +50,12 @@ public class BonusElementGUI extends GUIScreen
         GUITextButton save = new GUITextButton(this, reformat(MODID + ".config.save"), Color.GREEN);
         root.add(save);
         root.add(new GUITextButton(this, reformat(MODID + ".config.cancel"), Color.ORANGE).addClickActions(this::close));
-        root.add(new GUITextButton(this, reformat(MODID + ".config.delete"), Color.RED).addClickActions(() ->
+        GUITextButton delete = (GUITextButton) new GUITextButton(this, reformat(MODID + ".config.delete"), Color.RED).addClickActions(() ->
         {
             clickedElement.set(null);
             close();
-        }));
+        });
+        root.add(delete);
         root.add(new GUITextSpacer(this));
 
 
@@ -121,45 +123,22 @@ public class BonusElementGUI extends GUIScreen
         //Save actions
         save.addClickActions(() ->
         {
-//            if (requirement instanceof SetRequirement)
-//            {
-//                GUILabeledTextInput number = (GUILabeledTextInput) typeSettings.get(2);
-//                if (!number.valid())
-//                {
-//                    number.setText("-1");
-//                    number.label.click();
-//                }
-//                else
-//                {
-//                    ((SetRequirement) requirement).num = FilterInt.INSTANCE.parse(number.getText());
-//                    clickedElement.set(requirement);
-//                    close();
-//                }
-//            }
-//            else if (requirement instanceof AttributeRequirement)
-//            {
-//                GUILabeledTextInput
-//                        attributeName = (GUILabeledTextInput) typeSettings.get(0),
-//                        amount = (GUILabeledTextInput) typeSettings.get(4);
-//                if (!attributeName.valid())
-//                {
-//                    attributeName.setText("generic.armorToughness");
-//                    attributeName.label.click();
-//                }
-//                else if (!amount.valid())
-//                {
-//                    amount.setText("2");
-//                    amount.label.click();
-//                }
-//                else
-//                {
-//                    AttributeRequirement req = (AttributeRequirement) requirement;
-//                    req.attributeName = attributeName.getText();
-//                    req.requirement.amount = FilterFloat.INSTANCE.parse(amount.getText());
-//                    clickedElement.set(requirement);
-//                    close();
-//                }
-//            }
+            if (element instanceof BonusElementAttributeModifier)
+            {
+                if (typeSettings.get(0).size() <= 1) delete.click();
+                else
+                {
+                    ((BonusElementAttributeModifier) element).modifiers.clear();
+                    AttributeModifier mod;
+                    for (GUIElement guiElement : typeSettings.get(0).children)
+                    {
+                        mod = ((GUIAttributeModifier) guiElement).modifier;
+                        if (mod != null) ((BonusElementAttributeModifier) element).modifiers.put(mod.getName(), mod);
+                    }
+                    clickedElement.set(element);
+                    close();
+                }
+            }
         });
     }
 

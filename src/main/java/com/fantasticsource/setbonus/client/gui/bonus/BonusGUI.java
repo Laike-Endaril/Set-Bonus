@@ -114,13 +114,16 @@ public class BonusGUI extends GUIScreen
         GUIBonusReq emptyDummyBonusReq = new GUIBonusReq(this, data, null, 1);
         emptyDummyBonusReq.addEditActions(() ->
         {
-            GUIBonusReq guiBonusReq = new GUIBonusReq(this, data, emptyDummyBonusReq.requirement, 1);
-            guiBonusReq.addEditActions(() ->
+            if (emptyDummyBonusReq.requirement != null)
             {
-                if (guiBonusReq.requirement == null) requirements.remove(guiBonusReq);
-            });
-            requirements.add(requirements.size() - 1, guiBonusReq);
-            emptyDummyBonusReq.set(null);
+                GUIBonusReq guiBonusReq = new GUIBonusReq(this, data, emptyDummyBonusReq.requirement, 1);
+                guiBonusReq.addEditActions(() ->
+                {
+                    if (guiBonusReq.requirement == null) requirements.remove(guiBonusReq);
+                });
+                requirements.add(requirements.size() - 1, guiBonusReq);
+                emptyDummyBonusReq.set(null);
+            }
         });
         requirements.add(emptyDummyBonusReq);
 
@@ -140,13 +143,26 @@ public class BonusGUI extends GUIScreen
 
         for (ABonusElement element : bonus.bonusElements)
         {
-            bonusElements.add(new GUIBonusElement(this, data, element, 1));
+            GUIBonusElement guiBonusElement = new GUIBonusElement(this, data, element, 1);
+            guiBonusElement.addEditActions(() ->
+            {
+                if (guiBonusElement.bonusElement == null) bonusElements.remove(guiBonusElement);
+            });
+            bonusElements.add(guiBonusElement);
         }
         GUIBonusElement emptyDummyBonusElement = new GUIBonusElement(this, data, null, 1);
         emptyDummyBonusElement.addEditActions(() ->
         {
-            bonusElements.add(bonusElements.size() - 1, new GUIBonusElement(this, data, emptyDummyBonusElement.bonusElement, 1));
-            emptyDummyBonusElement.set(null);
+            if (emptyDummyBonusElement.bonusElement != null)
+            {
+                GUIBonusElement guiBonusElement = new GUIBonusElement(this, data, emptyDummyBonusElement.bonusElement, 1);
+                guiBonusElement.addEditActions(() ->
+                {
+                    if (guiBonusElement.bonusElement == null) bonusElements.remove(guiBonusElement);
+                });
+                bonusElements.add(bonusElements.size() - 1, guiBonusElement);
+                emptyDummyBonusElement.set(null);
+            }
         });
         bonusElements.add(emptyDummyBonusElement);
 
@@ -188,6 +204,7 @@ public class BonusGUI extends GUIScreen
                     if (element instanceof GUIBonusElement && ((GUIBonusElement) element).bonusElement != null)
                     {
                         bonus.bonusElements.add(((GUIBonusElement) element).bonusElement);
+                        ((GUIBonusElement) element).bonusElement.bonus = bonus;
                     }
                 }
 
