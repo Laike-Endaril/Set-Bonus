@@ -1,6 +1,7 @@
 package com.fantasticsource.setbonus.common.bonuselements;
 
 import com.fantasticsource.mctools.ServerTickTimer;
+import com.fantasticsource.mctools.component.CFantasticPotionEffect;
 import com.fantasticsource.mctools.potions.FantasticPotionEffect;
 import com.fantasticsource.mctools.potions.Potions;
 import com.fantasticsource.setbonus.SetBonus;
@@ -20,6 +21,12 @@ import java.util.Arrays;
 public class BonusElementPotionEffect extends ABonusElement
 {
     public ArrayList<FantasticPotionEffect> potions;
+
+
+    public BonusElementPotionEffect()
+    {
+        potions = new ArrayList<>();
+    }
 
     protected BonusElementPotionEffect(Bonus bonus, ArrayList<FantasticPotionEffect> potions)
     {
@@ -121,6 +128,17 @@ public class BonusElementPotionEffect extends ABonusElement
         return result;
     }
 
+
+    public BonusElementPotionEffect clone()
+    {
+        BonusElementPotionEffect other = new BonusElementPotionEffect();
+        CFantasticPotionEffect fantasticPotionEffect = new CFantasticPotionEffect();
+        for (FantasticPotionEffect potionEffect : potions)
+        {
+            other.potions.add(((CFantasticPotionEffect) fantasticPotionEffect.set(potionEffect).copy()).value);
+        }
+        return other;
+    }
 
     public BonusElementPotionEffect clone(SetBonusData data)
     {

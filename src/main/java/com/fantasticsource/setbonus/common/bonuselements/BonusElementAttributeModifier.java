@@ -24,7 +24,7 @@ public class BonusElementAttributeModifier extends ABonusElement
     {
     }
 
-    private BonusElementAttributeModifier(Bonus bonus, ArrayList<AttributeModifier> modifiers)
+    protected BonusElementAttributeModifier(Bonus bonus, ArrayList<AttributeModifier> modifiers)
     {
         super(bonus);
 

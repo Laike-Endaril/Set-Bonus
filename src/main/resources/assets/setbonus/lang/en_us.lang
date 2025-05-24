@@ -115,10 +115,15 @@ setbonus.config.comparator=Comparator
 setbonus.config.amount=Amount
 
 setbonus.config.attributeModifier=Attribute Modifier
-setbonus.config.potionEffect=Potion Effect
-setbonus.config.enchantment=Enchantment
-
 setbonus.config.operation=Operation
+
+setbonus.config.potionEffect=Potion Effect
+setbonus.config.potionName=Potion Name
+setbonus.config.level=Level
+setbonus.config.duration=Duration (32767 or higher means infinite)
+setbonus.config.interval=Interval (0 means none)
+
+setbonus.config.enchantment=Enchantment
 
 
 

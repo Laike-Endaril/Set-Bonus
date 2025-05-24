@@ -10,6 +10,7 @@ import com.fantasticsource.mctools.gui.element.text.GUITextButton;
 import com.fantasticsource.mctools.gui.element.text.GUITextSpacer;
 import com.fantasticsource.mctools.gui.element.view.GUIScrollView;
 import com.fantasticsource.mctools.gui.element.view.GUIView;
+import com.fantasticsource.mctools.potions.FantasticPotionEffect;
 import com.fantasticsource.setbonus.SetBonusData;
 import com.fantasticsource.setbonus.client.gui.ServerConfigGUI;
 import com.fantasticsource.setbonus.common.bonuselements.ABonusElement;
@@ -115,7 +116,37 @@ public class BonusElementGUI extends GUIScreen
             }
             else if (type.value.equals(reformat(MODID + ".config.potionEffect")))
             {
-                //TODO
+                typeSettings.clear();
+
+                BonusElementPotionEffect potionEffectElement = element instanceof BonusElementPotionEffect ? ((BonusElementPotionEffect) element).clone() : new BonusElementPotionEffect();
+                element = potionEffectElement;
+
+                GUIScrollView potions = new GUIScrollView(this, 1 - ServerConfigGUI.SCROLLBAR_WIDTH, 1);
+                typeSettings.add(potions);
+                GUIVerticalScrollbar potionsScrollbar = new GUIVerticalScrollbar(this, ServerConfigGUI.SCROLLBAR_WIDTH, 1, getHoverColor(Color.AQUA), Color.BLANK, Color.AQUA, Color.BLANK, potions);
+                typeSettings.add(potionsScrollbar);
+
+                for (FantasticPotionEffect potionEffect : potionEffectElement.potions)
+                {
+                    GUIPotionEffect guiPotionEffect = new GUIPotionEffect(this, potionEffect, 1);
+                    guiPotionEffect.addEditActions(() ->
+                    {
+                        if (guiPotionEffect.potionEffect == null) potions.remove(guiPotionEffect);
+                    });
+                    potions.add(guiPotionEffect);
+                }
+                GUIPotionEffect emptyDummyAttributeModifier = new GUIPotionEffect(this, null, 1);
+                emptyDummyAttributeModifier.addEditActions(() ->
+                {
+                    GUIPotionEffect guiPotionEffect = new GUIPotionEffect(this, emptyDummyAttributeModifier.potionEffect, 1);
+                    guiPotionEffect.addEditActions(() ->
+                    {
+                        if (guiPotionEffect.potionEffect == null) potions.remove(guiPotionEffect);
+                    });
+                    potions.add(potions.size() - 1, guiPotionEffect);
+                    emptyDummyAttributeModifier.set(null);
+                });
+                potions.add(emptyDummyAttributeModifier);
             }
             else if (type.value.equals(reformat(MODID + ".config.enchantment")))
             {
@@ -149,7 +180,19 @@ public class BonusElementGUI extends GUIScreen
             }
             else if (element instanceof BonusElementPotionEffect)
             {
-                //TODO
+                if (typeSettings.get(0).size() <= 1) delete.click();
+                else
+                {
+                    ((BonusElementPotionEffect) element).potions.clear();
+                    FantasticPotionEffect potionEffect;
+                    for (GUIElement guiElement : typeSettings.get(0).children)
+                    {
+                        potionEffect = ((GUIPotionEffect) guiElement).potionEffect;
+                        if (potionEffect != null) ((BonusElementPotionEffect) element).potions.add(potionEffect);
+                    }
+                    clickedElement.set(element);
+                    close();
+                }
             }
             else if (element instanceof BonusElementEnchantment)
             {
