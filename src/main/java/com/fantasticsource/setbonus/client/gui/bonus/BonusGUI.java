@@ -99,7 +99,7 @@ public class BonusGUI extends GUIScreen
         root.add(requirementsView);
 
         requirements = new GUIScrollView(this, 1 - ServerConfigGUI.SCROLLBAR_WIDTH, 1);
-        requirementsScrollbar = new GUIVerticalScrollbar(this, ServerConfigGUI.SCROLLBAR_WIDTH, 1, Color.AQUA, Color.BLANK, Color.AQUA, Color.BLANK, requirements);
+        requirementsScrollbar = new GUIVerticalScrollbar(this, ServerConfigGUI.SCROLLBAR_WIDTH, 1, getHoverColor(Color.AQUA), Color.BLANK, Color.AQUA, Color.BLANK, requirements);
         requirementsView.addAll(requirements, requirementsScrollbar);
 
         for (ABonusRequirement requirement : bonus.requirements)
@@ -135,7 +135,7 @@ public class BonusGUI extends GUIScreen
         root.add(bonusElementsView);
 
         bonusElements = new GUIScrollView(this, 1 - ServerConfigGUI.SCROLLBAR_WIDTH, 1);
-        bonusElementsScrollbar = new GUIVerticalScrollbar(this, ServerConfigGUI.SCROLLBAR_WIDTH, 1, Color.AQUA, Color.BLANK, Color.AQUA, Color.BLANK, bonusElements);
+        bonusElementsScrollbar = new GUIVerticalScrollbar(this, ServerConfigGUI.SCROLLBAR_WIDTH, 1, getHoverColor(Color.AQUA), Color.BLANK, Color.AQUA, Color.BLANK, bonusElements);
         bonusElementsView.addAll(bonusElements, bonusElementsScrollbar);
 
         for (ABonusElement element : bonus.bonusElements)

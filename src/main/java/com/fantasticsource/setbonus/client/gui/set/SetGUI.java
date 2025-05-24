@@ -86,7 +86,7 @@ public class SetGUI extends GUIScreen
         root.add(slotDataView);
 
         slotData = new GUIScrollView(this, 1 - ServerConfigGUI.SCROLLBAR_WIDTH, 1);
-        slotDataScrollbar = new GUIVerticalScrollbar(this, ServerConfigGUI.SCROLLBAR_WIDTH, 1, Color.AQUA, Color.BLANK, Color.AQUA, Color.BLANK, slotData);
+        slotDataScrollbar = new GUIVerticalScrollbar(this, ServerConfigGUI.SCROLLBAR_WIDTH, 1, getHoverColor(Color.AQUA), Color.BLANK, Color.AQUA, Color.BLANK, slotData);
         slotDataView.addAll(slotData, slotDataScrollbar);
 
         for (SlotData slotData2 : set.slotData)

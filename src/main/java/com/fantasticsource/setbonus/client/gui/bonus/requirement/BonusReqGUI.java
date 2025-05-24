@@ -32,6 +32,11 @@ public class BonusReqGUI extends GUIScreen
         this.data = data;
         this.clickedElement = clickedElement;
         requirement = clickedElement.requirement;
+        if (requirement == null)
+        {
+            if (data.sets.size() > 0) requirement = new SetRequirement(data.sets.iterator().next(), -1);
+            else requirement = new AttributeRequirement(new Pair<>("generic.armorToughness", new DoubleRequirement(2)));
+        }
 
 
         show();
@@ -130,8 +135,7 @@ public class BonusReqGUI extends GUIScreen
 
 
         //Populate
-        if (requirement instanceof AttributeRequirement) type.set(reformat(MODID + ".config.attribute"));
-        else type.runEditActions();
+        type.set(validTypes.get(requirement.getClass()));
 
 
         //Save actions

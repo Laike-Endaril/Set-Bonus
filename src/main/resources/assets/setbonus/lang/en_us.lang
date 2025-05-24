@@ -114,6 +114,12 @@ setbonus.config.attributeName=Attribute Name
 setbonus.config.comparator=Comparator
 setbonus.config.amount=Amount
 
+setbonus.config.attributeModifier=Attribute Modifier
+setbonus.config.potionEffect=Potion Effect
+setbonus.config.enchantment=Enchantment
+
+setbonus.config.operation=Operation
+
 
 
 setbonus.config.bonusSettings=Bonus Settings

@@ -78,7 +78,7 @@ public class SlotDataGUI extends GUIScreen
         root.add(validSlotsView);
 
         validSlots = new GUIScrollView(this, 1 - ServerConfigGUI.SCROLLBAR_WIDTH, 1);
-        validSlotsScrollbar = new GUIVerticalScrollbar(this, ServerConfigGUI.SCROLLBAR_WIDTH, 1, Color.AQUA, Color.BLANK, Color.AQUA, Color.BLANK, validSlots);
+        validSlotsScrollbar = new GUIVerticalScrollbar(this, ServerConfigGUI.SCROLLBAR_WIDTH, 1, getHoverColor(Color.AQUA), Color.BLANK, Color.AQUA, Color.BLANK, validSlots);
         validSlotsView.addAll(validSlots, validSlotsScrollbar);
 
         for (String slotName : slotData.slotNames)
@@ -128,7 +128,7 @@ public class SlotDataGUI extends GUIScreen
         root.add(validEquipsView);
 
         validEquips = new GUIScrollView(this, 1 - ServerConfigGUI.SCROLLBAR_WIDTH, 1);
-        validEquipsScrollbar = new GUIVerticalScrollbar(this, ServerConfigGUI.SCROLLBAR_WIDTH, 1, Color.AQUA, Color.BLANK, Color.AQUA, Color.BLANK, validEquips);
+        validEquipsScrollbar = new GUIVerticalScrollbar(this, ServerConfigGUI.SCROLLBAR_WIDTH, 1, getHoverColor(Color.AQUA), Color.BLANK, Color.AQUA, Color.BLANK, validEquips);
         validEquipsView.addAll(validEquips, validEquipsScrollbar);
 
         for (Equip equip : slotData.involvedEquips)

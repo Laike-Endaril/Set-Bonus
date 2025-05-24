@@ -17,8 +17,12 @@ import java.util.Map;
 
 public class BonusElementAttributeModifier extends ABonusElement
 {
-    private Multimap<String, AttributeModifier> modifiers = ArrayListMultimap.create();
+    public Multimap<String, AttributeModifier> modifiers = ArrayListMultimap.create();
 
+
+    public BonusElementAttributeModifier()
+    {
+    }
 
     private BonusElementAttributeModifier(Bonus bonus, ArrayList<AttributeModifier> modifiers)
     {
@@ -105,6 +109,20 @@ public class BonusElementAttributeModifier extends ABonusElement
         return result;
     }
 
+
+    public BonusElementAttributeModifier clone()
+    {
+        BonusElementAttributeModifier other = new BonusElementAttributeModifier();
+
+        AttributeModifier modifier;
+        for (Map.Entry<String, AttributeModifier> entry : modifiers.entries())
+        {
+            modifier = entry.getValue();
+            other.modifiers.put(entry.getKey(), new AttributeModifier(modifier.getName(), modifier.getAmount(), modifier.getOperation()));
+        }
+
+        return other;
+    }
 
     public BonusElementAttributeModifier clone(SetBonusData data)
     {

@@ -96,7 +96,7 @@ public class EquipGUI extends GUIScreen
         root.add(requiredNBTView);
 
         requiredNBT = new GUIScrollView(this, 1 - ServerConfigGUI.SCROLLBAR_WIDTH, 1);
-        requiredNBTScrollbar = new GUIVerticalScrollbar(this, ServerConfigGUI.SCROLLBAR_WIDTH, 1, Color.AQUA, Color.BLANK, Color.AQUA, Color.BLANK, requiredNBT);
+        requiredNBTScrollbar = new GUIVerticalScrollbar(this, ServerConfigGUI.SCROLLBAR_WIDTH, 1, getHoverColor(Color.AQUA), Color.BLANK, Color.AQUA, Color.BLANK, requiredNBT);
         requiredNBTView.addAll(requiredNBT, requiredNBTScrollbar);
 
         GUIAutocroppedView view;
@@ -125,7 +125,7 @@ public class EquipGUI extends GUIScreen
         root.add(disallowedNBTView);
 
         disallowedNBT = new GUIScrollView(this, 1 - ServerConfigGUI.SCROLLBAR_WIDTH, 1);
-        disallowedNBTScrollbar = new GUIVerticalScrollbar(this, ServerConfigGUI.SCROLLBAR_WIDTH, 1, Color.AQUA, Color.BLANK, Color.AQUA, Color.BLANK, disallowedNBT);
+        disallowedNBTScrollbar = new GUIVerticalScrollbar(this, ServerConfigGUI.SCROLLBAR_WIDTH, 1, getHoverColor(Color.AQUA), Color.BLANK, Color.AQUA, Color.BLANK, disallowedNBT);
         disallowedNBTView.addAll(disallowedNBT, disallowedNBTScrollbar);
 
         for (Map.Entry<String, String> entry : equip.filter.tagsDisallowed.entrySet())

@@ -8,6 +8,10 @@ public abstract class ABonusElement
 {
     public Bonus bonus;
 
+    public ABonusElement()
+    {
+    }
+
     protected ABonusElement(Bonus bonus)
     {
         this.bonus = bonus;
