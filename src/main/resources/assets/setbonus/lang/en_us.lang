@@ -118,7 +118,6 @@ setbonus.config.attributeModifier=Attribute Modifier
 setbonus.config.operation=Operation
 
 setbonus.config.potionEffect=Potion Effect
-setbonus.config.potionName=Potion Name
 setbonus.config.level=Level
 setbonus.config.duration=Duration (32767 or higher means infinite)
 setbonus.config.interval=Interval (0 means none)

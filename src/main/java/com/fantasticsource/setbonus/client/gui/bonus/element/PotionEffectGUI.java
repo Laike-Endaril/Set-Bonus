@@ -3,16 +3,13 @@ package com.fantasticsource.setbonus.client.gui.bonus.element;
 import com.fantasticsource.mctools.gui.GUIScreen;
 import com.fantasticsource.mctools.gui.element.GUIElement;
 import com.fantasticsource.mctools.gui.element.other.GUIDarkenedBackground;
-import com.fantasticsource.mctools.gui.element.text.GUILabeledTextInput;
-import com.fantasticsource.mctools.gui.element.text.GUINavbar;
-import com.fantasticsource.mctools.gui.element.text.GUITextButton;
-import com.fantasticsource.mctools.gui.element.text.GUITextSpacer;
+import com.fantasticsource.mctools.gui.element.text.*;
 import com.fantasticsource.mctools.gui.element.text.filter.FilterInt;
-import com.fantasticsource.mctools.gui.element.text.filter.FilterNotEmpty;
 import com.fantasticsource.mctools.gui.element.text.filter.FilterRangedInt;
 import com.fantasticsource.mctools.potions.FantasticPotionEffect;
 import com.fantasticsource.tools.datastructures.Color;
 import net.minecraft.init.MobEffects;
+import net.minecraft.potion.Potion;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
@@ -52,7 +49,11 @@ public class PotionEffectGUI extends GUIScreen
 
 
         //Potion Name
-        GUILabeledTextInput name = new GUILabeledTextInput(this, reformat(MODID + ".config.potionName") + ": ", potionEffect.getPotion().getRegistryName().toString(), FilterNotEmpty.INSTANCE);
+        String[] validNames = new String[ForgeRegistries.POTIONS.getKeys().size()];
+        int i = 0;
+        for (Potion potion : ForgeRegistries.POTIONS.getValues()) validNames[i++] = reformat(potion.getName());
+        GUIStringPicker name = new GUIStringPicker(this, reformat(MODID + ".config.type"), validNames);
+        name.set(reformat(potionEffect.getPotion().getName()));
         root.add(name);
         root.add(new GUIElement(this, 1, 0));
 
@@ -75,12 +76,7 @@ public class PotionEffectGUI extends GUIScreen
         //Save actions
         save.addClickActions(() ->
         {
-            if (!name.valid())
-            {
-                name.setText(potionEffect.getPotion().getRegistryName().toString());
-                name.label.click();
-            }
-            else if (!level.valid())
+            if (!level.valid())
             {
                 level.setText("" + (potionEffect.getAmplifier() >= 0 ? potionEffect.getAmplifier() + 1 : potionEffect.getAmplifier()));
                 level.label.click();
@@ -99,7 +95,7 @@ public class PotionEffectGUI extends GUIScreen
             {
                 //Update GUI
                 int lvl = FilterInt.INSTANCE.parse(level.getText());
-                FantasticPotionEffect potionEffect = new FantasticPotionEffect(ForgeRegistries.POTIONS.getValue(new ResourceLocation(name.getText())), FilterInt.INSTANCE.parse(duration.getText()), lvl <= 0 ? lvl : lvl - 1);
+                FantasticPotionEffect potionEffect = new FantasticPotionEffect(ForgeRegistries.POTIONS.getValue(new ResourceLocation(name.value)), FilterInt.INSTANCE.parse(duration.getText()), lvl <= 0 ? lvl : lvl - 1);
                 potionEffect.interval = FilterInt.INSTANCE.parse(interval.getText());
                 clickedElement.set(potionEffect);
                 close();
