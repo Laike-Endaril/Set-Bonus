@@ -1,5 +1,6 @@
 package com.fantasticsource.setbonus;
 
+import com.fantasticsource.setbonus.config.SetBonusConfig;
 import com.fantasticsource.tools.ReflectionTool;
 import it.unimi.dsi.fastutil.chars.Char2ObjectMap;
 import it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet;
@@ -46,6 +47,10 @@ public class Compat
 
     public static void refreshTooltips()
     {
+        //No point in refreshing tooltips if we don't have any
+        if (!SetBonusConfig.clientSettings.enableTooltips) return;
+
+
         if (jei) refreshJEITooltips();
         else if (hei) refreshHEITooltips();
     }
