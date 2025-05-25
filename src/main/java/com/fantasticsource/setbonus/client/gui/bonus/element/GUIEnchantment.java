@@ -31,7 +31,12 @@ public class GUIEnchantment extends GUITextLabel
     {
         this.enchantment = enchantment;
         if (enchantment == null) internalText.setText("");
-        else internalText.setText((enchantment.isCurse() ? TextFormatting.RED : TextFormatting.GREEN) + "" + enchantment.getTranslatedName(level) + " (" + reformat(MODID + ".enchantmode." + mode) + ")");
+        else
+        {
+            String name = enchantment.getTranslatedName(level);
+            if (name.contains("enchantment.level")) name = reformat(enchantment.getName()) + " " + level;
+            internalText.setText((enchantment.isCurse() ? TextFormatting.RED : TextFormatting.GREEN) + "" + name + " (" + reformat(MODID + ".enchantmode." + mode) + ")");
+        }
         runEditActions();
     }
 }
