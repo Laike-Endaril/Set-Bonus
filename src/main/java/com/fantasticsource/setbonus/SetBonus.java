@@ -105,8 +105,7 @@ public class SetBonus
     public static void calcConfigs(ConfigChangedEvent.PostConfigChangedEvent event)
     {
         SetBonusData.setServerFromConfig();
-
-        if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) TooltipRenderer.update();
+        TooltipRenderer.update();
     }
 
     @SubscribeEvent

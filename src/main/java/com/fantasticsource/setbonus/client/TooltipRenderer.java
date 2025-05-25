@@ -38,8 +38,8 @@ public class TooltipRenderer
         for (String string : SetBonusConfig.clientSettings.itemTooltipBlacklist)
         {
             itemTooltipBlacklist.add(RegistryRegexItemFilter.getInstance(string));
-            recentlyDenied = null;
         }
+        recentlyDenied = null;
     }
 
 
