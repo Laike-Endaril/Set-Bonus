@@ -1,4 +1,4 @@
-Fix tooltips being displayed per-slotdata instead of per-set(?)
+Fix tooltips accumulating each time the item tooltip blacklist is updated (also check if actual bonuses accumulate)
 
 Finish buttons in main column
 

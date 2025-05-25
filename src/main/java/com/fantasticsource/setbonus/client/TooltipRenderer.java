@@ -66,106 +66,115 @@ public class TooltipRenderer
 
         List<String> tooltip = event.getToolTip();
 
-        boolean edited = false;
+        boolean showTooltip, edited = false;
         for (Set set : SetBonusData.CLIENT_DATA.sets)
         {
+            showTooltip = false;
             for (SlotData slotData : set.slotData)
             {
                 for (Equip equip : slotData.involvedEquips)
                 {
                     if (equip.filter.matches(stack))
                     {
-                        //This item is part of a known set; add set tooltip for the set we're currently looking at
-                        if (!edited)
-                        {
-                            edited = true;
-                            tooltip.add("");
-//                        tooltip.add("" + LIGHT_PURPLE + UNDERLINE + I18n.translateToLocalFormatted(SetBonus.MODID + ".tooltip.pressDetailKey"));
-//                        tooltip.add("");
-                        }
-                        int count = set.getNumberEquipped(player);
-                        int max = set.getMaxNumber();
-                        String color = "" + (count == 0 ? RED : count == max ? GREEN : YELLOW);
-                        tooltip.add(color + BOLD + "=== " + I18n.translateToLocal(set.name) + " (" + count + "/" + max + ") ===");
-                        for (Bonus bonus : SetBonusData.CLIENT_DATA.bonuses)
-                        {
-                            int req = 0;
-                            boolean otherReqs = false;
-
-                            for (ABonusRequirement requirement : bonus.requirements)
-                            {
-                                if (requirement instanceof SetRequirement)
-                                {
-                                    SetRequirement setRequirement = ((SetRequirement) requirement);
-                                    if (setRequirement.set.id.equals(set.id))
-                                    {
-                                        req = Tools.max(req, setRequirement.required());
-                                    }
-                                    else otherReqs = true;
-                                }
-                                else otherReqs = true;
-                            }
-
-
-                            if (req > 0)
-                            {
-                                //This item fills a requirement for the particular bonus we're looking at, so add bonus tooltip(s) for the set bonus we're currently looking at
-                                ClientBonus.BonusInstance bonusInstance = ((ClientBonus) bonus).getBonusInstance(player);
-
-                                color = "";
-                                int active = set.getNumberEquipped(player);
-
-                                if (bonusInstance.active) color += GREEN; //All requirements met
-                                else
-                                {
-                                    if (active >= req) color += DARK_PURPLE; //Set requirements are met, but non-set requirements are not met
-                                    else if (active == 0) color += RED; //No set requirements met
-                                    else color += YELLOW; //Some set requirements met
-                                }
-
-                                tooltip.add(color + " (" + active + "/" + req + ")" + (otherReqs ? "*" : "") + " " + I18n.translateToLocal(bonus.name));
-
-
-                                if (SetBonusConfig.clientSettings.enableAttributeModifierTooltips || SetBonusConfig.clientSettings.enablePotionEffectTooltips || SetBonusConfig.clientSettings.enableEnchantmentTooltips)
-                                {
-                                    //Detailed bonus tooltips
-                                    ArrayList<BonusElementAttributeModifier> bonusElementAttributeModifiers = new ArrayList<>();
-                                    ArrayList<BonusElementPotionEffect> bonusElementPotionEffects = new ArrayList<>();
-                                    ArrayList<BonusElementEnchantment> bonusElementEnchantments = new ArrayList<>();
-                                    for (ABonusElement element : bonus.bonusElements)
-                                    {
-                                        if (element instanceof BonusElementAttributeModifier) bonusElementAttributeModifiers.add((BonusElementAttributeModifier) element);
-                                        else if (element instanceof BonusElementPotionEffect) bonusElementPotionEffects.add((BonusElementPotionEffect) element);
-                                        else if (element instanceof BonusElementEnchantment) bonusElementEnchantments.add((BonusElementEnchantment) element);
-                                    }
-                                    if (SetBonusConfig.clientSettings.enableAttributeModifierTooltips)
-                                    {
-                                        for (BonusElementAttributeModifier bonusElementAttributeModifier : bonusElementAttributeModifiers)
-                                        {
-                                            for (String line : bonusElementAttributeModifier.tooltips()) tooltip.add(color + "  " + line);
-                                        }
-                                    }
-                                    if (SetBonusConfig.clientSettings.enablePotionEffectTooltips)
-                                    {
-                                        for (BonusElementPotionEffect bonusElementPotionEffect : bonusElementPotionEffects)
-                                        {
-                                            for (String line : bonusElementPotionEffect.tooltips()) tooltip.add(color + "  " + line);
-                                        }
-                                    }
-                                    if (SetBonusConfig.clientSettings.enableEnchantmentTooltips)
-                                    {
-                                        for (BonusElementEnchantment bonusElementEnchantment : bonusElementEnchantments)
-                                        {
-                                            //TODO change how the enchantment bonus displays based on this item, where it is, where it could be, and whether it has it applied?
-                                            for (String line : bonusElementEnchantment.tooltips()) tooltip.add(color + "  " + line);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        tooltip.add("");
+                        showTooltip = true;
+                        break;
                     }
                 }
+                if (showTooltip) break;
+            }
+
+
+            if (showTooltip)
+            {
+                //This item is part of a known set; add set tooltip for the set we're currently looking at
+                if (!edited)
+                {
+                    edited = true;
+                    tooltip.add("");
+//                        tooltip.add("" + LIGHT_PURPLE + UNDERLINE + I18n.translateToLocalFormatted(SetBonus.MODID + ".tooltip.pressDetailKey"));
+//                        tooltip.add("");
+                }
+                int count = set.getNumberEquipped(player);
+                int max = set.getMaxNumber();
+                String color = "" + (count == 0 ? RED : count == max ? GREEN : YELLOW);
+                tooltip.add(color + BOLD + "=== " + I18n.translateToLocal(set.name) + " (" + count + "/" + max + ") ===");
+                for (Bonus bonus : SetBonusData.CLIENT_DATA.bonuses)
+                {
+                    int req = 0;
+                    boolean otherReqs = false;
+
+                    for (ABonusRequirement requirement : bonus.requirements)
+                    {
+                        if (requirement instanceof SetRequirement)
+                        {
+                            SetRequirement setRequirement = ((SetRequirement) requirement);
+                            if (setRequirement.set.id.equals(set.id))
+                            {
+                                req = Tools.max(req, setRequirement.required());
+                            }
+                            else otherReqs = true;
+                        }
+                        else otherReqs = true;
+                    }
+
+
+                    if (req > 0)
+                    {
+                        //This item fills a requirement for the particular bonus we're looking at, so add bonus tooltip(s) for the set bonus we're currently looking at
+                        ClientBonus.BonusInstance bonusInstance = ((ClientBonus) bonus).getBonusInstance(player);
+
+                        color = "";
+                        int active = set.getNumberEquipped(player);
+
+                        if (bonusInstance.active) color += GREEN; //All requirements met
+                        else
+                        {
+                            if (active >= req) color += DARK_PURPLE; //Set requirements are met, but non-set requirements are not met
+                            else if (active == 0) color += RED; //No set requirements met
+                            else color += YELLOW; //Some set requirements met
+                        }
+
+                        tooltip.add(color + " (" + active + "/" + req + ")" + (otherReqs ? "*" : "") + " " + I18n.translateToLocal(bonus.name));
+
+
+                        if (SetBonusConfig.clientSettings.enableAttributeModifierTooltips || SetBonusConfig.clientSettings.enablePotionEffectTooltips || SetBonusConfig.clientSettings.enableEnchantmentTooltips)
+                        {
+                            //Detailed bonus tooltips
+                            ArrayList<BonusElementAttributeModifier> bonusElementAttributeModifiers = new ArrayList<>();
+                            ArrayList<BonusElementPotionEffect> bonusElementPotionEffects = new ArrayList<>();
+                            ArrayList<BonusElementEnchantment> bonusElementEnchantments = new ArrayList<>();
+                            for (ABonusElement element : bonus.bonusElements)
+                            {
+                                if (element instanceof BonusElementAttributeModifier) bonusElementAttributeModifiers.add((BonusElementAttributeModifier) element);
+                                else if (element instanceof BonusElementPotionEffect) bonusElementPotionEffects.add((BonusElementPotionEffect) element);
+                                else if (element instanceof BonusElementEnchantment) bonusElementEnchantments.add((BonusElementEnchantment) element);
+                            }
+                            if (SetBonusConfig.clientSettings.enableAttributeModifierTooltips)
+                            {
+                                for (BonusElementAttributeModifier bonusElementAttributeModifier : bonusElementAttributeModifiers)
+                                {
+                                    for (String line : bonusElementAttributeModifier.tooltips()) tooltip.add(color + "  " + line);
+                                }
+                            }
+                            if (SetBonusConfig.clientSettings.enablePotionEffectTooltips)
+                            {
+                                for (BonusElementPotionEffect bonusElementPotionEffect : bonusElementPotionEffects)
+                                {
+                                    for (String line : bonusElementPotionEffect.tooltips()) tooltip.add(color + "  " + line);
+                                }
+                            }
+                            if (SetBonusConfig.clientSettings.enableEnchantmentTooltips)
+                            {
+                                for (BonusElementEnchantment bonusElementEnchantment : bonusElementEnchantments)
+                                {
+                                    //TODO change how the enchantment bonus displays based on this item, where it is, where it could be, and whether it has it applied?
+                                    for (String line : bonusElementEnchantment.tooltips()) tooltip.add(color + "  " + line);
+                                }
+                            }
+                        }
+                    }
+                }
+                tooltip.add("");
             }
         }
     }
