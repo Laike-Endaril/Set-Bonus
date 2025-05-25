@@ -14,6 +14,7 @@ import com.fantasticsource.mctools.gui.screen.TextSelectionGUI;
 import com.fantasticsource.mctools.gui.screen.YesNoGUI;
 import com.fantasticsource.setbonus.SetBonusData;
 import com.fantasticsource.setbonus.client.gui.ServerConfigGUI;
+import com.fantasticsource.setbonus.client.gui.set.SetGUI;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Equip;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.SlotData;
 import com.fantasticsource.tools.datastructures.Color;
@@ -55,15 +56,23 @@ public class SlotDataGUI extends GUIScreen
         root.add(new GUITextButton(this, reformat(MODID + ".config.cancel"), Color.ORANGE).addClickActions(this::close));
         root.add(new GUITextButton(this, reformat(MODID + ".config.delete"), Color.RED).addClickActions(() ->
         {
-            YesNoGUI yesNoGUI = new YesNoGUI("", reformat(MODID + ".config.deleteThingMaybe", clickedElement.internalText.getText()));
-            yesNoGUI.addPostClosedActions(() ->
+            if (clickedElement.screen instanceof SetGUI)
             {
-                if (yesNoGUI.pressedYes)
+                YesNoGUI yesNoGUI = new YesNoGUI("", reformat(MODID + ".config.deleteThingMaybe", clickedElement.internalText.getText()));
+                yesNoGUI.addPostClosedActions(() ->
                 {
-                    clickedElement.parent.remove(clickedElement);
-                    close();
-                }
-            });
+                    if (yesNoGUI.pressedYes)
+                    {
+                        clickedElement.parent.remove(clickedElement);
+                        close();
+                    }
+                });
+            }
+            else
+            {
+                clickedElement.slotData = SlotData.getEmpty();
+                close();
+            }
         }));
         root.add(new GUITextSpacer(this));
 

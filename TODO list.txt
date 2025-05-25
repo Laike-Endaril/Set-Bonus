@@ -1,4 +1,3 @@
-Fix bug where you can delete the slotdata gui element when defining an enchantment bonus element
 Check for bugs...
 
 Make sure old lang entries for normal config file are intact

@@ -125,6 +125,7 @@ setbonus.config.interval=Interval (0 means none)
 
 setbonus.config.enchantment=Enchantment
 setbonus.config.noEquips=No equips have been created yet!
+setbonus.config.mode=Mode
 
 
 
