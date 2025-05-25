@@ -13,14 +13,18 @@ import com.fantasticsource.mctools.gui.element.view.GUIView;
 import com.fantasticsource.mctools.potions.FantasticPotionEffect;
 import com.fantasticsource.setbonus.SetBonusData;
 import com.fantasticsource.setbonus.client.gui.ServerConfigGUI;
+import com.fantasticsource.setbonus.client.gui.slotdata.GUISlotData;
 import com.fantasticsource.setbonus.common.bonuselements.ABonusElement;
 import com.fantasticsource.setbonus.common.bonuselements.BonusElementAttributeModifier;
 import com.fantasticsource.setbonus.common.bonuselements.BonusElementEnchantment;
 import com.fantasticsource.setbonus.common.bonuselements.BonusElementPotionEffect;
 import com.fantasticsource.tools.datastructures.Color;
+import com.fantasticsource.tools.datastructures.Pair;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 import static com.fantasticsource.setbonus.SetBonus.MODID;
 
@@ -148,7 +152,53 @@ public class BonusElementGUI extends GUIScreen
             }
             else if (type.value.equals(reformat(MODID + ".config.enchantment")))
             {
-                //TODO
+                if (data.equipment.size() == 0)
+                {
+                    typeSettings.add(new GUITextButton(this, MODID + ".config.noEquips", Color.RED));
+                }
+                else
+                {
+                    BonusElementEnchantment enchantmentElement = element instanceof BonusElementEnchantment ? ((BonusElementEnchantment) element).clone() : new BonusElementEnchantment();
+                    element = enchantmentElement;
+
+                    GUISlotData guiSlotData = new GUISlotData(this, data, enchantmentElement.slotDataToEnchant, 1);
+                    typeSettings.add(guiSlotData);
+                    GUITextSpacer spacer2 = new GUITextSpacer(this);
+                    typeSettings.add(spacer2);
+
+                    GUIScrollView enchantments = new GUIScrollView(this, 1 - ServerConfigGUI.SCROLLBAR_WIDTH, 1 - spacer2.y - spacer2.height);
+                    typeSettings.add(enchantments);
+                    GUIVerticalScrollbar enchantmentsScrollbar = new GUIVerticalScrollbar(this, ServerConfigGUI.SCROLLBAR_WIDTH, 1, getHoverColor(Color.AQUA), Color.BLANK, Color.AQUA, Color.BLANK, enchantments);
+                    typeSettings.add(enchantmentsScrollbar);
+
+                    spacer2.addRecalcActions(() ->
+                    {
+                        enchantments.height = 1 - spacer2.y - spacer2.height;
+                        enchantmentsScrollbar.height = 1 - spacer2.y - spacer2.height;
+                    });
+
+                    for (Map.Entry<Pair<Enchantment, Integer>, Integer> entry : enchantmentElement.enchantments.entrySet())
+                    {
+                        GUIEnchantment guiEnchantment = new GUIEnchantment(this, entry.getKey().getKey(), entry.getKey().getValue(), entry.getValue(), 1);
+                        guiEnchantment.addEditActions(() ->
+                        {
+                            if (guiEnchantment.enchantment == null) enchantments.remove(guiEnchantment);
+                        });
+                        enchantments.add(guiEnchantment);
+                    }
+                    GUIEnchantment emptyDummyEnchantment = new GUIEnchantment(this, null, 0, 1, 1);
+                    emptyDummyEnchantment.addEditActions(() ->
+                    {
+                        GUIEnchantment guiEnchantment = new GUIEnchantment(this, emptyDummyEnchantment.enchantment, emptyDummyEnchantment.mode, emptyDummyEnchantment.level, 1);
+                        guiEnchantment.addEditActions(() ->
+                        {
+                            if (guiEnchantment.enchantment == null) enchantments.remove(guiEnchantment);
+                        });
+                        enchantments.add(enchantments.size() - 1, guiEnchantment);
+                        emptyDummyEnchantment.set(null, 0, 1);
+                    });
+                    enchantments.add(emptyDummyEnchantment);
+                }
             }
         });
 
@@ -194,7 +244,26 @@ public class BonusElementGUI extends GUIScreen
             }
             else if (element instanceof BonusElementEnchantment)
             {
-                //TODO
+                GUISlotData guiSlotData = (GUISlotData) typeSettings.get(0);
+                GUIScrollView enchantments = (GUIScrollView) typeSettings.get(2);
+
+                if (guiSlotData.slotData == null || enchantments.size() <= 1) delete.click();
+                else
+                {
+                    BonusElementEnchantment bonusElementEnchantment = (BonusElementEnchantment) element;
+
+                    bonusElementEnchantment.slotDataToEnchant = guiSlotData.slotData;
+
+                    bonusElementEnchantment.enchantments.clear();
+                    GUIEnchantment guiEnchantment;
+                    for (GUIElement guiElement : enchantments.children)
+                    {
+                        guiEnchantment = (GUIEnchantment) guiElement;
+                        if (guiEnchantment.enchantment != null) bonusElementEnchantment.enchantments.put(new Pair<>(guiEnchantment.enchantment, guiEnchantment.mode), guiEnchantment.level);
+                    }
+                    clickedElement.set(element);
+                    close();
+                }
             }
         });
     }

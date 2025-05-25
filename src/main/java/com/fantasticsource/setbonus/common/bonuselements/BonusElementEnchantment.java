@@ -46,10 +46,17 @@ public class BonusElementEnchantment extends ABonusElement
 
 
     public SlotData slotDataToEnchant;
-    public HashMap<Pair<Enchantment, Integer>, Integer> enchantments;
+    public HashMap<Pair<Enchantment, Integer>, Integer> enchantments; //mode, then level
 
 
     public HashMap<EntityPlayer, ItemStack> affectedItemStacks = new HashMap<>(); //NOT static; if it were static, there could be bad overwrites from OTHER ENCHANTMENT BONUSES
+
+
+    public BonusElementEnchantment()
+    {
+        slotDataToEnchant = SlotData.getEmpty();
+        enchantments = new HashMap<>();
+    }
 
     protected BonusElementEnchantment(Bonus bonus, SlotData slotDataToEnchant, HashMap<Pair<Enchantment, Integer>, Integer> enchantments)
     {
@@ -410,7 +417,7 @@ public class BonusElementEnchantment extends ABonusElement
     @Override
     public String[] tooltips()
     {
-        //Enchant, behavior/mode, level
+        //Enchant, mode, level
         String[] result = new String[enchantments.size()];
         int i = 0;
         Enchantment enchantment;
@@ -425,6 +432,22 @@ public class BonusElementEnchantment extends ABonusElement
         return result;
     }
 
+
+    public BonusElementEnchantment clone()
+    {
+        BonusElementEnchantment other = new BonusElementEnchantment();
+
+        other.slotDataToEnchant = SlotData.getEmpty();
+        other.slotDataToEnchant.slotNames.addAll(slotDataToEnchant.slotNames);
+        other.slotDataToEnchant.involvedEquips.addAll(slotDataToEnchant.involvedEquips);
+
+        for (Map.Entry<Pair<Enchantment, Integer>, Integer> entry : enchantments.entrySet())
+        {
+            other.enchantments.put(new Pair<>(entry.getKey().getKey(), entry.getKey().getValue()), entry.getValue());
+        }
+
+        return other;
+    }
 
     public BonusElementEnchantment clone(SetBonusData data)
     {

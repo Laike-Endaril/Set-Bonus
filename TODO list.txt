@@ -1,4 +1,5 @@
-Finish ServerConfigGUI functionality
+Fix bug where you can delete the slotdata gui element when defining an enchantment bonus element
+Check for bugs...
 
 Make sure old lang entries for normal config file are intact
 
@@ -9,6 +10,8 @@ Post library update
 Update library and req
 
 
+
+Simplify GUI code for requirements and bonus elements, maybe even make some client-side-only abstract methods in the abstract parent classes for getting gui elements / screens, etc
 
 More requirement types...
 ...Dimension

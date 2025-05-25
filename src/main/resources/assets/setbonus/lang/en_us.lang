@@ -124,6 +124,7 @@ setbonus.config.duration=Duration (32767 or higher means infinite)
 setbonus.config.interval=Interval (0 means none)
 
 setbonus.config.enchantment=Enchantment
+setbonus.config.noEquips=No equips have been created yet!
 
 
 
