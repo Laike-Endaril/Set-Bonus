@@ -1,4 +1,4 @@
-Fix server data containing instances of Bonus instead of ServerBonus
+Fix bonus deletions not being saved correctly
 
 Test item tooltip blacklist
 

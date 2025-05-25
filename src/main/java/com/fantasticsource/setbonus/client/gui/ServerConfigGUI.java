@@ -224,7 +224,7 @@ public class ServerConfigGUI extends GUIScreen
             close();
         });
 
-        saveLocalLabel.addClickActions(() -> data.clone().applyToConfig());
+        saveLocalLabel.addClickActions(data::applyToConfig);
 
         //TODO add other button functionality
     }

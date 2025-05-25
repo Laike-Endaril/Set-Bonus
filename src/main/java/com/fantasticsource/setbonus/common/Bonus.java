@@ -82,6 +82,27 @@ public class Bonus
     }
 
 
+    public ServerBonus cloneToServer(SetBonusData data)
+    {
+        ServerBonus other = new ServerBonus();
+
+        other.id = id;
+        other.name = name;
+
+        other.discoveryMode = discoveryMode;
+
+
+        //Need to do this here or it will throw getInstance() errors from other classes
+        data.bonuses.add(other);
+
+
+        for (ABonusRequirement requirement : requirements) other.requirements.add(requirement.clone(data));
+
+        for (ABonusElement element : bonusElements) element.clone(data);
+
+        return other;
+    }
+
     public Bonus clone(SetBonusData data)
     {
         Bonus other = new Bonus();

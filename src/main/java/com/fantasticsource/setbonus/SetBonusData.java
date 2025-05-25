@@ -86,6 +86,9 @@ public class SetBonusData
 
     public void applyToConfig()
     {
+        SERVER_DATA = cloneToServer();
+
+
         LinkedHashSet<String>
                 equips = new LinkedHashSet<>(),
                 sets = new LinkedHashSet<>(),
@@ -115,8 +118,6 @@ public class SetBonusData
         serverSettings.attributeMods = attributeModifiers.toArray(new String[0]);
         serverSettings.potions = potions.toArray(new String[0]);
         serverSettings.enchantments = enchantments.toArray(new String[0]);
-
-        SERVER_DATA = this;
 
 
         ConfigManager.sync(MODID, Config.Type.INSTANCE);
@@ -227,6 +228,19 @@ public class SetBonusData
         bonuses.remove(bonus.id);
     }
 
+
+    public SetBonusData cloneToServer()
+    {
+        SetBonusData other = new SetBonusData();
+
+        for (Equip equip : equipment) other.equipment.add(equip.clone());
+
+        for (Set set : sets) other.sets.add(set.clone(other));
+
+        for (Bonus bonus : bonuses) other.bonuses.add(bonus.cloneToServer(other));
+
+        return other;
+    }
 
     public SetBonusData clone()
     {
