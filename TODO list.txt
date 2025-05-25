@@ -1,5 +1,3 @@
-Fix bonus always being applied instead of only being applied when 2 swords are held
-
 Fix tooltips
 
 Finish buttons in main column

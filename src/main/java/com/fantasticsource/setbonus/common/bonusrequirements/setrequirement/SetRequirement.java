@@ -53,7 +53,7 @@ public class SetRequirement extends ABonusRequirement
     @Override
     public int required()
     {
-        return num;
+        return num == -1 ? set.slotData.size() : num;
     }
 
 
