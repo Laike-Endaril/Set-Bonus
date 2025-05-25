@@ -8,7 +8,6 @@ import com.fantasticsource.mctools.gui.element.text.filter.FilterInt;
 import com.fantasticsource.tools.Tools;
 import com.fantasticsource.tools.datastructures.Color;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
@@ -89,7 +88,8 @@ public class EnchantmentGUI extends GUIScreen
             else
             {
                 //Update GUI
-                clickedElement.set(ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation(TextFormatting.getTextWithoutFormattingCodes(name.value))), Tools.indexOf(possibleModes, modePicker.value), FilterInt.INSTANCE.parse(levelInput.getText()));
+                Enchantment enchantment = ForgeRegistries.ENCHANTMENTS.getValues().get(Tools.indexOf(validNames, name.value));
+                clickedElement.set(enchantment, Tools.indexOf(possibleModes, modePicker.value), FilterInt.INSTANCE.parse(levelInput.getText()));
                 close();
             }
         });

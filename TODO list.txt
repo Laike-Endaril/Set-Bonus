@@ -1,5 +1,3 @@
-Check for bugs...
-
 Make sure old lang entries for normal config file are intact
 
 Add blacklist item filter in client settings for which specific items NOT to show tooltips for (unless another solution is thought of)
