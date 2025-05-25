@@ -30,6 +30,9 @@ public class GUIEnchantment extends GUITextLabel
     public void set(Enchantment enchantment, int mode, int level)
     {
         this.enchantment = enchantment;
+        this.mode = mode;
+        this.level = level;
+
         if (enchantment == null) internalText.setText("");
         else
         {
