@@ -1,6 +1,6 @@
-Fix bonus deletions not being saved correctly
+Fix bonus always being applied instead of only being applied when 2 swords are held
 
-Test item tooltip blacklist
+Fix tooltips
 
 Finish buttons in main column
 
