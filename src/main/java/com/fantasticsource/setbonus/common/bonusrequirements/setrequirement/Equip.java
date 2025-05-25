@@ -39,6 +39,21 @@ public class Equip
     }
 
 
+    @Override
+    public int hashCode()
+    {
+        return id.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (obj == this) return true;
+        if (!(obj instanceof Equip)) return false;
+        return ((Equip) obj).id.equals(id);
+    }
+
+
     public Equip clone()
     {
         Equip other = new Equip();

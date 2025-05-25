@@ -195,7 +195,7 @@ public class ServerBonus extends Bonus
                     changed = true;
                     active = true;
 
-                    if (bonus.discoveryMode != MODE_GLOBALLY_HIDDEN && !discovered)
+                    if (bonus.discoveryMode == MODE_DISCOVERABLE && !discovered)
                     {
                         discovered = true;
                         Network.WRAPPER.sendTo(new Network.DiscoverBonusPacket(bonus), player);

@@ -82,6 +82,21 @@ public class Bonus
     }
 
 
+    @Override
+    public int hashCode()
+    {
+        return id.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (obj == this) return true;
+        if (!(obj instanceof Bonus)) return false;
+        return ((Bonus) obj).id.equals(id);
+    }
+
+
     public ServerBonus cloneToServer(SetBonusData data)
     {
         ServerBonus other = new ServerBonus();

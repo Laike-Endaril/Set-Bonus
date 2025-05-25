@@ -97,6 +97,21 @@ public class Set
     }
 
 
+    @Override
+    public int hashCode()
+    {
+        return id.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (obj == this) return true;
+        if (!(obj instanceof Set)) return false;
+        return ((Set) obj).id.equals(id);
+    }
+
+
     public Set clone(SetBonusData data)
     {
         Set other = new Set();
