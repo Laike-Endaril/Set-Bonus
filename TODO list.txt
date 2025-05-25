@@ -25,6 +25,10 @@ More bonus types...
 
 
 
+Add template functionality (see commented-out buttons in ServerConfigGUI)
+
+
+
 Apply bonuses to mobs?
 Could maybe limit triggers to item pickup event and 1 tick after entity joining world?
 

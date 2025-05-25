@@ -40,7 +40,8 @@ public class ServerConfigGUI extends GUIScreen
     public SetBonusData data;
     public GUITextLabel selected = null,
             mainLabel, equipsLabel, bonusesLabel, setsLabel, settingsLabel,
-            linesLabel, entryDisplayModeLabel, loadLocalLabel, saveLocalLabel, loadRemoteLabel, saveRemoteLabel, loadLocalTemplateLabel, saveLocalTemplateLabel, loadRemoteTemplateLabel, saveRemoteTemplateLabel;
+            linesLabel, entryDisplayModeLabel, loadLocalLabel, saveLocalLabel, loadRemoteLabel, saveRemoteLabel;
+//            loadLocalTemplateLabel, saveLocalTemplateLabel, loadRemoteTemplateLabel, saveRemoteTemplateLabel;
     public GUIScrollView main, equips, bonuses, sets, settings;
     public boolean showLines = true;
     public ArrayList<GUILine> lines = new ArrayList<>();
@@ -167,20 +168,20 @@ public class ServerConfigGUI extends GUIScreen
         saveLocalLabel = new GUITextLabel(this, 1, ELEMENT_SCALE).setText(reformat(MODID + ".config.saveLocal"));
         loadRemoteLabel = new GUITextLabel(this, 1, ELEMENT_SCALE).setText(reformat(MODID + ".config.loadRemote"));
         saveRemoteLabel = new GUITextLabel(this, 1, ELEMENT_SCALE).setText(reformat(MODID + ".config.saveRemote"));
-        loadLocalTemplateLabel = new GUITextLabel(this, 1, ELEMENT_SCALE).setText(reformat(MODID + ".config.loadLocalTemplate"));
-        saveLocalTemplateLabel = new GUITextLabel(this, 1, ELEMENT_SCALE).setText(reformat(MODID + ".config.saveLocalTemplate"));
-        loadRemoteTemplateLabel = new GUITextLabel(this, 1, ELEMENT_SCALE).setText(reformat(MODID + ".config.loadRemoteTemplate"));
-        saveRemoteTemplateLabel = new GUITextLabel(this, 1, ELEMENT_SCALE).setText(reformat(MODID + ".config.saveRemoteTemplate"));
+//        loadLocalTemplateLabel = new GUITextLabel(this, 1, ELEMENT_SCALE).setText(reformat(MODID + ".config.loadLocalTemplate"));
+//        saveLocalTemplateLabel = new GUITextLabel(this, 1, ELEMENT_SCALE).setText(reformat(MODID + ".config.saveLocalTemplate"));
+//        loadRemoteTemplateLabel = new GUITextLabel(this, 1, ELEMENT_SCALE).setText(reformat(MODID + ".config.loadRemoteTemplate"));
+//        saveRemoteTemplateLabel = new GUITextLabel(this, 1, ELEMENT_SCALE).setText(reformat(MODID + ".config.saveRemoteTemplate"));
         main.addAll(
                 linesLabel, entryDisplayModeLabel,
                 new GUITextSpacer(this),
                 loadLocalLabel, saveLocalLabel,
                 new GUITextSpacer(this),
-                loadRemoteLabel, saveRemoteLabel,
-                new GUITextSpacer(this),
-                loadLocalTemplateLabel, saveLocalTemplateLabel,
-                new GUITextSpacer(this),
-                loadRemoteTemplateLabel, saveRemoteTemplateLabel);
+                loadRemoteLabel, saveRemoteLabel);
+//                new GUITextSpacer(this),
+//                loadLocalTemplateLabel, saveLocalTemplateLabel,
+//                new GUITextSpacer(this),
+//                loadRemoteTemplateLabel, saveRemoteTemplateLabel);
 
         //Populate other columns
         for (Equip equip : data.equipment) equips.add(new GUIEquip(this, data, equip, 1, ELEMENT_SCALE));
