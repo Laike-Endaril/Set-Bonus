@@ -1,5 +1,3 @@
-Make potion tooltip color show whether it's good or bad, not whether its active (to match other bonus element tooltips)
-
 Test for bugs when changing configs in LAN
 
 Finish buttons in main column

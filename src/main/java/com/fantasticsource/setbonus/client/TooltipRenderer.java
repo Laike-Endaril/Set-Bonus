@@ -153,14 +153,14 @@ public class TooltipRenderer
                             {
                                 for (BonusElementAttributeModifier bonusElementAttributeModifier : bonusElementAttributeModifiers)
                                 {
-                                    for (String line : bonusElementAttributeModifier.tooltips()) tooltip.add(color + "  " + line);
+                                    for (String line : bonusElementAttributeModifier.tooltips()) tooltip.add("  " + line);
                                 }
                             }
                             if (SetBonusConfig.clientSettings.enablePotionEffectTooltips)
                             {
                                 for (BonusElementPotionEffect bonusElementPotionEffect : bonusElementPotionEffects)
                                 {
-                                    for (String line : bonusElementPotionEffect.tooltips()) tooltip.add(color + "  " + line);
+                                    for (String line : bonusElementPotionEffect.tooltips()) tooltip.add("  " + line);
                                 }
                             }
                             if (SetBonusConfig.clientSettings.enableEnchantmentTooltips)
@@ -168,7 +168,7 @@ public class TooltipRenderer
                                 for (BonusElementEnchantment bonusElementEnchantment : bonusElementEnchantments)
                                 {
                                     //TODO change how the enchantment bonus displays based on this item, where it is, where it could be, and whether it has it applied?
-                                    for (String line : bonusElementEnchantment.tooltips()) tooltip.add(color + "  " + line);
+                                    for (String line : bonusElementEnchantment.tooltips()) tooltip.add("  " + line);
                                 }
                             }
                         }

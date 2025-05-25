@@ -12,6 +12,7 @@ import com.fantasticsource.setbonus.common.Network;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 
 import java.util.ArrayList;
@@ -123,7 +124,7 @@ public class BonusElementPotionEffect extends ABonusElement
     {
         String[] result = new String[potions.size()];
         int i = 0;
-        for (FantasticPotionEffect potion : potions) result[i++] = potion.toString(false);
+        for (FantasticPotionEffect potion : potions) result[i++] = (potion.getPotion().isBadEffect() ? TextFormatting.RED : TextFormatting.GREEN) + potion.toString(false);
         return result;
     }
 
