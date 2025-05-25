@@ -5,7 +5,6 @@ import com.fantasticsource.mctools.gui.element.text.GUITextLabel;
 import com.fantasticsource.tools.datastructures.Color;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.translation.I18n;
 
 import static com.fantasticsource.setbonus.SetBonus.MODID;
 
@@ -32,7 +31,7 @@ public class GUIEnchantment extends GUITextLabel
     {
         this.enchantment = enchantment;
         if (enchantment == null) internalText.setText("");
-        else internalText.setText((enchantment.isCurse() ? TextFormatting.RED : TextFormatting.GREEN) + "" + enchantment.getTranslatedName(level) + " (" + I18n.translateToLocal(MODID + ".enchantmode." + mode) + ")");
+        else internalText.setText((enchantment.isCurse() ? TextFormatting.RED : TextFormatting.GREEN) + "" + enchantment.getTranslatedName(level) + " (" + reformat(MODID + ".enchantmode." + mode) + ")");
         runEditActions();
     }
 }

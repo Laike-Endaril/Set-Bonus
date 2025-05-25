@@ -58,9 +58,9 @@ public class EnchantmentGUI extends GUIScreen
         //Enchantment Name
         String[] validNames = new String[ForgeRegistries.ENCHANTMENTS.getKeys().size()];
         int i = 0;
-        for (Enchantment enchantment : ForgeRegistries.ENCHANTMENTS.getValues()) validNames[i++] = (enchantment.isCurse() ? TextFormatting.RED : TextFormatting.GREEN) + "" + enchantment.getTranslatedName(1);
+        for (Enchantment enchantment : ForgeRegistries.ENCHANTMENTS.getValues()) validNames[i++] = (enchantment.isCurse() ? TextFormatting.RED : TextFormatting.GREEN) + "" + reformat(enchantment.getName());
         GUIStringPicker name = new GUIStringPicker(this, reformat(MODID + ".config.type"), validNames);
-        name.set((enchantment.isCurse() ? TextFormatting.RED : TextFormatting.GREEN) + "" + enchantment.getTranslatedName(1));
+        name.set((enchantment.isCurse() ? TextFormatting.RED : TextFormatting.GREEN) + "" + reformat(enchantment.getName()));
         root.add(name);
         root.add(new GUIElement(this, 1, 0));
 
@@ -89,7 +89,7 @@ public class EnchantmentGUI extends GUIScreen
             else
             {
                 //Update GUI
-                clickedElement.set(ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation(name.value)), Tools.indexOf(possibleModes, modePicker.value), FilterInt.INSTANCE.parse(levelInput.getText()));
+                clickedElement.set(ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation(TextFormatting.getTextWithoutFormattingCodes(name.value))), Tools.indexOf(possibleModes, modePicker.value), FilterInt.INSTANCE.parse(levelInput.getText()));
                 close();
             }
         });
