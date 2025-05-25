@@ -1,5 +1,6 @@
 package com.fantasticsource.setbonus;
 
+import com.fantasticsource.mctools.MCTools;
 import com.fantasticsource.setbonus.client.ClientBonus;
 import com.fantasticsource.setbonus.common.Bonus;
 import com.fantasticsource.setbonus.common.Network;
@@ -13,8 +14,10 @@ import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.SetR
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.SlotData;
 import com.fantasticsource.setbonus.config.SetBonusConfig;
 import com.fantasticsource.setbonus.server.ServerBonus;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 import java.util.LinkedHashSet;
 
@@ -44,6 +47,14 @@ public class SetBonusData
     {
         ServerBonus.dropAll();
         SERVER_DATA.setFromConfig();
+
+        if (MCTools.hosting())
+        {
+            for (EntityPlayerMP player : FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayers())
+            {
+                Network.updateConfig(player);
+            }
+        }
     }
 
 

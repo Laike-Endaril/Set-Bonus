@@ -1,4 +1,10 @@
-Fix tooltips accumulating each time the item tooltip blacklist is updated (also check if actual bonuses accumulate)
+Fix bugs...
+...tooltips and / or bonuses are screwed up after changing configs while in-game
+1. Item shows sharpness 2 instead of sharpness 1, but tooltip looks normal
+2. The effects of #1, but tooltip is also doubled, and all bonus element tooltips for each are also doubled
+
+In both cases, switching away from the weapon and back to it again fixes the sharpness level, but the tooltip ends up whichever way it was
+In both cases, the increased sharpness level (at least in the tooltip, not sure if actual) only shows if the settings were changed while the bonus was active
 
 Finish buttons in main column
 

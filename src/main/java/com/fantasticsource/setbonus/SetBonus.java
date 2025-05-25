@@ -18,7 +18,6 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.world.World;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Config;
@@ -113,13 +112,6 @@ public class SetBonus
             {
                 //Changed config while in-game (hosting)
                 SetBonusData.setServerFromConfig();
-
-                EntityPlayer localPlayer = Minecraft.getMinecraft().player;
-                World world = localPlayer.world;
-                for (EntityPlayer player : world.playerEntities)
-                {
-                    if (player != localPlayer) Network.updateConfig((EntityPlayerMP) player);
-                }
             }
             else
             {
