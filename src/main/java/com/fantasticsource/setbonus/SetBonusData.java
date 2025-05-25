@@ -211,7 +211,7 @@ public class SetBonusData
                 }
             }
         }
-        equipment.remove(equip.id);
+        equipment.remove(equip);
     }
 
     public void delete(Set set)
@@ -220,12 +220,12 @@ public class SetBonusData
         {
             bonus.requirements.removeIf(requirement -> requirement instanceof SetRequirement && ((SetRequirement) requirement).set == set);
         }
-        sets.remove(set.id);
+        sets.remove(set);
     }
 
     public void delete(Bonus bonus)
     {
-        bonuses.remove(bonus.id);
+        bonuses.remove(bonus);
     }
 
 
