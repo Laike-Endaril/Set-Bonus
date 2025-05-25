@@ -15,8 +15,6 @@ public class ClientConfig
     @Config.Comment(
             {
                     "FILLSCREEN When to reload the tooltip cache for JEI/HEI",
-                    "Neither JEI nor HEI normally reload tooltips at runtime, but when forced to do so, JEI is actually faster at it",
-                    "That being said, I highly recommend mode 1 here, and not worrying about switching away from whatever your preference is between the two; they should both be fine in mode 1",
                     "",
                     "0 - Never",
                     "This is the default JEI / HEI behavior; searchable parts of tooltips generally won't update, so if you discover a new bonus, you might not be able to search for it until restart",
@@ -28,7 +26,7 @@ public class ClientConfig
                     "",
                     "2 - On set item equip / unequip",
                     "This will reload the tooltip cache when you equip or unequip a set item.  You should get accurate results when searching bonus names or bonus requirements",
-                    "Highest potential performance impact",
+                    "Highest potential performance impact, NOT RECOMMENDED!",
                     " "
             })
     @Config.RangeInt(min = 0, max = 2)
