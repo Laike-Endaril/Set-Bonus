@@ -1,9 +1,10 @@
 package com.fantasticsource.setbonus.common;
 
 import com.fantasticsource.mctools.MCTools;
+import com.fantasticsource.mctools.gui.GUIScreen;
+import com.fantasticsource.mctools.gui.screen.MessageGUI;
 import com.fantasticsource.mctools.potions.FantasticPotionEffect;
 import com.fantasticsource.setbonus.Compat;
-import com.fantasticsource.setbonus.SetBonus;
 import com.fantasticsource.setbonus.SetBonusData;
 import com.fantasticsource.setbonus.client.gui.ServerConfigGUI;
 import com.fantasticsource.setbonus.common.bonuselements.ABonusElement;
@@ -39,9 +40,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import static com.fantasticsource.setbonus.SetBonus.MODID;
+
 public class Network
 {
-    public static final SimpleNetworkWrapper WRAPPER = NetworkRegistry.INSTANCE.newSimpleChannel(SetBonus.MODID);
+    public static final SimpleNetworkWrapper WRAPPER = NetworkRegistry.INSTANCE.newSimpleChannel(MODID);
 
     private static int discriminator = 0;
 
@@ -53,6 +56,7 @@ public class Network
         WRAPPER.registerMessage(PotionFixPacketHandler.class, PotionFixPacket.class, discriminator++, Side.CLIENT);
         WRAPPER.registerMessage(RequestServerDataPacketHandler.class, RequestServerDataPacket.class, discriminator++, Side.SERVER);
         WRAPPER.registerMessage(ServerDataPacketHandler.class, ServerDataPacket.class, discriminator++, Side.CLIENT);
+        WRAPPER.registerMessage(ServerDataRequestDeniedPacketHandler.class, ServerDataRequestDeniedPacket.class, discriminator++, Side.CLIENT);
     }
 
     public static void updateConfig(EntityPlayerMP player)
@@ -452,10 +456,7 @@ public class Network
             {
                 EntityPlayerMP player = ctx.getServerHandler().player;
                 if (MCTools.isOP(player)) WRAPPER.sendTo(new ServerDataPacket(SetBonusData.SERVER_DATA), player);
-                else
-                {
-                    //TODO
-                }
+                else WRAPPER.sendTo(new ServerDataRequestDeniedPacket(), player);
             });
             return null;
         }
@@ -564,6 +565,42 @@ public class Network
                     ServerConfigGUI gui = (ServerConfigGUI) screen;
                     gui.addPostClosedActions(() -> new ServerConfigGUI(packet.data));
                     gui.close();
+                }
+            });
+            return null;
+        }
+    }
+
+
+    public static class ServerDataRequestDeniedPacket implements IMessage
+    {
+        public ServerDataRequestDeniedPacket() //Required; probably for when the packet is received
+        {
+        }
+
+        @Override
+        public void toBytes(ByteBuf buf)
+        {
+        }
+
+        @Override
+        public void fromBytes(ByteBuf buf)
+        {
+        }
+    }
+
+    public static class ServerDataRequestDeniedPacketHandler implements IMessageHandler<ServerDataRequestDeniedPacket, IMessage>
+    {
+        @SideOnly(Side.CLIENT)
+        @Override
+        public IMessage onMessage(ServerDataRequestDeniedPacket packet, MessageContext ctx)
+        {
+            Minecraft.getMinecraft().addScheduledTask(() ->
+            {
+                GuiScreen screen = Minecraft.getMinecraft().currentScreen;
+                if (screen instanceof ServerConfigGUI)
+                {
+                    new MessageGUI(GUIScreen.reformat(MODID + ".requestDenied"), GUIScreen.reformat(MODID + ".requestDenied.needOP"));
                 }
             });
             return null;
