@@ -7,10 +7,10 @@ import com.fantasticsource.mctools.gui.element.text.*;
 import com.fantasticsource.mctools.gui.element.text.filter.FilterInt;
 import com.fantasticsource.mctools.gui.element.text.filter.FilterRangedInt;
 import com.fantasticsource.mctools.potions.FantasticPotionEffect;
+import com.fantasticsource.tools.Tools;
 import com.fantasticsource.tools.datastructures.Color;
 import net.minecraft.init.MobEffects;
 import net.minecraft.potion.Potion;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 import static com.fantasticsource.setbonus.SetBonus.MODID;
@@ -95,7 +95,8 @@ public class PotionEffectGUI extends GUIScreen
             {
                 //Update GUI
                 int lvl = FilterInt.INSTANCE.parse(level.getText());
-                FantasticPotionEffect potionEffect = new FantasticPotionEffect(ForgeRegistries.POTIONS.getValue(new ResourceLocation(name.value)), FilterInt.INSTANCE.parse(duration.getText()), lvl <= 0 ? lvl : lvl - 1);
+                Potion potion = ForgeRegistries.POTIONS.getValues().get(Tools.indexOf(validNames, name.value));
+                FantasticPotionEffect potionEffect = new FantasticPotionEffect(potion, FilterInt.INSTANCE.parse(duration.getText()), lvl <= 0 ? lvl : lvl - 1);
                 potionEffect.interval = FilterInt.INSTANCE.parse(interval.getText());
                 clickedElement.set(potionEffect);
                 close();
