@@ -99,7 +99,7 @@ public class TooltipRenderer
                                     SetRequirement setRequirement = ((SetRequirement) requirement);
                                     if (setRequirement.set.id.equals(set.id))
                                     {
-                                        req = Tools.max(req, setRequirement.num);
+                                        req = Tools.max(req, setRequirement.required());
                                     }
                                     else otherReqs = true;
                                 }

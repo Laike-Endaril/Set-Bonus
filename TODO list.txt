@@ -1,4 +1,4 @@
-Fix tooltips
+Fix tooltips being displayed per-slotdata instead of per-set(?)
 
 Finish buttons in main column
 
