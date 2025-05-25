@@ -291,7 +291,7 @@ public class BonusElementEnchantment extends ABonusElement
 
 
         boolean otherApplied = false;
-        if (FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER)
+        if (bonus instanceof ServerBonus)
         {
             ServerBonus.BonusInstance bonusInstance;
             for (Bonus bonus : SetBonusData.SERVER_DATA.bonuses)

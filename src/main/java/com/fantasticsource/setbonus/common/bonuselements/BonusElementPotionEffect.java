@@ -6,14 +6,13 @@ import com.fantasticsource.mctools.potions.FantasticPotionEffect;
 import com.fantasticsource.mctools.potions.Potions;
 import com.fantasticsource.setbonus.SetBonus;
 import com.fantasticsource.setbonus.SetBonusData;
+import com.fantasticsource.setbonus.client.ClientBonus;
 import com.fantasticsource.setbonus.common.Bonus;
 import com.fantasticsource.setbonus.common.Network;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.text.translation.I18n;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -110,7 +109,7 @@ public class BonusElementPotionEffect extends ABonusElement
                 if (needFix) Network.WRAPPER.sendTo(new Network.PotionFixPacket(potion.getPotion()), (EntityPlayerMP) player);
             }
 
-            if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+            if (bonus instanceof ClientBonus)
             {
                 PotionEffect active = player.getActivePotionEffect(potion.getPotion());
                 if (active != null && active.getDuration() < FantasticPotionEffect.MAX_DURATION_THRESHOLD) active.setPotionDurationMax(false);
