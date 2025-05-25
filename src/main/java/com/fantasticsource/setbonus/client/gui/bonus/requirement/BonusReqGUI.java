@@ -79,12 +79,16 @@ public class BonusReqGUI extends GUIScreen
         //Type selection actions
         type.addEditActions(() ->
         {
+            typeSettings.clear();
+
             if (type.value.equals(reformat(MODID + ".config.set")))
             {
-                if (data.sets.size() > 0)
+                if (data.sets.size() == 0)
                 {
-                    typeSettings.clear();
-
+                    typeSettings.add(new GUITextButton(this, MODID + ".config.noSets", Color.RED));
+                }
+                else
+                {
                     SetRequirement setRequirement = requirement instanceof SetRequirement ? ((SetRequirement) requirement).clone(data) : new SetRequirement(data.sets.iterator().next(), -1);
                     requirement = setRequirement;
 
@@ -111,8 +115,6 @@ public class BonusReqGUI extends GUIScreen
             }
             else if (type.value.equals(reformat(MODID + ".config.attribute")))
             {
-                typeSettings.clear();
-
                 AttributeRequirement attributeRequirement = requirement instanceof AttributeRequirement ? ((AttributeRequirement) requirement).clone(data) : new AttributeRequirement(new Pair<>("generic.armorToughness", new DoubleRequirement(2)));
                 requirement = attributeRequirement;
 

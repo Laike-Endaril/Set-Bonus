@@ -107,6 +107,7 @@ setbonus.config.bonusElement=Bonus Element
 setbonus.config.type=Type
 
 setbonus.config.set=Set
+setbonus.config.noSets=No sets have been created yet!
 setbonus.config.numberOfSetEquips=Equips required (-1 means full set)
 
 setbonus.config.attribute=Attribute

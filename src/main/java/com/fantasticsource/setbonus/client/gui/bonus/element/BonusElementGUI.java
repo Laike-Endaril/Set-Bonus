@@ -80,10 +80,10 @@ public class BonusElementGUI extends GUIScreen
         //Type selection actions
         type.addEditActions(() ->
         {
+            typeSettings.clear();
+
             if (type.value.equals(reformat(MODID + ".config.attributeModifier")))
             {
-                typeSettings.clear();
-
                 BonusElementAttributeModifier attributeModifierElement = element instanceof BonusElementAttributeModifier ? ((BonusElementAttributeModifier) element).clone() : new BonusElementAttributeModifier();
                 element = attributeModifierElement;
 
@@ -116,8 +116,6 @@ public class BonusElementGUI extends GUIScreen
             }
             else if (type.value.equals(reformat(MODID + ".config.potionEffect")))
             {
-                typeSettings.clear();
-
                 BonusElementPotionEffect potionEffectElement = element instanceof BonusElementPotionEffect ? ((BonusElementPotionEffect) element).clone() : new BonusElementPotionEffect();
                 element = potionEffectElement;
 

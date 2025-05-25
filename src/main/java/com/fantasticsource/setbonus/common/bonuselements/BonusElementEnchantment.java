@@ -47,6 +47,8 @@ public class BonusElementEnchantment extends ABonusElement
 
     public SlotData slotDataToEnchant;
     public HashMap<Pair<Enchantment, Integer>, Integer> enchantments;
+
+
     public HashMap<EntityPlayer, ItemStack> affectedItemStacks = new HashMap<>(); //NOT static; if it were static, there could be bad overwrites from OTHER ENCHANTMENT BONUSES
 
     protected BonusElementEnchantment(Bonus bonus, SlotData slotDataToEnchant, HashMap<Pair<Enchantment, Integer>, Integer> enchantments)
