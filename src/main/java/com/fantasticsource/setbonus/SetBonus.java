@@ -1,7 +1,6 @@
 package com.fantasticsource.setbonus;
 
 import com.fantasticsource.mctools.ClientTickTimer;
-import com.fantasticsource.mctools.MCTools;
 import com.fantasticsource.mctools.ServerTickTimer;
 import com.fantasticsource.setbonus.client.ClientBonus;
 import com.fantasticsource.setbonus.client.SetBonusGUI;
@@ -105,25 +104,7 @@ public class SetBonus
     @SideOnly(Side.CLIENT)
     public static void calcConfigs(ConfigChangedEvent.PostConfigChangedEvent event)
     {
-        //Only auto-update data from server configs if we are on the title screen OR if we are hosting the world
-        if (event.isWorldRunning())
-        {
-            if (MCTools.hosting())
-            {
-                //Changed config while in-game (hosting)
-                SetBonusData.setServerFromConfig();
-            }
-            else
-            {
-                //Changed config while in-game (not hosting)
-            }
-        }
-        else
-        {
-            //Changed config from title screen
-            SetBonusData.setServerFromConfig();
-        }
-
+        SetBonusData.setServerFromConfig();
 
         if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) TooltipRenderer.update();
     }
