@@ -1,9 +1,11 @@
 package com.fantasticsource.setbonus.common;
 
+import com.fantasticsource.mctools.MCTools;
 import com.fantasticsource.mctools.potions.FantasticPotionEffect;
 import com.fantasticsource.setbonus.Compat;
 import com.fantasticsource.setbonus.SetBonus;
 import com.fantasticsource.setbonus.SetBonusData;
+import com.fantasticsource.setbonus.client.gui.ServerConfigGUI;
 import com.fantasticsource.setbonus.common.bonuselements.ABonusElement;
 import com.fantasticsource.setbonus.common.bonuselements.BonusElementAttributeModifier;
 import com.fantasticsource.setbonus.common.bonuselements.BonusElementEnchantment;
@@ -17,11 +19,13 @@ import com.fantasticsource.setbonus.config.SetBonusConfig;
 import com.fantasticsource.setbonus.server.ServerBonus;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -32,6 +36,7 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 public class Network
@@ -46,6 +51,8 @@ public class Network
         WRAPPER.registerMessage(DiscoverBonusPacketHandler.class, DiscoverBonusPacket.class, discriminator++, Side.CLIENT);
         WRAPPER.registerMessage(HPFixPacketHandler.class, HPFixPacket.class, discriminator++, Side.CLIENT);
         WRAPPER.registerMessage(PotionFixPacketHandler.class, PotionFixPacket.class, discriminator++, Side.CLIENT);
+        WRAPPER.registerMessage(RequestServerDataPacketHandler.class, RequestServerDataPacket.class, discriminator++, Side.SERVER);
+        WRAPPER.registerMessage(ServerDataPacketHandler.class, ServerDataPacket.class, discriminator++, Side.CLIENT);
     }
 
     public static void updateConfig(EntityPlayerMP player)
@@ -411,6 +418,152 @@ public class Network
                     potionEffect = new FantasticPotionEffect(potionEffect.getPotion(), potionEffect.getDuration(), potionEffect.getAmplifier(), potionEffect.getIsAmbient(), potionEffect.doesShowParticles());
                     potionEffect.setPotionDurationMax(potionEffect.getDuration() >= FantasticPotionEffect.MAX_DURATION_THRESHOLD);
                     player.addPotionEffect(potionEffect);
+                }
+            });
+            return null;
+        }
+    }
+
+
+    public static class RequestServerDataPacket implements IMessage
+    {
+        public RequestServerDataPacket()
+        {
+            //Required
+        }
+
+        @Override
+        public void toBytes(ByteBuf buf)
+        {
+        }
+
+        @Override
+        public void fromBytes(ByteBuf buf)
+        {
+        }
+    }
+
+    public static class RequestServerDataPacketHandler implements IMessageHandler<RequestServerDataPacket, IMessage>
+    {
+        @Override
+        public IMessage onMessage(RequestServerDataPacket packet, MessageContext ctx)
+        {
+            FMLCommonHandler.instance().getMinecraftServerInstance().addScheduledTask(() ->
+            {
+                EntityPlayerMP player = ctx.getServerHandler().player;
+                if (MCTools.isOP(player)) WRAPPER.sendTo(new ServerDataPacket(SetBonusData.SERVER_DATA), player);
+                else
+                {
+                    //TODO
+                }
+            });
+            return null;
+        }
+    }
+
+
+    public static class ServerDataPacket implements IMessage
+    {
+        public SetBonusData data;
+
+        public ServerDataPacket() //Required; probably for when the packet is received
+        {
+        }
+
+        public ServerDataPacket(SetBonusData data)
+        {
+            this.data = data.clone();
+        }
+
+        @Override
+        public void toBytes(ByteBuf buf)
+        {
+            buf.writeInt(data.equipment.size());
+            for (Equip equip : data.equipment) ByteBufUtils.writeUTF8String(buf, equip.toString());
+
+            buf.writeInt(data.sets.size());
+            for (Set set : data.sets) ByteBufUtils.writeUTF8String(buf, set.toString());
+
+
+            ArrayList<BonusElementAttributeModifier> attributeMods = new ArrayList<>();
+            ArrayList<BonusElementPotionEffect> potions = new ArrayList<>();
+            ArrayList<BonusElementEnchantment> enchantments = new ArrayList<>();
+
+            buf.writeInt(data.bonuses.size());
+            for (Bonus bonus : data.bonuses)
+            {
+                ByteBufUtils.writeUTF8String(buf, bonus.toString());
+                for (ABonusElement element : bonus.bonusElements)
+                {
+                    if (element instanceof BonusElementAttributeModifier) attributeMods.add((BonusElementAttributeModifier) element);
+                    if (element instanceof BonusElementPotionEffect) potions.add((BonusElementPotionEffect) element);
+                    if (element instanceof BonusElementEnchantment) enchantments.add((BonusElementEnchantment) element);
+                }
+            }
+
+            buf.writeInt(attributeMods.size());
+            for (BonusElementAttributeModifier element : attributeMods) ByteBufUtils.writeUTF8String(buf, element.toString());
+
+            buf.writeInt(potions.size());
+            for (BonusElementPotionEffect element : potions) ByteBufUtils.writeUTF8String(buf, element.toString());
+
+            buf.writeInt(enchantments.size());
+            for (BonusElementEnchantment element : enchantments) ByteBufUtils.writeUTF8String(buf, element.toString());
+        }
+
+        @Override
+        public void fromBytes(ByteBuf buf)
+        {
+            data = new SetBonusData();
+
+            for (int i = buf.readInt(); i > 0; i--)
+            {
+                data.equipment.add(Equip.getInstance(ByteBufUtils.readUTF8String(buf)));
+            }
+
+            for (int i = buf.readInt(); i > 0; i--)
+            {
+                data.sets.add(Set.getInstance(ByteBufUtils.readUTF8String(buf), data));
+            }
+
+
+            for (int i = buf.readInt(); i > 0; i--)
+            {
+                data.bonuses.add(Bonus.getInstance(ByteBufUtils.readUTF8String(buf), data));
+            }
+
+
+            for (int i = buf.readInt(); i > 0; i--)
+            {
+                BonusElementAttributeModifier.getInstance(ByteBufUtils.readUTF8String(buf), data);
+            }
+
+            for (int i = buf.readInt(); i > 0; i--)
+            {
+                BonusElementPotionEffect.getInstance(ByteBufUtils.readUTF8String(buf), data);
+            }
+
+            for (int i = buf.readInt(); i > 0; i--)
+            {
+                BonusElementEnchantment.getInstance(ByteBufUtils.readUTF8String(buf), data);
+            }
+        }
+    }
+
+    public static class ServerDataPacketHandler implements IMessageHandler<ServerDataPacket, IMessage>
+    {
+        @SideOnly(Side.CLIENT)
+        @Override
+        public IMessage onMessage(ServerDataPacket packet, MessageContext ctx)
+        {
+            Minecraft.getMinecraft().addScheduledTask(() ->
+            {
+                GuiScreen screen = Minecraft.getMinecraft().currentScreen;
+                if (screen instanceof ServerConfigGUI)
+                {
+                    ServerConfigGUI gui = (ServerConfigGUI) screen;
+                    gui.addPostClosedActions(() -> new ServerConfigGUI(packet.data));
+                    gui.close();
                 }
             });
             return null;

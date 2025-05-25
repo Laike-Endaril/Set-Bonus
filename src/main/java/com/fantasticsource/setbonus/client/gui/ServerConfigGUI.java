@@ -16,6 +16,7 @@ import com.fantasticsource.setbonus.client.gui.bonus.GUIBonus;
 import com.fantasticsource.setbonus.client.gui.equip.GUIEquip;
 import com.fantasticsource.setbonus.client.gui.set.GUISet;
 import com.fantasticsource.setbonus.common.Bonus;
+import com.fantasticsource.setbonus.common.Network;
 import com.fantasticsource.setbonus.common.bonusrequirements.ABonusRequirement;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Equip;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Set;
@@ -41,7 +42,7 @@ public class ServerConfigGUI extends GUIScreen
     public GUITextLabel selected = null,
             mainLabel, equipsLabel, bonusesLabel, setsLabel, settingsLabel,
             linesLabel, entryDisplayModeLabel, loadLocalLabel, saveLocalLabel, loadRemoteLabel, saveRemoteLabel;
-//            loadLocalTemplateLabel, saveLocalTemplateLabel, loadRemoteTemplateLabel, saveRemoteTemplateLabel;
+    //            loadLocalTemplateLabel, saveLocalTemplateLabel, loadRemoteTemplateLabel, saveRemoteTemplateLabel;
     public GUIScrollView main, equips, bonuses, sets, settings;
     public boolean showLines = true;
     public ArrayList<GUILine> lines = new ArrayList<>();
@@ -226,6 +227,9 @@ public class ServerConfigGUI extends GUIScreen
         });
 
         saveLocalLabel.addClickActions(data::applyToConfig);
+
+
+        loadRemoteLabel.addClickActions(() -> Network.WRAPPER.sendToServer(new Network.RequestServerDataPacket()));
 
         //TODO add other button functionality
     }

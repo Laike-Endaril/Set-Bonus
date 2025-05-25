@@ -6,6 +6,7 @@ Update library and req
 
 
 Simplify GUI code for requirements and bonus elements, maybe even make some client-side-only abstract methods in the abstract parent classes for getting gui elements / screens, etc
+In general, try to move all code specific to a given bonus requirement / element type into abstract methods for them. so that any new ones created are forced to have everything needed
 
 More requirement types...
 ...Dimension
