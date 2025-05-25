@@ -32,6 +32,17 @@ public class TooltipRenderer
     public static ItemStack recentlyDenied = null;
 
 
+    public static void update()
+    {
+        itemTooltipBlacklist.clear();
+        for (String string : SetBonusConfig.clientSettings.itemTooltipBlacklist)
+        {
+            itemTooltipBlacklist.add(RegistryRegexItemFilter.getInstance(string));
+            recentlyDenied = null;
+        }
+    }
+
+
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void tooltips(ItemTooltipEvent event)
     {

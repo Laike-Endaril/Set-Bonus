@@ -3,7 +3,6 @@ package com.fantasticsource.setbonus;
 import com.fantasticsource.mctools.ClientTickTimer;
 import com.fantasticsource.mctools.MCTools;
 import com.fantasticsource.mctools.ServerTickTimer;
-import com.fantasticsource.mctools.items.RegistryRegexItemFilter;
 import com.fantasticsource.setbonus.client.ClientBonus;
 import com.fantasticsource.setbonus.client.SetBonusGUI;
 import com.fantasticsource.setbonus.client.TooltipRenderer;
@@ -75,6 +74,7 @@ public class SetBonus
             MinecraftForge.EVENT_BUS.register(ClientTickTimer.class);
             MinecraftForge.EVENT_BUS.register(TooltipRenderer.class);
             MinecraftForge.EVENT_BUS.register(SetBonusGUI.class);
+            TooltipRenderer.update();
         }
     }
 
@@ -133,16 +133,7 @@ public class SetBonus
         }
 
 
-        if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
-        {
-            //Client configs
-            TooltipRenderer.itemTooltipBlacklist.clear();
-            for (String string : SetBonusConfig.clientSettings.itemTooltipBlacklist)
-            {
-                TooltipRenderer.itemTooltipBlacklist.add(RegistryRegexItemFilter.getInstance(string));
-                TooltipRenderer.recentlyDenied = null;
-            }
-        }
+        if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) TooltipRenderer.update();
     }
 
     @SubscribeEvent
