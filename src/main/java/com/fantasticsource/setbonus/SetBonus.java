@@ -3,6 +3,7 @@ package com.fantasticsource.setbonus;
 import com.fantasticsource.mctools.ClientTickTimer;
 import com.fantasticsource.mctools.MCTools;
 import com.fantasticsource.mctools.ServerTickTimer;
+import com.fantasticsource.mctools.items.RegistryRegexItemFilter;
 import com.fantasticsource.setbonus.client.ClientBonus;
 import com.fantasticsource.setbonus.client.SetBonusGUI;
 import com.fantasticsource.setbonus.client.TooltipRenderer;
@@ -105,7 +106,7 @@ public class SetBonus
     @SideOnly(Side.CLIENT)
     public static void calcConfigs(ConfigChangedEvent.PostConfigChangedEvent event)
     {
-        //Only auto-update data from configs if we are on the title screen OR if we are hosting the world
+        //Only auto-update data from server configs if we are on the title screen OR if we are hosting the world
         if (event.isWorldRunning())
         {
             if (MCTools.hosting())
@@ -129,6 +130,18 @@ public class SetBonus
         {
             //Changed config from title screen
             SetBonusData.setServerFromConfig();
+        }
+
+
+        if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+        {
+            //Client configs
+            TooltipRenderer.itemTooltipBlacklist.clear();
+            for (String string : SetBonusConfig.clientSettings.itemTooltipBlacklist)
+            {
+                TooltipRenderer.itemTooltipBlacklist.add(RegistryRegexItemFilter.getInstance(string));
+                TooltipRenderer.recentlyDenied = null;
+            }
         }
     }
 

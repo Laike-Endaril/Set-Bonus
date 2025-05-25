@@ -1,5 +1,6 @@
 package com.fantasticsource.setbonus.client;
 
+import com.fantasticsource.mctools.items.RegistryRegexItemFilter;
 import com.fantasticsource.setbonus.SetBonusData;
 import com.fantasticsource.setbonus.common.Bonus;
 import com.fantasticsource.setbonus.common.bonuselements.ABonusElement;
@@ -27,15 +28,31 @@ import static net.minecraft.util.text.TextFormatting.*;
 
 public class TooltipRenderer
 {
+    public static ArrayList<RegistryRegexItemFilter> itemTooltipBlacklist = new ArrayList<>();
+    public static ItemStack recentlyDenied = null;
+
+
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void tooltips(ItemTooltipEvent event)
     {
         if (!SetBonusConfig.clientSettings.enableTooltips) return;
 
+
+        ItemStack stack = event.getItemStack();
+        if (recentlyDenied == stack) return;
+        for (RegistryRegexItemFilter filter : itemTooltipBlacklist)
+        {
+            if (filter.matches(stack))
+            {
+                recentlyDenied = stack;
+                return;
+            }
+        }
+
+
         EntityPlayer player = event.getEntityPlayer();
         if (player == null) return;
 
-        ItemStack stack = event.getItemStack();
         List<String> tooltip = event.getToolTip();
 
         boolean edited = false;

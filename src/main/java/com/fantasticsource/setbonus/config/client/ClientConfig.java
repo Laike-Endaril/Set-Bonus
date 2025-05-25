@@ -10,6 +10,18 @@ public class ClientConfig
     @Config.Comment("Whether or not to show set bonus information in discovered set item tooltips")
     public boolean enableTooltips = true;
 
+    @Config.Name("1a. Item Tooltip Blacklist")
+    @Config.LangKey(SetBonus.MODID + ".config.itemTooltipBlacklist")
+    @Config.Comment({
+            "These items will not display Set Bonus tooltips",
+            "",
+            "Each of the domain, name, and meta can be regex: .*:.*:.* will match all items, .* will match all vanilla items with 0 meta",
+            "",
+            "Of course, you can also still use normal syntax, eg. minecraft:elytra",
+            " "
+    })
+    public String[] itemTooltipBlacklist = new String[]{};
+
     @Config.Name("2. Dynamic Tooltip Searching (JEI/HEI)")
     @Config.LangKey(SetBonus.MODID + ".config.dynamicTooltipSearch")
     @Config.Comment(

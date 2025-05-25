@@ -1,7 +1,8 @@
-Make sure old lang entries for normal config file are intact
+Fix server data containing instances of Bonus instead of ServerBonus
 
-Add blacklist item filter in client settings for which specific items NOT to show tooltips for (unless another solution is thought of)
-https://github.com/Laike-Endaril/Set-Bonus/issues/33
+Test item tooltip blacklist
+
+Finish buttons in main column
 
 Post library update
 Update library and req
