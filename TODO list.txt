@@ -1,10 +1,5 @@
 Fix bugs...
-...tooltips and / or bonuses are screwed up after changing configs while in-game
-1. Item shows sharpness 2 instead of sharpness 1, but tooltip looks normal
-2. The effects of #1, but all bonus element tooltips for each bonus are doubled
-
-In both cases, switching away from the weapon and back to it again fixes the sharpness level, but the tooltip ends up whichever way it was
-The increased sharpness level (at least in the tooltip, not sure if actual) only shows if the settings were changed while the bonus was active
+...enchantment bonus is being double-applied on server-side when server configs are saved
 
 Finish buttons in main column
 

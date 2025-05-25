@@ -162,7 +162,6 @@ public class SetBonus
         if (entity instanceof EntityPlayerMP)
         {
             EntityPlayerMP player = (EntityPlayerMP) entity;
-            ServerBonus.loadDiscoveries(player);
             Network.updateConfig(player);
 
             Network.WRAPPER.sendTo(new Network.HPFixPacket(player), player);
@@ -181,7 +180,6 @@ public class SetBonus
     {
         Minecraft.getMinecraft().addScheduledTask(() ->
         {
-            ClientBonus.dropAll();
             SetBonusData.CLIENT_DATA.clear();
             if (SetBonusConfig.clientSettings.dynamicTooltipSearch > 0) Compat.refreshTooltips();
         });

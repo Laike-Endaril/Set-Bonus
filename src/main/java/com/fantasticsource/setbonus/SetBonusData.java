@@ -26,6 +26,7 @@ import static com.fantasticsource.setbonus.config.SetBonusConfig.serverSettings;
 
 public class SetBonusData
 {
+    public static boolean setServerFromConfigCalled = false;
     public static SetBonusData SERVER_DATA = new SetBonusData(), CLIENT_DATA = new SetBonusData();
 
 
@@ -37,6 +38,9 @@ public class SetBonusData
 
     public void clear()
     {
+        if (SERVER_DATA == this) ServerBonus.dropAll();
+        if (CLIENT_DATA == this) ClientBonus.dropAll();
+
         equipment.clear();
         sets.clear();
         bonuses.clear();
@@ -45,7 +49,7 @@ public class SetBonusData
 
     public static void setServerFromConfig()
     {
-        ServerBonus.dropAll();
+        setServerFromConfigCalled = true;
         SERVER_DATA.setFromConfig();
 
         if (MCTools.hosting())
@@ -60,7 +64,6 @@ public class SetBonusData
 
     public static void setClientFromPacket(Network.AllDiscoveredBonusesPacket packet)
     {
-        ClientBonus.dropAll();
         CLIENT_DATA.setFromPacket(packet);
         if (SetBonusConfig.clientSettings.dynamicTooltipSearch > 0) Compat.refreshTooltips();
     }
@@ -97,9 +100,6 @@ public class SetBonusData
 
     public void applyToConfig()
     {
-        SERVER_DATA = cloneToServer();
-
-
         LinkedHashSet<String>
                 equips = new LinkedHashSet<>(),
                 sets = new LinkedHashSet<>(),
@@ -132,6 +132,10 @@ public class SetBonusData
 
 
         ConfigManager.sync(MODID, Config.Type.INSTANCE);
+
+
+        SERVER_DATA.clear();
+        setServerFromConfig();
     }
 
 
@@ -239,19 +243,6 @@ public class SetBonusData
         bonuses.remove(bonus);
     }
 
-
-    public SetBonusData cloneToServer()
-    {
-        SetBonusData other = new SetBonusData();
-
-        for (Equip equip : equipment) other.equipment.add(equip.clone());
-
-        for (Set set : sets) other.sets.add(set.clone(other));
-
-        for (Bonus bonus : bonuses) other.bonuses.add(bonus.cloneToServer(other));
-
-        return other;
-    }
 
     public SetBonusData clone()
     {

@@ -50,8 +50,9 @@ public class Network
 
     public static void updateConfig(EntityPlayerMP player)
     {
-        Network.WRAPPER.sendTo(new AllDiscoveredBonusesPacket(player), player);
         ServerBonus.updateBonuses(player, true);
+        ServerBonus.loadDiscoveries(player);
+        Network.WRAPPER.sendTo(new AllDiscoveredBonusesPacket(player), player);
     }
 
 

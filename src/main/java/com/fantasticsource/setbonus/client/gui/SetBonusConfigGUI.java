@@ -39,7 +39,7 @@ public class SetBonusConfigGUI extends GUIScreen
         element = new GUITextButton(this, reformat(MODID + ".config.serverSettings"));
         element.addClickActions(() ->
         {
-            SetBonusData.setServerFromConfig();
+            if (!SetBonusData.setServerFromConfigCalled) SetBonusData.setServerFromConfig();
             new ServerConfigGUI(SetBonusData.SERVER_DATA.clone());
         });
         ((GUITextButton) element).setColor(Color.AQUA);
