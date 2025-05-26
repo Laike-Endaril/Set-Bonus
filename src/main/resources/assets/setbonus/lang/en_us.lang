@@ -65,6 +65,11 @@ setbonus.config.enchantments.tooltip=FIXNEWLINES FILLSCREEN Temporary item encha
 
 
 
+
+
+
+setbonus.config.oldGUI=Access Old Config GUI
+
 setbonus.config.filter=Filter
 
 setbonus.config.dynamicTooltipSearch.never=Never

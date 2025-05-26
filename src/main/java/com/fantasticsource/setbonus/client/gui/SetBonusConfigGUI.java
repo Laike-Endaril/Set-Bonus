@@ -8,19 +8,23 @@ import com.fantasticsource.mctools.gui.element.text.GUITextButton;
 import com.fantasticsource.mctools.gui.element.text.GUITextSpacer;
 import com.fantasticsource.setbonus.SetBonusData;
 import com.fantasticsource.tools.datastructures.Color;
+import net.minecraft.client.Minecraft;
+import net.minecraftforge.fml.client.config.GuiConfig;
 
 import static com.fantasticsource.setbonus.SetBonus.MODID;
 
 public class SetBonusConfigGUI extends GUIScreen
 {
-    public SetBonusConfigGUI()
+    public static boolean dontReplace = false;
+
+    public SetBonusConfigGUI(GuiConfig oldGUI)
     {
         show();
 
 
         //Root
         root.add(new GUIDarkenedBackground(this));
-        GUIElement element = new GUINavbar(this);
+        GUITextButton element = new GUINavbar(this);
         element.autoplace = false;
         ((GUINavbar) element).maxParentsDisplayed = 0;
         root.add(element);
@@ -29,20 +33,38 @@ public class SetBonusConfigGUI extends GUIScreen
         root.setSubElementAutoplaceMethod(GUIElement.AP_CENTER);
 
 
+        //Client settings
         element = new GUITextButton(this, reformat(MODID + ".config.clientSettings"));
         element.addClickActions(ClientConfigGUI::new);
-        ((GUITextButton) element).setColor(Color.AQUA);
+        element.setColor(Color.AQUA);
         root.add(element);
-
         root.add(new GUITextSpacer(this));
 
+
+        //Server settings
         element = new GUITextButton(this, reformat(MODID + ".config.serverSettings"));
         element.addClickActions(() ->
         {
             if (!SetBonusData.setServerFromConfigCalled) SetBonusData.setServerFromConfig();
             new ServerConfigGUI(SetBonusData.SERVER_DATA.clone());
         });
-        ((GUITextButton) element).setColor(Color.AQUA);
+        element.setColor(Color.AQUA);
+        root.add(element);
+        root.add(new GUITextSpacer(this));
+
+
+        //Forge config GUI
+        element = new GUITextButton(this, reformat(MODID + ".config.oldGUI"));
+        element.addClickActions(() ->
+        {
+            addPostClosedActions(() ->
+            {
+                dontReplace = true;
+                Minecraft.getMinecraft().displayGuiScreen(oldGUI);
+            });
+            close();
+        });
+        element.setColor(Color.AQUA);
         root.add(element);
     }
 

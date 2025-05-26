@@ -22,6 +22,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.fml.client.GuiModList;
 import net.minecraftforge.fml.client.config.GuiConfig;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -170,10 +171,14 @@ public class SetBonus
     public static void gui(GuiOpenEvent event)
     {
         GuiScreen gui = event.getGui();
-        if (gui instanceof GuiConfig && MODID.equals(((GuiConfig) gui).modID))
+        if (Minecraft.getMinecraft().currentScreen instanceof GuiModList && gui instanceof GuiConfig && MODID.equals(((GuiConfig) gui).modID))
         {
-            event.setCanceled(true);
-            new SetBonusConfigGUI();
+            if (SetBonusConfigGUI.dontReplace) SetBonusConfigGUI.dontReplace = false;
+            else
+            {
+                event.setCanceled(true);
+                new SetBonusConfigGUI((GuiConfig) gui);
+            }
         }
     }
 }
