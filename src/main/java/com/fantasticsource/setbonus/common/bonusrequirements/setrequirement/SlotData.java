@@ -9,9 +9,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.items.IItemHandlerModifiable;
-import scala.actors.threadpool.Arrays;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 
