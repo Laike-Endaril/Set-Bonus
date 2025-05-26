@@ -11,7 +11,6 @@ import com.fantasticsource.setbonus.common.bonuselements.BonusElementPotionEffec
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Equip;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Set;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.SetRequirement;
-import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.SlotData;
 import com.fantasticsource.setbonus.config.SetBonusConfig;
 import com.fantasticsource.setbonus.server.ServerBonus;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -211,10 +210,11 @@ public class SetBonusData
 
     public void delete(Equip equip)
     {
-        for (Set set : sets.toArray(new Set[0]))
+        sets.removeIf(set ->
         {
-            for (SlotData slotData : set.slotData) slotData.involvedEquips.remove(equip);
-        }
+            set.slotData.removeIf(slotData -> slotData.involvedEquips.remove(equip) && slotData.involvedEquips.size() == 0);
+            return set.slotData.size() == 0;
+        });
         for (Bonus bonus : bonuses)
         {
             for (ABonusElement element : bonus.bonusElements)

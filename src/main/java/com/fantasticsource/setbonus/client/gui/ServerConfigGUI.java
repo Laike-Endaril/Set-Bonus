@@ -329,7 +329,11 @@ public class ServerConfigGUI extends GUIScreen
     {
         select(null);
 
-        if (label instanceof GUIEquip) data.delete(((GUIEquip) label).equip);
+        if (label instanceof GUIEquip)
+        {
+            data.delete(((GUIEquip) label).equip);
+            sets.children.removeIf(element -> element instanceof GUISet && !data.sets.contains(((GUISet) element).set));
+        }
         else if (label instanceof GUISet) data.delete(((GUISet) label).set);
         else if (label instanceof GUIBonus) data.delete(((GUIBonus) label).bonus);
 
