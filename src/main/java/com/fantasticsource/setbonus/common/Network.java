@@ -56,7 +56,8 @@ public class Network
         WRAPPER.registerMessage(PotionFixPacketHandler.class, PotionFixPacket.class, discriminator++, Side.CLIENT);
         WRAPPER.registerMessage(RequestServerDataPacketHandler.class, RequestServerDataPacket.class, discriminator++, Side.SERVER);
         WRAPPER.registerMessage(ServerDataPacketHandler.class, ServerDataPacket.class, discriminator++, Side.CLIENT);
-        WRAPPER.registerMessage(ServerDataRequestDeniedPacketHandler.class, ServerDataRequestDeniedPacket.class, discriminator++, Side.CLIENT);
+        WRAPPER.registerMessage(ServerGUIMessagePacketHandler.class, ServerGUIMessagePacket.class, discriminator++, Side.CLIENT);
+        WRAPPER.registerMessage(SetServerDataPacketHandler.class, SetServerDataPacket.class, discriminator++, Side.SERVER);
     }
 
     public static void updateConfig(EntityPlayerMP player)
@@ -456,7 +457,7 @@ public class Network
             {
                 EntityPlayerMP player = ctx.getServerHandler().player;
                 if (MCTools.isOP(player)) WRAPPER.sendTo(new ServerDataPacket(SetBonusData.SERVER_DATA), player);
-                else WRAPPER.sendTo(new ServerDataRequestDeniedPacket(), player);
+                else WRAPPER.sendTo(new ServerGUIMessagePacket(MODID + ".requestDenied", MODID + ".requestDenied.needOP"), player);
             });
             return null;
         }
@@ -572,36 +573,157 @@ public class Network
     }
 
 
-    public static class ServerDataRequestDeniedPacket implements IMessage
+    public static class ServerGUIMessagePacket implements IMessage
     {
-        public ServerDataRequestDeniedPacket() //Required; probably for when the packet is received
+        String title, message;
+
+        public ServerGUIMessagePacket() //Required; probably for when the packet is received
         {
+        }
+
+        public ServerGUIMessagePacket(String title, String message)
+        {
+            this.title = title;
+            this.message = message;
         }
 
         @Override
         public void toBytes(ByteBuf buf)
         {
+            ByteBufUtils.writeUTF8String(buf, title);
+            ByteBufUtils.writeUTF8String(buf, message);
         }
 
         @Override
         public void fromBytes(ByteBuf buf)
         {
+            title = ByteBufUtils.readUTF8String(buf);
+            message = ByteBufUtils.readUTF8String(buf);
         }
     }
 
-    public static class ServerDataRequestDeniedPacketHandler implements IMessageHandler<ServerDataRequestDeniedPacket, IMessage>
+    public static class ServerGUIMessagePacketHandler implements IMessageHandler<ServerGUIMessagePacket, IMessage>
     {
         @SideOnly(Side.CLIENT)
         @Override
-        public IMessage onMessage(ServerDataRequestDeniedPacket packet, MessageContext ctx)
+        public IMessage onMessage(ServerGUIMessagePacket packet, MessageContext ctx)
         {
             Minecraft.getMinecraft().addScheduledTask(() ->
             {
                 GuiScreen screen = Minecraft.getMinecraft().currentScreen;
                 if (screen instanceof ServerConfigGUI)
                 {
-                    new MessageGUI(GUIScreen.reformat(MODID + ".requestDenied"), GUIScreen.reformat(MODID + ".requestDenied.needOP"));
+                    new MessageGUI(GUIScreen.reformat(packet.title), GUIScreen.reformat(packet.message));
                 }
+            });
+            return null;
+        }
+    }
+
+
+    public static class SetServerDataPacket implements IMessage
+    {
+        public SetBonusData data;
+
+        public SetServerDataPacket()
+        {
+            //Required
+        }
+
+        public SetServerDataPacket(SetBonusData data)
+        {
+            this.data = data.clone();
+        }
+
+        @Override
+        public void toBytes(ByteBuf buf)
+        {
+            buf.writeInt(data.equipment.size());
+            for (Equip equip : data.equipment) ByteBufUtils.writeUTF8String(buf, equip.toString());
+
+            buf.writeInt(data.sets.size());
+            for (Set set : data.sets) ByteBufUtils.writeUTF8String(buf, set.toString());
+
+
+            ArrayList<BonusElementAttributeModifier> attributeMods = new ArrayList<>();
+            ArrayList<BonusElementPotionEffect> potions = new ArrayList<>();
+            ArrayList<BonusElementEnchantment> enchantments = new ArrayList<>();
+
+            buf.writeInt(data.bonuses.size());
+            for (Bonus bonus : data.bonuses)
+            {
+                ByteBufUtils.writeUTF8String(buf, bonus.toString());
+                for (ABonusElement element : bonus.bonusElements)
+                {
+                    if (element instanceof BonusElementAttributeModifier) attributeMods.add((BonusElementAttributeModifier) element);
+                    if (element instanceof BonusElementPotionEffect) potions.add((BonusElementPotionEffect) element);
+                    if (element instanceof BonusElementEnchantment) enchantments.add((BonusElementEnchantment) element);
+                }
+            }
+
+            buf.writeInt(attributeMods.size());
+            for (BonusElementAttributeModifier element : attributeMods) ByteBufUtils.writeUTF8String(buf, element.toString());
+
+            buf.writeInt(potions.size());
+            for (BonusElementPotionEffect element : potions) ByteBufUtils.writeUTF8String(buf, element.toString());
+
+            buf.writeInt(enchantments.size());
+            for (BonusElementEnchantment element : enchantments) ByteBufUtils.writeUTF8String(buf, element.toString());
+        }
+
+        @Override
+        public void fromBytes(ByteBuf buf)
+        {
+            data = new SetBonusData();
+
+            for (int i = buf.readInt(); i > 0; i--)
+            {
+                data.equipment.add(Equip.getInstance(ByteBufUtils.readUTF8String(buf)));
+            }
+
+            for (int i = buf.readInt(); i > 0; i--)
+            {
+                data.sets.add(Set.getInstance(ByteBufUtils.readUTF8String(buf), data));
+            }
+
+
+            for (int i = buf.readInt(); i > 0; i--)
+            {
+                data.bonuses.add(Bonus.getInstance(ByteBufUtils.readUTF8String(buf), data));
+            }
+
+
+            for (int i = buf.readInt(); i > 0; i--)
+            {
+                BonusElementAttributeModifier.getInstance(ByteBufUtils.readUTF8String(buf), data);
+            }
+
+            for (int i = buf.readInt(); i > 0; i--)
+            {
+                BonusElementPotionEffect.getInstance(ByteBufUtils.readUTF8String(buf), data);
+            }
+
+            for (int i = buf.readInt(); i > 0; i--)
+            {
+                BonusElementEnchantment.getInstance(ByteBufUtils.readUTF8String(buf), data);
+            }
+        }
+    }
+
+    public static class SetServerDataPacketHandler implements IMessageHandler<SetServerDataPacket, IMessage>
+    {
+        @Override
+        public IMessage onMessage(SetServerDataPacket packet, MessageContext ctx)
+        {
+            FMLCommonHandler.instance().getMinecraftServerInstance().addScheduledTask(() ->
+            {
+                EntityPlayerMP player = ctx.getServerHandler().player;
+                if (MCTools.isOP(player))
+                {
+                    packet.data.applyToConfig();
+                    WRAPPER.sendTo(new ServerGUIMessagePacket(MODID + ".requestAccepted", MODID + ".requestAccepted.applied"), player);
+                }
+                else WRAPPER.sendTo(new ServerGUIMessagePacket(MODID + ".requestDenied", MODID + ".requestDenied.needOP"), player);
             });
             return null;
         }

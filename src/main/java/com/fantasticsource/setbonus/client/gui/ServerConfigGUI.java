@@ -231,7 +231,7 @@ public class ServerConfigGUI extends GUIScreen
 
         loadRemoteLabel.addClickActions(() -> Network.WRAPPER.sendToServer(new Network.RequestServerDataPacket()));
 
-        //TODO add other button functionality
+        saveRemoteLabel.addClickActions(() -> Network.WRAPPER.sendToServer(new Network.SetServerDataPacket(data)));
     }
 
 

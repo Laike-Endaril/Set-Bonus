@@ -1,5 +1,3 @@
-Finish buttons in main column
-
 Post library update
 Update library and req
 

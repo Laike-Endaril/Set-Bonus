@@ -171,3 +171,6 @@ setbonus.enchantmode.4=add unbound
 
 setbonus.requestDenied=Request Denied
 setbonus.requestDenied.needOP=You need to be an OP to do this
+
+setbonus.requestAccepted=Request Accepted
+setbonus.requestAccepted.applied=Applied settings to server!
