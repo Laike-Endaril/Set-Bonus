@@ -91,6 +91,10 @@ setbonus.config.saveLocalTemplate=Save Local Template
 setbonus.config.loadRemoteTemplate=Load Remote Template
 setbonus.config.saveRemoteTemplate=Save Remote Template
 
+setbonus.config.createNew=Create New...
+setbonus.config.error=Error
+setbonus.config.errorNoEquips=You need at least 1 equip definition to do this
+
 setbonus.config.edit=Edit...
 setbonus.config.delete=Delete
 setbonus.config.deleteThingMaybe=Delete %s?

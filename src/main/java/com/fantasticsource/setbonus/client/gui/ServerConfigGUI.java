@@ -10,6 +10,7 @@ import com.fantasticsource.mctools.gui.element.text.GUITextLabel;
 import com.fantasticsource.mctools.gui.element.text.GUITextSpacer;
 import com.fantasticsource.mctools.gui.element.view.GUIScrollView;
 import com.fantasticsource.mctools.gui.element.view.GUIView;
+import com.fantasticsource.mctools.gui.screen.MessageGUI;
 import com.fantasticsource.mctools.gui.screen.YesNoGUI;
 import com.fantasticsource.setbonus.SetBonusData;
 import com.fantasticsource.setbonus.client.gui.bonus.GUIBonus;
@@ -22,6 +23,7 @@ import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Equi
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.Set;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.SetRequirement;
 import com.fantasticsource.setbonus.common.bonusrequirements.setrequirement.SlotData;
+import com.fantasticsource.tools.Tools;
 import com.fantasticsource.tools.datastructures.Color;
 import org.lwjgl.input.Keyboard;
 
@@ -40,7 +42,8 @@ public class ServerConfigGUI extends GUIScreen
 
     public SetBonusData data;
     public GUITextLabel selected = null,
-            mainLabel, equipsLabel, bonusesLabel, setsLabel, settingsLabel,
+            mainLabel, equipsLabel, setsLabel, bonusesLabel, settingsLabel,
+            newEquipLabel, newSetLabel, newBonusLabel,
             linesLabel, entryDisplayModeLabel, loadLocalLabel, saveLocalLabel, loadRemoteLabel, saveRemoteLabel;
     //            loadLocalTemplateLabel, saveLocalTemplateLabel, loadRemoteTemplateLabel, saveRemoteTemplateLabel;
     public GUIScrollView main, equips, bonuses, sets, settings;
@@ -78,7 +81,9 @@ public class ServerConfigGUI extends GUIScreen
 
         equipsLabel = new GUITextLabel(this, 1, Color.GREEN, HEADER_SCALE).setText(reformat(MODID + ".config.equipment"));
         equipsColumn.add(equipsLabel);
-        equips = new GUIScrollView(this, (COLUMN_WIDTH - SCROLLBAR_WIDTH) * COLUMN_COUNT, 1 - equipsLabel.height);
+        newEquipLabel = new GUITextLabel(this, 1, Color.AQUA, HEADER_SCALE).setText(reformat(MODID + ".config.createNew"));
+        equipsColumn.add(newEquipLabel);
+        equips = new GUIScrollView(this, (COLUMN_WIDTH - SCROLLBAR_WIDTH) * COLUMN_COUNT, 1 - newEquipLabel.height);
         GUIVerticalScrollbar equipsScrollbar = new GUIVerticalScrollbar(this, 1 - equips.width, equips.height, getHoverColor(Color.AQUA), Color.BLANK, Color.AQUA, Color.BLANK, equips);
         equipsColumn.addAll(equips, equipsScrollbar.addEditActions(this::recalcLines));
 
@@ -89,7 +94,9 @@ public class ServerConfigGUI extends GUIScreen
 
         setsLabel = new GUITextLabel(this, 1, Color.GREEN, HEADER_SCALE).setText(reformat(MODID + ".config.sets"));
         setsColumn.add(setsLabel);
-        sets = new GUIScrollView(this, (COLUMN_WIDTH - SCROLLBAR_WIDTH) * COLUMN_COUNT, 1 - setsLabel.height);
+        newSetLabel = new GUITextLabel(this, 1, Color.AQUA, HEADER_SCALE).setText(reformat(MODID + ".config.createNew"));
+        setsColumn.add(newSetLabel);
+        sets = new GUIScrollView(this, (COLUMN_WIDTH - SCROLLBAR_WIDTH) * COLUMN_COUNT, 1 - newSetLabel.height);
         GUIVerticalScrollbar setsScrollbar = new GUIVerticalScrollbar(this, 1 - sets.width, sets.height, getHoverColor(Color.AQUA), Color.BLANK, Color.AQUA, Color.BLANK, sets);
         setsColumn.addAll(sets, setsScrollbar.addEditActions(this::recalcLines));
 
@@ -100,7 +107,9 @@ public class ServerConfigGUI extends GUIScreen
 
         bonusesLabel = new GUITextLabel(this, 1, Color.GREEN, HEADER_SCALE).setText(reformat(MODID + ".config.bonuses"));
         bonusesColumn.add(bonusesLabel);
-        bonuses = new GUIScrollView(this, (COLUMN_WIDTH - SCROLLBAR_WIDTH) * COLUMN_COUNT, 1 - bonusesLabel.height);
+        newBonusLabel = new GUITextLabel(this, 1, Color.AQUA, HEADER_SCALE).setText(reformat(MODID + ".config.createNew"));
+        bonusesColumn.add(newBonusLabel);
+        bonuses = new GUIScrollView(this, (COLUMN_WIDTH - SCROLLBAR_WIDTH) * COLUMN_COUNT, 1 - newBonusLabel.height);
         GUIVerticalScrollbar bonusesScrollbar = new GUIVerticalScrollbar(this, 1 - bonuses.width, bonuses.height, getHoverColor(Color.AQUA), Color.BLANK, Color.AQUA, Color.BLANK, bonuses);
         bonusesColumn.addAll(bonuses, bonusesScrollbar.addEditActions(this::recalcLines));
 
@@ -134,23 +143,23 @@ public class ServerConfigGUI extends GUIScreen
         });
 
         //Equips recalcs
-        equipsLabel.addRecalcActions(() ->
+        newEquipLabel.addRecalcActions(() ->
         {
-            equips.height = 1 - equipsLabel.height;
+            equips.height = 1 - newEquipLabel.height;
             equipsScrollbar.height = equips.height;
         });
 
         //Sets recalcs
-        setsLabel.addRecalcActions(() ->
+        newSetLabel.addRecalcActions(() ->
         {
-            sets.height = 1 - setsLabel.height;
+            sets.height = 1 - newSetLabel.height;
             setsScrollbar.height = sets.height;
         });
 
         //Bonuses recalcs
-        bonusesLabel.addRecalcActions(() ->
+        newBonusLabel.addRecalcActions(() ->
         {
-            bonuses.height = 1 - bonusesLabel.height;
+            bonuses.height = 1 - newBonusLabel.height;
             bonusesScrollbar.height = bonuses.height;
         });
 
@@ -232,6 +241,33 @@ public class ServerConfigGUI extends GUIScreen
         loadRemoteLabel.addClickActions(() -> Network.WRAPPER.sendToServer(new Network.RequestServerDataPacket()));
 
         saveRemoteLabel.addClickActions(() -> Network.WRAPPER.sendToServer(new Network.SetServerDataPacket(data)));
+
+
+        //New element button clicks
+        newEquipLabel.addClickActions(() ->
+        {
+            Equip equip = Equip.getInstance("New" + new Color(Tools.random(Integer.MAX_VALUE)).hex() + ", minecraft:diamond_sword");
+            data.equipment.add(equip);
+            equips.add(new GUIEquip(this, data, equip, 1, ELEMENT_SCALE));
+        });
+
+        newSetLabel.addClickActions(() ->
+        {
+            if (data.equipment.size() == 0) new MessageGUI(reformat(MODID + ".config.error"), reformat(MODID + ".config.errorNoEquips"));
+            else
+            {
+                Set set = Set.getInstance("New" + new Color(Tools.random(Integer.MAX_VALUE)).hex() + ", New Set, mainhand = " + data.equipment.iterator().next().id, data);
+                data.sets.add(set);
+                sets.add(new GUISet(this, data, set, 1, ELEMENT_SCALE));
+            }
+        });
+
+        newBonusLabel.addClickActions(() ->
+        {
+            Bonus bonus = Bonus.getInstance("New" + new Color(Tools.random(Integer.MAX_VALUE)).hex() + ", New Bonus, 0", data);
+            data.bonuses.add(bonus);
+            bonuses.add(new GUIBonus(this, data, bonus, 1, ELEMENT_SCALE));
+        });
     }
 
 
