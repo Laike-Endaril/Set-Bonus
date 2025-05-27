@@ -59,28 +59,39 @@ public class TooltipRenderer
 
 
         ItemStack stack = event.getItemStack();
-        if (recentlyDisplayed == stack && !Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
-        {
-            event.getToolTip().add("");
-            event.getToolTip().add(TextFormatting.DARK_RED + I18n.translateToLocal(MODID + ".tooltips.holdToUpdate"));
-            event.getToolTip().addAll(recentlyAddedTooltips);
-            return;
-        }
+        ArrayList<String> list = new ArrayList<>();
 
 
-        if (recentlyDenied == stack) return;
-        for (RegistryRegexItemFilter filter : itemTooltipBlacklist)
+        boolean clientThread = Thread.currentThread().getName().equals("Client thread");
+        if (clientThread)
         {
-            if (filter.matches(stack))
+            if (recentlyDisplayed == stack && !Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
             {
-                recentlyDenied = stack;
+                if (recentlyAddedTooltips.size() > 0)
+                {
+                    event.getToolTip().add("");
+                    event.getToolTip().add(TextFormatting.DARK_RED + I18n.translateToLocal(MODID + ".tooltips.holdToUpdate"));
+                    event.getToolTip().addAll(recentlyAddedTooltips);
+                }
                 return;
             }
+
+
+            if (recentlyDenied == stack) return;
+            for (RegistryRegexItemFilter filter : itemTooltipBlacklist)
+            {
+                if (filter.matches(stack))
+                {
+                    recentlyDenied = stack;
+                    return;
+                }
+            }
+
+
+            recentlyDisplayed = stack;
+            recentlyAddedTooltips.clear();
         }
 
-
-        recentlyDisplayed = stack;
-        recentlyAddedTooltips.clear();
 
         boolean showTooltip;
         for (Set set : SetBonusData.CLIENT_DATA.sets)
@@ -106,7 +117,7 @@ public class TooltipRenderer
                 int count = set.getNumberEquipped(player);
                 int max = set.getMaxNumber();
                 String color = "" + (count == 0 ? RED : count == max ? GREEN : YELLOW);
-                recentlyAddedTooltips.add(color + BOLD + "=== " + I18n.translateToLocal(set.name) + " (" + count + "/" + max + ") ===");
+                list.add(color + BOLD + "=== " + I18n.translateToLocal(set.name) + " (" + count + "/" + max + ") ===");
                 for (Bonus bonus : SetBonusData.CLIENT_DATA.bonuses)
                 {
                     int req = 0;
@@ -143,7 +154,7 @@ public class TooltipRenderer
                             else color += YELLOW; //Some set requirements met
                         }
 
-                        recentlyAddedTooltips.add(color + " (" + active + "/" + req + ")" + (otherReqs ? "*" : "") + " " + I18n.translateToLocal(bonus.name));
+                        list.add(color + " (" + active + "/" + req + ")" + (otherReqs ? "*" : "") + " " + I18n.translateToLocal(bonus.name));
 
 
                         if (SetBonusConfig.clientSettings.enableAttributeModifierTooltips || SetBonusConfig.clientSettings.enablePotionEffectTooltips || SetBonusConfig.clientSettings.enableEnchantmentTooltips)
@@ -162,14 +173,14 @@ public class TooltipRenderer
                             {
                                 for (BonusElementAttributeModifier bonusElementAttributeModifier : bonusElementAttributeModifiers)
                                 {
-                                    for (String line : bonusElementAttributeModifier.tooltips()) recentlyAddedTooltips.add("  " + line);
+                                    for (String line : bonusElementAttributeModifier.tooltips()) list.add("  " + line);
                                 }
                             }
                             if (SetBonusConfig.clientSettings.enablePotionEffectTooltips)
                             {
                                 for (BonusElementPotionEffect bonusElementPotionEffect : bonusElementPotionEffects)
                                 {
-                                    for (String line : bonusElementPotionEffect.tooltips()) recentlyAddedTooltips.add("  " + line);
+                                    for (String line : bonusElementPotionEffect.tooltips()) list.add("  " + line);
                                 }
                             }
                             if (SetBonusConfig.clientSettings.enableEnchantmentTooltips)
@@ -177,17 +188,22 @@ public class TooltipRenderer
                                 for (BonusElementEnchantment bonusElementEnchantment : bonusElementEnchantments)
                                 {
                                     //TODO change how the enchantment bonus displays based on this item, where it is, where it could be, and whether it has it applied?
-                                    for (String line : bonusElementEnchantment.tooltips()) recentlyAddedTooltips.add("  " + line);
+                                    for (String line : bonusElementEnchantment.tooltips()) list.add("  " + line);
                                 }
                             }
                         }
                     }
                 }
-                recentlyAddedTooltips.add("");
+                list.add("");
             }
         }
 
-        event.getToolTip().add("");
-        event.getToolTip().addAll(recentlyAddedTooltips);
+
+        if (list.size() > 0)
+        {
+            event.getToolTip().add("");
+            event.getToolTip().addAll(list);
+        }
+        if (clientThread) recentlyAddedTooltips = list;
     }
 }
