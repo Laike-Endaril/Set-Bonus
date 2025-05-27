@@ -70,10 +70,12 @@ public class ThreadedJEITooltipReloader
         {
             STOP = true;
             while (thread.isAlive()) ;
+            System.out.println("Cancelled reloading JEI tooltips on background thread");
         }
         thread = new Thread(runnable);
         thread.setName("Set Bonus JEI Tooltip Reload");
         thread.start();
+        System.out.println("Started reloading JEI tooltips on background thread");
     }
 
 
@@ -100,6 +102,8 @@ public class ThreadedJEITooltipReloader
 
                 Internal.getRuntime().getIngredientListOverlay().updateLayout(true);
             }
+
+            System.out.println("Finished reloading JEI tooltips on background thread");
         }
     }
 

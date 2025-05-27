@@ -65,10 +65,12 @@ public class ThreadedHEITooltipReloader
         {
             STOP = true;
             while (thread.isAlive()) ;
+            System.out.println("Cancelled reloading HEI tooltips on background thread");
         }
         thread = new Thread(runnable);
         thread.setName("Set Bonus HEI Tooltip Reload");
         thread.start();
+        System.out.println("Started reloading HEI tooltips on background thread");
     }
 
     protected static PrefixedSearchable getTooltipSearchable(Map<PrefixInfo, PrefixedSearchable> prefixedSearchables)
@@ -99,6 +101,8 @@ public class ThreadedHEITooltipReloader
             ingredientFilter.invalidateCache();
             ReflectionTool.set(IngredientFilter.class, "filterCached", ingredientFilter, null);
             Internal.getRuntime().getIngredientListOverlay().updateLayout(true);
+
+            System.out.println("Finished reloading HEI tooltips on background thread");
         }
     }
 
