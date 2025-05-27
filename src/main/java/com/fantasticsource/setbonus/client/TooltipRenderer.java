@@ -1,5 +1,6 @@
 package com.fantasticsource.setbonus.client;
 
+import com.fantasticsource.mctools.ClientTickTimer;
 import com.fantasticsource.mctools.items.AdvancedItemFilter;
 import com.fantasticsource.setbonus.SetBonusData;
 import com.fantasticsource.setbonus.common.Bonus;
@@ -16,7 +17,6 @@ import com.fantasticsource.setbonus.config.SetBonusConfig;
 import com.fantasticsource.tools.Tools;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
@@ -25,14 +25,14 @@ import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
 
-import static com.fantasticsource.setbonus.SetBonus.MODID;
 import static net.minecraft.util.text.TextFormatting.*;
 
 public class TooltipRenderer
 {
-    public static ArrayList<AdvancedItemFilter> itemTooltipBlacklist = new ArrayList<>();
-    public static ItemStack recentlyDenied = null, recentlyDisplayed = null;
-    public static ArrayList<String> recentlyAddedTooltips = new ArrayList<>();
+    protected static ArrayList<AdvancedItemFilter> itemTooltipBlacklist = new ArrayList<>();
+    protected static ItemStack recentlyDenied = null, recentlyDisplayed = null;
+    protected static ArrayList<String> recentlyAddedTooltips = new ArrayList<>();
+    protected static long recentDisplayTick = 0;
 
 
     public static void update()
@@ -67,13 +67,18 @@ public class TooltipRenderer
         {
             if (recentlyDisplayed == stack && !Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
             {
-                if (recentlyAddedTooltips.size() > 0)
+                long tick = ClientTickTimer.currentTick();
+                if (tick <= recentDisplayTick + 1)
                 {
-                    event.getToolTip().add("");
-                    event.getToolTip().add(TextFormatting.DARK_RED + I18n.translateToLocal(MODID + ".tooltips.holdToUpdate"));
-                    event.getToolTip().addAll(recentlyAddedTooltips);
+                    if (recentlyAddedTooltips.size() > 0)
+                    {
+                        event.getToolTip().add("");
+                        event.getToolTip().addAll(recentlyAddedTooltips);
+                    }
+                    recentDisplayTick = tick;
+                    return;
                 }
-                return;
+                recentDisplayTick = tick;
             }
 
 
