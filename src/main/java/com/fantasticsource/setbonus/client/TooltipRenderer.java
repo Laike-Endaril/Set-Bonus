@@ -1,6 +1,5 @@
 package com.fantasticsource.setbonus.client;
 
-import com.fantasticsource.mctools.ClientTickTimer;
 import com.fantasticsource.mctools.items.AdvancedItemFilter;
 import com.fantasticsource.setbonus.SetBonusData;
 import com.fantasticsource.setbonus.common.Bonus;
@@ -32,7 +31,6 @@ public class TooltipRenderer
     protected static ArrayList<AdvancedItemFilter> itemTooltipBlacklist = new ArrayList<>();
     protected static ItemStack recentlyDenied = null, recentlyDisplayed = null;
     protected static ArrayList<String> recentlyAddedTooltips = new ArrayList<>();
-    protected static long recentDisplayTick = 0;
 
 
     public static void update()
@@ -67,18 +65,12 @@ public class TooltipRenderer
         {
             if (recentlyDisplayed == stack && !Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
             {
-                long tick = ClientTickTimer.currentTick();
-                if (tick <= recentDisplayTick + 1)
+                if (recentlyAddedTooltips.size() > 0)
                 {
-                    if (recentlyAddedTooltips.size() > 0)
-                    {
-                        event.getToolTip().add("");
-                        event.getToolTip().addAll(recentlyAddedTooltips);
-                    }
-                    recentDisplayTick = tick;
-                    return;
+                    event.getToolTip().add("");
+                    event.getToolTip().addAll(recentlyAddedTooltips);
                 }
-                recentDisplayTick = tick;
+                return;
             }
 
 

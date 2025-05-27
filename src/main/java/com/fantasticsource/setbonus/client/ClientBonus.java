@@ -92,6 +92,7 @@ public class ClientBonus extends Bonus
                 {
                     if (reqStatus[i] != lastReqStatus[i])
                     {
+                        TooltipRenderer.update();
                         refreshJEI = true;
                         break;
                     }
