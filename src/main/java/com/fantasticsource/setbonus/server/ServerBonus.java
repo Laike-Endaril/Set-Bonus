@@ -9,7 +9,9 @@ import com.fantasticsource.setbonus.common.bonuselements.ABonusElement;
 import com.fantasticsource.setbonus.common.bonusrequirements.ABonusRequirement;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.profiler.Profiler;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 import javax.annotation.Nonnull;
 import java.io.*;
@@ -38,15 +40,29 @@ public class ServerBonus extends Bonus
         changed = false;
         save = false;
 
+        Profiler profiler = FMLCommonHandler.instance().getMinecraftServerInstance().profiler;
+        profiler.startSection("Update Server Bonuses");
+
         for (Bonus bonus : SetBonusData.SERVER_DATA.bonuses) ((ServerBonus) bonus).update(player, forceNew);
+
+        int i = 2;
 
         while (changed)
         {
             changed = false;
+
+            profiler.endStartSection("Update Server Bonuses (" + i++ + ")");
+
             for (Bonus bonus : SetBonusData.SERVER_DATA.bonuses) ((ServerBonus) bonus).update(player, false);
         }
 
-        if (save) saveDiscoveries(player);
+        if (save)
+        {
+            profiler.endStartSection("Save Discoveries");
+            saveDiscoveries(player);
+        }
+
+        profiler.endSection();
     }
 
     public void update(EntityPlayerMP player, boolean forceNew)
