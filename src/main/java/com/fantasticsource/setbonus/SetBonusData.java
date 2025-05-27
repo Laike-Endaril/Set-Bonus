@@ -2,6 +2,7 @@ package com.fantasticsource.setbonus;
 
 import com.fantasticsource.mctools.MCTools;
 import com.fantasticsource.setbonus.client.ClientBonus;
+import com.fantasticsource.setbonus.client.TooltipRenderer;
 import com.fantasticsource.setbonus.common.Bonus;
 import com.fantasticsource.setbonus.common.Network;
 import com.fantasticsource.setbonus.common.bonuselements.ABonusElement;
@@ -164,6 +165,9 @@ public class SetBonusData
         for (String modifierString : packet.attributeMods) BonusElementAttributeModifier.getInstance(modifierString, this);
         for (String potionString : packet.potions) BonusElementPotionEffect.getInstance(potionString, this);
         for (String enchantString : packet.enchantments) BonusElementEnchantment.getInstance(enchantString, this);
+
+
+        if (this == CLIENT_DATA) TooltipRenderer.update();
     }
 
     public void addFromPacket(Network.DiscoverBonusPacket packet)
@@ -205,6 +209,9 @@ public class SetBonusData
         {
             BonusElementEnchantment.getInstance(enchantString, this);
         }
+
+
+        if (this == CLIENT_DATA) TooltipRenderer.update();
     }
 
 

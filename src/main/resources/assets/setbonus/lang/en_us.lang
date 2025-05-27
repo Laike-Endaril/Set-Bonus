@@ -183,3 +183,7 @@ setbonus.requestDenied.needOP=You need to be an OP to do this
 
 setbonus.requestAccepted=Request Accepted
 setbonus.requestAccepted.applied=Applied settings to server!
+
+
+
+setbonus.tooltips.holdToUpdate=Updates when you re-hover mouse or hold left shift
