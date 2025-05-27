@@ -70,15 +70,15 @@ public class EquipGUI extends GUIScreen
 
 
         //Domain
-        domain = new GUILabeledTextInput(this, reformat(MODID + ".config.domain") + ": ", equip.filter.domainRegex, FilterNone.INSTANCE);
+        domain = new GUILabeledTextInput(this, reformat(MODID + ".config.domain") + ": ", equip.filter.getDomainRegex(), FilterNone.INSTANCE);
         root.addAll(domain, new GUIElement(this, 1, 0));
 
         //Item
-        item = new GUILabeledTextInput(this, reformat(MODID + ".config.item") + ": ", equip.filter.itemRegex, FilterNotEmpty.INSTANCE);
+        item = new GUILabeledTextInput(this, reformat(MODID + ".config.item") + ": ", equip.filter.getItemRegex(), FilterNotEmpty.INSTANCE);
         root.addAll(item, new GUIElement(this, 1, 0));
 
         //Meta
-        meta = new GUILabeledTextInput(this, reformat(MODID + ".config.meta") + ": ", equip.filter.metaRegex, FilterNone.INSTANCE);
+        meta = new GUILabeledTextInput(this, reformat(MODID + ".config.meta") + ": ", equip.filter.getMetaRegex(), FilterNone.INSTANCE);
         root.addAll(meta, new GUIElement(this, 1, 0));
 
 
@@ -100,7 +100,7 @@ public class EquipGUI extends GUIScreen
         requiredNBTView.addAll(requiredNBT, requiredNBTScrollbar);
 
         GUIAutocroppedView view;
-        for (Map.Entry<String, String> entry : equip.filter.tagsRequired.entrySet())
+        for (Map.Entry<String, String> entry : equip.filter.getTagsRequired().entrySet())
         {
             view = new GUIAutocroppedView(this);
             view.add(new GUIElement(this, 1, 0));
@@ -128,7 +128,7 @@ public class EquipGUI extends GUIScreen
         disallowedNBTScrollbar = new GUIVerticalScrollbar(this, ServerConfigGUI.SCROLLBAR_WIDTH, 1, getHoverColor(Color.AQUA), Color.BLANK, Color.AQUA, Color.BLANK, disallowedNBT);
         disallowedNBTView.addAll(disallowedNBT, disallowedNBTScrollbar);
 
-        for (Map.Entry<String, String> entry : equip.filter.tagsDisallowed.entrySet())
+        for (Map.Entry<String, String> entry : equip.filter.getTagsDisallowed().entrySet())
         {
             view = new GUIAutocroppedView(this);
             view.add(new GUIElement(this, 1, 0));
@@ -159,7 +159,7 @@ public class EquipGUI extends GUIScreen
             }
             else if (!item.valid())
             {
-                item.setText(equip.filter.itemRegex);
+                item.setText(equip.filter.getItemRegex());
                 item.label.click();
             }
             else
@@ -205,20 +205,9 @@ public class EquipGUI extends GUIScreen
                 }
 
 
-                //ID
-                String oldID = equip.id;
+                //Update equip
                 equip.id = id.getText();
-
-                //Domain, item, meta
-                equip.filter.domainRegex = domain.getText().trim();
-                if (equip.filter.domainRegex.isEmpty()) equip.filter.domainRegex = ".*";
-                equip.filter.itemRegex = item.getText().trim();
-                equip.filter.metaRegex = meta.getText().trim();
-                if (equip.filter.metaRegex.isEmpty()) equip.filter.metaRegex = ".*";
-
-                //NBT
-                equip.filter.tagsRequired = requiredNBTStrings;
-                equip.filter.tagsDisallowed = disallowedNBTStrings;
+                equip.filter.set(domain.getText(), item.getText(), meta.getText(), requiredNBTStrings, disallowedNBTStrings);
 
 
                 //Update GUI

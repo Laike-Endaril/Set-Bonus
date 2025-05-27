@@ -188,49 +188,46 @@ public class ServerBonus extends Bonus
 
         public BonusInstance update()
         {
+            Profiler profiler = FMLCommonHandler.instance().getMinecraftServerInstance().profiler;
+            profiler.startSection("requirements");
             for (ABonusRequirement requirement : requirements)
             {
                 if (requirement.active(player) < requirement.required())
                 {
+                    profiler.endSection();
                     update(false);
                     return this;
                 }
             }
 
+            profiler.endSection();
             update(true);
             return this;
         }
 
         private void update(boolean activate)
         {
-            Profiler profiler = FMLCommonHandler.instance().getMinecraftServerInstance().profiler;
             if (activate)
             {
                 if (!active)
                 {
                     //Activating
-                    profiler.startSection("activate " + player.getName() + ", " + bonus.id);
                     changed = true;
                     active = true;
 
-                    profiler.startSection("discover " + player.getName() + ", " + bonus.id);
                     if (bonus.discoveryMode == MODE_DISCOVERABLE && !discovered)
                     {
                         discovered = true;
                         Network.WRAPPER.sendTo(new Network.DiscoverBonusPacket(bonus), player);
                         save = true;
                     }
-                    profiler.endSection();
 
                     for (ABonusElement element : bonusElements) element.activate(player);
-                    profiler.endSection();
                 }
                 else
                 {
                     //Remaining active
-                    profiler.startSection("updateActive " + player.getName() + ", " + bonus.id);
                     for (ABonusElement element : bonusElements) element.updateActive(player);
-                    profiler.endSection();
                 }
             }
             else
@@ -238,12 +235,10 @@ public class ServerBonus extends Bonus
                 if (active)
                 {
                     //Deactivating
-                    profiler.startSection("deactivate " + player.getName() + ", " + bonus.id);
                     changed = true;
                     active = false;
 
                     for (ABonusElement element : bonusElements) element.deactivate(player);
-                    profiler.endSection();
                 }
             }
         }

@@ -3,6 +3,10 @@ Fix Elenai Dodge 2 killing JEI / HEI tooltip reload threads due to concurrent mo
 See if JEI / HEI tooltip reloaders can be reduced to only reloading items for the discovered bonus(es) on discovery
 If so, make sure to queue discovered bonuses for the process and not skip any (I think right now the reloader threads self-interrupt-restart)
 
+Update lib and req
+
+
+
 Simplify GUI code for requirements and bonus elements, maybe even make some client-side-only abstract methods in the abstract parent classes for getting gui elements / screens, etc
 In general, try to move all code specific to a given bonus requirement / element type into abstract methods for them. so that any new ones created are forced to have everything needed
 

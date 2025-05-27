@@ -1,6 +1,6 @@
 package com.fantasticsource.setbonus.client;
 
-import com.fantasticsource.mctools.items.RegistryRegexItemFilter;
+import com.fantasticsource.mctools.items.AdvancedItemFilter;
 import com.fantasticsource.setbonus.SetBonusData;
 import com.fantasticsource.setbonus.common.Bonus;
 import com.fantasticsource.setbonus.common.bonuselements.ABonusElement;
@@ -30,7 +30,7 @@ import static net.minecraft.util.text.TextFormatting.*;
 
 public class TooltipRenderer
 {
-    public static ArrayList<RegistryRegexItemFilter> itemTooltipBlacklist = new ArrayList<>();
+    public static ArrayList<AdvancedItemFilter> itemTooltipBlacklist = new ArrayList<>();
     public static ItemStack recentlyDenied = null, recentlyDisplayed = null;
     public static ArrayList<String> recentlyAddedTooltips = new ArrayList<>();
 
@@ -40,7 +40,7 @@ public class TooltipRenderer
         itemTooltipBlacklist.clear();
         for (String string : SetBonusConfig.clientSettings.itemTooltipBlacklist)
         {
-            itemTooltipBlacklist.add(RegistryRegexItemFilter.getInstance(string));
+            itemTooltipBlacklist.add(AdvancedItemFilter.getInstance(string));
         }
         recentlyDenied = null;
 
@@ -78,7 +78,7 @@ public class TooltipRenderer
 
 
             if (recentlyDenied == stack) return;
-            for (RegistryRegexItemFilter filter : itemTooltipBlacklist)
+            for (AdvancedItemFilter filter : itemTooltipBlacklist)
             {
                 if (filter.matches(stack))
                 {

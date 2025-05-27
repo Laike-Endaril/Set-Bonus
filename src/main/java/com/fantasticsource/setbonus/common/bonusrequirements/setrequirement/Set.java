@@ -17,6 +17,7 @@ public class Set
 
 
     protected LinkedHashMap<EntityPlayer, Pair<Integer, Long>> numEquipped = new LinkedHashMap<>();
+    protected ArrayList<Integer> blocked = new ArrayList<>();
 
 
     private Set()
@@ -78,7 +79,7 @@ public class Set
     private int getNumberEquippedInternal(EntityPlayer player)
     {
         int result = 0;
-        ArrayList<Integer> blocked = new ArrayList<>();
+        blocked.clear();
         for (SlotData data : slotData)
         {
             int slot = data.equipped(player, blocked, true, true);
