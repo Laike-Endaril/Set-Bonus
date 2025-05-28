@@ -57,16 +57,9 @@ public class Commands extends CommandBase
         String cmd = args[0];
         if (cmd.equals("reload"))
         {
-            try
-            {
-                MCTools.reloadConfig(ConfigHandler.FULL_CONFIG_NAME + ".cfg", SetBonus.MODID);
-                SetBonusData.setServerFromConfig();
-                notifyCommandListener(sender, this, SetBonus.MODID + ".cmd.reloaded");
-            }
-            catch (IllegalAccessException e)
-            {
-                e.printStackTrace();
-            }
+            MCTools.reloadConfig(ConfigHandler.FULL_CONFIG_NAME + ".cfg", SetBonus.MODID);
+            SetBonusData.setServerFromConfig();
+            notifyCommandListener(sender, this, SetBonus.MODID + ".cmd.reloaded");
         }
         else
         {
